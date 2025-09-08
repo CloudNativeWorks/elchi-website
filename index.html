@@ -11,9 +11,9 @@
     <meta name="title"
         content="Elchi - Next Generation Proxy Management Platform" />
     <meta name="description"
-        content="Elchi combines React TypeScript frontend with Go backend for simplified proxy management. Features xDS protocol support, proto-generated UI, real-time validation, and multi-version Envoy support. Try our 24-hour demo." />
+        content="Elchi is a comprehensive Envoy proxy management platform with web UI, xDS protocol support, real-time configuration validation, and Kubernetes integration. Free open-source alternative to Istio for service mesh management. Try our live demo!" />
     <meta name="keywords"
-        content="envoy proxy, envoy ui, xds protocol, service mesh, go control plane, react typescript, container orchestration, cloud native, microservices, proxy management, configuration management, kubernetes, docker, API gateway" />
+        content="envoy proxy, envoy ui, xds protocol, service mesh, go control plane, react typescript, container orchestration, cloud native, microservices, proxy management, configuration management, kubernetes, docker, API gateway, load balancer, envoy configuration, proxy control plane, service discovery, traffic management, envoy admin, proxy dashboard, kubernetes ingress, istio alternative, consul connect alternative, linkerd alternative" />
     <meta name="author" content="Elchi Team" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://elchi.io" />
@@ -21,10 +21,13 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://elchi.io" />
-    <meta property="og:title" content="Elchi - Next Generation Proxy Management Platform" />
+    <meta property="og:title" content="Elchi - Next Generation Envoy Proxy Management Platform" />
     <meta property="og:description"
-        content="Stack solution for Proxy management with React TypeScript frontend and Go backend. Features xDS protocol, real-time validation, and multi-version support." />
-    <meta property="og:image" content="https://elchi.io/og-image.png" />
+        content="Comprehensive Envoy proxy management platform with web UI, xDS protocol support, real-time configuration validation, and Kubernetes integration. Free open-source alternative to Istio for service mesh management." />
+    <meta property="og:image" content="https://elchi.io/main.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Elchi Proxy Management Platform Dashboard" />
     <meta property="og:site_name" content="Elchi" />
     <meta property="og:locale" content="en_US" />
 
@@ -33,46 +36,319 @@
     <meta property="twitter:url" content="https://elchi.io" />
     <meta property="twitter:title" content="Elchi - Next Generation Envoy Proxy Management Platform" />
     <meta property="twitter:description"
-        content="Stack solution for Proxy management with React TypeScript frontend and Go backend. Features xDS protocol, real-time validation, and multi-version support." />
-    <meta property="twitter:image" content="https://elchi.io/og-image.png" />
-    <meta property="twitter:creator" content="@elchi_io" />
+        content="Comprehensive Envoy proxy management platform with web UI, xDS protocol support, real-time configuration validation, and Kubernetes integration. Free open-source alternative to Istio." />
+    <meta property="twitter:image" content="https://elchi.io/main.png" />
+    <meta property="twitter:image:alt" content="Elchi Proxy Management Platform Dashboard" />
+    <meta property="twitter:creator" content="@CloudNativeWorks" />
+    <meta property="twitter:site" content="@CloudNativeWorks" />
 
     <!-- Additional Meta Tags -->
     <meta name="theme-color" content="#056ccd" />
     <meta name="msapplication-TileColor" content="#056ccd" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    
+    <!-- Software/App Specific -->
+    <meta name="application-name" content="Elchi" />
+    <meta name="software" content="Elchi Proxy Management Platform" />
+    <meta name="version" content="1.0.0" />
 
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="//demo.elchi.io">
+    <link rel="dns-prefetch" href="//github.com">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/main.png" as="image" type="image/png">
+    <link rel="preload" href="/logo.png" as="image" type="image/png">
+    
+    <!-- Resource hints for better performance -->
+    <link rel="prefetch" href="/docs">
+    <link rel="prefetch" href="/configuration.png">
+    <link rel="prefetch" href="/service.png">
+    
+    <!-- Critical CSS inlining hint -->
+    <link rel="preload" href="/src/main.tsx" as="script" crossorigin>
 
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "Elchi",
-        "description": "Next generation proxy management platform",
+        "name": "Elchi - Next Generation Proxy Management Platform",
+        "alternateName": "Elchi",
+        "description": "Comprehensive proxy management platform that provides UI-based configuration management for Envoy proxies with xDS protocol support, real-time validation, and multi-version support.",
         "url": "https://elchi.io",
         "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Cross-platform",
+        "operatingSystem": ["Linux", "macOS", "Windows"],
+        "programmingLanguage": ["Go", "TypeScript", "React"],
+        "runtimePlatform": "Kubernetes",
         "offers": {
             "@type": "Offer",
             "price": "0",
-            "priceCurrency": "USD"
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
         },
         "creator": {
             "@type": "Organization",
-            "name": "Elchi Team"
+            "name": "CloudNativeWorks",
+            "url": "https://github.com/orgs/CloudNativeWorks",
+            "email": "admin@cloudnativeworks.com"
         },
-        "keywords": "envoy proxy, xds protocol, service mesh, react typescript, go backend, container orchestration, envoy ui",
+        "downloadUrl": "https://github.com/orgs/CloudNativeWorks/repositories",
+        "softwareVersion": "1.0.0",
+        "releaseNotes": "Initial release with full Envoy proxy management capabilities",
+        "keywords": "envoy proxy, envoy ui, xds protocol, service mesh, go control plane, react typescript, container orchestration, cloud native, microservices, proxy management, configuration management, kubernetes, docker, API gateway, load balancer, envoy configuration, proxy control plane, service discovery, traffic management, envoy admin, proxy dashboard, kubernetes ingress, istio alternative, consul connect alternative, linkerd alternative",
+        "screenshot": [
+            "https://elchi.io/main.png",
+            "https://elchi.io/configuration.png",
+            "https://elchi.io/service.png",
+            "https://elchi.io/metric.png",
+            "https://elchi.io/dependency.png"
+        ],
+        "featureList": [
+            "Envoy Proxy Management",
+            "xDS Protocol Support",
+            "Real-time Configuration Validation",
+            "Multi-version Envoy Support",
+            "Service Discovery",
+            "Traffic Management",
+            "AI-powered Configuration Assistant",
+            "Kubernetes Integration",
+            "Web-based Dashboard",
+            "API Management"
+        ],
         "sameAs": [
             "https://demo.elchi.io",
-            "https://github.com/CloudNativeWorks"
+            "https://github.com/orgs/CloudNativeWorks/repositories"
         ]
+    }
+    </script>
+
+    <!-- Additional Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "CloudNativeWorks",
+        "url": "https://elchi.io",
+        "logo": "https://elchi.io/logo.png",
+        "email": "admin@cloudnativeworks.com",
+        "foundingDate": "2024",
+        "description": "Cloud-native software solutions for modern infrastructure management",
+        "sameAs": [
+            "https://github.com/orgs/CloudNativeWorks"
+        ],
+        "makesOffer": {
+            "@type": "Offer",
+            "itemOffered": {
+                "@type": "SoftwareApplication",
+                "name": "Elchi",
+                "description": "Proxy management platform for Envoy"
+            }
+        }
+    }
+    </script>
+
+    <!-- WebSite Structured Data for Search Box -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Elchi",
+        "url": "https://elchi.io",
+        "description": "Next Generation Proxy Management Platform",
+        "publisher": {
+            "@type": "Organization",
+            "name": "CloudNativeWorks"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://elchi.io/docs?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <!-- FAQ Structured Data for Featured Snippets -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is Elchi?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Elchi is a comprehensive Envoy proxy management platform that provides a web-based interface for configuring and managing Envoy proxies. It features xDS protocol support, real-time configuration validation, and Kubernetes integration."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How does Elchi compare to Istio?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Elchi is a lightweight alternative to Istio that focuses specifically on Envoy proxy management without the complexity of a full service mesh. It offers a simpler deployment model, lower resource overhead, and direct Envoy configuration management."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is Elchi open source?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, Elchi is completely free and open source. You can find the source code on GitHub at https://github.com/orgs/CloudNativeWorks/repositories and deploy it in your own infrastructure."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What are the system requirements for Elchi?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Elchi requires Kubernetes 1.19+, Helm 3.2.0+, minimum 4GB RAM, 2 CPU cores, and a storage class for persistent volumes (optional for external databases). It can be deployed with built-in MongoDB and VictoriaMetrics or use external instances."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I install Elchi?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Install Elchi using Helm: 1) Add the repository: 'helm repo add elchi https://charts.elchi.io', 2) Update repos: 'helm repo update', 3) Install: 'helm install my-elchi elchi/elchi-stack --set-string global.mainAddress=\"your-domain.com\"'. Default login is admin/admin."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What protocols does Elchi support?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Elchi supports all Envoy xDS protocols including ADS (Aggregated Discovery Service), CDS (Cluster Discovery Service), EDS (Endpoint Discovery Service), LDS (Listener Discovery Service), RDS (Route Discovery Service), and VHDS (Virtual Host Discovery Service)."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- HowTo Structured Data for Installation -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Install Elchi Proxy Management Platform",
+        "description": "Step-by-step guide to install Elchi on Kubernetes using Helm",
+        "image": "https://elchi.io/configuration.png",
+        "totalTime": "PT15M",
+        "estimatedCost": {
+            "@type": "MonetaryAmount",
+            "currency": "USD",
+            "value": "0"
+        },
+        "supply": [
+            {
+                "@type": "HowToSupply",
+                "name": "Kubernetes cluster (v1.19+)"
+            },
+            {
+                "@type": "HowToSupply",
+                "name": "Helm 3.2.0+"
+            },
+            {
+                "@type": "HowToSupply",
+                "name": "kubectl configured"
+            }
+        ],
+        "tool": [
+            {
+                "@type": "HowToTool",
+                "name": "Helm package manager"
+            },
+            {
+                "@type": "HowToTool",
+                "name": "kubectl CLI"
+            }
+        ],
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "Add Helm Repository",
+                "text": "Add the Elchi Helm repository to your Helm installation",
+                "image": "https://elchi.io/configuration.png",
+                "url": "https://elchi.io/docs#elchi-quickstart"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Update Repositories",
+                "text": "Update your Helm repositories to get the latest charts",
+                "image": "https://elchi.io/configuration.png",
+                "url": "https://elchi.io/docs#elchi-quickstart"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Install Elchi",
+                "text": "Install Elchi using Helm with your domain configuration",
+                "image": "https://elchi.io/main.png",
+                "url": "https://elchi.io/docs#elchi-quickstart"
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Verify Installation",
+                "text": "Check that all pods are running and services are accessible",
+                "image": "https://elchi.io/main.png",
+                "url": "https://elchi.io/docs#elchi-quickstart"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Article/Blog Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Elchi: Next Generation Envoy Proxy Management Platform",
+        "description": "Comprehensive guide to Elchi, an open-source Envoy proxy management platform with web UI, xDS protocol support, and Kubernetes integration.",
+        "image": [
+            "https://elchi.io/main.png",
+            "https://elchi.io/configuration.png",
+            "https://elchi.io/service.png"
+        ],
+        "author": {
+            "@type": "Organization",
+            "name": "CloudNativeWorks",
+            "url": "https://github.com/orgs/CloudNativeWorks"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "CloudNativeWorks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://elchi.io/logo.png"
+            }
+        },
+        "datePublished": "2024-12-01",
+        "dateModified": "2025-01-08",
+        "articleSection": "Technology",
+        "keywords": "envoy proxy, service mesh, kubernetes, xds protocol, proxy management, istio alternative"
     }
     </script>
 
@@ -92,6 +368,82 @@
             t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", "CLARITY_PROJECT_ID");
+    </script>
+
+    <!-- Advanced Analytics Events -->
+    <script>
+        window.addEventListener('load', function() {
+            // Track demo button clicks
+            document.querySelectorAll('[href*="demo.elchi.io"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'click', {
+                        event_category: 'engagement',
+                        event_label: 'demo_button'
+                    });
+                });
+            });
+            
+            // Track GitHub clicks
+            document.querySelectorAll('[href*="github.com"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'click', {
+                        event_category: 'engagement', 
+                        event_label: 'github_link'
+                    });
+                });
+            });
+            
+            // Track documentation clicks
+            document.querySelectorAll('[href*="/docs"]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    gtag('event', 'click', {
+                        event_category: 'engagement',
+                        event_label: 'docs_navigation'
+                    });
+                });
+            });
+            
+            // Track scroll depth
+            let scrollDepth = 0;
+            window.addEventListener('scroll', function() {
+                let depth = Math.floor((window.scrollY + window.innerHeight) / document.body.scrollHeight * 100);
+                if (depth > scrollDepth && depth % 25 === 0) {
+                    scrollDepth = depth;
+                    gtag('event', 'scroll', {
+                        event_category: 'engagement',
+                        event_label: 'scroll_depth_' + depth + '%'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Schema.org Breadcrumb for better navigation -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://elchi.io"
+            },
+            {
+                "@type": "ListItem", 
+                "position": 2,
+                "name": "Documentation",
+                "item": "https://elchi.io/docs"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3, 
+                "name": "Demo",
+                "item": "https://demo.elchi.io"
+            }
+        ]
+    }
     </script>
 </head>
 
