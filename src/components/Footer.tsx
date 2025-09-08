@@ -3,10 +3,10 @@ import { Github, Twitter, Linkedin, Mail } from 'lucide-react'
 
 const Footer = () => {
     const socialLinks = [
-        { name: 'GitHub', icon: Github, href: '#', color: 'hover:text-gray-300' },
+        { name: 'GitHub', icon: Github, href: 'https://github.com/orgs/CloudNativeWorks/repositories', color: 'hover:text-gray-300' },
         { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:text-blue-400' },
         { name: 'LinkedIn', icon: Linkedin, href: '#', color: 'hover:text-blue-600' },
-        { name: 'Email', icon: Mail, href: 'mailto:info@elchi.io', color: 'hover:text-green-400' },
+        { name: 'Email', icon: Mail, href: 'mailto:admin@cloudnativeworks.com', color: 'hover:text-green-400' },
     ]
 
     return (

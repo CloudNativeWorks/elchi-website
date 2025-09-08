@@ -75,12 +75,47 @@ const ScreenshotGallery = () => {
             category: "Logs"
         },
         {
-            id: 12,
+            id: 13,
+            title: "AI Assistant",
+            description: "Get AI-powered configuration help and troubleshooting assistance.",
+            image: "ai.png",
+            category: "AI"
+        },
+        {
+            id: 14,
+            title: "Audit & Compliance",
+            description: "Track configuration changes and maintain compliance records.",
+            image: "audit.png",
+            category: "Audit"
+        },
+        {
+            id: 15,
+            title: "Background Jobs",
+            description: "Monitor and manage background processing tasks.",
+            image: "jobs.png",
+            category: "Jobs"
+        },
+        {
+            id: 16,
+            title: "Registry Management",
+            description: "Service registry and discovery management interface.",
+            image: "registry.png",
+            category: "Registry"
+        },
+        {
+            id: 17,
+            title: "Route Mapping",
+            description: "Visual route mapping and traffic flow visualization.",
+            image: "routemap.png",
+            category: "Routing"
+        },
+        {
+            id: 18,
             title: "Working Diagram",
             description: "How Elchi works.",
             image: "flow.png",
             category: "Diagram"
-        }
+        },
     ]
 
     const [currentIndex, setCurrentIndex] = useState(Math.floor(screenshots.length / 2))
