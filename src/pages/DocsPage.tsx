@@ -931,7 +931,7 @@ const DocsPage = () => {
                                         <h4 className="text-white font-medium mb-2">2. Install Elchi Discovery Agent</h4>
                                         <div className="bg-gray-900/50 rounded-lg p-4 font-mono text-sm overflow-x-auto">
                                             <div className="text-gray-400 mb-1"># Install Elchi Discovery Agent</div>
-                                            <div className="text-green-400">helm install elchi-discovery elchi/discovery-agent \</div>
+                                            <div className="text-green-400">helm install endpoint-discovery elchi/elchi-discovery \</div>
                                             <div className="text-green-400 ml-4">--set config.elchiEndpoint="https://your-elchi-instance.com" \</div>
                                             <div className="text-green-400 ml-4">--set config.token="your-discovery-token" \</div>
                                             <div className="text-green-400 ml-4">--set config.clusterName="my-k8s-cluster" \</div>
@@ -1058,13 +1058,18 @@ const DocsPage = () => {
                                             className="ml-4 mt-2 space-y-1"
                                         >
                                             {section.subsections.map((subsection) => (
-                                                <a
+                                                <button
                                                     key={subsection.id}
-                                                    href={`#${subsection.id}`}
-                                                    className="block px-3 py-1 text-sm text-gray-400 hover:text-white transition-colors"
+                                                    onClick={() => {
+                                                        const element = document.getElementById(subsection.id)
+                                                        if (element) {
+                                                            element.scrollIntoView({ behavior: 'smooth' })
+                                                        }
+                                                    }}
+                                                    className="block px-3 py-1 text-sm text-gray-400 hover:text-white transition-colors w-full text-left"
                                                 >
                                                     {subsection.title}
-                                                </a>
+                                                </button>
                                             ))}
                                         </motion.div>
                                     )}
