@@ -16,12 +16,32 @@ const Header = () => {
     }, [])
 
     const navItems = [
-        { name: 'Home', href: '#home', type: 'anchor' },
-        { name: 'Screenshots', href: '#screenshots', type: 'anchor' },
-        { name: 'Features', href: '#features', type: 'anchor' },
-        { name: 'Architecture', href: '#architecture', type: 'anchor' },
+        { name: 'Home', href: '/', type: 'route' },
+        { name: 'Screenshots', href: 'screenshots', type: 'scroll' },
+        { name: 'Features', href: 'features', type: 'scroll' },
+        { name: 'Architecture', href: 'architecture', type: 'scroll' },
         { name: 'Docs', href: '/docs', type: 'route' },
     ]
+    
+    const scrollToSection = (sectionId: string) => {
+        // If we're not on the home page, navigate there first
+        if (window.location.hash !== '#/') {
+            window.location.href = '/#/'
+            // Wait a bit for the page to load, then scroll
+            setTimeout(() => {
+                const element = document.getElementById(sectionId)
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' })
+                }
+            }, 100)
+        } else {
+            // We're already on home page, just scroll
+            const element = document.getElementById(sectionId)
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+    }
 
     return (
         <motion.nav role="navigation" aria-label="Main navigation"
@@ -64,10 +84,20 @@ const Header = () => {
                                         {item.name}
                                     </motion.span>
                                 </Link>
+                            ) : item.type === 'scroll' ? (
+                                <motion.button
+                                    key={item.name}
+                                    onClick={() => scrollToSection(item.href)}
+                                    className="text-gray-300 hover:text-white transition-colors duration-300 font-medium"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    {item.name}
+                                </motion.button>
                             ) : (
                                 <motion.a
                                     key={item.name}
-                                    href={item.href}
+                                    href={`#${item.href}`}
                                     className="text-gray-300 hover:text-white transition-colors duration-300 font-medium"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
@@ -115,10 +145,21 @@ const Header = () => {
                                 >
                                     {item.name}
                                 </Link>
+                            ) : item.type === 'scroll' ? (
+                                <button
+                                    key={item.name}
+                                    onClick={() => {
+                                        scrollToSection(item.href)
+                                        setIsMobileMenuOpen(false)
+                                    }}
+                                    className="block text-gray-300 hover:text-white transition-colors duration-300 py-2 text-left w-full"
+                                >
+                                    {item.name}
+                                </button>
                             ) : (
                                 <a
                                     key={item.name}
-                                    href={item.href}
+                                    href={`#${item.href}`}
                                     className="block text-gray-300 hover:text-white transition-colors duration-300 py-2"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >

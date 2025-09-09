@@ -45,6 +45,7 @@
     <!-- Additional Meta Tags -->
     <meta name="theme-color" content="#056ccd" />
     <meta name="msapplication-TileColor" content="#056ccd" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     
@@ -77,8 +78,8 @@
     <link rel="dns-prefetch" href="//www.googletagmanager.com">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="/main.png" as="image" type="image/png">
-    <link rel="preload" href="/logo.png" as="image" type="image/png">
+    <link rel="preload" href="/main.png" as="image" type="image/png" fetchpriority="high">
+    <link rel="preload" href="/logo.png" as="image" type="image/png" fetchpriority="high">
     
     <!-- Resource hints for better performance -->
     <link rel="prefetch" href="/docs">
@@ -371,14 +372,16 @@
         gtag('config', 'GA_MEASUREMENT_ID');
     </script>
 
-    <!-- Microsoft Clarity (optional) -->
+    <!-- Microsoft Clarity (disabled until project ID is set) -->
+    <!-- 
     <script type="text/javascript">
         (function (c, l, a, r, i, t, y) {
             c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
             t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "CLARITY_PROJECT_ID");
+        })(window, document, "clarity", "script", "YOUR_CLARITY_PROJECT_ID");
     </script>
+    -->
 
     <!-- Advanced Analytics Events -->
     <script>
