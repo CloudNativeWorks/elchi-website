@@ -5,6 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
     base: '/',
     plugins: [react()],
+    // SPA fallback for routing in preview mode
+    preview: {
+        port: 4173,
+        strictPort: true,
+    },
     build: {
         // Code splitting optimization
         rollupOptions: {

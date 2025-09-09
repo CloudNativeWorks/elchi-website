@@ -1,10 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Download, CheckCircle, Monitor, Settings, AlertTriangle, Package, Database, Shield } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const DocsPage = () => {
     const [activeSection, setActiveSection] = useState('installation')
+    
+    // Update document title and meta for SEO
+    useEffect(() => {
+        document.title = 'Elchi Documentation - Envoy UI Installation & Configuration Guide'
+        
+        // Update meta description
+        const metaDescription = document.querySelector('meta[name="description"]')
+        if (metaDescription) {
+            metaDescription.setAttribute('content', 'Complete documentation for Elchi Envoy UI - Installation guides, configuration examples, Helm charts, client setup, and advanced features for Envoy proxy management.')
+        }
+        
+        // Update canonical URL
+        const canonical = document.querySelector('link[rel="canonical"]')
+        if (canonical) {
+            canonical.setAttribute('href', 'https://elchi.io/docs')
+        }
+    }, [])
 
     const sections = [
         {

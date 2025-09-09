@@ -1,0 +1,6 @@
+# Netlify SPA fallback
+/*    /index.html   200
+
+# Specific routes for better SEO
+/docs   /index.html   200
+/docs/*   /index.html   200
