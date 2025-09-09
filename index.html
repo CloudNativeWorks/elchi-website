@@ -463,13 +463,26 @@
     <!-- GitHub Pages SPA redirect script -->
     <script>
       (function(l) {
+        // Check if redirected from 404.html
         if (l.search[1] === '/' ) {
           var decoded = l.search.slice(1).split('&').map(function(s) { 
             return s.replace(/~and~/g, '&')
           }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
+          
+          var newUrl = l.pathname.slice(0, -1) + decoded + l.hash;
+          
+          // Use replaceState to avoid adding to history
+          window.history.replaceState(null, null, newUrl);
+          
+          // Clear sessionStorage redirect marker
+          sessionStorage.removeItem('redirect-path');
+        }
+        
+        // Fallback: check sessionStorage for stored path
+        var storedPath = sessionStorage.getItem('redirect-path');
+        if (storedPath && storedPath !== l.pathname) {
+          window.history.replaceState(null, null, storedPath);
+          sessionStorage.removeItem('redirect-path');
         }
       }(window.location))
     </script>

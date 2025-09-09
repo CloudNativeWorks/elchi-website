@@ -4,19 +4,25 @@
     <meta charset="utf-8">
     <title>Elchi - Loading...</title>
     <script>
-      // GitHub Pages SPA redirect hack
-      // https://github.com/rafgraph/spa-github-pages
-      var pathSegmentsToKeep = 1;
+      // GitHub Pages SPA redirect hack - simplified
       var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') +
-        '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
+      var path = l.pathname;
+      
+      // Only redirect if not already redirected and not root
+      if (path !== '/' && !l.search.includes('?/')) {
+        // Store the original path in sessionStorage to avoid loops
+        sessionStorage.setItem('redirect-path', path);
+        l.replace(l.origin + '/?/' + path.slice(1).replace(/&/g, '~and~') + 
+                 (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') + l.hash);
+      } else {
+        // If we're here due to a loop, just go to root
+        l.replace(l.origin);
+      }
     </script>
   </head>
-  <body></body>
+  <body>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+      <p>Redirecting to Elchi...</p>
+    </div>
+  </body>
 </html>
