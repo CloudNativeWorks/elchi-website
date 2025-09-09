@@ -1033,7 +1033,7 @@ const DocsPage = () => {
 
             <div className="flex">
                 {/* Sidebar */}
-                <div className="w-64 min-h-screen glass-effect border-r border-white/10 mt-1">
+                <div className="w-64 glass-effect border-r border-white/10 fixed left-0 overflow-y-auto z-40" style={{top: '88px', height: 'calc(100vh - 88px)'}}>
                     <div className="p-6">
                         <h2 className="text-xl font-bold text-white mb-6">Documentation</h2>
                         
@@ -1063,7 +1063,12 @@ const DocsPage = () => {
                                                     onClick={() => {
                                                         const element = document.getElementById(subsection.id)
                                                         if (element) {
-                                                            element.scrollIntoView({ behavior: 'smooth' })
+                                                            const headerHeight = 120
+                                                            const elementPosition = element.offsetTop - headerHeight
+                                                            window.scrollTo({
+                                                                top: elementPosition,
+                                                                behavior: 'smooth'
+                                                            })
                                                         }
                                                     }}
                                                     className="block px-3 py-1 text-sm text-gray-400 hover:text-white transition-colors w-full text-left"
@@ -1080,7 +1085,7 @@ const DocsPage = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className="flex-1">
+                <div className="flex-1 ml-64">
                     <div className="container mx-auto px-8 py-8 max-w-4xl">
                         <motion.div
                             key={activeSection}

@@ -26,7 +26,12 @@ function AppContent() {
             setTimeout(() => {
                 const element = document.getElementById(elementId)
                 if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' })
+                    const headerHeight = 120
+                    const elementPosition = element.offsetTop - headerHeight
+                    window.scrollTo({
+                        top: elementPosition,
+                        behavior: 'smooth'
+                    })
                     // Clean up the URL to remove the nested hash
                     if (fullHash.includes('#', 1)) {
                         const cleanHash = fullHash.substring(0, fullHash.lastIndexOf('#'))
