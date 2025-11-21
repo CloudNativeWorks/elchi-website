@@ -171,7 +171,7 @@ const ArchitectureDeepDive = () => {
                             title: 'Version Routing',
                             description: 'Intelligent routing to appropriate control-plane versions based on client requirements'
                         }
-                    ].map((benefit, index) => {
+                    ].map((benefit) => {
                         const Icon = benefit.icon
                         return (
                             <motion.div

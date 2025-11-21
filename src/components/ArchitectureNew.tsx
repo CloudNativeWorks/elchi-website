@@ -7,12 +7,12 @@ const ArchitectureNew = () => {
             title: 'Frontend Layer',
             color: 'from-blue-500 to-cyan-500',
             components: [
-                { icon: Globe, name: 'React 18', desc: 'Modern UI Framework' },
-                { icon: Code, name: 'TypeScript', desc: 'Type Safety' },
-                { icon: Zap, name: 'Ant Design', desc: 'Component Library' },
-                { icon: Code, name: 'Monaco Editor', desc: 'Code Editing' },
-                { icon: Network, name: 'Cytoscape', desc: 'Graph Visualization' },
-                { icon: BarChart3, name: 'ECharts', desc: 'Metrics Charts' }
+                { icon: Globe, name: 'React 18', desc: 'Modern UI Framework', detail: '' },
+                { icon: Code, name: 'TypeScript', desc: 'Type Safety', detail: '' },
+                { icon: Zap, name: 'Ant Design', desc: 'Component Library', detail: '' },
+                { icon: Code, name: 'Monaco Editor', desc: 'Code Editing', detail: '' },
+                { icon: Network, name: 'Cytoscape', desc: 'Graph Visualization', detail: '' },
+                { icon: BarChart3, name: 'ECharts', desc: 'Metrics Charts', detail: '' }
             ]
         },
         {
@@ -28,18 +28,18 @@ const ArchitectureNew = () => {
             title: 'Data & Storage Layer',
             color: 'from-green-500 to-emerald-500',
             components: [
-                { icon: Database, name: 'MongoDB', desc: 'Config Storage' },
-                { icon: BarChart3, name: 'VictoriaMetrics', desc: 'Time-Series DB' },
-                { icon: Bot, name: 'OpenRouter', desc: 'AI Model Integration' }
+                { icon: Database, name: 'MongoDB', desc: 'Config Storage', detail: '' },
+                { icon: BarChart3, name: 'VictoriaMetrics', desc: 'Time-Series DB', detail: '' },
+                { icon: Bot, name: 'OpenRouter', desc: 'AI Model Integration', detail: '' }
             ]
         },
         {
             title: 'Proxy Layer',
             color: 'from-orange-500 to-red-500',
             components: [
-                { icon: Layers, name: 'Envoy Proxy', desc: 'Multi-Version Support' },
-                { icon: Shield, name: 'WAF', desc: 'OWASP CRS' },
-                { icon: Activity, name: 'Health Check', desc: 'Auto-Recovery' }
+                { icon: Layers, name: 'Envoy Proxy', desc: 'Multi-Version Support', detail: '' },
+                { icon: Shield, name: 'WAF', desc: 'OWASP CRS', detail: '' },
+                { icon: Activity, name: 'Health Check', desc: 'Auto-Recovery', detail: '' }
             ]
         }
     ]
@@ -117,7 +117,7 @@ const ArchitectureNew = () => {
                                                 <div className="text-center">
                                                     <div className="text-white font-bold text-sm mb-1">{component.name}</div>
                                                     <div className="text-gray-400 text-xs">{component.desc}</div>
-                                                    {component.detail && (
+                                                    {component.detail && component.detail.length > 0 && (
                                                         <div className="text-gray-500 text-xs mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                                             {component.detail}
                                                         </div>

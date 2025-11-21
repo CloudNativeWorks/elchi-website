@@ -121,7 +121,6 @@ const ScreenshotGallery = () => {
     const [selectedCategory, setSelectedCategory] = useState('All')
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    const [hoveredCard, setHoveredCard] = useState<number | null>(null)
 
     const categories = ['All', ...Array.from(new Set(screenshots.map(s => s.category)))]
 
@@ -256,8 +255,6 @@ const ScreenshotGallery = () => {
                                         layout: { duration: 0.3 }
                                     }}
                                     className={`group relative ${spanClass}`}
-                                    onMouseEnter={() => setHoveredCard(screenshot.id)}
-                                    onMouseLeave={() => setHoveredCard(null)}
                                 >
                                     <div
                                         className="relative h-full overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-sm border border-white/10 cursor-pointer"

@@ -51,7 +51,7 @@ const Hero = () => {
                 >
 
                     {/* Main Heading */}
-                    <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight" itemProp="headline">
+                    <h1 className="text-5xl lg:text-7xl font-bold mb-6 mt-20 leading-tight" itemProp="headline">
                         <span className="text-white">Enterprise</span>
                         <br />
                         <span className="text-gradient">Proxy Management Platform</span>
@@ -59,7 +59,7 @@ const Hero = () => {
 
                     {/* Subtitle */}
                     <p className="text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-                        Scalable 3-process distrmainAddress="your-domain.comibuted architecture with intelligent automation, comprehensive xDS protocol support,
+                        Scalable 3-process distributed architecture with intelligent automation, comprehensive xDS protocol support,
                         and modern UI for managing Envoy proxies at enterprise scale.
                     </p>
 

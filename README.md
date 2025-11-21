@@ -1,136 +1,157 @@
-# Elchi Website
+# Elchi - Enterprise Envoy Proxy Management Platform
 
-Modern React TypeScript website for Elchi. Landing site for the Envoy Control Plane with UI tool.
+**Elchi** is an enterprise-grade Envoy proxy management platform with a 3-process distributed architecture, comprehensive xDS protocol support, intelligent automation, and modern React TypeScript UI.
 
-## 🚀 Features
+## 🚀 Key Features
 
-- ⚡ Modern React TypeScript project
-- 🎨 Responsive design with Tailwind CSS
-- 🔄 Framer Motion animations
-- 🌙 Dark theme design
-- 📱 Mobile-first approach
-- ✨ Glass effect and gradient designs
-- 🎯 SEO optimized
+### Core Capabilities
+- **3-Process Architecture**: Distributed Controller, Control-Plane (gRPC xDS), and Registry services
+- **Full xDS Protocol Support**: ADS, CDS, EDS, LDS, RDS, VHDS with go-control-plane
+- **Multi-Version Envoy Support**: Manage versions 1.27-1.35+ with seamless version upgrade capability
+- **Proto-to-UI Auto-Generation**: Automatically generated UI from Envoy protobuf definitions
+- **Intelligent Configuration Analysis**: Automated analysis and troubleshooting with OpenRouter AI integration (BYOK)
+- **Interactive Dependency Graphs**: Cytoscape-powered visual diagrams for resource relationships
 
-## 🛠️ Technologies
+### Enterprise Features
+- **Enterprise Multi-Tenancy**: Project-based isolation with 4-tier RBAC (Owner, Admin, Editor, Viewer)
+- **LDAP Authentication**: Integration with LDAP/Active Directory for enterprise SSO
+- **Web Application Firewall (WAF)**: Integrated OWASP CRS with customizable rules
+- **Kubernetes Auto-Discovery**: Automatic endpoint discovery from K8s clusters
+- **Version Upgrade**: Migrate resources from version X to Y with compatibility checks
+- **Audit Logging**: Complete audit trail for compliance and security
 
-- **React 18** - Modern UI library
-- **TypeScript** - Type-safe JavaScript
-- **Vite** - Fast build tool
-- **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Animation library
-- **Lucide React** - Modern icons
+### Monitoring & Operations
+- **Advanced Metrics**: ECharts visualization with Grafana integration
+- **Log Export**: Syslog and Elastic Logstash integration via elchi-agent
+- **Health Monitoring**: Auto-recovery and real-time status tracking
+- **Job Management**: Background operations with retry and status tracking
+- **Scenario Workflows**: Pre-built templates for quick configuration deployment
+- **Service Discovery**: Auto registration and cluster management
 
-## 📦 Installation
+### Technical Stack
 
-### Requirements
+**Frontend:**
+- React 18 + TypeScript
+- Ant Design UI Library
+- Monaco Code Editor
+- Cytoscape for graphs
+- ECharts for metrics
+- Vite build tool
 
-- Node.js 18+ 
-- npm or yarn
+**Backend (3-Process Architecture):**
+- Go 1.19+ for all processes
+- gRPC for inter-process communication
+- MongoDB for configuration storage
+- VictoriaMetrics for time-series data
+- OpenRouter for AI features (BYOK)
 
-### Steps
+**Infrastructure:**
+- Docker containerization
+- Kubernetes native
+- Envoy Proxy (multi-version)
+- go-control-plane for xDS
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+## 📦 Quick Start
 
-2. **Start development server:**
-   ```bash
-   npm run dev
-   ```
+### Try Demo
+Visit [demo.elchi.io](https://demo.elchi.io) for 24-hour access to the platform.
 
-3. **Open in browser:**
-   ```
-   http://localhost:5173
-   ```
+### Deploy with Helm
 
-## 📁 Project Structure
-
-```
-src/
-├── components/          # React components
-│   ├── Header.tsx      # Navigation bar
-│   ├── Hero.tsx        # Homepage hero section
-│   ├── Features.tsx    # Features section
-│   ├── Architecture.tsx # Architecture section
-│   ├── CallToAction.tsx # CTA section
-│   └── Footer.tsx      # Footer
-├── App.tsx             # Main application component
-├── main.tsx           # Entry point
-└── index.css          # Global styles
-```
-
-## 🎨 Design System
-
-### Colors
-- **Primary:** #056ccd to #00c6fb gradient
-- **Background:** Dark slate tones
-- **Accent:** Blue-cyan gradients throughout
-
-### Animations
-- Scroll-triggered animations
-- Hover effects
-- Page transitions
-- Floating elements
-
-### Responsive Breakpoints
-- **Mobile:** < 768px
-- **Tablet:** 768px - 1024px
-- **Desktop:** > 1024px
-
-## 🔧 Configuration
-
-### Build
 ```bash
-npm run build
+helm repo add elchi https://cloudnativeworks.github.io/helm-charts
+helm repo update
+helm install elchi elchi/elchi-platform
 ```
 
-### Linting
+For detailed installation instructions, visit [Artifact Hub](https://artifacthub.io/packages/helm/elchi/elchi-platform).
+
+### Local Development
+
 ```bash
-npm run lint
+# Clone repositories
+git clone https://github.com/CloudNativeWorks/elchi
+git clone https://github.com/CloudNativeWorks/elchi-backend
+
+# Start with Docker Compose
+docker-compose up -d
 ```
 
-### Preview
-```bash
-npm run preview
-```
+## 🏗️ Architecture
 
-## 🌐 Deployment
+Elchi uses a **3-process distributed architecture**:
 
-### Vercel (Recommended)
-1. Push to GitHub
-2. Import to Vercel
-3. Auto deploy
+1. **Controller** (REST API)
+   - Client management and authentication
+   - xDS resource CRUD operations
+   - User and project management
+   - JWT-based authorization
 
-### Netlify
-1. `npm run build` 
-2. Deploy `dist` folder
+2. **Control-Plane** (gRPC xDS - Port 18000)
+   - ADS (Aggregated Discovery Service)
+   - VHDS (Virtual Host Discovery Service)
+   - Snapshot cache management
+   - Delta xDS support
 
-### Custom Server
-1. `npm run build`
-2. Upload `dist` folder to your web server
+3. **Registry** (Service Discovery - Port 9090)
+   - Client registration
+   - Service discovery
+   - Version-based routing
+   - Health check aggregation
+
+All processes communicate via gRPC and share MongoDB for state management.
+
+## 🎯 Use Cases
+
+- **API Gateway Management**: Configure and manage Envoy as API gateway
+- **Service Mesh Control Plane**: Alternative to Istio/Linkerd for Envoy-based service mesh
+- **Multi-Cluster Proxy Management**: Manage Envoy across multiple Kubernetes clusters
+- **WAF Deployment**: Enterprise-grade web application firewall with OWASP CRS
+- **Traffic Management**: Advanced routing, load balancing, and traffic shaping
+- **Kubernetes Ingress**: Dynamic ingress configuration with K8s discovery
+
+## 🔒 Security Features
+
+- **4-Tier RBAC**: Owner, Admin, Editor, Viewer roles per project
+- **JWT Authentication**: Secure token-based authentication
+- **LDAP/AD Integration**: Enterprise directory services support
+- **Audit Logging**: Complete action tracking for compliance
+- **WAF Protection**: OWASP Core Rule Set integration
+- **Multi-Tenancy**: Complete project isolation
+
+## 📊 Monitoring & Observability
+
+- **Built-in Metrics**: ECharts-powered dashboards
+- **Grafana Integration**: Export metrics to Grafana
+- **Log Export**: Syslog and ELK integration via elchi-agent
+- **Health Monitoring**: Real-time proxy and service health
+- **VictoriaMetrics**: Time-series metrics storage
+- **Dependency Visualization**: Interactive graph views
+
+## 🤖 Intelligent Features
+
+- **AI-Powered Analysis**: Configuration optimization via OpenRouter (BYOK)
+- **Log Troubleshooting**: Intelligent log pattern detection
+- **Auto-Generated UI**: UI components generated from protobuf definitions
+- **Real-time Validation**: Frontend TypeScript + backend protoc-gen-validate
+- **Smart Scenarios**: Pre-built templates for common configurations
+
+## 📞 Resources
+
+- **Website**: [elchi.io](https://elchi.io)
+- **Demo Platform**: [demo.elchi.io](https://demo.elchi.io)
+- **Helm Chart**: [Artifact Hub](https://artifacthub.io/packages/helm/elchi/elchi-platform)
+- **GitHub**: [CloudNativeWorks](https://github.com/orgs/CloudNativeWorks/repositories)
+- **Email**: info@elchi.io
 
 ## 📄 License
 
 MIT License - See [LICENSE](LICENSE) file for details.
 
-## 🤝 Contributing
+## ⚠️ Status
 
-1. Fork it
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit (`git commit -m 'Add amazing feature'`)
-4. Push (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-## 📞 Contact & Resources
-
-- **Demo Platform**: [demo.elchi.io](https://demo.elchi.io) (24-hour access)
-- **Helm Chart**: [Artifact Hub](https://artifacthub.io/packages/helm/elchi/elchi-platform)
-- **Email**: info@elchi.io
+**Experimental Project**: Currently in active development. Suitable for testing and evaluation. Use with caution in production environments.
 
 ---
 
-**Note:** This project showcases [Elchi](https://demo.elchi.io) - a stack solution for Proxy management combining React TypeScript frontend with Go backend. The actual platform can be tried at [demo.elchi.io](https://demo.elchi.io) or deployed via [Helm chart](https://artifacthub.io/packages/helm/elchi/elchi-platform).
-
-⚠️ **Experimental Project**: Currently in experimental stage. Use with caution in production environments. 
+Built with ❤️ for the Cloud Native community
