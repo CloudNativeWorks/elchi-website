@@ -102,11 +102,8 @@ const Hero = () => {
                             { number: 'Real-time', label: 'Validation' },
                             { number: 'K8s', label: 'Discovery' },
                             { number: 'Snapshot', label: 'Cache Management' },
-                            { number: 'Health', label: 'Monitoring' },
                             { number: 'Syslog/ELK', label: 'Log Export' },
                             { number: 'LDAP', label: 'Authentication' },
-                            { number: 'Grafana', label: 'Metrics Integration' },
-                            { number: 'External', label: 'Processing (ext_proc)' },
                             { number: 'Audit', label: 'Logging' },
                         ].map((stat, index) => (
                             <motion.div

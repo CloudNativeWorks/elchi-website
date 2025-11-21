@@ -7,12 +7,9 @@ const ArchitectureNew = () => {
             title: 'Frontend Layer',
             color: 'from-blue-500 to-cyan-500',
             components: [
-                { icon: Globe, name: 'React 18', desc: 'Modern UI Framework', detail: '' },
+                { icon: Globe, name: 'React', desc: 'Modern UI Framework', detail: '' },
                 { icon: Code, name: 'TypeScript', desc: 'Type Safety', detail: '' },
-                { icon: Zap, name: 'Ant Design', desc: 'Component Library', detail: '' },
-                { icon: Code, name: 'Monaco Editor', desc: 'Code Editing', detail: '' },
                 { icon: Network, name: 'Cytoscape', desc: 'Graph Visualization', detail: '' },
-                { icon: BarChart3, name: 'ECharts', desc: 'Metrics Charts', detail: '' }
             ]
         },
         {
