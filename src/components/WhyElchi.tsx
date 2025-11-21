@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { CheckCircle, X, Zap, Brain, GitBranch, Shield } from 'lucide-react'
+import { CheckCircle, X, Zap, Brain, GitBranch, Shield, ArrowUpCircle, UserCheck, Server, BarChart3 } from 'lucide-react'
 
 const WhyElchi = () => {
     const comparisons = [
@@ -60,6 +60,41 @@ const WhyElchi = () => {
             description: 'Project-based isolation with 4-tier RBAC'
         },
         {
+            feature: 'Version Upgrade & Migration',
+            elchi: true,
+            manual: false,
+            serviceMesh: false,
+            description: 'Seamlessly migrate Envoy configs from version X to Y with compatibility checks'
+        },
+        {
+            feature: 'LDAP/AD Authentication',
+            elchi: true,
+            manual: false,
+            serviceMesh: 'Varies',
+            description: 'Enterprise SSO integration with LDAP and Active Directory'
+        },
+        {
+            feature: 'Log Export (Syslog/ELK)',
+            elchi: true,
+            manual: false,
+            serviceMesh: 'Limited',
+            description: 'Export logs to external systems via Syslog and Elastic Logstash'
+        },
+        {
+            feature: 'Grafana Integration',
+            elchi: true,
+            manual: false,
+            serviceMesh: true,
+            description: 'Native integration with Grafana for advanced metrics visualization'
+        },
+        {
+            feature: 'Web Application Firewall (WAF)',
+            elchi: true,
+            manual: false,
+            serviceMesh: false,
+            description: 'Integrated OWASP CRS with customizable rules'
+        },
+        {
             feature: 'Learning Curve',
             elchi: 'Easy',
             manual: 'Steep',
@@ -95,6 +130,26 @@ const WhyElchi = () => {
             icon: Shield,
             title: 'Enterprise Ready',
             description: 'Built from ground up for multi-tenancy, RBAC, and compliance requirements'
+        },
+        {
+            icon: ArrowUpCircle,
+            title: 'Seamless Upgrades',
+            description: 'Effortlessly upgrade between Envoy versions with automated compatibility validation'
+        },
+        {
+            icon: UserCheck,
+            title: 'Enterprise Auth',
+            description: 'LDAP/AD integration for centralized authentication and authorization'
+        },
+        {
+            icon: Server,
+            title: 'Log Centralization',
+            description: 'Export logs to Syslog and ELK stack for unified observability'
+        },
+        {
+            icon: BarChart3,
+            title: 'Advanced Metrics',
+            description: 'Built-in dashboards with Grafana integration for comprehensive monitoring'
         }
     ]
 
@@ -199,7 +254,7 @@ const WhyElchi = () => {
                         <span className="text-gradient">What Makes Elchi Unique</span>
                     </h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {uniqueFeatures.map((feature, index) => {
                             const Icon = feature.icon
                             return (
