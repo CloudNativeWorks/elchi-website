@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Server, Database, Globe, Network, Shield, BarChart3, Bot, Code, Layers, Cloud, Zap, FileText, Activity, Cpu } from 'lucide-react'
+import { Server, Database, Globe, Network, Shield, BarChart3, Bot, Code, Layers, Cloud, FileText, Activity, Cpu } from 'lucide-react'
 
 const ArchitectureNew = () => {
     const architectureLayers = [
