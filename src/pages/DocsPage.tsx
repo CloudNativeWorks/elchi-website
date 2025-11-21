@@ -156,9 +156,9 @@ const DocsPage = () => {
                                 <h3 className="text-lg font-medium text-white mb-4">2. Basic Installation</h3>
                                 <div className="bg-gray-900/50 rounded-lg p-4 font-mono text-sm">
                                     <div className="text-gray-400 mb-1"># Install with default configuration</div>
-                                    <div className="text-green-400">helm install my-elchi elchi/elchi-stack \\</div>
-                                    <div className="text-green-400 ml-4">--set-string global.mainAddress="your-domain.com" \\</div>
-                                    <div className="text-green-400 ml-4">--namespace elchi-stack \\</div>
+                                    <div className="text-green-400">helm install my-elchi elchi/elchi-stack \</div>
+                                    <div className="text-green-400 ml-4">--set-string global.mainAddress="your-domain.com" \</div>
+                                    <div className="text-green-400 ml-4">--namespace elchi-stack \</div>
                                     <div className="text-green-400 ml-4">--create-namespace</div>
                                 </div>
                                 <p className="text-sm text-gray-400 mt-3">
@@ -934,7 +934,7 @@ const DocsPage = () => {
                                             <div className="text-green-400">helm install endpoint-discovery elchi/elchi-discovery \</div>
                                             <div className="text-green-400 ml-4">--set config.elchiEndpoint="https://your-elchi-instance.com" \</div>
                                             <div className="text-green-400 ml-4">--set config.token="your-discovery-token" \</div>
-                                            <div className="text-green-400 ml-4">--set config.clusterName="my-k8s-cluster" \</div>
+                                            <div className="text-green-400 ml-4">--set clusterName="my-k8s-cluster" \</div>
                                             <div className="text-green-400 ml-4">--namespace elchi-stack \</div>
                                             <div className="text-green-400 ml-4">--create-namespace</div>
                                         </div>
@@ -978,7 +978,7 @@ const DocsPage = () => {
                                     </div>
                                     
                                     <div className="pb-4">
-                                        <h4 className="text-blue-400 font-mono mb-2">config.clusterName</h4>
+                                        <h4 className="text-blue-400 font-mono mb-2">clusterName</h4>
                                         <p className="text-gray-300">Unique name for your cluster</p>
                                     </div>
                                 </div>

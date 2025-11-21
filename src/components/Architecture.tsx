@@ -168,10 +168,10 @@ const Architecture = () => {
                     {/* Frontend Technologies */}
                     <div className="mb-8">
                         <h4 className="text-lg font-semibold text-blue-400 mb-4 text-center">Frontend</h4>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
                                 <Globe className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                                <div className="text-sm font-bold text-white">React</div>
+                                <div className="text-sm font-bold text-white">React 18</div>
                                 <div className="text-xs text-gray-400">TypeScript</div>
                             </div>
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
@@ -182,39 +182,54 @@ const Architecture = () => {
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
                                 <Zap className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                                 <div className="text-sm font-bold text-white">Ant Design</div>
-                                <div className="text-xs text-gray-400">UI Components</div>
+                                <div className="text-xs text-gray-400">UI Library</div>
                             </div>
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
-                                <Activity className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                                <div className="text-sm font-bold text-white">CSS Modules</div>
-                                <div className="text-xs text-gray-400">Styling</div>
+                                <Code className="w-8 h-8 text-orange-400 mx-auto mb-2" />
+                                <div className="text-sm font-bold text-white">Monaco Editor</div>
+                                <div className="text-xs text-gray-400">Code Editor</div>
+                            </div>
+                            <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
+                                <Network className="w-8 h-8 text-green-400 mx-auto mb-2" />
+                                <div className="text-sm font-bold text-white">Cytoscape</div>
+                                <div className="text-xs text-gray-400">Graphs</div>
+                            </div>
+                            <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
+                                <BarChart3 className="w-8 h-8 text-pink-400 mx-auto mb-2" />
+                                <div className="text-sm font-bold text-white">ECharts</div>
+                                <div className="text-xs text-gray-400">Metrics</div>
                             </div>
                         </div>
                     </div>
 
                     {/* Backend Technologies */}
                     <div className="mb-8">
-                        <h4 className="text-lg font-semibold text-purple-400 mb-4 text-center">Backend</h4>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <h4 className="text-lg font-semibold text-purple-400 mb-4 text-center">Backend (3-Process Architecture)</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
                                 <Server className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                                <div className="text-sm font-bold text-white">GO</div>
-                                <div className="text-xs text-gray-400">Elchi Controller</div>
+                                <div className="text-sm font-bold text-white">Go 1.19+</div>
+                                <div className="text-xs text-gray-400">Controller (REST API)</div>
                             </div>
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
                                 <Network className="w-8 h-8 text-orange-400 mx-auto mb-2" />
-                                <div className="text-sm font-bold text-white">GO</div>
-                                <div className="text-xs text-gray-400">Elchi Control Plane</div>
+                                <div className="text-sm font-bold text-white">Go Control Plane</div>
+                                <div className="text-xs text-gray-400">gRPC xDS (18000)</div>
                             </div>
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
                                 <FileText className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                                <div className="text-sm font-bold text-white">GO</div>
-                                <div className="text-xs text-gray-400">Elchi Registry</div>
+                                <div className="text-sm font-bold text-white">Go Registry</div>
+                                <div className="text-xs text-gray-400">Service Discovery (9090)</div>
                             </div>
                             <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
                                 <Shield className="w-8 h-8 text-teal-400 mx-auto mb-2" />
                                 <div className="text-sm font-bold text-white">gRPC</div>
-                                <div className="text-xs text-gray-400">Communication</div>
+                                <div className="text-xs text-gray-400">Inter-Process Comm</div>
+                            </div>
+                            <div className="glass-effect p-4 rounded-lg text-center hover:scale-105 transition-transform duration-300">
+                                <Bot className="w-8 h-8 text-purple-400 mx-auto mb-2" />
+                                <div className="text-sm font-bold text-white">OpenRouter</div>
+                                <div className="text-xs text-gray-400">AI Integration</div>
                             </div>
                         </div>
                     </div>

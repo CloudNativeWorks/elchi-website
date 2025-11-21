@@ -52,14 +52,15 @@ const Hero = () => {
 
                     {/* Main Heading */}
                     <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight" itemProp="headline">
-                        <span className="text-white">Elchi is the</span>
+                        <span className="text-white">Enterprise</span>
                         <br />
-                        <span className="text-gradient">Next Generation Proxy Management</span>
+                        <span className="text-gradient">Proxy Management Platform</span>
                     </h1>
 
                     {/* Subtitle */}
                     <p className="text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-                        Manage multi proxy configurations, real-time validation, metric views and visual dependency graphs across any infrastructure.
+                        Scalable 3-process distrmainAddress="your-domain.comibuted architecture with intelligent automation, comprehensive xDS protocol support,
+                        and modern UI for managing Envoy proxies at enterprise scale.
                     </p>
 
                     {/* CTA Buttons */}
@@ -86,28 +87,35 @@ const Hero = () => {
 
                     {/* Stats */}
                     <motion.div
-                        className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto"
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
                     >
                         {[
-                            { number: 'xDS', label: 'Protocol Support' },
-                            { number: 'Real-time', label: 'Config Validation' },
-                            { number: 'Multi-Version', label: 'Envoy Support' },
-                            { number: 'Agent', label: 'Powered Management' },
-                            { number: 'Metrics', label: 'Graphs' },
-                            { number: 'Dependencies', label: 'Graphs' },
-                            { number: 'Quick', label: 'Configuration Scenarios' },
-                            { number: 'Proto', label: 'Generated configurations' },
+                            { number: '3-Process', label: 'Distributed Architecture' },
+                            { number: 'Full xDS', label: 'Protocol Support' },
+                            { number: 'Intelligent', label: 'Config Analysis' },
+                            { number: 'Multi-Version', label: 'Routing & Upgrade' },
+                            { number: 'Enterprise', label: 'RBAC & Multi-Tenancy' },
+                            { number: 'Auto-Gen', label: 'From Protobuf' },
+                            { number: 'Real-time', label: 'Validation' },
+                            { number: 'K8s', label: 'Discovery' },
+                            { number: 'Snapshot', label: 'Cache Management' },
+                            { number: 'Health', label: 'Monitoring' },
+                            { number: 'Syslog/ELK', label: 'Log Export' },
+                            { number: 'LDAP', label: 'Authentication' },
+                            { number: 'Grafana', label: 'Metrics Integration' },
+                            { number: 'External', label: 'Processing (ext_proc)' },
+                            { number: 'Audit', label: 'Logging' },
                         ].map((stat, index) => (
                             <motion.div
                                 key={index}
                                 className="glass-effect p-6 rounded-xl"
                                 whileHover={{ scale: 1.05 }}
                             >
-                                <div className="text-3xl font-bold text-gradient mb-2">{stat.number}</div>
-                                <div className="text-gray-400">{stat.label}</div>
+                                <div className="text-2xl lg:text-3xl font-bold text-gradient mb-2">{stat.number}</div>
+                                <div className="text-sm lg:text-base text-gray-400">{stat.label}</div>
                             </motion.div>
                         ))}
                     </motion.div>
@@ -116,7 +124,8 @@ const Hero = () => {
 
             {/* Scroll Indicator */}
             <motion.div
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+                className="absolute transform -translate-x-1/2"
+                style={{ bottom: '-26px', left: 'calc(50% - 12px)' }}
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
             >
