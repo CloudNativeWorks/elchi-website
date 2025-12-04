@@ -13,37 +13,65 @@ const ScreenshotGallery = () => {
         },
         {
             id: 2,
+            title: "Service Management 2",
+            description: "Manage your services and their configurations with intuitive interface",
+            image: "service2.png",
+            category: "Management"
+        },
+        {
+            id: 3,
+            title: "Service Management 3",
+            description: "Manage your services and their configurations with intuitive interface",
+            image: "service3.png",
+            category: "Management"
+        },
+        {
+            id: 4,
             title: "Advanced Filters",
-            description: "Use powerful filters to find and manage your Envoy proxies",
+            description: "Use powerful filters to find and manage your proxies",
             image: "filter.png",
             category: "Tools"
         },
         {
-            id: 3,
+            id: 5,
+            title: "Advanced Filters 2",
+            description: "Use powerful filters to find and manage your proxies",
+            image: "filter2.png",
+            category: "Tools"
+        },
+        {
+            id: 6,
             title: "Scenario Workflows",
             description: "Wizard-based configuration management for quick setup",
             image: "scenario.png",
             category: "Configuration"
         },
         {
-            id: 4,
+            id: 7,
             title: "Metrics Dashboard",
             description: "Real-time metrics visualization with ECharts integration",
             image: "metric.png",
             category: "Monitoring"
         },
         {
-            id: 5,
+            id: 8,
             title: "Dependency Graph",
             description: "Interactive visual representation of service dependencies",
             image: "dependency.png",
             category: "Visualization"
         },
         {
-            id: 6,
+            id: 9,
             title: "Platform Overview",
             description: "Complete overview of Elchi platform capabilities",
             image: "main.png",
+            category: "Overview"
+        },
+        {
+            id: 10,
+            title: "Platform Overview 2",
+            description: "Complete overview of Elchi platform capabilities",
+            image: "main2.png",
             category: "Overview"
         },
         {
@@ -54,63 +82,70 @@ const ScreenshotGallery = () => {
             category: "Configuration"
         },
         {
-            id: 7,
+            id: 12,
             title: "Agent Management",
             description: "Distribute configurations and manage network traffic via agents",
             image: "agent.png",
             category: "Management"
         },
         {
-            id: 8,
+            id: 13,
             title: "Config Info",
             description: "Protobuf-based configuration information viewer",
             image: "confinfo.png",
             category: "Configuration"
         },
         {
-            id: 9,
+            id: 14,
             title: "Log Viewer",
             description: "Advanced log viewing and analysis capabilities",
             image: "logs.png",
             category: "Monitoring"
         },
         {
-            id: 13,
+            id: 15,
+            title: "Log Viewer 2",
+            description: "Advanced log viewing and analysis capabilities",
+            image: "logs2.png",
+            category: "Monitoring"
+        },
+        {
+            id: 16,
             title: "AI Assistant",
             description: "Get intelligent configuration help and troubleshooting with OpenRouter",
             image: "ai.png",
             category: "AI"
         },
         {
-            id: 14,
+            id: 17,
             title: "Audit Trail",
             description: "Complete audit logging for compliance and security tracking",
             image: "audit.png",
             category: "Security"
         },
         {
-            id: 15,
+            id: 18,
             title: "Background Jobs",
             description: "Monitor and manage all background processing tasks",
             image: "jobs.png",
             category: "Management"
         },
         {
-            id: 16,
+            id: 19,
             title: "Service Registry",
             description: "Service discovery and registry management interface",
             image: "registry.png",
             category: "Discovery"
         },
         {
-            id: 17,
+            id: 20,
             title: "Route Mapping",
             description: "Visual route configuration and traffic flow management",
             image: "routemap.png",
             category: "Configuration"
         },
         {
-            id: 18,
+            id: 21,
             title: "Architecture Flow",
             description: "Visual diagram showing how Elchi works end-to-end",
             image: "flow.png",
@@ -212,11 +247,10 @@ const ScreenshotGallery = () => {
                             <motion.button
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
-                                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                                    selectedCategory === category
-                                        ? 'bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 text-white shadow-lg shadow-blue-500/50 scale-105'
-                                        : 'glass-effect text-gray-300 hover:bg-white/10 hover:scale-105'
-                                }`}
+                                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${selectedCategory === category
+                                    ? 'bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 text-white shadow-lg shadow-blue-500/50 scale-105'
+                                    : 'glass-effect text-gray-300 hover:bg-white/10 hover:scale-105'
+                                    }`}
                                 whileHover={{ y: -2 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -239,8 +273,8 @@ const ScreenshotGallery = () => {
                             const spanClass = isLarge
                                 ? 'md:col-span-2 md:row-span-2'
                                 : isMedium
-                                ? 'md:col-span-2'
-                                : 'md:col-span-1'
+                                    ? 'md:col-span-2'
+                                    : 'md:col-span-1'
 
                             return (
                                 <motion.div
@@ -403,11 +437,10 @@ const ScreenshotGallery = () => {
                                     <motion.button
                                         key={screenshot.id}
                                         onClick={() => setCurrentImageIndex(idx)}
-                                        className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                                            idx === currentImageIndex
-                                                ? 'border-cyan-500 scale-110 shadow-lg shadow-cyan-500/50'
-                                                : 'border-white/20 hover:border-white/40 opacity-60 hover:opacity-100'
-                                        }`}
+                                        className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all duration-300 ${idx === currentImageIndex
+                                            ? 'border-cyan-500 scale-110 shadow-lg shadow-cyan-500/50'
+                                            : 'border-white/20 hover:border-white/40 opacity-60 hover:opacity-100'
+                                            }`}
                                         whileHover={{ scale: idx === currentImageIndex ? 1.1 : 1.05 }}
                                     >
                                         <img
