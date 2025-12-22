@@ -104,7 +104,7 @@ const Hero = () => {
                             { number: 'Snapshot', label: 'Cache Management' },
                             { number: 'Syslog/ELK', label: 'Log Export' },
                             { number: 'LDAP', label: 'Authentication' },
-                            { number: 'Audit', label: 'Logging' },
+                            { number: 'ACME', label: 'Certificate Management' },
                         ].map((stat, index) => (
                             <motion.div
                                 key={index}

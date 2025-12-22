@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Shield, Rocket, Database, BarChart3, FileText, Calendar, ScrollText, Radar, ArrowUpCircle, Server, UserCheck } from 'lucide-react'
+import { Shield, Rocket, Database, BarChart3, FileText, Award, ScrollText, Radar, ArrowUpCircle, Server, UserCheck } from 'lucide-react'
 
 const ComprehensiveFeatures = () => {
     const features = [
@@ -42,15 +42,15 @@ const ComprehensiveFeatures = () => {
             color: 'from-blue-500 to-cyan-500'
         },
         {
-            icon: Calendar,
-            title: 'Job Management',
-            subtitle: 'Background Operations',
-            description: 'Comprehensive job management for snapshots, configuration updates, and resource syncing. Monitor, retry, and cancel operations with detailed logs.',
+            icon: Award,
+            title: 'ACME Certificate Management',
+            subtitle: 'Automated SSL/TLS',
+            description: 'Automated certificate lifecycle management with ACME protocol support for Let\'s Encrypt and Google Trust Services. DNS-01 challenge verification with auto-renewal.',
             highlights: [
-                'Job status tracking',
-                'Retry failed operations',
-                'Cleanup stuck jobs',
-                'Job execution logs'
+                'Let\'s Encrypt integration',
+                'Google Trust Services',
+                'DNS provider management',
+                'Automatic renewal'
             ],
             color: 'from-green-500 to-emerald-500'
         },

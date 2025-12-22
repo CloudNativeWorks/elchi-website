@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Shield, Lock, Users, Key, FileText, Building2, CheckCircle } from 'lucide-react'
+import { Shield, Lock, Users, Key, FileText, Building2, CheckCircle, Award } from 'lucide-react'
 
 const SecurityFeatures = () => {
     const features = [
@@ -68,6 +68,17 @@ const SecurityFeatures = () => {
                 'Certificate management',
                 'Secure gRPC connections'
             ]
+        },
+        {
+            icon: Award,
+            title: 'ACME Certificate Management',
+            description: 'Automated certificate lifecycle management with ACME protocol support for Let\'s Encrypt and Google Trust Services.',
+            capabilities: [
+                'Automatic certificate issuance',
+                'Multi-provider support',
+                'DNS-01 challenge verification',
+                'Auto-renewal and rotation'
+            ]
         }
     ]
 
@@ -90,65 +101,10 @@ const SecurityFeatures = () => {
 
             <div className="container mx-auto relative z-10">
                 {/* Section Header */}
-                <motion.div
-                    className="text-center mb-16"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <div className="inline-block mb-4">
-                        <Shield className="w-16 h-16 text-cyan-400 mx-auto" />
-                    </div>
-                    <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-                        <span className="text-gradient">Enterprise Security</span>
-                    </h2>
-                    <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                        Production-ready security features designed for enterprise compliance and data protection
-                    </p>
-                </motion.div>
+
 
                 {/* Features Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                    {features.map((feature, index) => {
-                        const Icon = feature.icon
-                        return (
-                            <motion.div
-                                key={feature.title}
-                                className="glass-effect p-8 rounded-2xl relative overflow-hidden group"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
-                                whileHover={{ scale: 1.02 }}
-                            >
-                                {/* Gradient Background */}
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500 to-cyan-500 opacity-5 group-hover:opacity-10 rounded-full blur-2xl transition-opacity duration-300"></div>
 
-                                {/* Icon */}
-                                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 p-3 mb-4 relative z-10">
-                                    <Icon className="w-full h-full text-white" />
-                                </div>
-
-                                {/* Content */}
-                                <div className="relative z-10">
-                                    <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                                    <p className="text-gray-400 mb-4 text-sm">{feature.description}</p>
-
-                                    {/* Capabilities */}
-                                    <ul className="space-y-2">
-                                        {feature.capabilities.map((capability, idx) => (
-                                            <li key={idx} className="flex items-start space-x-2 text-sm text-gray-300">
-                                                <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-400" />
-                                                <span>{capability}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </motion.div>
-                        )
-                    })}
-                </div>
 
                 {/* Compliance Section */}
                 <motion.div

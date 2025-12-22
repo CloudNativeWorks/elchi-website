@@ -151,6 +151,27 @@ const ScreenshotGallery = () => {
             image: "flow.png",
             category: "Documentation"
         },
+        {
+            id: 22,
+            title: "ACME Certificates",
+            description: "Automatic certificate management with ACME protocol support",
+            image: "acme1.png",
+            category: "Security"
+        },
+        {
+            id: 23,
+            title: "ACME Accounts",
+            description: "Manage ACME accounts for Let's Encrypt and Google Trust Services",
+            image: "acme2.png",
+            category: "Security"
+        },
+        {
+            id: 24,
+            title: "DNS Providers",
+            description: "Configure DNS providers for ACME challenge verification",
+            image: "acme3.png",
+            category: "Configuration"
+        },
     ]
 
     const [selectedCategory, setSelectedCategory] = useState('All')

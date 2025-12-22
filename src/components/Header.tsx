@@ -18,11 +18,12 @@ const Header = () => {
     const navItems = [
         { name: 'Home', href: '/', type: 'route' },
         { name: 'Screenshots', href: 'screenshots', type: 'scroll' },
+        { name: 'Why Elchi', href: 'why-elchi', type: 'scroll' },
         { name: 'Features', href: 'features', type: 'scroll' },
         { name: 'Architecture', href: 'architecture', type: 'scroll' },
         { name: 'Docs', href: '/docs', type: 'route' },
     ]
-    
+
     const scrollToSection = (sectionId: string) => {
         // If we're not on the home page, navigate there first
         if (window.location.hash !== '#/') {

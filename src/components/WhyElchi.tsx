@@ -95,6 +95,13 @@ const WhyElchi = () => {
             description: 'Integrated OWASP CRS with customizable rules'
         },
         {
+            feature: 'ACME Certificate Management',
+            elchi: true,
+            manual: false,
+            serviceMesh: 'Limited',
+            description: 'Automated certificate lifecycle with Let\'s Encrypt and Google Trust Services'
+        },
+        {
             feature: 'Learning Curve',
             elchi: 'Easy',
             manual: 'Steep',
