@@ -54,32 +54,6 @@ const AdvancedFeatures = () => {
                 'Process status tracking'
             ],
             color: 'from-green-500 to-emerald-500'
-        },
-        {
-            icon: GitBranch,
-            title: 'Snapshot Management',
-            subtitle: 'Efficient Config Distribution',
-            description: 'Advanced snapshot cache system for efficient configuration distribution to Envoy instances with version control.',
-            highlights: [
-                'Incremental config updates',
-                'Version-based snapshots',
-                'Cache optimization',
-                'Rollback capabilities'
-            ],
-            color: 'from-orange-500 to-yellow-500'
-        },
-        {
-            icon: Workflow,
-            title: 'External Processing',
-            subtitle: 'ext_proc Protocol',
-            description: 'Support for Envoy external processing protocol enabling custom request/response processing pipelines.',
-            highlights: [
-                'Request/response transformation',
-                'Custom processing logic',
-                'Header manipulation',
-                'Body modification support'
-            ],
-            color: 'from-indigo-500 to-purple-500'
         }
     ]
 
