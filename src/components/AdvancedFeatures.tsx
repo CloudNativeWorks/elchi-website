@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Brain, Cloud, Activity, GitBranch, Eye, Workflow } from 'lucide-react'
+import { Brain, Cloud, Activity, Eye } from 'lucide-react'
 
 const AdvancedFeatures = () => {
     const features = [
