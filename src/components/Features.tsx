@@ -84,7 +84,7 @@ const Features = () => {
                         <span className="text-gradient">Core Features</span>
                     </h2>
                     <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                        Comprehensive platform for enterprise Envoy Proxy management with modern UI and powerful automation
+                        Comprehensive platform for enterprise Proxy management with modern UI and powerful automation
                     </p>
                 </motion.div>
 

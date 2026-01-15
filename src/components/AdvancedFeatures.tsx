@@ -1,33 +1,20 @@
 import { motion } from 'framer-motion'
-import { Brain, Cloud, Activity, Eye } from 'lucide-react'
+import { Brain, Cloud, Shield, Eye, Globe } from 'lucide-react'
 
 const AdvancedFeatures = () => {
     const features = [
         {
             icon: Brain,
-            title: 'Intelligent Configuration Analysis',
+            title: 'AI-Powered Analysis',
             subtitle: 'OpenRouter AI Integration',
-            description: 'Bring your own OpenRouter API key and choose any AI model for automated configuration analysis with intelligent recommendations, error detection, and optimization suggestions.',
+            description: 'Bring your own OpenRouter API key and choose any AI model for configuration analysis, log debugging, pattern recognition, and intelligent troubleshooting recommendations.',
             highlights: [
-                'Bring your own API key',
-                'Choose any AI model',
-                'Automatic error detection',
-                'Performance optimization'
-            ],
-            color: 'from-purple-500 to-pink-500'
-        },
-        {
-            icon: Brain,
-            title: 'Intelligent Log Analysis',
-            subtitle: 'AI-Powered Debugging',
-            description: 'Use your preferred AI model via OpenRouter to analyze Envoy access and error logs, quickly identify issues, patterns, and anomalies in your proxy traffic.',
-            highlights: [
-                'Multiple AI models',
-                'Pattern recognition',
+                'Configuration analysis',
+                'Log pattern recognition',
                 'Anomaly detection',
                 'Root cause analysis'
             ],
-            color: 'from-pink-500 to-rose-500'
+            color: 'from-purple-500 to-pink-500'
         },
         {
             icon: Cloud,
@@ -43,17 +30,30 @@ const AdvancedFeatures = () => {
             color: 'from-blue-500 to-cyan-500'
         },
         {
-            icon: Activity,
-            title: 'Health Monitoring',
-            subtitle: 'Continuous Reliability',
-            description: 'Comprehensive health checks with automatic recovery mechanisms ensuring your control plane is always operational.',
+            icon: Shield,
+            title: 'ACME Certificate Management',
+            subtitle: 'Automated SSL/TLS',
+            description: 'Automated certificate lifecycle management with ACME protocol support for Let\'s Encrypt and Google Trust Services. DNS-01 challenge verification with auto-renewal.',
             highlights: [
-                'Real-time health checks',
-                'Auto-recovery mechanisms',
-                'gRPC keepalive monitoring',
-                'Process status tracking'
+                'Let\'s Encrypt integration',
+                'Google Trust Services',
+                'DNS provider management',
+                'Automatic renewal'
             ],
             color: 'from-green-500 to-emerald-500'
+        },
+        {
+            icon: Globe,
+            title: 'Global Server Load Balancing',
+            subtitle: 'DNS-Based Traffic Management',
+            description: 'Enterprise GSLB with intelligent health probing, automatic failover, and geo-based traffic routing. Integrate with CoreDNS for dynamic DNS responses based on endpoint health.',
+            highlights: [
+                'HTTP/HTTPS/TCP health probes',
+                'Anti-flapping protection',
+                'Per-record failover zones',
+                'Circuit breaker with backoff'
+            ],
+            color: 'from-orange-500 to-amber-500'
         }
     ]
 

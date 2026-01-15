@@ -1,4 +1,4 @@
-# Elchi - Enterprise Envoy Proxy Management Platform
+# Elchi - Enterprise Proxy Management Platform
 
 **Elchi** is an enterprise-grade Envoy proxy management platform with a 3-process distributed architecture, comprehensive xDS protocol support, intelligent automation, and modern React TypeScript UI.
 

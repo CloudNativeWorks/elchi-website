@@ -7,9 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary Meta Tags -->
-    <title>Elchi - Enterprise Envoy Proxy Management Platform | 3-Process Architecture</title>
-    <meta name="title"
-        content="Elchi - Enterprise Envoy Proxy Management Platform | 3-Process Architecture" />
+    <title>Elchi - Enterprise Proxy Management Platform | 3-Process Architecture</title>
+    <meta name="title" content="Elchi - Enterprise Proxy Management Platform | 3-Process Architecture" />
     <meta name="description"
         content="Enterprise-grade Envoy proxy management platform with 3-process distributed architecture, comprehensive xDS protocol support, K8s discovery, multi-tenancy, and intelligent configuration validation. Modern React UI with automated protobuf generation. Free open-source alternative to manual Envoy configuration." />
     <meta name="keywords"
@@ -21,7 +20,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://elchi.io" />
-    <meta property="og:title" content="Elchi - Enterprise Envoy Proxy Management Platform" />
+    <meta property="og:title" content="Elchi - Enterprise Proxy Management Platform" />
     <meta property="og:description"
         content="Enterprise-grade Envoy proxy management with 3-process distributed architecture, K8s discovery, multi-tenancy, intelligent automation, and comprehensive xDS support. Free open-source platform for managing Envoy at scale." />
     <meta property="og:image" content="https://elchi.io/main.png" />
@@ -34,9 +33,9 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://elchi.io" />
-    <meta property="twitter:title" content="Elchi - Enterprise Envoy Proxy Management" />
+    <meta property="twitter:title" content="Elchi - Enterprise Proxy Management" />
     <meta property="twitter:description"
-        content="Enterprise Envoy management with 3-process architecture, K8s discovery, multi-tenancy, intelligent automation & full xDS support. Free & open-source." />
+        content="Enterprise management with 3-process architecture, K8s discovery, multi-tenancy, intelligent automation & full xDS support. Free & open-source." />
     <meta property="twitter:image" content="https://elchi.io/main.png" />
     <meta property="twitter:image:alt" content="Elchi Proxy Management Platform Dashboard" />
     <meta property="twitter:creator" content="@CloudNativeWorks" />
@@ -48,7 +47,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
+
     <!-- Additional SEO Meta Tags -->
     <meta name="language" content="English" />
     <meta name="revisit-after" content="7 days" />
@@ -56,11 +55,11 @@
     <meta name="rating" content="general" />
     <meta name="referrer" content="no-referrer-when-downgrade" />
     <meta name="format-detection" content="telephone=no" />
-    
+
     <!-- Geo Tags -->
     <meta name="geo.region" content="US" />
     <meta name="geo.placename" content="United States" />
-    
+
     <!-- Software/App Specific -->
     <meta name="application-name" content="Elchi" />
     <meta name="software" content="Elchi Proxy Management Platform" />
@@ -71,21 +70,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    
+
     <!-- DNS Prefetch for external resources -->
     <link rel="dns-prefetch" href="//demo.elchi.io">
     <link rel="dns-prefetch" href="//github.com">
     <link rel="dns-prefetch" href="//www.googletagmanager.com">
-    
+
     <!-- Preload critical resources -->
     <link rel="preload" href="/main.png" as="image" type="image/png" fetchpriority="high">
     <link rel="preload" href="/logo.png" as="image" type="image/png" fetchpriority="high">
-    
+
     <!-- Resource hints for better performance -->
     <link rel="prefetch" href="/docs">
     <link rel="prefetch" href="/configuration.png">
     <link rel="prefetch" href="/service.png">
-    
+
     <!-- Critical CSS inlining hint -->
     <link rel="preload" href="/src/main.tsx" as="script" crossorigin>
 
@@ -217,7 +216,7 @@
                 "name": "What is Elchi Envoy UI?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Elchi is an enterprise Envoy proxy management platform with a 3-process distributed architecture. It provides enterprise-grade features including intelligent configuration analysis via OpenRouter AI integration (bring your own API key), Kubernetes auto-discovery, multi-tenancy with 4-tier RBAC, comprehensive xDS protocol support, and automated health monitoring. It's designed for managing Envoy proxies at scale with modern UI and intelligent automation."
+                    "text": "Elchi is an enterprise proxy management platform with a 3-process distributed architecture. It provides enterprise-grade features including intelligent configuration analysis via OpenRouter AI integration (bring your own API key), Kubernetes auto-discovery, multi-tenancy with 4-tier RBAC, comprehensive xDS protocol support, and automated health monitoring. It's designed for managing Envoy proxies at scale with modern UI and intelligent automation."
                 }
             },
             {
@@ -397,40 +396,40 @@
 
     <!-- Advanced Analytics Events -->
     <script>
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             // Track demo button clicks
-            document.querySelectorAll('[href*="demo.elchi.io"]').forEach(function(el) {
-                el.addEventListener('click', function() {
+            document.querySelectorAll('[href*="demo.elchi.io"]').forEach(function (el) {
+                el.addEventListener('click', function () {
                     gtag('event', 'click', {
                         event_category: 'engagement',
                         event_label: 'demo_button'
                     });
                 });
             });
-            
+
             // Track GitHub clicks
-            document.querySelectorAll('[href*="github.com"]').forEach(function(el) {
-                el.addEventListener('click', function() {
+            document.querySelectorAll('[href*="github.com"]').forEach(function (el) {
+                el.addEventListener('click', function () {
                     gtag('event', 'click', {
-                        event_category: 'engagement', 
+                        event_category: 'engagement',
                         event_label: 'github_link'
                     });
                 });
             });
-            
+
             // Track documentation clicks
-            document.querySelectorAll('[href*="/docs"]').forEach(function(el) {
-                el.addEventListener('click', function() {
+            document.querySelectorAll('[href*="/docs"]').forEach(function (el) {
+                el.addEventListener('click', function () {
                     gtag('event', 'click', {
                         event_category: 'engagement',
                         event_label: 'docs_navigation'
                     });
                 });
             });
-            
+
             // Track scroll depth
             let scrollDepth = 0;
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
                 let depth = Math.floor((window.scrollY + window.innerHeight) / document.body.scrollHeight * 100);
                 if (depth > scrollDepth && depth % 25 === 0) {
                     scrollDepth = depth;
@@ -456,16 +455,69 @@
                 "item": "https://elchi.io"
             },
             {
-                "@type": "ListItem", 
+                "@type": "ListItem",
                 "position": 2,
-                "name": "Documentation",
-                "item": "https://elchi.io/docs"
+                "name": "Features",
+                "item": "https://elchi.io/features"
             },
             {
                 "@type": "ListItem",
-                "position": 3, 
-                "name": "Demo",
-                "item": "https://demo.elchi.io"
+                "position": 3,
+                "name": "Screenshots",
+                "item": "https://elchi.io/screenshots"
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Architecture",
+                "item": "https://elchi.io/architecture"
+            },
+            {
+                "@type": "ListItem",
+                "position": 5,
+                "name": "Documentation",
+                "item": "https://elchi.io/docs"
+            }
+        ]
+    }
+    </script>
+
+    <!-- SiteNavigationElement for Google Sitelinks -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SiteNavigationElement",
+        "name": "Main Navigation",
+        "hasPart": [
+            {
+                "@type": "WebPage",
+                "name": "Home",
+                "description": "Elchi - Enterprise Proxy Management Platform",
+                "url": "https://elchi.io/"
+            },
+            {
+                "@type": "WebPage",
+                "name": "Features",
+                "description": "Explore Elchi's powerful features for proxy management",
+                "url": "https://elchi.io/features"
+            },
+            {
+                "@type": "WebPage",
+                "name": "Screenshots",
+                "description": "View Elchi's modern UI and dashboard screenshots",
+                "url": "https://elchi.io/screenshots"
+            },
+            {
+                "@type": "WebPage",
+                "name": "Architecture",
+                "description": "Learn about Elchi's 3-process distributed architecture",
+                "url": "https://elchi.io/architecture"
+            },
+            {
+                "@type": "WebPage",
+                "name": "Documentation",
+                "description": "Installation guides and API documentation",
+                "url": "https://elchi.io/docs"
             }
         ]
     }
@@ -474,34 +526,30 @@
 
 <body>
     <div id="root"></div>
-    
-    <!-- GitHub Pages SPA redirect script -->
+
+    <!-- GitHub Pages SPA redirect script for BrowserRouter -->
     <script>
-      (function(l) {
-        // Check if redirected from 404.html
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          
-          var newUrl = l.pathname.slice(0, -1) + decoded + l.hash;
-          
-          // Use replaceState to avoid adding to history
-          window.history.replaceState(null, null, newUrl);
-          
-          // Clear sessionStorage redirect marker
-          sessionStorage.removeItem('redirect-path');
-        }
-        
-        // Fallback: check sessionStorage for stored path
-        var storedPath = sessionStorage.getItem('redirect-path');
-        if (storedPath && storedPath !== l.pathname) {
-          window.history.replaceState(null, null, storedPath);
-          sessionStorage.removeItem('redirect-path');
-        }
-      }(window.location))
+        (function (l) {
+            // Handle redirect from 404.html with ?p=/path format
+            if (l.search) {
+                var params = {};
+                l.search.slice(1).split('&').forEach(function(part) {
+                    var item = part.split('=');
+                    params[item[0]] = decodeURIComponent(item[1]);
+                });
+
+                if (params.p) {
+                    var path = params.p.replace(/~and~/g, '&');
+                    var query = params.q ? '?' + params.q.replace(/~and~/g, '&') : '';
+                    var newUrl = path + query + l.hash;
+
+                    // Use replaceState to restore the original URL
+                    window.history.replaceState(null, null, newUrl);
+                }
+            }
+        }(window.location))
     </script>
-    
+
     <script type="module" src="/src/main.tsx"></script>
 </body>
 

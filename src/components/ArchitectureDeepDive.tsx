@@ -28,7 +28,7 @@ const ArchitectureDeepDive = () => {
                 'xDS resource management (CDS, LDS, RDS, EDS)',
                 'User & authorization (JWT + RBAC)',
                 'MongoDB integration',
-                'AI-powered config analysis (Claude)',
+                'AI-powered config analysis',
                 'K8s Discovery system'
             ]
         },

@@ -172,6 +172,27 @@ const ScreenshotGallery = () => {
             image: "acme3.png",
             category: "Configuration"
         },
+        {
+            id: 25,
+            title: "GSLB Overview",
+            description: "Global Server Load Balancing configuration and management dashboard",
+            image: "gslb1.png",
+            category: "Load Balancing"
+        },
+        {
+            id: 26,
+            title: "GSLB Health Checks",
+            description: "Configure health checks and failover policies for GSLB endpoints",
+            image: "gslb2.png",
+            category: "Load Balancing"
+        },
+        {
+            id: 27,
+            title: "GSLB Traffic Policy",
+            description: "Define traffic routing policies and geo-based load balancing rules",
+            image: "gslb3.png",
+            category: "Load Balancing"
+        },
     ]
 
     const [selectedCategory, setSelectedCategory] = useState('All')

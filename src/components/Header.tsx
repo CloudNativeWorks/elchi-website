@@ -17,32 +17,11 @@ const Header = () => {
 
     const navItems = [
         { name: 'Home', href: '/', type: 'route' },
-        { name: 'Screenshots', href: 'screenshots', type: 'scroll' },
-        { name: 'Why Elchi', href: 'why-elchi', type: 'scroll' },
-        { name: 'Features', href: 'features', type: 'scroll' },
-        { name: 'Architecture', href: 'architecture', type: 'scroll' },
+        { name: 'Screenshots', href: '/screenshots', type: 'route' },
+        { name: 'Features', href: '/features', type: 'route' },
+        { name: 'Architecture', href: '/architecture', type: 'route' },
         { name: 'Docs', href: '/docs', type: 'route' },
     ]
-
-    const scrollToSection = (sectionId: string) => {
-        // If we're not on the home page, navigate there first
-        if (window.location.hash !== '#/') {
-            window.location.href = '/#/'
-            // Wait a bit for the page to load, then scroll
-            setTimeout(() => {
-                const element = document.getElementById(sectionId)
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' })
-                }
-            }, 100)
-        } else {
-            // We're already on home page, just scroll
-            const element = document.getElementById(sectionId)
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' })
-            }
-        }
-    }
 
     return (
         <motion.nav role="navigation" aria-label="Main navigation"
@@ -71,41 +50,19 @@ const Header = () => {
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center space-x-8">
                         {navItems.map((item) => (
-                            item.type === 'route' ? (
-                                <Link
-                                    key={item.name}
-                                    to={item.href}
-                                    className="text-gray-300 hover:text-white transition-colors duration-300 font-medium"
-                                >
-                                    <motion.span
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="block"
-                                    >
-                                        {item.name}
-                                    </motion.span>
-                                </Link>
-                            ) : item.type === 'scroll' ? (
-                                <motion.button
-                                    key={item.name}
-                                    onClick={() => scrollToSection(item.href)}
-                                    className="text-gray-300 hover:text-white transition-colors duration-300 font-medium"
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                className="text-gray-300 hover:text-white transition-colors duration-300 font-medium"
+                            >
+                                <motion.span
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
+                                    className="block"
                                 >
                                     {item.name}
-                                </motion.button>
-                            ) : (
-                                <motion.a
-                                    key={item.name}
-                                    href={`#${item.href}`}
-                                    className="text-gray-300 hover:text-white transition-colors duration-300 font-medium"
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    {item.name}
-                                </motion.a>
-                            )
+                                </motion.span>
+                            </Link>
                         ))}
                     </nav>
 
@@ -137,36 +94,14 @@ const Header = () => {
                         className="md:hidden mt-4 space-y-4"
                     >
                         {navItems.map((item) => (
-                            item.type === 'route' ? (
-                                <Link
-                                    key={item.name}
-                                    to={item.href}
-                                    className="block text-gray-300 hover:text-white transition-colors duration-300 py-2"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    {item.name}
-                                </Link>
-                            ) : item.type === 'scroll' ? (
-                                <button
-                                    key={item.name}
-                                    onClick={() => {
-                                        scrollToSection(item.href)
-                                        setIsMobileMenuOpen(false)
-                                    }}
-                                    className="block text-gray-300 hover:text-white transition-colors duration-300 py-2 text-left w-full"
-                                >
-                                    {item.name}
-                                </button>
-                            ) : (
-                                <a
-                                    key={item.name}
-                                    href={`#${item.href}`}
-                                    className="block text-gray-300 hover:text-white transition-colors duration-300 py-2"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    {item.name}
-                                </a>
-                            )
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                className="block text-gray-300 hover:text-white transition-colors duration-300 py-2"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                {item.name}
+                            </Link>
                         ))}
                         <motion.button
                             className="btn-primary w-full mt-4"

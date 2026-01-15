@@ -102,6 +102,13 @@ const WhyElchi = () => {
             description: 'Automated certificate lifecycle with Let\'s Encrypt and Google Trust Services'
         },
         {
+            feature: 'Global Server Load Balancing',
+            elchi: true,
+            manual: false,
+            serviceMesh: false,
+            description: 'DNS-based traffic management with health probing, failover zones, and anti-flapping'
+        },
+        {
             feature: 'Learning Curve',
             elchi: 'Easy',
             manual: 'Steep',

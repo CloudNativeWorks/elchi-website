@@ -2,27 +2,28 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Elchi - Loading...</title>
+    <title>Elchi - Proxy Management Platform</title>
     <script>
-      // GitHub Pages SPA redirect hack - simplified
+      // GitHub Pages SPA redirect for BrowserRouter
+      // This script saves the current path and redirects to index.html
+      // which will then handle the route correctly
+      var segmentCount = 0; // Number of path segments to keep (0 for project root)
       var l = window.location;
-      var path = l.pathname;
-      
-      // Only redirect if not already redirected and not root
-      if (path !== '/' && !l.search.includes('?/')) {
-        // Store the original path in sessionStorage to avoid loops
-        sessionStorage.setItem('redirect-path', path);
-        l.replace(l.origin + '/?/' + path.slice(1).replace(/&/g, '~and~') + 
-                 (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') + l.hash);
-      } else {
-        // If we're here due to a loop, just go to root
-        l.replace(l.origin);
-      }
+
+      // Redirect to index with the path encoded in the URL
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
     </script>
   </head>
   <body>
-    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
-      <p>Redirecting to Elchi...</p>
+    <div style="text-align: center; padding: 50px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a1a; color: #fff; min-height: 100vh;">
+      <h1 style="color: #00d4ff;">Elchi</h1>
+      <p>Loading...</p>
     </div>
   </body>
 </html>
