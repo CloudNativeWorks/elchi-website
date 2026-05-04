@@ -239,7 +239,18 @@ function SectionBareMetal() {
           <p><code>install.sh</code> persists <code>ELCHI_SSH_USER / KEY / PORT</code> to <code>/etc/elchi/orchestrator.env</code> (mode 0600 root). Re-run upgrade or uninstall without <code>--ssh-user / --ssh-key / --ssh-port</code> and they'll fall back to the persisted values. Pass a flag explicitly to override.</p>
         </Callout>
 
-        <h3 className="docs-h3">Add a new variant (curl one-liner)</h3>
+        <h3 className="docs-h3">Add a new variant (additive — keeps current set)</h3>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} \\{'\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
+        <p>One-liner shortcut: appends to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's <code>config.js</code> <code>AVAILABLE_VERSIONS</code> regenerates so the new envoy version shows up in the version dropdown.</p>
+
+        <h3 className="docs-h3">Bump just the UI</h3>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.1.6')}</Code>
+        <p>Backend / envoy / coredns / mongo / VM stay on their current versions — install.sh's hash-based reconcile marks each as <code>noop</code>. Only nginx may restart if the UI config block changed.</p>
+
+        <h3 className="docs-h3">Bump just CoreDNS (GSLB plugin)</h3>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--coredns-version')}={T.s('v0.1.4')}</Code>
+
+        <h3 className="docs-h3">Replace variant set explicitly (full union)</h3>
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} \\{'\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
 
         <h3 className="docs-h3">Replace a variant + drop the old one (declarative)</h3>
@@ -253,7 +264,8 @@ function SectionBareMetal() {
           <table className="docs-table">
             <thead><tr><th>Flag</th><th>Description</th></tr></thead>
             <tbody>
-              <tr><td className="param">--backend-version=&lt;csv&gt;</td><td>New variant set. Omit to keep the current set.</td></tr>
+              <tr><td className="param">--backend-version=&lt;csv&gt;</td><td>New variant set (replaces current). Omit to keep the current set.</td></tr>
+              <tr><td className="param">--add-backend-version=&lt;csv&gt;</td><td>Additive: appends to the current variant set. UX shortcut — start serving an additional Envoy version without re-listing what's already deployed. Triggers control-plane unit creation + UI <code>config.js</code> regeneration cluster-wide. Mutually exclusive with <code>--prune-version</code> / <code>--prune-missing</code>.</td></tr>
               <tr><td className="param">--ui-version=&lt;vX.Y.Z&gt;</td><td>Bump UI bundle.</td></tr>
               <tr><td className="param">--envoy-version=&lt;vX.Y.Z&gt;</td><td>Bump front-door Envoy.</td></tr>
               <tr><td className="param">--coredns-version=&lt;vX.Y.Z&gt;</td><td>Bump CoreDNS plugin (only with GSLB enabled).</td></tr>
