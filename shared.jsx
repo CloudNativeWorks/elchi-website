@@ -1,3 +1,6 @@
+const ELCHI_UI_VERSION = typeof __ELCHI_UI_VERSION__ !== 'undefined' ? __ELCHI_UI_VERSION__ : 'dev';
+const ELCHI_BACKEND_VERSION = typeof __ELCHI_BACKEND_VERSION__ !== 'undefined' ? __ELCHI_BACKEND_VERSION__ : 'dev';
+
 // ============== NAV ==============
 function Nav({ active }) {
   return (
@@ -13,6 +16,28 @@ function Nav({ active }) {
           <a href="docs.html" className={active === 'docs' ? 'active' : ''}>Docs</a>
         </div>
         <div className="nav-cta">
+          <div className="nav-versions">
+            <a
+              href="https://github.com/CloudNativeWorks/elchi/releases"
+              target="_blank"
+              rel="noopener"
+              className="nav-version"
+              title={`Elchi UI ${ELCHI_UI_VERSION}`}
+            >
+              <span className="nav-version-key">UI</span>
+              <span className="nav-version-tag">{ELCHI_UI_VERSION}</span>
+            </a>
+            <a
+              href="https://github.com/CloudNativeWorks/elchi-backend/releases"
+              target="_blank"
+              rel="noopener"
+              className="nav-version"
+              title={`Elchi Backend ${ELCHI_BACKEND_VERSION}`}
+            >
+              <span className="nav-version-key">API</span>
+              <span className="nav-version-tag">{ELCHI_BACKEND_VERSION}</span>
+            </a>
+          </div>
           <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-primary">Try Demo →</a>
         </div>
       </div>
@@ -39,7 +64,8 @@ function Footer() {
                 <span style={{width:6,height:6,borderRadius:'50%',background:'#22c55e'}}></span>
                 Demo online
               </span>
-              <span className="pill">v1.4.2</span>
+              <span className="pill">UI {ELCHI_UI_VERSION}</span>
+              <span className="pill">API {ELCHI_BACKEND_VERSION}</span>
             </div>
           </div>
           <div>
