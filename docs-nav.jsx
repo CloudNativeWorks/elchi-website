@@ -13,7 +13,7 @@ const NAV = [
     ],
   },
   {
-    title: 'Elchi Platform',
+    title: 'Elchi Platform (Helm)',
     color: 'cyan',
     items: [
       { id: 'platform-overview',     label: 'Overview' },
@@ -23,6 +23,24 @@ const NAV = [
       { id: 'platform-storage',      label: 'Storage Options' },
       { id: 'platform-production',   label: 'Production Setup' },
       { id: 'platform-security',     label: 'Security' },
+    ],
+  },
+  {
+    title: 'Bare-Metal (no Docker, no K8s)',
+    color: 'amber',
+    items: [
+      { id: 'baremetal-overview',  label: 'Overview' },
+      { id: 'baremetal-prereq',    label: 'Prerequisites' },
+      { id: 'baremetal-quickstart',label: 'Quick Start' },
+      { id: 'baremetal-install',   label: 'install.sh — full flag reference' },
+      { id: 'baremetal-upgrade',   label: 'upgrade.sh' },
+      { id: 'baremetal-uninstall', label: 'uninstall.sh' },
+      { id: 'baremetal-validate',  label: 'validate.sh' },
+      { id: 'baremetal-helper',    label: 'elchi-stack helper' },
+      { id: 'baremetal-ports',     label: 'Port atlas' },
+      { id: 'baremetal-topology',  label: 'Topology' },
+      { id: 'baremetal-hardening', label: 'Production hardening' },
+      { id: 'baremetal-distros',   label: 'Supported distros' },
     ],
   },
   {

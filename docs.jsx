@@ -5,6 +5,7 @@ import { NAV, Sidebar, TocRail } from './docs-nav.jsx';
 import { SectionIntro } from './docs-content-1.jsx';
 import { SectionPlatform } from './docs-content-2.jsx';
 import { SectionClient, SectionDiscovery, SectionResources } from './docs-content-3.jsx';
+import { SectionBareMetal } from './docs-content-4.jsx';
 
 const TOC = [
   { id: 'introduction', label: 'Introduction' },
@@ -17,6 +18,18 @@ const TOC = [
   { id: 'platform-storage',      label: 'Storage', sub: true },
   { id: 'platform-production',   label: 'Production', sub: true },
   { id: 'platform-security',     label: 'Security', sub: true },
+  { id: 'baremetal-overview',  label: 'Bare-Metal' },
+  { id: 'baremetal-prereq',    label: 'Prerequisites', sub: true },
+  { id: 'baremetal-quickstart',label: 'Quick Start', sub: true },
+  { id: 'baremetal-install',   label: 'install.sh', sub: true },
+  { id: 'baremetal-upgrade',   label: 'upgrade.sh', sub: true },
+  { id: 'baremetal-uninstall', label: 'uninstall.sh', sub: true },
+  { id: 'baremetal-validate',  label: 'validate.sh', sub: true },
+  { id: 'baremetal-helper',    label: 'elchi-stack', sub: true },
+  { id: 'baremetal-ports',     label: 'Port atlas', sub: true },
+  { id: 'baremetal-topology',  label: 'Topology', sub: true },
+  { id: 'baremetal-hardening', label: 'Hardening', sub: true },
+  { id: 'baremetal-distros',   label: 'Distros', sub: true },
   { id: 'client-overview', label: 'Client' },
   { id: 'client-install',  label: 'Installation', sub: true },
   { id: 'client-config',   label: 'Configuration', sub: true },
@@ -62,6 +75,7 @@ function App() {
           </div>
           <SectionIntro />
           <SectionPlatform />
+          <SectionBareMetal />
           <SectionClient />
           <SectionDiscovery />
           <SectionResources />
