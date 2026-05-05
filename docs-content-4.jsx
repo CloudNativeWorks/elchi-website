@@ -49,19 +49,23 @@ function SectionBareMetal() {
         <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Rocket/></span>Quick Start</h2>
 
         <h3 className="docs-h3">Single VM (all-in-one)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} \\{'\n'}      {T.f('--nodes')}={T.s('"$(hostname -I | awk \'{print $1}\')"')} \\{'\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} \\{'\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} \\{'\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')} \\{'\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('"$(hostname -I | awk \'{print $1}\')"')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <h3 className="docs-h3">3-VM cluster, multi-version backend, key-based SSH</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} \\{'\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} \\{'\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} \\{'\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} \\{'\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} \\{'\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.35.3,elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.38.0')} \\{'\n'}      {T.f('--envoy-version')}={T.s('v1.37.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.35.3,elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.37.0')}</Code>
 
         <Callout kind="info" title="Variants & replicas">
           <p>Each <code>--backend-version</code> entry is ONE variant. The number of variants determines how many backend processes per node: 3 variants = 1 controller + 3 control-planes per node (one control-plane per Envoy version). Same variant cannot appear twice — duplicates collide on the registry name <code>&lt;hostname&gt;-controlplane-&lt;X.Y.Z&gt;</code> and the installer rejects them. Capacity scales by adding nodes, not by replicating a variant on the same node.</p>
         </Callout>
 
         <h3 className="docs-h3">3-VM cluster, no SSH key set up yet (interactive bootstrap)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} \\{'\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} \\{'\n'}      {T.f('--ssh-bootstrap')} \\{'\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} \\{'\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-bootstrap')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')}</Code>
 
         <p><code>--ssh-bootstrap</code> mints a fresh ed25519 key on M1, then prompts the operator <em>once per remote node</em> for that node's password. Each password is used only for that node's <code>ssh-copy-id</code> and is discarded immediately after. M1 itself is local — no password prompt for it. Subsequent SSH (orchestration, upgrades, uninstall) all use the generated key.</p>
+
+        <Callout kind="info" title="Dedicated admin user (default)">
+          <p>By default the bootstrap also creates a key-only, passwordless-sudo admin user (<code>elchi-cluster-admin</code>) on every node — including M1 — and locks all subsequent orchestration to that identity. After the first install, the operator can lock root's password, disable root SSH login, or even delete the root account; <code>upgrade</code> and <code>uninstall</code> keep working because they run as <code>elchi-cluster-admin</code> with sudo. Override the name with <code>--admin-user=&lt;name&gt;</code> or opt out with <code>--no-admin-user</code>.</p>
+        </Callout>
 
         <Callout kind="warn" title="Node order matters">
           <p>The first IP in <code>--nodes</code> is "M1" — orchestrator + singleton storage (mongo, VictoriaMetrics, Grafana). It MUST be the local machine you're running the curl on. Re-installing or upgrading? Keep the same order — swapping IPs reassigns M1 and orphans data.</p>
@@ -83,6 +87,8 @@ function SectionBareMetal() {
               <tr><td className="param">--ssh-key=&lt;path&gt;</td><td>Private key for non-interactive auth (recommended for production).</td><td className="default">—</td></tr>
               <tr><td className="param">--ssh-password=&lt;pwd&gt;</td><td>Password fallback (uses sshpass). Avoid for production.</td><td className="default">—</td></tr>
               <tr><td className="param">--ssh-bootstrap</td><td>Mint an ed25519 key on M1 and copy it to every remote node. Prompts INTERACTIVELY for each remote node's password (M1 skipped). Subsequent SSH uses the generated key; passwords are discarded.</td><td className="default">—</td></tr>
+              <tr><td className="param">--admin-user=&lt;name&gt;</td><td><strong>Default-ON.</strong> Dedicated admin user provisioned on every node during bootstrap with passwordless sudo + cluster key authorized. Orchestrator's SSH user flips to this identity (persisted to <code>orchestrator.env</code>). After this, root's password / SSH login / account itself can change without breaking <code>upgrade</code> or <code>uninstall</code>. Idempotent on rerun.</td><td className="default">elchi-cluster-admin</td></tr>
+              <tr><td className="param">--no-admin-user</td><td>Opt OUT — orchestration stays on the original login user (root). Use only when your environment forbids provisioning users.</td><td className="default">—</td></tr>
             </tbody>
           </table>
         </div>
@@ -240,7 +246,7 @@ function SectionBareMetal() {
         </Callout>
 
         <h3 className="docs-h3">Add a new variant (additive — keeps current set)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} \\{'\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
         <p>One-liner shortcut: appends to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's <code>config.js</code> <code>AVAILABLE_VERSIONS</code> regenerates so the new envoy version shows up in the version dropdown.</p>
 
         <h3 className="docs-h3">Bump just the UI</h3>
@@ -251,13 +257,13 @@ function SectionBareMetal() {
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--coredns-version')}={T.s('v0.1.4')}</Code>
 
         <h3 className="docs-h3">Replace variant set explicitly (full union)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} \\{'\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
 
         <h3 className="docs-h3">Replace a variant + drop the old one (declarative)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} \\{'\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.37.0')} \\{'\n'}      {T.f('--prune-missing')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.37.0')} {'\\\n'}      {T.f('--prune-missing')}</Code>
 
         <h3 className="docs-h3">Bump UI + Envoy proxy together</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} \\{'\n'}      {T.f('--ui-version')}={T.s('v1.1.4')} \\{'\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.4')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
 
         <h3 className="docs-h3">Upgrade flags</h3>
         <div className="docs-table-wrap">
@@ -290,15 +296,15 @@ function SectionBareMetal() {
         <p>Default uninstall is non-destructive: services stop, unit files / binaries / installer payload / nginx vhost / journald drop-in / firewall ports / managed <code>/etc/hosts</code> block all go. Mongo, VictoriaMetrics, Grafana data + secrets + TLS material are preserved unless you opt in via the matching <code>--purge*</code> flag.</p>
 
         <h3 className="docs-h3">Single node (this machine only)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--uninstall')} {T.f('--yes-i-mean-it')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--uninstall')} {T.f('--yes-i-mean-it')}</Code>
 
         <h3 className="docs-h3">Whole cluster — fan out from M1</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--uninstall')} {T.f('--all-nodes')} {T.f('--yes-i-mean-it')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--uninstall')} {T.f('--all-nodes')} {T.f('--yes-i-mean-it')}</Code>
 
         <p>Reads <code>/etc/elchi/nodes.list</code> on M1, SSHes into every M2..Mn using the SSH credentials saved at install time, and runs the local uninstall on each. Order is reverse-by-design (Mn first, M1 last) so shared state on M1 is dropped only after the dependents are gone. Add <code>--continue-on-error</code> if you want partial-cluster uninstall to finish all reachable nodes instead of aborting on the first SSH failure.</p>
 
         <h3 className="docs-h3">Wipe everything (data + packages + secrets + SSH bootstrap material)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} \\{'\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--uninstall')} {T.f('--all-nodes')} {T.f('--purge-all')} {T.f('--yes-i-mean-it')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--uninstall')} {T.f('--all-nodes')} {T.f('--purge-all')} {T.f('--yes-i-mean-it')}</Code>
 
         <Callout kind="danger" title="--purge-all is destructive and irreversible">
           <p>Drops Mongo + VictoriaMetrics + Grafana + nginx packages, deletes <code>/var/lib/{'{mongodb,grafana,elchi}'}</code>, removes the cluster SSH key + known_hosts pin + our authorized_keys entry, and clears the CA we added to the system trust store. Combine with <code>--all-nodes</code> only when you genuinely want a clean slate across the whole fleet.</p>
