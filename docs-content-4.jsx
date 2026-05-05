@@ -21,7 +21,7 @@ function SectionBareMetal() {
               <tr><td><strong>MongoDB</strong></td><td>1–2 VM: M1 standalone · 3+ VM: M1+M2+M3 RS · 4+: no extra members</td><td>:27017</td></tr>
               <tr><td><strong>VictoriaMetrics</strong></td><td>M1 only (or external via <code>--vm=external</code>)</td><td>:8428</td></tr>
               <tr><td><strong>Grafana</strong></td><td>M1 only (proxied at <code>/grafana/</code>)</td><td>127.0.0.1:3000</td></tr>
-              <tr><td><strong>CoreDNS GSLB</strong></td><td>Every node when <code>--gslb-zone</code> is supplied (default-on, graceful skip otherwise)</td><td>:53 tcp+udp, :8053 webhook</td></tr>
+              <tr><td><strong>CoreDNS GSLB</strong></td><td>Every node (default-on, zone defaults to <code>elchi.local</code>; opt out with <code>--no-gslb</code>)</td><td>:53 tcp+udp, :8053 webhook</td></tr>
             </tbody>
           </table>
         </div>
@@ -49,17 +49,21 @@ function SectionBareMetal() {
         <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Rocket/></span>Quick Start</h2>
 
         <h3 className="docs-h3">Single VM (all-in-one)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('"$(hostname -I | awk \'{print $1}\')"')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('"$(hostname -I | awk \'{print $1}\')"')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <h3 className="docs-h3">3-VM cluster, multi-version backend, key-based SSH</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.35.3,elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.37.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.35.3,elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.37.0')}</Code>
+
+        <Callout kind="info" title="GSLB zone (default elchi.local)">
+          <p>The CoreDNS GSLB plugin is enabled by default. If you skip <code>--gslb-zone</code>, the installer falls back to <code>elchi.local</code> — a non-routable <code>.local</code>-style namespace safe for internal cluster DNS / testing. Pass <code>--gslb-zone=&lt;your-delegated-domain&gt;</code> for a real authoritative deployment, or <code>--no-gslb</code> to skip the plugin entirely.</p>
+        </Callout>
 
         <Callout kind="info" title="Variants & replicas">
           <p>Each <code>--backend-version</code> entry is ONE variant. The number of variants determines how many backend processes per node: 3 variants = 1 controller + 3 control-planes per node (one control-plane per Envoy version). Same variant cannot appear twice — duplicates collide on the registry name <code>&lt;hostname&gt;-controlplane-&lt;X.Y.Z&gt;</code> and the installer rejects them. Capacity scales by adding nodes, not by replicating a variant on the same node.</p>
         </Callout>
 
         <h3 className="docs-h3">3-VM cluster, no SSH key set up yet (interactive bootstrap)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-bootstrap')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-bootstrap')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')}</Code>
 
         <p><code>--ssh-bootstrap</code> mints a fresh ed25519 key on M1, then prompts the operator <em>once per remote node</em> for that node's password. Each password is used only for that node's <code>ssh-copy-id</code> and is discarded immediately after. M1 itself is local — no password prompt for it. Subsequent SSH (orchestration, upgrades, uninstall) all use the generated key.</p>
 
@@ -181,14 +185,14 @@ function SectionBareMetal() {
         </div>
 
         <h3 className="docs-h3">GSLB / CoreDNS plugin</h3>
-        <p><strong>Default ON.</strong> When <code>--gslb-zone</code> is supplied, CoreDNS GSLB plugin installs on every node (port 53 TCP+UDP, webhook on 8053). Without zone, it gracefully skips with a hint. Pass <code>--no-gslb</code> to silence the hint.</p>
+        <p><strong>Default ON.</strong> CoreDNS GSLB plugin installs on every node (port 53 TCP+UDP, webhook on 8053). The zone defaults to <code>elchi.local</code> — a non-routable <code>.local</code>-style domain that is safe out of the box for internal cluster DNS / testing. Override with <code>--gslb-zone=&lt;your-delegated-domain&gt;</code> for production, or pass <code>--no-gslb</code> to opt out of the plugin entirely.</p>
         <div className="docs-table-wrap">
           <table className="docs-table">
             <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
             <tbody>
               <tr><td className="param">--gslb</td><td>No-op (default already on); kept for explicitness.</td><td className="default">on</td></tr>
               <tr><td className="param">--no-gslb</td><td>Opt out of the GSLB CoreDNS install.</td><td className="default">—</td></tr>
-              <tr><td className="param">--gslb-zone=&lt;domain&gt;</td><td>Authoritative zone (e.g. <code>gslb.example.com</code>). Only flag actually required to install GSLB.</td><td className="default">— (skip)</td></tr>
+              <tr><td className="param">--gslb-zone=&lt;domain&gt;</td><td>Authoritative zone (e.g. <code>gslb.example.com</code>). Override the default for a real delegated domain.</td><td className="default">elchi.local</td></tr>
               <tr><td className="param">--gslb-admin-email=&lt;email&gt;</td><td>SOA RNAME (with <code>@</code> → <code>.</code>). Defaults to <code>hostmaster@&lt;zone&gt;</code> per RFC 2142.</td><td className="default">hostmaster@&lt;zone&gt;</td></tr>
               <tr><td className="param">--gslb-nameservers=&lt;csv&gt;</td><td><code>ns1:ip,ns2:ip,...</code> NS records + glue.</td><td className="default">—</td></tr>
               <tr><td className="param">--gslb-regions=&lt;csv&gt;</td><td>Region tags for the regions directive.</td><td className="default">—</td></tr>
