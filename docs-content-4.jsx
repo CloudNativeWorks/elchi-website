@@ -30,7 +30,7 @@ function SectionBareMetal() {
       <section id="baremetal-prereq">
         <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check/></span>Prerequisites</h2>
         <ul>
-          <li><strong>OS:</strong> Ubuntu 22.04 / 24.04 · Debian 11 / 12 · RHEL / Rocky / Alma / Oracle 9</li>
+          <li><strong>OS:</strong> Ubuntu 22.04 / 24.04 · Debian 12 · RHEL / Rocky / Alma / Oracle 9 (every cluster member must run the same major + arch — the pre-flight homogeneity check refuses mixed clusters)</li>
           <li><strong>Architecture:</strong> linux/amd64 (arm64 lands when upstream backend ships arm64 binaries)</li>
           <li><strong>Privileges:</strong> root (script auto-bootstraps every missing tool — curl, openssl, jq, tar, gzip, awk, sed, grep, envsubst, hostname, sshpass, ssh-keygen)</li>
           <li><strong>Memory:</strong> 4 GB recommended (soft-warn below; pass <code>ELCHI_REQUIRE_HEALTHY=1</code> to make it fatal)</li>
@@ -49,7 +49,8 @@ function SectionBareMetal() {
         <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Rocket/></span>Quick Start</h2>
 
         <h3 className="docs-h3">Single VM (all-in-one)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('"$(hostname -I | awk \'{print $1}\')"')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <p>Without <code>--nodes</code> the installer defaults to a single-VM setup on this machine — it auto-detects the first non-loopback IPv4 from <code>hostname -I</code> and uses that as M1.</p>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <h3 className="docs-h3">3-VM cluster, multi-version backend, key-based SSH</h3>
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.35.3,elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.37.0')}</Code>
@@ -497,7 +498,7 @@ function SectionBareMetal() {
 
       <section id="baremetal-distros">
         <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check/></span>Supported distros + idempotency</h2>
-        <p>Ubuntu 22.04 + 24.04 · Debian 11 + 12 · RHEL / Rocky / Alma / Oracle 9. amd64 only.</p>
+        <p>Ubuntu 22.04 + 24.04 · Debian 12 · RHEL / Rocky / Alma / Oracle 9. amd64 only. <strong>Debian 11 (bullseye)</strong> and <strong>Ubuntu 20.04 (focal)</strong> are dropped because MongoDB 8.0 (the cluster-wide canonical default) has no apt repo for them — we deliberately don't silently fall back to an older mongo major because version drift inside a replica set kills the cluster in subtle ways. <strong>RHEL / Rocky / Alma / Oracle 8</strong> is dropped on a separate axis: the systemd hardening directives we use require systemd ≥ 247, which RHEL 8 ships older. The pre-flight homogeneity check also refuses mixed-major clusters upfront.</p>
         <p><strong>Idempotency &amp; reconcile</strong> — Every setup module uses hash-based reconcile (<code>systemd::install_and_apply</code> for elchi-* units; <code>systemd::reconcile_external</code> for grafana-server / mongod / nginx). The fingerprint = sha256(unit_file ‖ EnvironmentFile contents ‖ ExecStart binary) and is persisted at <code>/var/lib/elchi/.unit-fingerprint/&lt;unit&gt;</code>. Decision matrix on rerun:</p>
         <ul>
           <li>Fingerprint changed + active → <code>restart</code></li>

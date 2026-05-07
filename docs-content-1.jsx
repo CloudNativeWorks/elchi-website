@@ -7,8 +7,8 @@ function SectionIntro() {
       <section id="introduction">
         <div className="docs-hero">
           <div className="docs-hero-eyebrow">
-            <span style={{width:6,height:6,borderRadius:'50%',background:'#2563eb'}}></span>
-            DOCUMENTATION · v1.4.2
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#2563eb' }}></span>
+            DOCUMENTATION
           </div>
           <h1>Elchi Documentation</h1>
           <p>Everything you need to install, configure, and operate the Elchi proxy management platform — from quick local trials to production-grade Kubernetes deployments.</p>
@@ -18,30 +18,30 @@ function SectionIntro() {
 
         <div className="docs-cards">
           <a href="#quickstart" className="docs-card">
-            <span className="docs-card-icon"><Icon.Rocket/></span>
-            <div className="docs-card-title">Quick Start <Icon.Arrow className="docs-card-title-arrow"/></div>
+            <span className="docs-card-icon"><Icon.Rocket /></span>
+            <div className="docs-card-title">Quick Start <Icon.Arrow className="docs-card-title-arrow" /></div>
             <p className="docs-card-desc">Get Elchi running on a Kubernetes cluster in under five minutes with Helm.</p>
           </a>
           <a href="#platform-install" className="docs-card">
-            <span className="docs-card-icon violet"><Icon.Cube/></span>
-            <div className="docs-card-title">Install the Platform <Icon.Arrow className="docs-card-title-arrow"/></div>
+            <span className="docs-card-icon violet"><Icon.Cube /></span>
+            <div className="docs-card-title">Install the Platform <Icon.Arrow className="docs-card-title-arrow" /></div>
             <p className="docs-card-desc">Full Helm install — controller, control-plane, registry, MongoDB & VictoriaMetrics.</p>
           </a>
           <a href="#client-overview" className="docs-card">
-            <span className="docs-card-icon cyan"><Icon.Terminal/></span>
-            <div className="docs-card-title">Set up the Client <Icon.Arrow className="docs-card-title-arrow"/></div>
+            <span className="docs-card-icon cyan"><Icon.Terminal /></span>
+            <div className="docs-card-title">Set up the Client <Icon.Arrow className="docs-card-title-arrow" /></div>
             <p className="docs-card-desc">Install the Go agent on Linux hosts to register Envoy proxies with your control plane.</p>
           </a>
           <a href="#discovery-overview" className="docs-card">
-            <span className="docs-card-icon emerald"><Icon.Network/></span>
-            <div className="docs-card-title">Endpoint Discovery <Icon.Arrow className="docs-card-title-arrow"/></div>
+            <span className="docs-card-icon emerald"><Icon.Network /></span>
+            <div className="docs-card-title">Endpoint Discovery <Icon.Arrow className="docs-card-title-arrow" /></div>
             <p className="docs-card-desc">Auto-discover Kubernetes services and sync endpoints to your Envoy clusters.</p>
           </a>
         </div>
       </section>
 
       <section id="quickstart">
-        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Rocket/></span>Quick Start</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Rocket /></span>Quick Start</h2>
         <p>Spin up the full Elchi stack on any Kubernetes cluster with three commands. The default chart bundles MongoDB and VictoriaMetrics so you get a working install with zero external dependencies.</p>
 
         <h3 className="docs-h3">1. Add the Helm repository</h3>
@@ -62,7 +62,7 @@ function SectionIntro() {
       </section>
 
       <section id="concepts">
-        <h2 className="docs-h2"><span className="docs-h2-icon cyan"><Icon.Layers/></span>Core Concepts</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon cyan"><Icon.Layers /></span>Core Concepts</h2>
         <p>Elchi splits responsibilities across three cooperating processes. Understanding what each one owns makes the rest of the docs much easier to follow.</p>
 
         <div className="comp-grid">
