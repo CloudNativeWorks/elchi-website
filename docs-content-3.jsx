@@ -13,20 +13,20 @@ function SectionClient() {
         <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Download/></span>Download</h2>
         <h3 className="docs-h3">Linux AMD64</h3>
         <ul>
-          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.0.0/elchi-client-linux-amd64">elchi-client-linux-amd64</a></li>
-          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.0.0/elchi-client-linux-amd64.sha256">elchi-client-linux-amd64.sha256</a></li>
+          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-client-linux-amd64">elchi-client-linux-amd64</a></li>
+          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-client-linux-amd64.sha256">elchi-client-linux-amd64.sha256</a></li>
         </ul>
         <h3 className="docs-h3">Linux ARM64</h3>
         <ul>
-          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.0.0/elchi-client-linux-arm64">elchi-client-linux-arm64</a></li>
-          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.0.0/elchi-client-linux-arm64.sha256">elchi-client-linux-arm64.sha256</a></li>
+          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-client-linux-arm64">elchi-client-linux-arm64</a></li>
+          <li><a href="https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-client-linux-arm64.sha256">elchi-client-linux-arm64.sha256</a></li>
         </ul>
       </section>
 
       <section id="client-install">
         <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Settings/></span>Installation</h2>
         <h3 className="docs-h3">Quick install</h3>
-        <Code lang="shell">{T.c('# Fetch the installer\n')}{T.cmd('wget')} {T.s('https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.0.0/elchi-install.sh')}</Code>
+        <Code lang="shell">{T.c('# Fetch the installer\n')}{T.cmd('wget')} {T.s('https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-install.sh')}</Code>
 
         <h3 className="docs-h3">Production setup</h3>
         <Code lang="shell">{T.cmd('sudo bash')} elchi-install.sh \\{'\n'}  {T.f('--name')}=web-server-01 \\{'\n'}  {T.f('--host')}=backend.elchi.io \\{'\n'}  {T.f('--port')}={T.n('443')} \\{'\n'}  {T.f('--tls')}={T.b('true')} \\{'\n'}  {T.f('--token')}=your-auth-token</Code>
@@ -59,7 +59,7 @@ function SectionClient() {
 
         <h3 className="docs-h3">Manual installation</h3>
         <p>Skip the installer and place the binary yourself:</p>
-        <Code lang="shell">{T.c('# AMD64\n')}{T.cmd('wget')} {T.s('https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.0.0/elchi-client-linux-amd64')}{'\n'}{T.cmd('sudo mv')} elchi-client-linux-amd64 /usr/local/bin/elchi-client{'\n'}{T.cmd('sudo chmod')} {T.f('+x')} /usr/local/bin/elchi-client{'\n'}{'\n'}{T.c('# ARM64\n')}{T.cmd('wget')} {T.s('https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.0.0/elchi-client-linux-arm64')}{'\n'}{T.cmd('sudo mv')} elchi-client-linux-arm64 /usr/local/bin/elchi-client{'\n'}{T.cmd('sudo chmod')} {T.f('+x')} /usr/local/bin/elchi-client</Code>
+        <Code lang="shell">{T.c('# AMD64\n')}{T.cmd('wget')} {T.s('https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-client-linux-amd64')}{'\n'}{T.cmd('sudo mv')} elchi-client-linux-amd64 /usr/local/bin/elchi-client{'\n'}{T.cmd('sudo chmod')} {T.f('+x')} /usr/local/bin/elchi-client{'\n'}{'\n'}{T.c('# ARM64\n')}{T.cmd('wget')} {T.s('https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-client-linux-arm64')}{'\n'}{T.cmd('sudo mv')} elchi-client-linux-arm64 /usr/local/bin/elchi-client{'\n'}{T.cmd('sudo chmod')} {T.f('+x')} /usr/local/bin/elchi-client</Code>
       </section>
 
       <section id="client-config">

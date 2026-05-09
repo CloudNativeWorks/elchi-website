@@ -10,6 +10,7 @@ const NAV = [
       { id: 'introduction', label: 'Introduction' },
       { id: 'quickstart',   label: 'Quick Start' },
       { id: 'concepts',     label: 'Core Concepts' },
+      { id: 'network',      label: 'Network & Access' },
     ],
   },
   {

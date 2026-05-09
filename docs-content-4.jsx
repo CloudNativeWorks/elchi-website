@@ -5,7 +5,7 @@ function SectionBareMetal() {
   return (
     <>
       <section id="baremetal-overview">
-        <h2 className="docs-h2"><span className="docs-h2-icon amber"><Icon.Terminal/></span>Bare-Metal Install (no Docker, no Kubernetes)</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon amber"><Icon.Terminal /></span>Bare-Metal Install (no Docker, no Kubernetes)</h2>
         <p>The standalone installer brings the entire Elchi stack up as <strong>systemd services</strong> on 1, 2, or 3+ Linux VMs — no Kubernetes, no Helm, no Docker required. The script runs once on the first node ("M1", the local machine) and SSHes into the rest to provision them. Source lives at <a href="https://github.com/CloudNativeWorks/elchi-archive/tree/main/deploy/standalone">elchi-archive/deploy/standalone/</a>; the installer itself is unversioned and always runs from the <code>main</code> branch. Component versions (elchi-backend, UI, envoy, coredns) are pinned per-flag.</p>
 
         <div className="docs-table-wrap">
@@ -28,7 +28,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-prereq">
-        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check/></span>Prerequisites</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check /></span>Prerequisites</h2>
         <ul>
           <li><strong>OS:</strong> Ubuntu 22.04 / 24.04 · Debian 12 · RHEL / Rocky / Alma / Oracle 9 (every cluster member must run the same major + arch — the pre-flight homogeneity check refuses mixed clusters)</li>
           <li><strong>Architecture:</strong> linux/amd64 (arm64 lands when upstream backend ships arm64 binaries)</li>
@@ -46,14 +46,14 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-quickstart">
-        <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Rocket/></span>Quick Start</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Rocket /></span>Quick Start</h2>
 
         <h3 className="docs-h3">Single VM (all-in-one)</h3>
         <p>Without <code>--nodes</code> the installer defaults to a single-VM setup on this machine — it auto-detects the first non-loopback IPv4 from <code>hostname -I</code> and uses that as M1.</p>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.7')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <h3 className="docs-h3">3-VM cluster, multi-version backend, key-based SSH</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.5')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.35.3,elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.37.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.7')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.35.3,elchi-v1.2.3-v0.14.0-envoy1.36.2,elchi-v1.2.3-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <Callout kind="info" title="GSLB zone (default elchi.local)">
           <p>The CoreDNS GSLB plugin is enabled by default. If you skip <code>--gslb-zone</code>, the installer falls back to <code>elchi.local</code> — a non-routable <code>.local</code>-style namespace safe for internal cluster DNS / testing. Pass <code>--gslb-zone=&lt;your-delegated-domain&gt;</code> for a real authoritative deployment, or <code>--no-gslb</code> to skip the plugin entirely.</p>
@@ -64,7 +64,7 @@ function SectionBareMetal() {
         </Callout>
 
         <h3 className="docs-h3">3-VM cluster, no SSH key set up yet (interactive bootstrap)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-bootstrap')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-bootstrap')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2')}</Code>
 
         <p><code>--ssh-bootstrap</code> mints a fresh ed25519 key on M1, then prompts the operator <em>once per remote node</em> for that node's password. Each password is used only for that node's <code>ssh-copy-id</code> and is discarded immediately after. M1 itself is local — no password prompt for it. Subsequent SSH (orchestration, upgrades, uninstall) all use the generated key.</p>
 
@@ -78,7 +78,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-install">
-        <h2 className="docs-h2"><span className="docs-h2-icon violet"><Icon.Settings/></span><code>install.sh</code> — full flag reference</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon violet"><Icon.Settings /></span><code>install.sh</code> — full flag reference</h2>
         <p>Every variant tag in <code>--backend-version</code> is a full release-asset name from <a href="https://github.com/CloudNativeWorks/elchi-backend/releases">elchi-backend releases</a>: <code>elchi-vX.Y.Z-vA.B.C-envoyP.Q.R</code>. Multiple variants are comma-separated and each gets its own systemd template unit + <code>/etc/elchi/&lt;variant&gt;/</code> config dir + <code>/var/lib/elchi/&lt;variant&gt;/</code> HOME dir.</p>
 
         <h3 className="docs-h3">Topology &amp; SSH</h3>
@@ -103,9 +103,9 @@ function SectionBareMetal() {
           <table className="docs-table">
             <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
             <tbody>
-              <tr><td className="param">--backend-version=&lt;csv&gt;</td><td>One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: <code>--backend-variants=</code>.</td><td className="default">elchi-v1.2.0-v0.14.0-envoy1.36.2</td></tr>
-              <tr><td className="param">--ui-version=&lt;vX.Y.Z&gt;</td><td>UI bundle version (<code>elchi-dist-vX.Y.Z.tar.gz</code> from elchi releases).</td><td className="default">v1.1.3</td></tr>
-              <tr><td className="param">--envoy-version=&lt;vX.Y.Z&gt;</td><td>Front-door Envoy proxy binary version.</td><td className="default">v1.37.0</td></tr>
+              <tr><td className="param">--backend-version=&lt;csv&gt;</td><td>One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: <code>--backend-variants=</code>.</td><td className="default">elchi-v1.2.3-v0.14.0-envoy1.36.2</td></tr>
+              <tr><td className="param">--ui-version=&lt;vX.Y.Z&gt;</td><td>UI bundle version (<code>elchi-dist-vX.Y.Z.tar.gz</code> from elchi releases).</td><td className="default">v1.1.7</td></tr>
+              <tr><td className="param">--envoy-version=&lt;vX.Y.Z&gt;</td><td>Front-door Envoy proxy binary version.</td><td className="default">v1.36.2</td></tr>
               <tr><td className="param">--coredns-version=&lt;vX.Y.Z&gt;</td><td>Custom CoreDNS-with-elchi-plugin version (used only when GSLB is enabled).</td><td className="default">v0.1.3</td></tr>
             </tbody>
           </table>
@@ -243,7 +243,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-upgrade">
-        <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Download/></span><code>upgrade.sh</code> — version-diff upgrade</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon emerald"><Icon.Download /></span><code>upgrade.sh</code> — version-diff upgrade</h2>
         <p>Run on M1. Computes the diff against the running cluster (<code>added</code> / <code>kept</code> / <code>removed</code> variants) and re-runs <code>install.sh</code> with the union. Every <code>elchi-*</code> systemd unit goes through hash-based reconcile so binary or config changes trigger a restart; unchanged services stay running. Single-flight via <code>flock /run/elchi-upgrade.lock</code>.</p>
 
         <Callout kind="info" title="No SSH flags needed after install">
@@ -251,24 +251,24 @@ function SectionBareMetal() {
         </Callout>
 
         <h3 className="docs-h3">Add a new variant (additive — keeps current set)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2')}</Code>
         <p>One-liner shortcut: appends to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's <code>config.js</code> <code>AVAILABLE_VERSIONS</code> regenerates so the new envoy version shows up in the version dropdown.</p>
 
         <h3 className="docs-h3">Bump just the UI</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.1.6')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.1.7')}</Code>
         <p>Backend / envoy / coredns / mongo / VM stay on their current versions — install.sh's hash-based reconcile marks each as <code>noop</code>. Only nginx may restart if the UI config block changed.</p>
 
         <h3 className="docs-h3">Bump just CoreDNS (GSLB plugin)</h3>
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--coredns-version')}={T.s('v0.1.4')}</Code>
 
         <h3 className="docs-h3">Replace variant set explicitly (full union)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.36.2,elchi-v1.2.0-v0.14.0-envoy1.37.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2,elchi-v1.2.3-v0.14.0-envoy1.36.2')}</Code>
 
         <h3 className="docs-h3">Replace a variant + drop the old one (declarative)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.0-v0.14.0-envoy1.37.0')} {'\\\n'}      {T.f('--prune-missing')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--prune-missing')}</Code>
 
         <h3 className="docs-h3">Bump UI + Envoy proxy together</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.4')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.7')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
 
         <h3 className="docs-h3">Upgrade flags</h3>
         <div className="docs-table-wrap">
@@ -297,7 +297,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-uninstall">
-        <h2 className="docs-h2"><span className="docs-h2-icon rose"><Icon.Trash/></span><code>uninstall.sh</code> — remove the stack</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon rose"><Icon.Trash /></span><code>uninstall.sh</code> — remove the stack</h2>
         <p>Default uninstall is non-destructive: services stop, unit files / binaries / installer payload / nginx vhost / journald drop-in / firewall ports / managed <code>/etc/hosts</code> block all go. Mongo, VictoriaMetrics, Grafana data + secrets + TLS material are preserved unless you opt in via the matching <code>--purge*</code> flag.</p>
 
         <h3 className="docs-h3">Single node (this machine only)</h3>
@@ -337,7 +337,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-validate">
-        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check/></span><code>/etc/elchi/validate.sh</code> — per-node post-install audit</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check /></span><code>/etc/elchi/validate.sh</code> — per-node post-install audit</h2>
         <p>Read-only. The installer drops this on EVERY node so you can confirm the install end-to-end without leaning on the orchestrator. Run it on each machine after install (or any time you want a sanity check):</p>
         <Code lang="shell">{T.cmd('sudo')} /etc/elchi/validate.sh</Code>
 
@@ -361,7 +361,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-helper">
-        <h2 className="docs-h2"><span className="docs-h2-icon cyan"><Icon.Terminal/></span><code>elchi-stack</code> — operator helper</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon cyan"><Icon.Terminal /></span><code>elchi-stack</code> — operator helper</h2>
         <p>Installed at <code>/usr/local/bin/elchi-stack</code> on every node. M1 is the orchestrator (where SSH credentials are persisted) — most subcommands are intended to run from there.</p>
         <div className="docs-table-wrap">
           <table className="docs-table">
@@ -382,7 +382,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-ports">
-        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Network/></span>Port atlas</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Network /></span>Port atlas</h2>
         <div className="docs-table-wrap">
           <table className="docs-table">
             <thead><tr><th>Service</th><th>Port</th><th>Where it runs</th></tr></thead>
@@ -411,7 +411,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-topology">
-        <h2 className="docs-h2"><span className="docs-h2-icon violet"><Icon.Layers/></span>Topology</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon violet"><Icon.Layers /></span>Topology</h2>
         <p><strong>1 VM:</strong> all-in-one. <strong>2 VM:</strong> Mongo standalone on M1; M2 connects over LAN. <strong>3+ VM:</strong> Mongo replica set across the first 3 nodes; additional nodes (4+) run no mongod. Registry runs on every node with HA leader election (Mongo lease, TTL 30s, renew 10s). UI/Envoy/backend run on every node — each node's front-door Envoy round-robins UI traffic across all peers' nginx instances and uses <code>ext_proc</code> + the registry to decide which control-plane / controller to route each request to (<code>x-target-cluster</code> header).</p>
 
         <p><strong>OTEL collector on every node.</strong> Each node ships its own <code>otelcol-contrib</code> instance bound to <code>0.0.0.0:4317/4318</code>; that node's Envoy routes <code>/opentelemetry</code> traffic to <code>127.0.0.1:4317</code> (no cross-node hop). All collectors export to the singleton VictoriaMetrics on M1 — or to <code>--vm-endpoint</code> when <code>--vm=external</code>. Failure mode: M1 OTEL outage no longer cascades to M2/M3 envoys, and the per-node collector's <code>sending_queue</code> buffers writes if VM is briefly unreachable.</p>
@@ -420,7 +420,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-hardening">
-        <h2 className="docs-h2"><span className="docs-h2-icon rose"><Icon.Shield/></span>Production hardening (kernel + systemd)</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon rose"><Icon.Shield /></span>Production hardening (kernel + systemd)</h2>
         <p>Every install lands a production tuning baseline. The defaults below come from the upstream production checklists for Envoy, MongoDB, and the Linux kernel — they're not opinionated guesses, they're the values these projects explicitly call out.</p>
 
         <h3 className="docs-h3">Kernel sysctl (<code>/etc/sysctl.d/99-elchi-stack.conf</code>)</h3>
@@ -497,7 +497,7 @@ function SectionBareMetal() {
       </section>
 
       <section id="baremetal-distros">
-        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check/></span>Supported distros + idempotency</h2>
+        <h2 className="docs-h2"><span className="docs-h2-icon"><Icon.Check /></span>Supported distros + idempotency</h2>
         <p>Ubuntu 22.04 + 24.04 · Debian 12 · RHEL / Rocky / Alma / Oracle 9. amd64 only. <strong>Debian 11 (bullseye)</strong> and <strong>Ubuntu 20.04 (focal)</strong> are dropped because MongoDB 8.0 (the cluster-wide canonical default) has no apt repo for them — we deliberately don't silently fall back to an older mongo major because version drift inside a replica set kills the cluster in subtle ways. <strong>RHEL / Rocky / Alma / Oracle 8</strong> is dropped on a separate axis: the systemd hardening directives we use require systemd ≥ 247, which RHEL 8 ships older. The pre-flight homogeneity check also refuses mixed-major clusters upfront.</p>
         <p><strong>Idempotency &amp; reconcile</strong> — Every setup module uses hash-based reconcile (<code>systemd::install_and_apply</code> for elchi-* units; <code>systemd::reconcile_external</code> for grafana-server / mongod / nginx). The fingerprint = sha256(unit_file ‖ EnvironmentFile contents ‖ ExecStart binary) and is persisted at <code>/var/lib/elchi/.unit-fingerprint/&lt;unit&gt;</code>. Decision matrix on rerun:</p>
         <ul>
