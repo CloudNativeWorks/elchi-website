@@ -290,7 +290,7 @@ function SectionBareMetal() {
               <tr><td className="param">--no-upgrade-os</td><td>Explicit opt-out (matches the default).</td></tr>
               <tr><td className="param">--skip-health-gate</td><td>Bypass post-upgrade <code>verify::deep_health</code>. Faster but unsafer; only use when verify itself is the problem.</td></tr>
               <tr><td className="param">--ssh-user / --ssh-key / --ssh-port</td><td>Override persisted SSH credentials.</td></tr>
-              <tr><td className="param">-h | --help</td><td>Usage banner.</td></tr>
+              <tr><td className="param">-h | --help</td><td>Usage Banner.</td></tr>
             </tbody>
           </table>
         </div>
