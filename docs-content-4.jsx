@@ -231,7 +231,8 @@ function SectionBareMetal() {
             <tbody>
               <tr><td className="param">--non-interactive</td><td>Never prompt; fail if a confirmation would be required.</td></tr>
               <tr><td className="param">--no-firewall</td><td>Skip firewalld/ufw port opening.</td></tr>
-              <tr><td className="param">--no-upgrade-os</td><td>Skip the apt/dnf <code>dist-upgrade</code> preflight (default-on for security currency; opt out for reproducible images / air-gapped runs).</td></tr>
+              <tr><td className="param">--upgrade-os</td><td>Opt-in: apply OS security advisories before the elchi-stack install (<code>unattended-upgrade</code> on debian, <code>dnf upgrade-minimal --security</code> on rhel). Security-only — never a full dist-upgrade. Default off so reruns don't churn the host OS unexpectedly.</td></tr>
+              <tr><td className="param">--no-upgrade-os</td><td>Explicit opt-out (matches the default; provided for symmetry / scripting).</td></tr>
               <tr><td className="param">--dry-run</td><td>Render configs to <code>/tmp/elchi-dryrun-*</code>; skip every side-effect.</td></tr>
               <tr><td className="param">--force-redownload</td><td>Bypass sha256 cache; re-download every binary.</td></tr>
               <tr><td className="param">--keep-bundle</td><td>Preserve the encrypted handoff bundle artifact at <code>/tmp/</code> after orchestration.</td></tr>
@@ -251,8 +252,8 @@ function SectionBareMetal() {
         </Callout>
 
         <h3 className="docs-h3">Add a new variant (additive — keeps current set)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2')}</Code>
-        <p>One-liner shortcut: appends to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's <code>config.js</code> <code>AVAILABLE_VERSIONS</code> regenerates so the new envoy version shows up in the version dropdown.</p>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.38.0')}</Code>
+        <p>One-liner shortcut: appends a new envoy version to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's <code>config.js</code> <code>AVAILABLE_VERSIONS</code> regenerates so the new envoy version shows up in the version dropdown.</p>
 
         <h3 className="docs-h3">Bump just the UI</h3>
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.1.7')}</Code>
@@ -262,7 +263,8 @@ function SectionBareMetal() {
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--coredns-version')}={T.s('v0.1.4')}</Code>
 
         <h3 className="docs-h3">Replace variant set explicitly (full union)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2,elchi-v1.2.3-v0.14.0-envoy1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2,elchi-v1.2.3-v0.14.0-envoy1.38.0')}</Code>
+        <p>Declarative — supplies the FULL desired variant set. Anything currently deployed but not in this list is auto-pruned by install.sh's stale-variants pass (no <code>--prune-missing</code> needed; the flag remains for operators who prefer the intent visible in the plan banner).</p>
 
         <h3 className="docs-h3">Replace a variant + drop the old one (declarative)</h3>
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.3-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--prune-missing')}</Code>
@@ -282,8 +284,10 @@ function SectionBareMetal() {
               <tr><td className="param">--coredns-version=&lt;vX.Y.Z&gt;</td><td>Bump CoreDNS plugin (only with GSLB enabled).</td></tr>
               <tr><td className="param">--mongo-version=auto|6.0|7.0|8.0</td><td>Forwarded to install.sh; package upgrade if differs.</td></tr>
               <tr><td className="param">--grafana-user / --grafana-password</td><td>Rotate Grafana admin login.</td></tr>
-              <tr><td className="param">--prune-version=&lt;tag&gt;</td><td>Remove this specific variant after install. Repeatable / csv. Mutually exclusive with <code>--prune-missing</code>.</td></tr>
-              <tr><td className="param">--prune-missing</td><td>Declarative — remove every CURRENT variant that isn't in the new <code>--backend-version</code> list.</td></tr>
+              <tr><td className="param">--prune-version=&lt;tag&gt;</td><td>Remove this specific variant after install. Repeatable / csv. Mutually exclusive with <code>--prune-missing</code>. Note: any variant simply omitted from <code>--backend-version</code> is also auto-pruned by install.sh — this flag is for making the intent visible in the plan banner.</td></tr>
+              <tr><td className="param">--prune-missing</td><td>Declarative — remove every CURRENT variant that isn't in the new <code>--backend-version</code> list. Same effect as just dropping them; redundant in practice but kept for explicitness.</td></tr>
+              <tr><td className="param">--upgrade-os</td><td>Apply OS security patches as part of this upgrade. Default OFF — most upgrade reruns just refresh elchi-stack code, not the host OS. Security-only when enabled (<code>unattended-upgrade</code> on debian, <code>dnf upgrade-minimal --security</code> on rhel).</td></tr>
+              <tr><td className="param">--no-upgrade-os</td><td>Explicit opt-out (matches the default).</td></tr>
               <tr><td className="param">--skip-health-gate</td><td>Bypass post-upgrade <code>verify::deep_health</code>. Faster but unsafer; only use when verify itself is the problem.</td></tr>
               <tr><td className="param">--ssh-user / --ssh-key / --ssh-port</td><td>Override persisted SSH credentials.</td></tr>
               <tr><td className="param">-h | --help</td><td>Usage banner.</td></tr>
@@ -293,6 +297,10 @@ function SectionBareMetal() {
 
         <Callout kind="info" title="Health gate &amp; rollback">
           <p>After install.sh finishes, every node runs <code>verify::deep_health</code>: systemd state + journalctl registration log + Envoy admin <code>/listeners</code> bind check. A failure triggers per-binary rollback on the failed nodes (<code>.prev</code> snapshot → restart). Healthy nodes keep the new version; the operator retries against the bad node. <strong>install.sh also auto-prunes</strong> any variant left on disk but not in the active set, so a partial / aborted upgrade self-heals on the next run.</p>
+        </Callout>
+
+        <Callout kind="info" title="No double-fetch on remote nodes">
+          <p>Backend binaries and the UI tarball are downloaded once on M1 and shipped to every other node inside the encrypted handoff bundle (<code>/tmp/elchi-bundle-*.tar.gz.enc</code>). A 3-node upgrade fetches one 79MB binary + 16MB UI tarball from GitHub, not three. Remote nodes log <code>binary already present</code> / <code>UI bundle already extracted</code> instead of re-downloading.</p>
         </Callout>
       </section>
 
