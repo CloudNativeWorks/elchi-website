@@ -29,13 +29,13 @@ function SectionClient() {
         <Code lang="shell">{T.c('# Fetch the installer\n')}{T.cmd('wget')} {T.s('https://github.com/CloudNativeWorks/elchi-client/releases/download/v1.1.0/elchi-install.sh')}</Code>
 
         <h3 className="docs-h3">Production setup</h3>
-        <Code lang="shell">{T.cmd('sudo bash')} elchi-install.sh \\{'\n'}  {T.f('--name')}=web-server-01 \\{'\n'}  {T.f('--host')}=backend.elchi.io \\{'\n'}  {T.f('--port')}={T.n('443')} \\{'\n'}  {T.f('--tls')}={T.b('true')} \\{'\n'}  {T.f('--token')}=your-auth-token</Code>
+        <Code lang="shell">{T.cmd('sudo bash')} elchi-install.sh {'\\\n'}  {T.f('--name')}=web-server-01 {'\\\n'}  {T.f('--host')}=backend.elchi.io {'\\\n'}  {T.f('--port')}={T.n('443')} {'\\\n'}  {T.f('--tls')}={T.b('true')} {'\\\n'}  {T.f('--token')}=your-auth-token</Code>
 
         <h3 className="docs-h3">OpenStack deployment</h3>
-        <Code lang="shell">{T.cmd('sudo bash')} elchi-install.sh \\{'\n'}  {T.f('--name')}=openstack-vm \\{'\n'}  {T.f('--host')}=controller.elchi.io \\{'\n'}  {T.f('--port')}={T.n('443')} \\{'\n'}  {T.f('--tls')}={T.b('true')} \\{'\n'}  {T.f('--token')}=prod-token \\{'\n'}  {T.f('--cloud')}=my-openstack</Code>
+        <Code lang="shell">{T.cmd('sudo bash')} elchi-install.sh {'\\\n'}  {T.f('--name')}=openstack-vm {'\\\n'}  {T.f('--host')}=controller.elchi.io {'\\\n'}  {T.f('--port')}={T.n('443')} {'\\\n'}  {T.f('--tls')}={T.b('true')} {'\\\n'}  {T.f('--token')}=prod-token {'\\\n'}  {T.f('--cloud')}=my-openstack</Code>
 
         <h3 className="docs-h3">With BGP routing</h3>
-        <Code lang="shell">{T.cmd('sudo bash')} elchi-install.sh \\{'\n'}  {T.f('--enable-bgp')} \\{'\n'}  {T.f('--name')}=edge-router \\{'\n'}  {T.f('--host')}=controller.elchi.io \\{'\n'}  {T.f('--port')}={T.n('443')} \\{'\n'}  {T.f('--tls')}={T.b('true')} \\{'\n'}  {T.f('--token')}=prod-token \\{'\n'}  {T.f('--cloud')}=production</Code>
+        <Code lang="shell">{T.cmd('sudo bash')} elchi-install.sh {'\\\n'}  {T.f('--enable-bgp')} {'\\\n'}  {T.f('--name')}=edge-router {'\\\n'}  {T.f('--host')}=controller.elchi.io {'\\\n'}  {T.f('--port')}={T.n('443')} {'\\\n'}  {T.f('--tls')}={T.b('true')} {'\\\n'}  {T.f('--token')}=prod-token {'\\\n'}  {T.f('--cloud')}=production</Code>
 
         <h3 className="docs-h3">Installer flags</h3>
         <div className="docs-table-wrap">
@@ -124,7 +124,7 @@ function SectionDiscovery() {
         <Code lang="shell">{T.cmd('helm repo add')} elchi {T.s('https://charts.elchi.io')}{'\n'}{T.cmd('helm repo update')}</Code>
 
         <h3 className="docs-h3">2. Install the discovery agent</h3>
-        <Code lang="shell">{T.cmd('helm install')} endpoint-discovery elchi/elchi-discovery \\{'\n'}  {T.f('--set')} config.elchiEndpoint={T.s('"https://your-elchi-instance.com"')} \\{'\n'}  {T.f('--set')} config.token={T.s('"your-discovery-token"')} \\{'\n'}  {T.f('--set')} clusterName={T.s('"my-k8s-cluster"')} \\{'\n'}  {T.f('--namespace')} elchi-stack \\{'\n'}  {T.f('--create-namespace')}</Code>
+        <Code lang="shell">{T.cmd('helm install')} endpoint-discovery elchi/elchi-discovery {'\\\n'}  {T.f('--set')} config.elchiEndpoint={T.s('"https://your-elchi-instance.com"')} {'\\\n'}  {T.f('--set')} config.token={T.s('"your-discovery-token"')} {'\\\n'}  {T.f('--set')} clusterName={T.s('"my-k8s-cluster"')} {'\\\n'}  {T.f('--namespace')} elchi-stack {'\\\n'}  {T.f('--create-namespace')}</Code>
 
         <h3 className="docs-h3">3. Verify</h3>
         <Code lang="shell">{T.cmd('kubectl get pods')} {T.f('-n')} elchi-stack</Code>

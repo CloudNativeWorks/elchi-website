@@ -48,7 +48,7 @@ function SectionIntro() {
         <Code lang="shell">{T.c('# Add Elchi Helm repository\n')}{T.cmd('helm repo add')} elchi {T.s('https://charts.elchi.io')}{'\n'}{T.cmd('helm repo update')}</Code>
 
         <h3 className="docs-h3">2. Install the stack</h3>
-        <Code lang="shell">{T.cmd('helm install')} my-elchi elchi/elchi-stack \\{'\n'}  {T.f('--set-string')} global.mainAddress={T.s('"your-domain.com"')} \\{'\n'}  {T.f('--namespace')} elchi-stack \\{'\n'}  {T.f('--create-namespace')}</Code>
+        <Code lang="shell">{T.cmd('helm install')} my-elchi elchi/elchi-stack {'\\\n'}  {T.f('--set-string')} global.mainAddress={T.s('"your-domain.com"')} {'\\\n'}  {T.f('--namespace')} elchi-stack {'\\\n'}  {T.f('--create-namespace')}</Code>
 
         <h3 className="docs-h3">3. Verify the install</h3>
         <Code lang="shell">{T.c('# Check pod status\n')}{T.cmd('kubectl get pods')} {T.f('-n')} elchi-stack{'\n'}{'\n'}{T.c('# Inspect service endpoints\n')}{T.cmd('kubectl get svc')}  {T.f('-n')} elchi-stack</Code>
