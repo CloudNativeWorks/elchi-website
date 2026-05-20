@@ -18,7 +18,9 @@ function SectionBareMetal() {
               <tr><td><strong>elchi-controller</strong></td><td>Every node (singleton)</td><td>:1960 gRPC, :1980 REST</td></tr>
               <tr><td><strong>elchi-control-plane</strong></td><td>Every node (one per backend variant)</td><td>:1990 (per variant)</td></tr>
               <tr><td><strong>OTel Collector</strong></td><td>Every node (local sink for envoy <code>/opentelemetry</code>)</td><td>:4317 gRPC, :4318 HTTP, :13133 health, :8888 prom</td></tr>
+              <tr><td><strong>elchi-collector</strong></td><td>Every node (ALS sink — Envoy data-plane proxies push Access Log Service streams here; writes to local ClickHouse + MongoDB). Opt out with <code>--no-collector</code></td><td>:18090 gRPC, :18091 HTTP/metrics</td></tr>
               <tr><td><strong>MongoDB</strong></td><td>1–2 VM: M1 standalone · 3+ VM: M1+M2+M3 RS · 4+: no extra members</td><td>:27017</td></tr>
+              <tr><td><strong>ClickHouse</strong></td><td>1–2 VM: standalone · 3+ VM: clustered with embedded Keeper on each member (Replicated engine, replicated tables)</td><td>:9000 native, :8123 HTTP, :9009 interserver (3+), :9181/:9234 Keeper (3+)</td></tr>
               <tr><td><strong>VictoriaMetrics</strong></td><td>M1 only (or external via <code>--vm=external</code>)</td><td>:8428</td></tr>
               <tr><td><strong>Grafana</strong></td><td>M1 only (proxied at <code>/grafana/</code>)</td><td>127.0.0.1:3000</td></tr>
               <tr><td><strong>CoreDNS GSLB</strong></td><td>Every node (default-on, zone defaults to <code>elchi.local</code>; opt out with <code>--no-gslb</code>)</td><td>:53 tcp+udp, :8053 webhook</td></tr>
@@ -50,13 +52,25 @@ function SectionBareMetal() {
 
         <h3 className="docs-h3">Single VM (all-in-one)</h3>
         <p>Without <code>--nodes</code> the installer defaults to a single-VM setup on this machine — it auto-detects the first non-loopback IPv4 from <code>hostname -I</code> and uses that as M1.</p>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.9')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.5-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.3.6')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.2-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <h3 className="docs-h3">3-VM cluster, multi-version backend, key-based SSH</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.9')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.5-v0.14.0-envoy1.35.3,elchi-v1.2.5-v0.14.0-envoy1.36.2,elchi-v1.2.5-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.3.6')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.2-v0.14.0-envoy1.35.3,elchi-v1.4.2-v0.14.0-envoy1.36.2,elchi-v1.4.2-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <Callout kind="info" title="GSLB zone (default elchi.local)">
           <p>The CoreDNS GSLB plugin is enabled by default. If you skip <code>--gslb-zone</code>, the installer falls back to <code>elchi.local</code> — a non-routable <code>.local</code>-style namespace safe for internal cluster DNS / testing. Pass <code>--gslb-zone=&lt;your-delegated-domain&gt;</code> for a real authoritative deployment, or <code>--no-gslb</code> to skip the plugin entirely.</p>
+        </Callout>
+
+        <Callout kind="warn" title="Post-install UI activation (required for GSLB to actually serve records)">
+          <p>The installer ships and boots the CoreDNS daemon (TCP/UDP <code>:53</code>, webhook <code>:8053</code>), but the backend-side configuration that the plugin polls for the authoritative snapshot is OFF until you turn it on in the UI:</p>
+          <ol>
+            <li>Open the UI → <strong>Settings → GSLB</strong>.</li>
+            <li>Toggle <strong>Enable GSLB</strong>.</li>
+            <li>Set <strong>DNS Zone</strong> (the same value you passed as <code>--gslb-zone</code>; warning: zone cannot be changed later without a re-install).</li>
+            <li>Paste the <strong>DNS Secret</strong>. Grab it on M1 with <code>sudo elchi-stack show-secret gslb</code> — this is the <code>X-Elchi-Secret</code> the plugin uses to authenticate its <code>/dns/snapshot</code> poll to the backend, and the values MUST match.</li>
+            <li>Click <strong>Update Configuration</strong>. Within one <code>--gslb-sync-interval</code> (default 1 min) every node's CoreDNS plugin pulls the fresh snapshot and starts answering queries.</li>
+          </ol>
+          <p>Verify after activation: <code>dig @&lt;node-ip&gt; &lt;zone&gt; SOA +short</code> on any node should return the SOA record. If it doesn't, <code>journalctl -u elchi-coredns -n 50</code> and the plugin <code>/health</code> endpoint on <code>127.0.0.1:8053</code> will say why (auth failure / snapshot poll error).</p>
         </Callout>
 
         <Callout kind="info" title="Variants & replicas">
@@ -64,7 +78,7 @@ function SectionBareMetal() {
         </Callout>
 
         <h3 className="docs-h3">3-VM cluster, no SSH key set up yet (interactive bootstrap)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-bootstrap')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.5-v0.14.0-envoy1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-bootstrap')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.2-v0.14.0-envoy1.36.2')}</Code>
 
         <p><code>--ssh-bootstrap</code> mints a fresh ed25519 key on M1, then prompts the operator <em>once per remote node</em> for that node's password. Each password is used only for that node's <code>ssh-copy-id</code> and is discarded immediately after. M1 itself is local — no password prompt for it. Subsequent SSH (orchestration, upgrades, uninstall) all use the generated key.</p>
 
@@ -103,10 +117,12 @@ function SectionBareMetal() {
           <table className="docs-table">
             <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
             <tbody>
-              <tr><td className="param">--backend-version=&lt;csv&gt;</td><td>One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: <code>--backend-variants=</code>.</td><td className="default">elchi-v1.2.5-v0.14.0-envoy1.36.2</td></tr>
-              <tr><td className="param">--ui-version=&lt;vX.Y.Z&gt;</td><td>UI bundle version (<code>elchi-dist-vX.Y.Z.tar.gz</code> from elchi releases).</td><td className="default">v1.1.9</td></tr>
-              <tr><td className="param">--envoy-version=&lt;vX.Y.Z&gt;</td><td>Front-door Envoy proxy binary version.</td><td className="default">v1.36.2</td></tr>
-              <tr><td className="param">--coredns-version=&lt;vX.Y.Z&gt;</td><td>Custom CoreDNS-with-elchi-plugin version (used only when GSLB is enabled).</td><td className="default">v0.1.3</td></tr>
+              <tr><td className="param">--backend-version=&lt;csv&gt;</td><td>One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: <code>--backend-variants=</code>.</td><td className="default">elchi-v1.4.2-v0.14.0-envoy1.36.2</td></tr>
+              <tr><td className="param">--ui-version=&lt;vX.Y.Z&gt;</td><td>UI bundle version (<code>elchi-dist-vX.Y.Z.tar.gz</code> from elchi releases).</td><td className="default">v1.3.6</td></tr>
+              <tr><td className="param">--envoy-version=&lt;vX.Y.Z&gt;</td><td>Front-door Envoy proxy binary version.</td><td className="default">v1.37.0</td></tr>
+              <tr><td className="param">--coredns-version=&lt;vX.Y.Z&gt;</td><td>Custom CoreDNS-with-elchi-plugin version (used only when GSLB is enabled). v0.1.1 shipped without the elchi plugin compiled in — pinning to that version causes <code>Unknown directive 'elchi'</code>.</td><td className="default">v0.1.3</td></tr>
+              <tr><td className="param">--collector-version=&lt;vX.Y.Z&gt;</td><td>elchi-collector binary version (ALS gRPC sink → ClickHouse / Mongo). Mirrored to the public elchi-archive releases by the build-elchi-collector workflow.</td><td className="default">v0.1.4</td></tr>
+              <tr><td className="param">--no-collector</td><td>Skip the elchi-collector install entirely (cluster runs without ALS ingestion; envoy data-plane logs are not captured).</td><td className="default">—</td></tr>
             </tbody>
           </table>
         </div>
@@ -235,8 +251,9 @@ function SectionBareMetal() {
               <tr><td className="param">--no-upgrade-os</td><td>Explicit opt-out (matches the default; provided for symmetry / scripting).</td></tr>
               <tr><td className="param">--dry-run</td><td>Render configs to <code>/tmp/elchi-dryrun-*</code>; skip every side-effect.</td></tr>
               <tr><td className="param">--force-redownload</td><td>Bypass sha256 cache; re-download every binary.</td></tr>
-              <tr><td className="param">--keep-bundle</td><td>Preserve the encrypted handoff bundle artifact at <code>/tmp/</code> after orchestration.</td></tr>
+              <tr><td className="param">--keep-bundle</td><td>Preserve the encrypted handoff bundle artifact at <code>/tmp/</code> after orchestration. Also preserves the orchestrator-staged secrets-from file so the operator can re-decrypt mid-incident.</td></tr>
               <tr><td className="param">--bundle-key-out=&lt;path&gt;</td><td>Write the bundle decryption key to a file (mode 0600).</td></tr>
+              <tr><td className="param">--quiet-key</td><td>Suppress the plaintext bundle-key emission at end of install; only a sha256 fingerprint is shown. Full key is persisted at <code>/etc/elchi/.bundle-key</code> (sealed via <code>systemd-creds</code> when available) and is recoverable via <code>elchi-stack show-secret bundle-key</code>. Use when capturing install logs so the key doesn't leak into screen recordings / tmux scrollback / CI logs.</td></tr>
               <tr><td className="param">-h | --help</td><td>Print full usage and exit.</td></tr>
             </tbody>
           </table>
@@ -252,25 +269,25 @@ function SectionBareMetal() {
         </Callout>
 
         <h3 className="docs-h3">Add a new variant (additive — keeps current set)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.2.5-v0.14.0-envoy1.38.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--add-backend-version')}={T.s('elchi-v1.4.2-v0.14.0-envoy1.38.0')}</Code>
         <p>One-liner shortcut: appends a new envoy version to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's <code>config.js</code> <code>AVAILABLE_VERSIONS</code> regenerates so the new envoy version shows up in the version dropdown.</p>
 
         <h3 className="docs-h3">Bump just the UI</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.1.9')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.3.6')}</Code>
         <p>Backend / envoy / coredns / mongo / VM stay on their current versions — install.sh's hash-based reconcile marks each as <code>noop</code>. Only nginx may restart if the UI config block changed.</p>
 
         <h3 className="docs-h3">Bump just CoreDNS (GSLB plugin)</h3>
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--coredns-version')}={T.s('v0.1.4')}</Code>
 
         <h3 className="docs-h3">Replace variant set explicitly (full union)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.5-v0.14.0-envoy1.36.2,elchi-v1.2.5-v0.14.0-envoy1.38.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.2-v0.14.0-envoy1.36.2,elchi-v1.4.2-v0.14.0-envoy1.38.0')}</Code>
         <p>Declarative — supplies the FULL desired variant set. Anything currently deployed but not in this list is auto-pruned by install.sh's stale-variants pass (no <code>--prune-missing</code> needed; the flag remains for operators who prefer the intent visible in the plan banner).</p>
 
         <h3 className="docs-h3">Replace a variant + drop the old one (declarative)</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.2.5-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--prune-missing')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.2-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--prune-missing')}</Code>
 
         <h3 className="docs-h3">Bump UI + Envoy proxy together</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.1.9')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.3.6')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
 
         <h3 className="docs-h3">Upgrade flags</h3>
         <div className="docs-table-wrap">
@@ -380,10 +397,19 @@ function SectionBareMetal() {
               <tr><td className="param">elchi-stack reload-envoy</td><td>Re-render Envoy bootstrap + restart Envoy on every node (after a topology change).</td></tr>
               <tr><td className="param">elchi-stack add-node &lt;ip&gt;</td><td>Extend the cluster: provision the new node with the existing bundle, recompute topology, push updated <code>/etc/hosts</code> + Envoy bootstrap to all peers.</td></tr>
               <tr><td className="param">elchi-stack init-replica-set</td><td>Run <code>rs.initiate()</code> on M1 (idempotent — checks <code>rs.status()</code> first).</td></tr>
+              <tr><td className="param">elchi-stack mongo-status</td><td>M1-only: <code>rs.status()</code> snapshot — PRIMARY identification, per-member state / health / uptime / replication lag / lastHeartbeatMessage. Recovery hint surfaces when <code>NotYetInitialized</code> (gate dropped between phase 1 and <code>rs.initiate()</code>).</td></tr>
+              <tr><td className="param">elchi-stack clickhouse-status</td><td>Local ClickHouse + Keeper diagnostics: version, uptime, Keeper quorum reachability, <code>system.clusters</code> member health, <code>elchi</code> database engine (<code>Replicated</code> in cluster mode), replicated tables.</td></tr>
+              <tr><td className="param">elchi-stack mongosh [args...]</td><td>Open mongosh against the local mongod, authenticated as root via <code>/etc/elchi/mongo/root.env</code>. Pass any further mongosh args (<code>--eval 'rs.status()'</code>, scripts, etc.).</td></tr>
+              <tr><td className="param">elchi-stack ch-client [args...]</td><td>Open clickhouse-client against the local server, authenticated as the <code>elchi</code> user from <code>secrets.env</code>.</td></tr>
+              <tr><td className="param">elchi-stack ssh &lt;node&gt;</td><td>Open an SSH session to a cluster node using the persisted cluster credentials from <code>/etc/elchi/orchestrator.env</code> — no flags needed.</td></tr>
+              <tr><td className="param">elchi-stack stack-version</td><td>One-screen "what's actually installed on this node" report: cluster-wide pins from <code>topology.full.yaml</code> + binary versions on this host (mongo, clickhouse, envoy, otel, grafana, nginx, elchi-collector, backend variants).</td></tr>
+              <tr><td className="param">elchi-stack tls-info</td><td>Cluster TLS cert summary: subject, SAN list, validity window, days-to-expiry (colored red &lt; 30, yellow &lt; 90), sha256 fingerprint.</td></tr>
+              <tr><td className="param">elchi-stack endpoint-test</td><td>Round-trip probe through the public Envoy: UI <code>/</code>, VictoriaMetrics <code>/api/v1/query</code>, Grafana <code>/grafana/api/health</code>, internal plaintext listener <code>:8080/</code>. Prints HTTP status for each.</td></tr>
+              <tr><td className="param">elchi-stack collector-stats</td><td>Per-node elchi-collector metrics summary (from <code>:18091/metrics</code>): events received / dropped, active ALS streams, batcher queue depth, ClickHouse rows inserted, ClickHouse / Mongo errors, flush count, pipeline panics. Best-effort — missing metrics render as 0.</td></tr>
               <tr><td className="param">elchi-stack export-bundle &lt;out&gt; [--reuse-bundle-key]</td><td>Repackage cluster artifacts into an encrypted bundle. <code>--reuse-bundle-key</code> uses the install-time key persisted via systemd-creds at <code>/etc/elchi/.bundle-key</code> so the bundle can be reapplied without redistributing a fresh decryption key.</td></tr>
-              <tr><td className="param">elchi-stack show-secret &lt;name&gt;</td><td>Print a stored credential. <code>name</code> ∈ <code>grafana | jwt | gslb | mongo-app | mongo-root | all</code>. Same values are also printed once at the end of the install. Persisted in <code>/etc/elchi/secrets.env</code> (mode 0640 root:elchi); preserved across re-runs and upgrades.</td></tr>
-              <tr><td className="param">elchi-stack rotate-secret &lt;jwt|gslb&gt;</td><td>Mint a new secret, restart affected services.</td></tr>
-              <tr><td className="param">elchi-stack verify</td><td>End-to-end cluster health: registration log evidence + Envoy admin listener probe + service active state on every node.</td></tr>
+              <tr><td className="param">elchi-stack show-secret &lt;name&gt;</td><td>Print a stored credential without rotating it. <code>name</code> ∈ <code>grafana | jwt | gslb | mongo-app | mongo-root | clickhouse | collector | bundle-key | all</code>. <code>collector</code>'s HASH_SALT is never rotatable — rotating it breaks event correlation. <code>bundle-key</code> re-decrypts <code>/etc/elchi/.bundle-key</code> when sealed via systemd-creds. Persisted in <code>/etc/elchi/secrets.env</code> (mode 0600 root:root); preserved across re-runs and upgrades.</td></tr>
+              <tr><td className="param">elchi-stack rotate-secret &lt;jwt|gslb|grafana&gt;</td><td>Mint a new JWT, GSLB, or Grafana admin password. JWT/GSLB get re-rendered into every variant's <code>common.env</code> and pushed cluster-wide via SSH; Grafana password gets re-applied via <code>grafana-cli</code> on M1 only (singleton).</td></tr>
+              <tr><td className="param">elchi-stack verify</td><td>End-to-end cluster health: per-node systemd + Envoy admin <code>/clusters</code> health flags + Envoy <code>/listeners</code> public listener bind + ClickHouse Keeper leader probe + (M1-side) mongo RS PRIMARY probe.</td></tr>
             </tbody>
           </table>
         </div>
@@ -413,6 +439,13 @@ function SectionBareMetal() {
               <tr><td>VictoriaMetrics</td><td className="param">0.0.0.0:8428</td><td>M1 only (with <code>--vm=local</code>)</td></tr>
               <tr><td>CoreDNS</td><td className="param">:53/tcp+udp</td><td>Every node when GSLB enabled</td></tr>
               <tr><td>CoreDNS webhook</td><td className="param">0.0.0.0:8053</td><td>M1 → M2/M3 push notifications (X-Elchi-Secret auth)</td></tr>
+              <tr><td>ClickHouse native</td><td className="param">0.0.0.0:9000</td><td>CH server TCP wire protocol; cluster member on every node</td></tr>
+              <tr><td>ClickHouse HTTP</td><td className="param">0.0.0.0:8123</td><td>CH HTTP interface; used by collector + backend for queries</td></tr>
+              <tr><td>ClickHouse interserver</td><td className="param">0.0.0.0:9009</td><td>Inter-replica replication (3+ node clusters only)</td></tr>
+              <tr><td>ClickHouse Keeper</td><td className="param">0.0.0.0:9181</td><td>Embedded Raft coordination client port (3+ node clusters only)</td></tr>
+              <tr><td>ClickHouse Keeper Raft</td><td className="param">0.0.0.0:9234</td><td>Keeper inter-peer Raft consensus traffic (3+ node)</td></tr>
+              <tr><td>elchi-collector gRPC</td><td className="param">0.0.0.0:18090</td><td>ALS sink — Envoy data-plane proxies push Access Log Service streams here</td></tr>
+              <tr><td>elchi-collector HTTP</td><td className="param">0.0.0.0:18091</td><td>Prometheus <code>/metrics</code> + health endpoint</td></tr>
             </tbody>
           </table>
         </div>
@@ -425,6 +458,10 @@ function SectionBareMetal() {
         <p><strong>OTEL collector on every node.</strong> Each node ships its own <code>otelcol-contrib</code> instance bound to <code>0.0.0.0:4317/4318</code>; that node's Envoy routes <code>/opentelemetry</code> traffic to <code>127.0.0.1:4317</code> (no cross-node hop). All collectors export to the singleton VictoriaMetrics on M1 — or to <code>--vm-endpoint</code> when <code>--vm=external</code>. Failure mode: M1 OTEL outage no longer cascades to M2/M3 envoys, and the per-node collector's <code>sending_queue</code> buffers writes if VM is briefly unreachable.</p>
 
         <p><strong>Storage tier stays on M1:</strong> VictoriaMetrics TSDB and Grafana UI are still singletons. With <code>--vm=external</code> the TSDB moves out entirely; Grafana stays on M1.</p>
+
+        <p><strong>ClickHouse cluster on every node.</strong> 1–2 node installs run <code>clickhouse-server</code> standalone. 3+ node installs run a clustered CH with embedded Keeper on each member: the <code>elchi</code> database is created as <code>ENGINE = Replicated('/clickhouse/databases/elchi', '{'{shard}'}', '{'{replica}'}')</code>, so the cluster-unaware collector's plain <code>CREATE TABLE</code> DDL is auto-promoted to <code>ReplicatedMergeTree</code> and tables replicate across all members via Keeper. Each node's collector writes to <strong>127.0.0.1</strong> — the Replicated engine handles fan-out — which keeps a 2 → 3 node growth from creating a peer-DDL race.</p>
+
+        <p><strong>elchi-collector on every node.</strong> The collector ingests the Envoy ALS (Access Log Service) gRPC stream from data-plane proxies on its local <code>:18090</code> and writes events to <strong>local ClickHouse</strong> (via loopback) + MongoDB. <code>/metrics</code> on <code>:18091</code> is scraped by the per-node OTel collector. ClickHouse replication carries the rows cluster-wide; cross-node ALS routing is not needed.</p>
       </section>
 
       <section id="baremetal-hardening">
