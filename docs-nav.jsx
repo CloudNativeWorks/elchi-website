@@ -66,6 +66,46 @@ const NAV = [
     ],
   },
   {
+    title: 'Configuring Envoy',
+    color: 'blue',
+    items: [
+      { id: 'config-model',    label: 'Resources & Config Model' },
+      { id: 'scenarios',       label: 'Scenario Workflows' },
+      { id: 'version-upgrade', label: 'Versions & Upgrades' },
+    ],
+  },
+  {
+    title: 'Traffic & Certificates',
+    color: 'amber',
+    items: [
+      { id: 'gslb', label: 'Global Server Load Balancing' },
+      { id: 'acme', label: 'Certificates (ACME)' },
+      { id: 'waf',  label: 'Web Application Firewall' },
+    ],
+  },
+  {
+    title: 'API Discovery & Observability',
+    color: 'emerald',
+    items: [
+      { id: 'api-discovery',        label: 'API Discovery', tag: 'new' },
+      { id: 'api-discovery-config', label: 'Collector Configuration' },
+      { id: 'observability',        label: 'Metrics & Logs' },
+      { id: 'audit',                label: 'Audit & Syslog' },
+      { id: 'jobs',                 label: 'Background Jobs' },
+    ],
+  },
+  {
+    title: 'Administration',
+    color: 'violet',
+    items: [
+      { id: 'registry-ha',   label: 'Registry & HA' },
+      { id: 'auth-access',   label: 'Auth & Access' },
+      { id: 'security-data', label: 'Threat Intel & GeoIP' },
+      { id: 'ai-analysis',   label: 'AI Analysis' },
+      { id: 'licensing',     label: 'Licensing' },
+    ],
+  },
+  {
     title: 'Resources',
     color: 'emerald',
     items: [

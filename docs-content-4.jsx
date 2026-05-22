@@ -52,10 +52,10 @@ function SectionBareMetal() {
 
         <h3 className="docs-h3">Single VM (all-in-one)</h3>
         <p>Without <code>--nodes</code> the installer defaults to a single-VM setup on this machine — it auto-detects the first non-loopback IPv4 from <code>hostname -I</code> and uses that as M1.</p>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.4.3')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.8-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.4.4')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.8-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <h3 className="docs-h3">3-VM cluster, multi-version backend, key-based SSH</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.4.3')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.8-v0.14.0-envoy1.35.3,elchi-v1.4.8-v0.14.0-envoy1.36.2,elchi-v1.4.8-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {'\\\n'}      {T.f('--nodes')}={T.s('10.10.10.2,10.10.10.3,10.10.10.4')} {'\\\n'}      {T.f('--ssh-user')}={T.s('ubuntu')} {T.f('--ssh-key')}={T.s('/root/.ssh/cluster_key')} {'\\\n'}      {T.f('--main-address')}={T.s('elchi.example.com')} {'\\\n'}      {T.f('--gslb-zone')}={T.s('gslb.example.com')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.4.4')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.8-v0.14.0-envoy1.35.3,elchi-v1.4.8-v0.14.0-envoy1.36.2,elchi-v1.4.8-v0.14.0-envoy1.38.0')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.36.2')}</Code>
 
         <Callout kind="info" title="GSLB zone (default elchi.local)">
           <p>The CoreDNS GSLB plugin is enabled by default. If you skip <code>--gslb-zone</code>, the installer falls back to <code>elchi.local</code> — a non-routable <code>.local</code>-style namespace safe for internal cluster DNS / testing. Pass <code>--gslb-zone=&lt;your-delegated-domain&gt;</code> for a real authoritative deployment, or <code>--no-gslb</code> to skip the plugin entirely.</p>
@@ -118,7 +118,7 @@ function SectionBareMetal() {
             <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
             <tbody>
               <tr><td className="param">--backend-version=&lt;csv&gt;</td><td>One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: <code>--backend-variants=</code>.</td><td className="default">elchi-v1.4.8-v0.14.0-envoy1.36.2</td></tr>
-              <tr><td className="param">--ui-version=&lt;vX.Y.Z&gt;</td><td>UI bundle version (<code>elchi-dist-vX.Y.Z.tar.gz</code> from elchi releases).</td><td className="default">v1.4.3</td></tr>
+              <tr><td className="param">--ui-version=&lt;vX.Y.Z&gt;</td><td>UI bundle version (<code>elchi-dist-vX.Y.Z.tar.gz</code> from elchi releases).</td><td className="default">v1.4.4</td></tr>
               <tr><td className="param">--envoy-version=&lt;vX.Y.Z&gt;</td><td>Front-door Envoy proxy binary version.</td><td className="default">v1.37.0</td></tr>
               <tr><td className="param">--coredns-version=&lt;vX.Y.Z&gt;</td><td>Custom CoreDNS-with-elchi-plugin version (used only when GSLB is enabled).</td><td className="default">v0.1.4</td></tr>
               <tr><td className="param">--collector-version=&lt;vX.Y.Z&gt;</td><td>elchi-collector binary version (ALS gRPC sink → ClickHouse / Mongo). Mirrored to the public elchi-archive releases by the build-elchi-collector workflow.</td><td className="default">v0.1.8</td></tr>
@@ -273,7 +273,7 @@ function SectionBareMetal() {
         <p>One-liner shortcut: appends a new envoy version to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's <code>config.js</code> <code>AVAILABLE_VERSIONS</code> regenerates so the new envoy version shows up in the version dropdown.</p>
 
         <h3 className="docs-h3">Bump just the UI</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.4.3')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('.../get.sh')} | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {T.f('--ui-version')}={T.s('v1.4.4')}</Code>
         <p>Backend / envoy / coredns / mongo / VM stay on their current versions — install.sh's hash-based reconcile marks each as <code>noop</code>. Only nginx may restart if the UI config block changed.</p>
 
         <h3 className="docs-h3">Bump just CoreDNS (GSLB plugin)</h3>
@@ -287,7 +287,7 @@ function SectionBareMetal() {
         <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--backend-version')}={T.s('elchi-v1.4.8-v0.14.0-envoy1.36.2')} {'\\\n'}      {T.f('--prune-missing')}</Code>
 
         <h3 className="docs-h3">Bump UI + Envoy proxy together</h3>
-        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.4.3')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
+        <Code lang="shell">{T.cmd('curl')} {T.f('-fsSL')} {T.s('https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh')} {'\\\n'}  | {T.cmd('sudo bash')} {T.f('-s')} {T.f('--')} {T.f('--upgrade')} {'\\\n'}      {T.f('--ui-version')}={T.s('v1.4.4')} {'\\\n'}      {T.f('--envoy-version')}={T.s('v1.38.0')}</Code>
 
         <h3 className="docs-h3">Upgrade flags</h3>
         <div className="docs-table-wrap">

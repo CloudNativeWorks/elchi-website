@@ -6,6 +6,8 @@ import { SectionIntro } from './docs-content-1.jsx';
 import { SectionPlatform } from './docs-content-2.jsx';
 import { SectionClient, SectionDiscovery, SectionResources } from './docs-content-3.jsx';
 import { SectionBareMetal } from './docs-content-4.jsx';
+import { SectionConfig, SectionTraffic } from './docs-content-5.jsx';
+import { SectionInventory, SectionAdmin } from './docs-content-6.jsx';
 
 const TOC = [
   { id: 'introduction', label: 'Introduction' },
@@ -36,6 +38,22 @@ const TOC = [
   { id: 'client-config',   label: 'Configuration', sub: true },
   { id: 'discovery-overview', label: 'Discovery' },
   { id: 'discovery-install',  label: 'Installation', sub: true },
+  { id: 'config-model',    label: 'Resources & Config' },
+  { id: 'scenarios',       label: 'Scenarios', sub: true },
+  { id: 'version-upgrade', label: 'Versions & Upgrades', sub: true },
+  { id: 'gslb', label: 'GSLB' },
+  { id: 'acme', label: 'Certificates (ACME)', sub: true },
+  { id: 'waf',  label: 'WAF', sub: true },
+  { id: 'api-discovery',        label: 'API Discovery' },
+  { id: 'api-discovery-config', label: 'Collector Config', sub: true },
+  { id: 'observability',        label: 'Metrics & Logs', sub: true },
+  { id: 'audit',                label: 'Audit & Syslog', sub: true },
+  { id: 'jobs',                 label: 'Background Jobs', sub: true },
+  { id: 'registry-ha',   label: 'Registry & HA' },
+  { id: 'auth-access',   label: 'Auth & Access', sub: true },
+  { id: 'security-data', label: 'Threat Intel & GeoIP', sub: true },
+  { id: 'ai-analysis',   label: 'AI Analysis', sub: true },
+  { id: 'licensing',     label: 'Licensing', sub: true },
   { id: 'troubleshoot',   label: 'Troubleshooting' },
 ];
 
@@ -79,6 +97,10 @@ function App() {
           <SectionBareMetal />
           <SectionClient />
           <SectionDiscovery />
+          <SectionConfig />
+          <SectionTraffic />
+          <SectionInventory />
+          <SectionAdmin />
           <SectionResources />
 
           <div className="docs-pagefoot">

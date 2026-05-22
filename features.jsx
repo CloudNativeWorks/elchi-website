@@ -48,7 +48,7 @@ function CoreFeatures() {
     { t: 'Full xDS Protocol Support', d: 'Complete implementation of xDS (ADS, CDS, EDS, LDS, RDS, VHDS) using go-control-plane. Delta xDS support for efficient incremental configuration updates.', icon: 'xds' },
     { t: 'Two-Step Validation', d: 'Frontend TypeScript validation and backend protoc-gen-validate ensures configurations are correct before deployment. Catch errors early and prevent misconfigurations.', icon: 'check' },
     { t: 'Save & Publish Workflow', d: 'Draft mode for safe configuration changes. Save incrementally and publish bulk updates atomically when ready. Rollback support for quick recovery from issues.', icon: 'flow' },
-    { t: 'Multi-Version Envoy Support', d: 'Manage Envoy versions 1.27 through 1.35+ from a single interface. Intelligent version-based routing with seamless version upgrade capability.', icon: 'version' },
+    { t: 'Multi-Version Envoy Support', d: 'Manage Envoy versions 1.27 through 1.38+ from a single interface. Intelligent version-based routing with seamless version upgrade capability.', icon: 'version' },
     { t: 'Project-Based Multi-Tenancy', d: 'Organize configurations by teams, environments, or customers. Complete resource isolation with 4-tier RBAC (Owner, Admin, Editor, Viewer).', icon: 'lock' },
   ];
 
@@ -88,6 +88,14 @@ function CoreFeatures() {
 
 function AdvancedFeatures() {
   const items = [
+    {
+      tag: 'API Security Inventory',
+      t: 'API Discovery',
+      d: 'Turn live proxy traffic into a continuously-scored inventory of every API you expose. Find shadow endpoints, missing auth, and PII leaks — and export the whole surface as OpenAPI.',
+      bullets: ['Two-axis threat & exposure scoring', 'Drift detection vs. baselines', 'Consumer & PII analytics', 'OpenAPI 3.0.3 export'],
+      accent: '#6366f1',
+      visual: 'inventory',
+    },
     {
       tag: 'OpenRouter AI Integration',
       t: 'AI-Powered Analysis',
@@ -268,6 +276,34 @@ function AdvVisual({ kind, accent }) {
       </svg>
     );
   }
+  if (kind === 'inventory') {
+    return (
+      <svg viewBox="0 0 300 200" width="100%" height="100%">
+        {/* axes: exposure (x) vs threat (y) */}
+        <line x1="40" y1="170" x2="270" y2="170" stroke={accent} strokeWidth="1.5" opacity="0.5"/>
+        <line x1="40" y1="170" x2="40" y2="20" stroke={accent} strokeWidth="1.5" opacity="0.5"/>
+        {[60, 100, 140].map((y, i) => (
+          <line key={`g-${i}`} x1="40" y1={y} x2="270" y2={y} stroke={accent} strokeWidth="0.5" strokeDasharray="3 5" opacity="0.2"/>
+        ))}
+        {/* endpoint dots — bigger/redder = higher risk */}
+        {[
+          [80, 140, 4, 0.4], [120, 120, 5, 0.5], [150, 95, 6, 0.6],
+          [185, 70, 8, 0.85], [215, 50, 10, 1], [100, 150, 3, 0.35],
+          [170, 110, 5, 0.55], [235, 80, 7, 0.7], [60, 155, 3, 0.3],
+        ].map(([x, y, r, op], i) => (
+          <g key={i}>
+            <circle cx={x} cy={y} r={r} fill={accent} opacity={op}>
+              <animate attributeName="r" values={`${r-1};${r+2};${r-1}`} dur={`${2.4+i*0.25}s`} repeatCount="indefinite"/>
+            </circle>
+            <circle cx={x} cy={y} r={r+4} fill="none" stroke={accent} strokeWidth="1" opacity={op*0.4}>
+              <animate attributeName="r" values={`${r};${r+10};${r}`} dur={`${2.4+i*0.25}s`} repeatCount="indefinite"/>
+              <animate attributeName="opacity" values={`${op*0.5};0;${op*0.5}`} dur={`${2.4+i*0.25}s`} repeatCount="indefinite"/>
+            </circle>
+          </g>
+        ))}
+      </svg>
+    );
+  }
   return null;
 }
 
@@ -285,6 +321,11 @@ function ComprehensiveFeatures() {
     { t: 'Metrics Visualization', d: 'View detailed metrics both on the platform and through Grafana integration. Monitor performance, traffic patterns, and system health in real-time.', list: ['Built-in dashboards','Grafana integration','Custom metrics','Real-time updates'] },
     { t: 'LDAP Authentication', d: 'Integrate with your existing LDAP/Active Directory infrastructure. Centralized user authentication and authorization for enterprise deployments.', list: ['LDAP integration','Active Directory support','Centralized auth','Enterprise SSO'] },
     { t: 'ACME Certificates', d: 'Automated certificate lifecycle management with ACME protocol support for Let\'s Encrypt and Google Trust Services with DNS-01 challenge.', list: ['Let\'s Encrypt integration','Google Trust Services','DNS provider management','Automatic renewal'] },
+    { t: 'API Discovery & Inventory', d: 'Continuously discover every API your proxies expose, score each endpoint for threat and exposure, and catch drift, missing auth, and PII leaks before they become incidents.', list: ['Two-axis risk scoring','Drift & baseline snapshots','PII & consumer analytics','OpenAPI 3.0.3 export'] },
+    { t: 'Threat Intelligence & GeoIP', d: 'Enrich traffic analytics with reputation feeds and GeoIP databases. Flag malicious sources and resolve clients to country, ASN, and geography across dashboards.', list: ['Custom threat feeds','GeoIP / ASN resolution','Bot & scanner detection','Reputation-based flags'] },
+    { t: 'Background Job Engine', d: 'Long-running operations run asynchronously with full visibility. Track snapshot updates, WAF propagation, ACME verification, and version upgrades with retry support.', list: ['Async job tracking','Live phase & logs','Stuck-job detection','One-click retry'] },
+    { t: 'Two-Factor Authentication', d: 'TOTP-based multi-factor authentication with QR enrollment and backup codes. Admins can enforce 2FA and reset it for locked-out users.', list: ['TOTP / authenticator apps','Backup codes','Admin reset & enforcement','Per-user enrollment'] },
+    { t: 'Registry HA & Topology', d: 'Run multiple controllers and control-planes with leader election and live topology visibility. Standby nodes hydrate from registry snapshots for resilient operations.', list: ['Instance monitoring','Leader election status','Multi-controller HA','Stale instance cleanup'] },
   ];
 
   return (

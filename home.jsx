@@ -182,6 +182,7 @@ function Comparison() {
     { f: 'Web Application Firewall (WAF)', e: true, m: false, s: false, sub: 'Integrated OWASP CRS' },
     { f: 'ACME Certificate Management', e: true, m: false, s: 'limited', sub: 'Let\'s Encrypt + Google Trust' },
     { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'DNS-based with health probing' },
+    { f: 'API Discovery & Inventory', e: true, m: false, s: false, sub: 'Auto-discovered surface, risk & PII scoring' },
   ];
 
   const Cell = ({ v }) => {
