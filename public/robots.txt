@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Specific bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Disallow certain paths (if any)
+Disallow: /private/
+Disallow: /.env
+Disallow: /node_modules/
+
+# Sitemap location
+Sitemap: https://elchi.io/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1
+
+# Host (helps with canonicalization)
+Host: https://elchi.io 
