@@ -18,7 +18,7 @@ function Nav({ active }) {
         <div className="nav-cta">
           <div className="nav-versions">
             <a
-              href="https://github.com/CloudNativeWorks/elchi/releases"
+              href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-ui-${ELCHI_UI_VERSION}`}
               target="_blank"
               rel="noopener"
               className="nav-version"
@@ -28,7 +28,7 @@ function Nav({ active }) {
               <span className="nav-version-tag">{ELCHI_UI_VERSION}</span>
             </a>
             <a
-              href="https://github.com/CloudNativeWorks/elchi-backend/releases"
+              href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-backend-${ELCHI_BACKEND_VERSION}`}
               target="_blank"
               rel="noopener"
               className="nav-version"
