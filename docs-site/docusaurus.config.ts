@@ -58,7 +58,7 @@ export default async function createConfig(): Promise<Config> {
     // .md files parse as CommonMark (curly braces / angle brackets in prose and
     // shell snippets stay literal); .mdx files opt into MDX when they need
     // components. Keeps bulk-converted content robust.
-    markdown: {format: 'detect'},
+    markdown: {format: 'detect', mermaid: true},
 
     presets: [
       [
@@ -89,6 +89,7 @@ export default async function createConfig(): Promise<Config> {
           highlightSearchTermsOnTargetPage: true,
         },
       ],
+      '@docusaurus/theme-mermaid',
     ],
 
     themeConfig: {
@@ -100,6 +101,9 @@ export default async function createConfig(): Promise<Config> {
           {href: 'https://www.elchi.io/features.html', label: 'Features', position: 'left', target: '_self'},
           {href: 'https://www.elchi.io/architecture.html', label: 'Architecture', position: 'left', target: '_self'},
           {type: 'html', position: 'right', value: versionBadgesHtml},
+          // When a second locale is enabled (see docs/contributing/translating.md),
+          // add the language switcher here:
+          //   {type: 'localeDropdown', position: 'right'},
           {href: 'https://github.com/orgs/CloudNativeWorks/repositories', label: 'GitHub', position: 'right'},
           {href: 'https://demo.elchi.io', label: 'Try Demo →', position: 'right', className: 'navbar-demo-btn'},
         ],

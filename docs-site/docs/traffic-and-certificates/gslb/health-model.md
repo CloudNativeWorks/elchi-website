@@ -50,6 +50,24 @@ Each IP is always in exactly one of four states:
 
 The rule that matters for traffic: **`passing` and `warning` IPs are served; `critical` and `recovery` IPs are excluded.** `warning` is deliberately still served — it is an early-warning signal, not an eviction. Eviction happens only at `critical`.
 
+At a glance — probe results walk each IP through the four states, and only two are served in DNS:
+
+```mermaid
+stateDiagram-v2
+  [*] --> passing
+  passing --> warning: failures reach warning_threshold
+  warning --> critical: failures reach critical_threshold
+  warning --> passing: success, passing_threshold = 1
+  critical --> passing: success, passing_threshold = 1
+  critical --> recovery: first success, passing_threshold gt 1
+  recovery --> passing: N consecutive successes
+  recovery --> critical: any failure
+  note right of warning
+    Served in DNS: passing + warning
+    Excluded: critical + recovery
+  end note
+```
+
 ## State transitions
 
 ### Failure path

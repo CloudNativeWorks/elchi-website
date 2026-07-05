@@ -118,6 +118,29 @@ Valid stage names (no duplicates):
 | `body_checks` | body | `require_json`, `detect_sensitive_data`, DLP |
 | `waf_engine` | header **and** body | expands to header-phase engines (JWT, API key, IP reputation, bot, XFCC, HMAC, JWKS, rate limit, HTTP signatures) at header time + body engines (Coraza, GraphQL, OpenAPI) at body time |
 
+At a glance — the three stages split across the header phase (no body buffered) and the body phase (after the body is buffered):
+
+```mermaid
+flowchart TB
+  In([request]) --> FPC
+  subgraph Hdr["Header phase — body never buffered"]
+    direction TB
+    FPC["fast_pre_checks<br/>host · forbidden · required · size caps"]
+    WE1["waf_engine header-phase<br/>JWT · API key · IP-rep · bot · XFCC"]
+    FPC --> WE1
+  end
+  WE1 --> Gate{body needed?}
+  Gate -->|no| Dec([decision])
+  Gate -->|yes, within cap| BC
+  subgraph Body["Body phase — after body buffered"]
+    direction TB
+    BC["body_checks<br/>require_json · sensitive-data · DLP"]
+    WE2["waf_engine body-phase<br/>Coraza · GraphQL · OpenAPI"]
+    BC --> WE2
+  end
+  WE2 --> Dec
+```
+
 Behavior:
 
 - **Omitting a stage disables it** for that direction. `request: [waf_engine]`

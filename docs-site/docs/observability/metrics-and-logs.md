@@ -10,6 +10,23 @@ sidebar_position: 1
 
 Elchi emits several distinct signal classes, and each takes a different path to storage. Knowing which signal lands where saves a lot of dashboard-hunting.
 
+```mermaid
+flowchart LR
+  E["Edge Envoy"]
+  SH["elchi-shield"]
+  E -->|stats-sink OTLP| OT["OTel Collector"]
+  SH -->|metrics OTLP / scrape| OT
+  OT -->|remote-write| VM[("VictoriaMetrics")]
+  VM --> G["Grafana + UI ECharts"]
+  E -->|ALS v3 logs| COL["elchi-collector"]
+  COL --> CH[("ClickHouse<br/>api_events_raw")]
+  COL --> MG[("MongoDB<br/>api_inventory")]
+  CH --> AD["API Discovery"]
+  SH -->|security events + audit| CH
+  E -->|service logs| LV["UI Log Viewer /<br/>Syslog · ELK"]
+```
+
+
 - **Envoy stats** → an **OTel Collector** → **VictoriaMetrics** → **Grafana** (and the in-UI ECharts dashboards). The metrics backbone.
 - **Envoy access logs (ALS v3)** → **elchi-collector** → **ClickHouse** (`api_events_raw`, forensic) + **MongoDB** (`api_inventory`, the endpoint catalog). This is [API Discovery](/api-discovery/overview) — a traffic-derived inventory, not a metrics stream.
 - **Shield metrics** → scraped at `/metrics` (`elchi_shield_*`), and **also** pushed over **OTLP** when `--metrics-otlp-endpoint` is set. Shield **security events + audit** → **ClickHouse**. See [Shield Observability](/shield/observability).

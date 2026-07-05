@@ -24,6 +24,22 @@ The built-in detectors template a segment into a placeholder when it looks like 
 
 The query string is **always stripped** from the path before storage, regardless of normalization.
 
+At a glance — raw path in, one stable operation out; un-normalized prefixes branch to the gap workflow:
+
+```mermaid
+flowchart TB
+  Raw([raw request path]) --> Strip[strip query string]
+  Strip --> Seg{"segment looks<br/>like an identifier?"}
+  Seg -->|"id · uuid · objectid · ulid · token · entropy · secret"| PH["placeholder<br/>e.g. /users/{id}"]
+  Seg -->|"vN · static asset · literal"| Keep[keep as-is]
+  PH --> Op([normalized operation<br/>one inventory row])
+  Keep --> Op
+  Seg -.->|"un-normalized prefix<br/>accumulates distinct values"| Gap[normalize_gap detector]
+  Gap --> Panel[Normalization Gaps panel]
+  Panel --> Add[operator adds rule]
+  Add -.-> Seg
+```
+
 ### Placeholder kinds
 
 The placeholder set is fixed — a downstream dashboard can rely on it never sprouting new members without a schema migration:

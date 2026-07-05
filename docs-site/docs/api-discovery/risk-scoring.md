@@ -14,6 +14,30 @@ Every endpoint in the catalog is scored on **two independent axes**, not one. Th
 | **Threat** | `max_risk_score` | Is something dangerous happening *right now*? | An **event** — active attack / abuse |
 | **Exposure** | `max_posture_score` | How open / vulnerable is the endpoint *standing still*? | A **state** — config hygiene |
 
+At a glance — severity weights feed the two independent axes, which combine as a 2x2 for prioritization:
+
+```mermaid
+flowchart LR
+  subgraph Weights["Severity weights"]
+    direction TB
+    L["Low = 1"]
+    Md["Medium = 4"]
+    H["High = 7"]
+    Cr["Critical = 10"]
+  end
+  Weights --> TA["Threat axis<br/>max_risk_score<br/>worst finding + ¼ of the rest"]
+  Weights --> EA["Exposure axis<br/>max_posture_score<br/>clamped sum"]
+  TA --> Q
+  EA --> Q
+  subgraph Q["Prioritize — read as 2x2"]
+    direction TB
+    Q1["low threat · low exposure<br/>clean"]
+    Q2["low threat · high exposure<br/>harden"]
+    Q3["high threat · low exposure<br/>watch / rate-limit"]
+    Q4["high threat · high exposure<br/>top priority"]
+  end
+```
+
 - **Threat** collects the **active-finding** flags: BOLA, BFLA, brute-force, scanner / vuln-probe / path-scan, replay, rate & IP anomalies, PII leak, oversized response, latency/error-rate anomaly, sensitive-path keyword, threat-intel hit.
 - **Exposure** collects the **standing-posture** flags: anonymous access, plain-text / weak / legacy TLS, missing HSTS / CSP / X-Frame-Options / X-Content-Type-Options, permissive CORS, version disclosure, weak token TTL, internal / external host.
 

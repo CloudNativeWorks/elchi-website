@@ -7,10 +7,14 @@
 ### Core Capabilities
 - **3-Process Architecture**: Distributed Controller, Control-Plane (gRPC xDS), and Registry services
 - **Full xDS Protocol Support**: ADS, CDS, EDS, LDS, RDS, VHDS with go-control-plane
-- **Multi-Version Envoy Support**: Manage versions 1.27-1.35+ with seamless version upgrade capability
+- **Multi-Version Envoy Support**: Run multiple Envoy versions side by side (resolved dynamically from the release archive) with seamless version upgrade
 - **Proto-to-UI Auto-Generation**: Automatically generated UI from Envoy protobuf definitions
 - **Intelligent Configuration Analysis**: Automated analysis and troubleshooting with OpenRouter AI integration (BYOK)
-- **Interactive Dependency Graphs**: Cytoscape-powered visual diagrams for resource relationships
+- **Interactive Dependency Graphs**: React Flow visual diagrams for resource relationships
+
+### Edge Security & API Discovery
+- **Shield — Edge API Security**: A per-edge Envoy `ext_proc` sidecar that enforces API security in the request path — WAF (OWASP CRS), JWT/JWKS/mTLS/API-key auth, rate limiting, bot defense, IP reputation, GraphQL/OpenAPI guards, and DLP across 12 engines, with safe `detect → shadow → block` rollout
+- **API Discovery & Inventory**: Turns live Envoy access logs into a continuously risk-scored inventory of every API you expose — shadow endpoints, missing auth, PII leaks — mapped to the OWASP API Top 10, exportable as OpenAPI
 
 ### Enterprise Features
 - **Enterprise Multi-Tenancy**: Project-based isolation with 4-tier RBAC (Owner, Admin, Editor, Viewer)
@@ -34,12 +38,12 @@
 - React 18 + TypeScript
 - Ant Design UI Library
 - Monaco Code Editor
-- Cytoscape for graphs
+- React Flow (@xyflow/react) for graphs
 - ECharts for metrics
 - Vite build tool
 
 **Backend (3-Process Architecture):**
-- Go 1.19+ for all processes
+- Go 1.26+ for all processes
 - gRPC for inter-process communication
 - MongoDB for configuration storage
 - VictoriaMetrics for time-series data
@@ -98,6 +102,8 @@ All processes communicate via gRPC and share MongoDB for state management.
 - **Service Mesh Control Plane**: Alternative to Istio/Linkerd for Envoy-based service mesh
 - **Multi-Cluster Proxy Management**: Manage Envoy across multiple Kubernetes clusters
 - **WAF Deployment**: Enterprise-grade web application firewall with OWASP CRS
+- **Edge API Security**: Enforce authentication, rate limiting, bot defense, and DLP at each edge with the Shield `ext_proc` sidecar
+- **API Discovery & Governance**: Build a risk-scored inventory of your real API surface from live traffic
 - **Traffic Management**: Advanced routing, load balancing, and traffic shaping
 - **Kubernetes Ingress**: Dynamic ingress configuration with K8s discovery
 

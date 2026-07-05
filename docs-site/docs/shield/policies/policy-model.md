@@ -37,7 +37,9 @@ kind: SecurityPolicy
 metadata:
   name: public-api
 spec:
-  ...
+  defaults:
+    mode: block
+  domains: []        # add domains + routes here
 ```
 
 ## `spec`
@@ -215,6 +217,25 @@ For a matched request, the effective policy is folded **least-specific first**:
 
 ```
 built-in DefaultPolicy  →  spec.defaults  →  domain.policy  →  route.policy
+```
+
+At a glance — first the host and route are matched (most-specific wins), then the policy is folded least-specific first:
+
+```mermaid
+flowchart TB
+  Req([request]) --> Match
+  subgraph Match["Policy selection — most-specific wins"]
+    direction TB
+    H["Host match<br/>exact &gt; *.x &gt; *"] --> Rt["Route match<br/>path_exact &gt; path_regex &gt; path_prefix"]
+  end
+  Rt --> Fold
+  subgraph Fold["Fold policy — least-specific first"]
+    direction LR
+    D1["built-in<br/>DefaultPolicy"] --> D2["spec.defaults"]
+    D2 --> D3["domain.policy"]
+    D3 --> D4["route.policy"]
+  end
+  Fold --> Eff([Effective policy<br/>most-specific set value wins])
 ```
 
 | Field class | Merge behavior |

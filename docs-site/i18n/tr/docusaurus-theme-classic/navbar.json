@@ -1,0 +1,26 @@
+{
+  "logo.alt": {
+    "message": "Elchi",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Home": {
+    "message": "Home",
+    "description": "Navbar item with label Home"
+  },
+  "item.label.Features": {
+    "message": "Features",
+    "description": "Navbar item with label Features"
+  },
+  "item.label.Architecture": {
+    "message": "Architecture",
+    "description": "Navbar item with label Architecture"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  },
+  "item.label.Try Demo →": {
+    "message": "Try Demo →",
+    "description": "Navbar item with label Try Demo →"
+  }
+}

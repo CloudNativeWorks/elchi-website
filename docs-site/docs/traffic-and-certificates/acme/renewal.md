@@ -93,6 +93,21 @@ A renewal scheduler on the controller handles renewals without intervention:
 - The scheduler retries a failing certificate up to **3 renewal attempts** before giving up until the next window; a successful renewal resets the counter.
 - A distributed lock coordinates the scheduler so that running multiple controllers does not double-renew a certificate.
 
+At a glance — the certificate lifecycle, from request through the recurring renewal window:
+
+```mermaid
+stateDiagram-v2
+  [*] --> requested
+  requested --> challenge: DNS-01 TXT records
+  challenge --> issued: validated
+  issued --> active: stored as Envoy secret
+  active --> renewing: 14 days before expiry
+  renewing --> active: new 90-day certificate
+  renewing --> renewing: retry, max 3 attempts
+  renewing --> [*]: give up until next window
+  challenge --> challenge: retry
+```
+
 :::warning[Manual DNS certificates are not auto-renewed]
 The scheduler skips certificates that use **manual** DNS verification, because renewing them requires a human to place new TXT records. Renew manual certificates yourself (via the renew endpoint, which regenerates the challenges) well before expiry, or migrate them to a DNS credential for hands-off renewal.
 :::

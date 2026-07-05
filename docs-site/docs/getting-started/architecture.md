@@ -40,7 +40,43 @@ Every data-plane host runs the same local stack:
 
 ## Wire map
 
-Every inter-component connection in the stack. Ports are process defaults (a bare-metal systemd install remaps some — see the [Port Reference](/reference/ports)). "Exposure" follows the same legend: **loopback** (same host only), **internal** (trusted platform/edge network), **external** (client-facing).
+At a glance — the central platform, one edge node, and every connection between them:
+
+```mermaid
+flowchart LR
+  Op([Operators / UI])
+  subgraph Central["Central platform"]
+    direction TB
+    C["Controller<br/>:8099"]
+    CP["Control-Plane<br/>xDS :18000"]
+    R["Registry<br/>:9090"]
+    COL["elchi-collector<br/>ALS :18090"]
+    M[("MongoDB")]
+    CH[("ClickHouse")]
+    VM[("VictoriaMetrics")]
+  end
+  subgraph EdgeNode["Edge node"]
+    direction TB
+    E["Envoy"]
+    CL["elchi-client"]
+    S["Shield<br/>ext_proc"]
+  end
+  Op -->|REST / JWT| C
+  C --> M
+  C -->|snapshot| CP
+  R -. version routing .- CP
+  CP -->|xDS| E
+  CL -->|CommandStream :50051| C
+  C -. deploy / bootstrap / policy .-> CL
+  E -->|ext_proc UDS| S
+  E -->|ALS logs| COL
+  COL --> CH
+  COL --> M
+  S -->|audit events| CH
+  S -->|metrics OTLP| VM
+```
+
+The table below is the exhaustive reference for the same connections. Ports are process defaults (a bare-metal systemd install remaps some — see the [Port Reference](/reference/ports)). "Exposure": **loopback** (same host only), **internal** (trusted platform/edge network), **external** (client-facing).
 
 | Protocol | Port | From → To | Auth | Carries |
 |---|---|---|---|---|
@@ -92,42 +128,51 @@ Four representative paths tie the map together.
 
 ### a. Config change → Envoy
 
-```text
-UI/REST → Controller → validate (Envoy protobuf schemas)
-        → persist to MongoDB → push snapshot to Control-Plane
-        → Control-Plane ADS/VHDS stream → edge Envoy applies live (no restart)
+```mermaid
+flowchart LR
+  A[UI / REST] --> B[Controller]
+  B -->|validate vs<br/>Envoy schemas| C[(MongoDB)]
+  B -->|push snapshot| D[Control-Plane]
+  D -->|ADS / VHDS xDS| E[Edge Envoy]
+  E -.->|applied live, no restart| E
 ```
 
 You change a resource in the UI; the Controller validates it against Envoy's protobuf schemas, writes it to MongoDB, and hands a snapshot to the Control-Plane, whose xDS stream (`:18000`) notifies every connected Envoy.
 
 ### b. Traffic → API inventory
 
-```text
-client → edge Envoy → (serves request) → ALS v3 access log
-       → elchi-collector :18090 → normalize path (/users/123 → /users/{id})
-       → ClickHouse api_events_raw (forensic, TTL'd)
-       + MongoDB api_inventory (endpoint catalog + risk)
+```mermaid
+flowchart LR
+  Cl[Client] --> E[Edge Envoy]
+  E -->|ALS v3 access log| COL[elchi-collector<br/>:18090]
+  COL -->|normalize<br/>/users/123 → /users/id| N{ }
+  N -->|forensic, TTL'd| CH[(ClickHouse<br/>api_events_raw)]
+  N -->|endpoint catalog + risk| M[(MongoDB<br/>api_inventory)]
 ```
 
 Every request Envoy serves is mirrored as an access-log entry to the collector, which normalizes the path, writes the raw event to ClickHouse, and upserts the per-operation row in the MongoDB inventory. See [API Discovery](/api-discovery/overview).
 
 ### c. Traffic → security events
 
-```text
-client → edge Envoy → ext_proc (UDS) → elchi-shield
-       → per-policy inspection → allow / block / continue → Envoy
-       → (block/detect/shadow finding) → ClickHouse security-audit
+```mermaid
+flowchart LR
+  Cl[Client] --> E[Edge Envoy]
+  E -->|ext_proc UDS| S[elchi-shield]
+  S -->|per-policy<br/>inspection| D{allow /<br/>block /<br/>continue}
+  D --> E
+  D -.->|block / detect / shadow finding| CH[(ClickHouse<br/>security audit)]
 ```
 
 In parallel, Envoy consults Shield over the ext_proc socket **before** the router. Shield inspects and returns a decision; findings are written to the ClickHouse audit table (sampled for allows, always for findings). See [How Shield Works](/shield/how-it-works).
 
 ### d. GSLB DNS resolution
 
-```text
-CoreDNS node → poll GET /dns/snapshot (X-Elchi-Secret) → Controller
-            → cache zone records
-client resolver → DNS :53 → CoreDNS answers from cache
-Controller (record change) → notify :8053 (X-Elchi-Secret) → CoreDNS re-polls
+```mermaid
+flowchart LR
+  CD[CoreDNS node] -->|poll GET /dns/snapshot<br/>X-Elchi-Secret| C[Controller]
+  C -->|zone records| CD
+  Res[Client resolver] -->|DNS :53| CD
+  C -.->|record change → notify :8053| CD
 ```
 
 The GSLB CoreDNS nodes are authoritative for your zone; they poll the Controller's snapshot API on an interval and are nudged by a push notification on change. See [GSLB Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns).

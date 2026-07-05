@@ -1,0 +1,218 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Getting Started": {
+    "message": "Getting Started",
+    "description": "The label for category 'Getting Started' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Getting Started.link.generated-index.description": {
+    "message": "What Elchi is, core concepts, and how to get a platform running.",
+    "description": "The generated-index page description for category 'Getting Started' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Installation": {
+    "message": "Installation",
+    "description": "The label for category 'Installation' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Installation.link.generated-index.description": {
+    "message": "Install the Elchi platform (Helm or bare-metal), the edge client, and the Kubernetes discovery agent.",
+    "description": "The generated-index page description for category 'Installation' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Platform (Helm)": {
+    "message": "Platform (Helm)",
+    "description": "The label for category 'Platform (Helm)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Platform (Helm).link.generated-index.description": {
+    "message": "Deploy the Elchi platform on Kubernetes with the elchi-stack Helm chart.",
+    "description": "The generated-index page description for category 'Platform (Helm)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Docker Swarm": {
+    "message": "Docker Swarm",
+    "description": "The label for category 'Docker Swarm' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Docker Swarm.link.generated-index.description": {
+    "message": "Deploy the full Elchi control-plane on Docker Swarm — one command, online or air-gapped, single-node or HA.",
+    "description": "The generated-index page description for category 'Docker Swarm' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Bare-Metal (no Docker, no K8s)": {
+    "message": "Bare-Metal (no Docker, no K8s)",
+    "description": "The label for category 'Bare-Metal (no Docker, no K8s)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Bare-Metal (no Docker, no K8s).link.generated-index.description": {
+    "message": "Install the full Elchi stack on plain VMs with systemd — no containers required.",
+    "description": "The generated-index page description for category 'Bare-Metal (no Docker, no K8s)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Elchi Client": {
+    "message": "Elchi Client",
+    "description": "The label for category 'Elchi Client' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Elchi Client.link.generated-index.description": {
+    "message": "Install and configure the elchi-client edge agent next to Envoy.",
+    "description": "The generated-index page description for category 'Elchi Client' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Elchi Discovery": {
+    "message": "Elchi Discovery",
+    "description": "The label for category 'Elchi Discovery' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Elchi Discovery.link.generated-index.description": {
+    "message": "Deploy the Kubernetes service/endpoint discovery agent.",
+    "description": "The generated-index page description for category 'Elchi Discovery' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Configuring": {
+    "message": "Configuring",
+    "description": "The label for category 'Configuring' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Configuring.link.generated-index.description": {
+    "message": "The Elchi resource model: build, validate, publish, and upgrade Envoy configuration.",
+    "description": "The generated-index page description for category 'Configuring' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Scenario Workflows": {
+    "message": "Scenario Workflows",
+    "description": "The label for category 'Scenario Workflows' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Scenario Workflows.link.generated-index.description": {
+    "message": "The guided Scenario wizard: generate multi-resource Envoy configs step by step.",
+    "description": "The generated-index page description for category 'Scenario Workflows' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Resource Types": {
+    "message": "Resource Types",
+    "description": "The label for category 'Resource Types' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Resource Types.link.generated-index.description": {
+    "message": "Per-resource guides for every Envoy resource Elchi manages: listeners, routes, clusters, endpoints, secrets, filters, and more.",
+    "description": "The generated-index page description for category 'Resource Types' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Traffic & Certificates": {
+    "message": "Traffic & Certificates",
+    "description": "The label for category 'Traffic & Certificates' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Traffic & Certificates.link.generated-index.description": {
+    "message": "Global server load balancing, ACME certificates, and the Web Application Firewall.",
+    "description": "The generated-index page description for category 'Traffic & Certificates' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.GSLB": {
+    "message": "GSLB",
+    "description": "The label for category 'GSLB' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.GSLB.link.generated-index.description": {
+    "message": "Global Server Load Balancing: DNS-based traffic steering with health checks.",
+    "description": "The generated-index page description for category 'GSLB' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Certificates (ACME)": {
+    "message": "Certificates (ACME)",
+    "description": "The label for category 'Certificates (ACME)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Certificates (ACME).link.generated-index.description": {
+    "message": "Automated TLS certificates via ACME DNS-01: CA providers, DNS credentials, and renewal.",
+    "description": "The generated-index page description for category 'Certificates (ACME)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Web Application Firewall": {
+    "message": "Web Application Firewall",
+    "description": "The label for category 'Web Application Firewall' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Web Application Firewall.link.generated-index.description": {
+    "message": "The Coraza/OWASP-CRS WAF: rule library, building configs, and versioning.",
+    "description": "The generated-index page description for category 'Web Application Firewall' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.API Discovery": {
+    "message": "API Discovery",
+    "description": "The label for category 'API Discovery' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.API Discovery.link.generated-index.description": {
+    "message": "Traffic-derived API inventory, risk scoring, and the collector that powers it.",
+    "description": "The generated-index page description for category 'API Discovery' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Shield (API Security)": {
+    "message": "Shield (API Security)",
+    "description": "The label for category 'Shield (API Security)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Shield (API Security).link.generated-index.description": {
+    "message": "Elchi Shield — the ext_proc API-security sidecar: policies, security engines, deployment, and observability.",
+    "description": "The generated-index page description for category 'Shield (API Security)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Policies": {
+    "message": "Policies",
+    "description": "The label for category 'Policies' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Policies.link.generated-index.description": {
+    "message": "The SecurityPolicy model: domains, routes, modes, body inspection, checks, and DLP.",
+    "description": "The generated-index page description for category 'Policies' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Security Engines": {
+    "message": "Security Engines",
+    "description": "The label for category 'Security Engines' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Security Engines.link.generated-index.description": {
+    "message": "Every Shield security engine: what it protects against, full configuration, and verification.",
+    "description": "The generated-index page description for category 'Security Engines' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Using the UI": {
+    "message": "Using the UI",
+    "description": "The label for category 'Using the UI' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Using the UI.link.generated-index.description": {
+    "message": "The Shield policy editor, live Overview dashboard, and Security Events feed.",
+    "description": "The generated-index page description for category 'Using the UI' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Operations": {
+    "message": "Operations",
+    "description": "The label for category 'Operations' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Operations.link.generated-index.description": {
+    "message": "Manage the running fleet: deployed Envoy services and connected edge clients.",
+    "description": "The generated-index page description for category 'Operations' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Observability": {
+    "message": "Observability",
+    "description": "The label for category 'Observability' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Observability.link.generated-index.description": {
+    "message": "Metrics, logs, audit forwarding, and background jobs.",
+    "description": "The generated-index page description for category 'Observability' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Administration": {
+    "message": "Administration",
+    "description": "The label for category 'Administration' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Administration.link.generated-index.description": {
+    "message": "Access control, high availability, threat intelligence, AI analysis, and licensing.",
+    "description": "The generated-index page description for category 'Administration' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Reference": {
+    "message": "Reference",
+    "description": "The label for category 'Reference' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Reference.link.generated-index.description": {
+    "message": "CLI and API references.",
+    "description": "The generated-index page description for category 'Reference' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Troubleshooting": {
+    "message": "Troubleshooting",
+    "description": "The label for category 'Troubleshooting' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Troubleshooting.link.generated-index.description": {
+    "message": "Diagnose and fix common problems.",
+    "description": "The generated-index page description for category 'Troubleshooting' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Tutorials": {
+    "message": "Tutorials",
+    "description": "The label for category 'Tutorials' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Tutorials.link.generated-index.description": {
+    "message": "End-to-end, task-oriented walkthroughs.",
+    "description": "The generated-index page description for category 'Tutorials' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Contributing": {
+    "message": "Contributing",
+    "description": "The label for category 'Contributing' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Contributing.link.generated-index.title": {
+    "message": "Contributing",
+    "description": "The generated-index page title for category 'Contributing' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Contributing.link.generated-index.description": {
+    "message": "How to contribute to the Elchi documentation — including translating it into another language.",
+    "description": "The generated-index page description for category 'Contributing' in sidebar 'docs'"
+  }
+}

@@ -19,6 +19,22 @@ Everything Elchi pushes to Envoy is modeled as a **resource**. The UI generates 
 | Secrets & TLS | SDS | Certificates, keys, and validation contexts. Issued automatically through ACME or uploaded. |
 | Bootstrap | Boot | The static config each Envoy starts with — node ID, admin, and the xDS connection back to Elchi. |
 
+At a glance — how the resources reference each other, from the listener down to endpoints and secrets:
+
+```mermaid
+flowchart LR
+  L[Listener<br/>LDS] --> FC[Filter chain<br/>HCM]
+  FC --> RC[Route config<br/>RDS]
+  RC --> VH[Virtual host]
+  VH --> Rt[Route]
+  Rt --> Cl[Cluster<br/>CDS]
+  Cl --> EP[Endpoint<br/>EDS]
+  Cl --> TS[Transport socket]
+  TS --> Sec[Secret / TLS<br/>SDS]
+  L --> LTS[Transport socket]
+  LTS --> Sec
+```
+
 ## Filters & Extensions
 
 HTTP, network, listener, and UDP filters are managed under **Filters**, and reusable custom configurations live under **Extensions**. Both are versioned per Envoy release and validated against the matching proto schema.

@@ -16,6 +16,17 @@ The **Catalog** toggle switches the data source between the two halves of the [c
 - **Confirmed** — the real API catalog: operations that matched a real Envoy route. This is the clean inventory you export and build policies from.
 - **Attack surface** — probe / scanner noise that matched no route (`/.env`, `/cgi-bin` probes, SPA-fallback `200`s). Deliberately kept separate so it never pollutes the real catalog. Current-risk overlay is not computed here — risk on probe noise is meaningless.
 
+At a glance — how each observed request lands in one half or the other:
+
+```mermaid
+flowchart TB
+  Req([request observed via ALS]) --> S{scanner /<br/>probe flags?}
+  S -->|yes, forces| Att[Attack surface<br/>probe / scanner noise — kept separate]
+  S -->|no| M{matched a real<br/>Envoy route?}
+  M -->|yes| Conf[Confirmed catalog<br/>real inventory · export · policies]
+  M -->|no_route_found| Att
+```
+
 ## Layout toggle: Flat vs Group by path
 
 For the confirmed catalog, the **View** toggle changes how operations are laid out:

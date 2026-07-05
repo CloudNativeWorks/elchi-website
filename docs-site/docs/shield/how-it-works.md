@@ -20,6 +20,23 @@ One `ext_proc` stream equals one HTTP transaction. At stream start, Shield pins 
 7. **WAF engines** — the policy's body-phase engines (Coraza, GraphQL, OpenAPI-with-body). Header-phase engines (JWT, API key, rate limit, IP reputation, bot, …) already ran back at the header phase.
 8. **Decision** — verdicts aggregate ("most severe wins"), the policy mode maps the verdict to an action, and the answer goes back to Envoy: a deny becomes an immediate `403`; everything else continues.
 
+```mermaid
+flowchart TB
+  In([ext_proc stream:<br/>one HTTP transaction]) --> P1[1. Context init<br/>+ per-request deadline]
+  P1 --> P2[2. Policy resolve<br/>host + route → policy]
+  P2 --> P3{3. Early decision?}
+  P3 -->|concludes| Out([→ Envoy: allow / 403 / continue])
+  P3 -->|inspect| P4[4. Fast pre-checks<br/>headers, host, source IP — no body]
+  P4 --> HdrEng[Header-phase engines<br/>JWT · API key · rate-limit · IP-rep · bot]
+  HdrEng --> P5{5. Body gate<br/>body needed?}
+  P5 -->|no| P8
+  P5 -->|yes, within cap| Struct[Structural guards<br/>truncation · decode · budget]
+  Struct --> P6[6. Body checks<br/>JSON · sensitive-data · DLP]
+  P6 --> P7[7. WAF engines<br/>Coraza · GraphQL · OpenAPI]
+  P7 --> P8[8. Decision<br/>most-severe-wins → mode → action]
+  P8 --> Out
+```
+
 **Response inspection is a separate pipeline** that reuses the policy pinned by the request: response header checks, body gate, response body checks (e.g. DLP redaction, outbound CRS rules), then the final decision.
 
 ## Header phase vs body phase
