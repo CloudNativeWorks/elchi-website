@@ -188,7 +188,7 @@ full set:
 | `checks` | `Checks` | none | Built-in header/body checks. See [Built-in Checks](/shield/policies/checks). |
 | `engines` | `EnginesSpec` | none | Pluggable security engines (JWT, Coraza, rate limit, …). |
 
-:::note Cross-field validation
+:::note[Cross-field validation]
 Enforced at load time, attributed to file + field:
 
 - `mode: off` with `inspect_request_body: true` or `inspect_response_body: true`

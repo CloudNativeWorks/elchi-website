@@ -46,7 +46,7 @@ Each suggestion comes with a **rationale** — the risk flag or observation that
 prompted it — shown in a panel above the Builder so you can accept, adjust, or drop
 it before deploying.
 
-:::info The suggestion is a starting point, not a finished policy
+:::info[The suggestion is a starting point, not a finished policy]
 The draft is **not persisted server-side** — it opens in the editor as unsaved
 work. Review every route and engine, then follow the standard
 [rollout](/shield/policies/modes-and-postures): deploy in `mode: detect`, watch

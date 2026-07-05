@@ -31,7 +31,7 @@ Configure under `policy.engines.hmac_sign`.
 | `require_nonce` | bool | no | `false` | Require a nonce (else identical replays within the window are caught by the timestamp). |
 | `require_body_digest` | bool | no | `false` | Require the signature to bind a body digest. |
 
-:::info Exactly one secret source
+:::info[Exactly one secret source]
 Set exactly **one** of `secret` / `secrets`.
 :::
 
@@ -130,7 +130,7 @@ curl -i -X POST https://auth.example.com/webhook/github -d "$BODY"
 
 ## Gotchas
 
-:::warning Body binding is opt-in
+:::warning[Body binding is opt-in]
 Without `require_body_digest` the body is **not** bound by the signature and can be swapped under a captured header-only signature. Turn it on for any body-bearing endpoint.
 :::
 

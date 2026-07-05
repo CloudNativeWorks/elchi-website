@@ -38,7 +38,7 @@ helm install my-elchi elchi/elchi-stack \
 
 Sign in with the bootstrap credentials `admin` / `admin` and change them on first login.
 
-:::warning Don't ship the defaults
+:::warning[Don't ship the defaults]
 Before production, set `global.tlsEnabled: true`, replace `global.jwt.secret` with a 32+ character random value, point at a managed MongoDB, and run ≥3 replicas of the controller and control-plane. See the [production checklist](/installation/helm-platform/installation).
 :::
 
@@ -72,7 +72,7 @@ Listener (LDS)  → binds an address, runs the HTTP Connection Manager
 
 You build them **bottom-up** (so each reference resolves), then publish the whole tree at once. Every resource is created against a specific **Envoy version** — you pick the version first and Elchi generates the form from that version's protobuf schema.
 
-:::tip Prefer the wizard
+:::tip[Prefer the wizard]
 Rather than build all four by hand, [Scenario Workflows](/envoy-configuration/scenario-workflows) generate a complete, valid API-gateway or load-balancer configuration in a few guided steps. This tutorial does it resource-by-resource so you understand what the wizard produces.
 :::
 
@@ -100,7 +100,7 @@ eds_cluster_config:
 lb_policy: ROUND_ROBIN
 ```
 
-:::tip STATIC is simpler for one host
+:::tip[STATIC is simpler for one host]
 For a single fixed backend you can skip the separate endpoint resource entirely: use a `STATIC` cluster with an inline `load_assignment`. EDS shines when you add, drain, or reweight hosts without touching cluster policy — see [Endpoints](/envoy-configuration/resources/endpoints).
 :::
 
@@ -147,7 +147,7 @@ filter_chains:
                 "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
 ```
 
-:::tip Managed listeners keep addresses portable
+:::tip[Managed listeners keep addresses portable]
 Listeners default to **Managed by Service** — the bind address is filled from the edge node's IPs, so the same definition works across hosts. Leave it on unless you need a literal address.
 :::
 

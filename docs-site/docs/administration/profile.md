@@ -73,7 +73,7 @@ Once enabled, the panel shows:
   current authenticator code **or** a backup code. Disabling 2FA lowers your
   account security, so Elchi warns before proceeding.
 
-:::info The bigger picture
+:::info[The bigger picture]
 This page is scoped to your own account. For how roles, permissions, and 2FA fit
 into Elchi's overall authentication and authorization model — including
 LDAP integration and administrative controls — see

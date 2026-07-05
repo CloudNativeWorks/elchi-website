@@ -27,7 +27,7 @@ Precedence: **flag → environment variable → default**. Each flag's env var i
 | `--allow-non-loopback` | `false` | **Dangerous:** permit binding TCP to non-loopback addresses (exposes the sidecar) |
 | `--listener-id` | *(empty)* | Envoy listener id this instance serves; the fallback `listener` metric label when Envoy sends no request attribute |
 
-:::danger Loopback only
+:::danger[Loopback only]
 Shield refuses to bind non-loopback TCP (for both ext_proc and the HTTP server) unless `--allow-non-loopback` is set. The sidecar inspects data-plane traffic and must never be reachable off-box; prefer Unix domain sockets, which are local by construction. See [Wiring Shield into Envoy](/shield/envoy-wiring).
 :::
 

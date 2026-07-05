@@ -27,7 +27,7 @@ All of these are `PolicySpec` fields — settable at `spec.defaults`,
 | `max_header_bytes` | int64 | `8192` (8 KiB) | Default per-header-value size cap when a route's `checks` doesn't set a tighter one. `≥ 0`. |
 | `timeout` | duration | `50ms` | Per-request inspection deadline (applied as a context deadline). Must be `> 0` if set. |
 
-:::note Zero means "do not inspect", not "no limit"
+:::note[Zero means "do not inspect", not "no limit"]
 In `PolicySpec`, an omitted field inherits, while a present field — even a zero —
 overrides. `max_request_body_bytes: 0` therefore means "do not inspect the
 request body", not "unlimited". Two cross-field rules follow from this and are

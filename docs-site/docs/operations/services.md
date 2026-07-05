@@ -66,7 +66,7 @@ GET /api/op/services/envoys/:service_id?project=<project>
 
 This returns the stored service document — the deployed Envoy configuration and the per-node state the controller tracks for it. Like Clusters, the tab is available once the service is deployed.
 
-:::note Bootstrap context
+:::note[Bootstrap context]
 The Envoy a service deploys is anchored by its **bootstrap** configuration. For what the bootstrap contains and how it is authored, see [Bootstrap](/envoy-configuration/resources/bootstrap).
 :::
 
@@ -103,11 +103,11 @@ The response reports what happened:
 }
 ```
 
-:::warning Probe configuration is not restored
+:::warning[Probe configuration is not restored]
 Recreate-GSLB rebuilds the record and its IP health entries, but it does **not** restore probe configuration. After recreating, reconfigure the health probes manually. See [GSLB Overview](/traffic-and-certificates/gslb/overview).
 :::
 
-:::note Requirements
+:::note[Requirements]
 Recreate-GSLB requires the **Admin** or **Owner** role, a `project`, and that **GSLB is enabled** for that project. If GSLB is not configured or not enabled, the operation is rejected.
 :::
 

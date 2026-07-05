@@ -39,7 +39,7 @@ Each connection in the stack is authenticated differently. The [Architecture wir
 - **CoreDNS ↔ Controller (GSLB)** — the `X-Elchi-Secret` shared-secret header on the `/dns/snapshot` poll and the `:8053` notify; **not** JWT. See [GSLB Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns).
 - **Discovery agent → Controller** — the per-project discovery token.
 
-:::danger Shield is never off-box
+:::danger[Shield is never off-box]
 `elchi-shield` inspects raw request/response bodies. It binds ext_proc to a Unix domain socket and its management HTTP to loopback, and refuses non-loopback binds without an explicit `--allow-non-loopback` override. Never expose it. See the [Port Reference](/reference/ports).
 :::
 

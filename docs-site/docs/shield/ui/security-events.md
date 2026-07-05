@@ -12,7 +12,7 @@ Where the [Overview dashboard](/shield/ui/overview-dashboard) shows rates and tr
 
 Each row carries the event metadata only: timestamp, action, severity, engine, rule id, policy id, method, host, path, response status code, the edge identity (instance, node id, listener), request id (Envoy `x-request-id`), processing phase and direction, the active config version, and a short reason string.
 
-:::info The redaction model
+:::info[The redaction model]
 Audit events **never contain header or body values** — no tokens, cookies, payloads, or query strings. The **path is stored query-stripped**, and engine reason strings are structured descriptions, never request content. What lands in ClickHouse is safe to retain and share: enough to attribute and investigate a finding, nothing that leaks the request itself.
 :::
 

@@ -130,7 +130,7 @@ See the [collector reference](/api-discovery/collector-reference) for the ingest
 | `/clients` | Edge client management + the command dispatch endpoint (`POST`); OpenStack interface/subnet lookups. Admin/Owner. |
 | `/services` | Service listing, Envoy details, GSLB recreate. Admin/Owner. |
 
-:::note No published spec for the control API
+:::note[No published spec for the control API]
 Elchi does **not** publish a machine-readable OpenAPI document of the control API — there is no `/api/v1/openapi.json` (or similar) route. This page is the map; read the source or the browser's network tab for exact request/response shapes.
 
 The one OpenAPI surface that *does* exist is **`GET /api/v3/inventory/openapi`**, which exports an OpenAPI 3.0.3 skeleton of the **traffic-discovered API inventory** (see [OpenAPI export](/api-discovery/openapi-export)) — that describes *your* discovered endpoints, not the Elchi control API.

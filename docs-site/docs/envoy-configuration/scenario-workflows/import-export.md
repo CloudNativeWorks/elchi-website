@@ -86,7 +86,7 @@ The import response reports exactly what it did:
 - **Seed a new project.** Import a curated bundle of standard scenarios so a new team starts with proven patterns.
 - **Distribute templates.** Keep organization-wide scenarios in version control as export bundles and import them wherever needed.
 
-:::note Import creates templates, not live resources
+:::note[Import creates templates, not live resources]
 Importing adds the scenario **definitions** to the target project. It does not create any Envoy resources on its own — run the scenario from [execute and validate](/envoy-configuration/scenario-workflows/execute-and-validate) to generate live configuration.
 :::
 

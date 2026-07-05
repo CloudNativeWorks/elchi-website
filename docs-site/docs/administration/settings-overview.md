@@ -27,7 +27,7 @@ Settings is a set of tabs, each an entry point to one management area. Most map 
 | **License** | License activation and status. | [Licensing](/administration/licensing) |
 | **Maintenance** | Backup/restore and maintenance tooling. | [Backup & Restore](/administration/backup-restore) |
 
-:::note 2FA lives on your Profile
+:::note[2FA lives on your Profile]
 Two-factor auth (TOTP) is managed per user under **Profile**, not Settings. Project-enforced 2FA is toggled from Settings, but enrollment is personal. See [Authentication & Access](/administration/auth-and-access#two-factor-authentication-2fa--otp).
 :::
 
@@ -63,7 +63,7 @@ A live **Storage** card (Owner/Admin-gated, same as the backing endpoint) shows 
 
 If ClickHouse isn't configured the card degrades gracefully — MongoDB stats still render and ClickHouse is marked unavailable.
 
-:::info Two stores, two growth models
+:::info[Two stores, two growth models]
 ClickHouse grows with **req/s** but is TTL-capped, so it converges to a steady-state size. MongoDB grows with **distinct endpoints** and has no TTL (it is cardinality-capped instead). The General tab shows both so you can size disk against the right signal for each. Full schema detail: [Collector Reference](/api-discovery/collector-reference).
 :::
 

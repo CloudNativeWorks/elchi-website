@@ -26,7 +26,7 @@ Configure under `policy.engines.http_signature`.
 | `covered_components` | string[] | no | `@method`, `@authority`, `@path` (+`@query` covered by default) | Components the signature must cover. |
 | `max_age` | duration | no | `10s` | Reject a signature whose `created` is older than this. `≥ 0`, `≤ 1h`. |
 
-:::info Freshness is always enforced
+:::info[Freshness is always enforced]
 Freshness checking is **always on** — the underlying RFC 9421 verifier defaults to requiring `created` and rejecting anything older than ~10s. Setting `max_age: 0` does **not** disable it (it falls back to that ~10s default); `max_age` only *widens or tightens* the window. Set it to the tightest value your clients' clock skew allows. (Note: replay protection is separate — it only applies when the client sends a `nonce`.)
 :::
 
@@ -109,7 +109,7 @@ curl -i -X POST https://auth.example.com/partner/orders \
 
 ## Gotchas
 
-:::warning Replay protection is conditional
+:::warning[Replay protection is conditional]
 Replay protection applies **only when the client sends a `nonce`** signature parameter (the library invokes the nonce validator only then). A client that sends no nonce is not replay-protected — it relies solely on the freshness window (which is always enforced, ~10s by default, tunable via `max_age`). For true replay protection on repeatable requests, require your clients to send nonces.
 :::
 

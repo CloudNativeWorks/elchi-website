@@ -6,7 +6,7 @@ sidebar_position: 8
 
 Shield never talks to the management plane. Its configuration is **files in a watched directory**, and the delivery chain is: the controller renders a project's policies into one bundle, the edge agent (`elchi-client`) lands the files atomically, and Shield's own watcher hot-reloads them. This page walks that chain end to end.
 
-:::info Config is files-only
+:::info[Config is files-only]
 The management plane **distributes configuration only** — there is no per-update API call to Shield. `elchi-client` writes files into `/etc/elchi/elchi-shield/conf.d`; Shield self-watches the directory (fsnotify + debounce) and hot-reloads atomically. Shield is **never restarted** for a config change, and an invalid config never affects live traffic — the last-good snapshot stays active. See [How Shield Works](/shield/how-it-works).
 :::
 

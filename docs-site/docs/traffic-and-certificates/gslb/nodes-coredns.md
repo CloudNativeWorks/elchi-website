@@ -134,6 +134,6 @@ You send only FQDNs. The Controller looks up the current healthy IPs for the `re
 
 Use `notify-all` after a change you need to propagate everywhere at once (a failover cutover, a bulk enable/disable) rather than waiting up to one sync interval for each node to poll. A node that is temporarily unreachable still converges on its next scheduled poll.
 
-:::info Notify vs. poll
+:::info[Notify vs. poll]
 Notify is an optimization, not a requirement. Even with no notify, every node converges to the current snapshot within one `--gslb-sync-interval`. Notify just makes propagation immediate for time-sensitive changes.
 :::

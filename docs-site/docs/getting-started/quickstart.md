@@ -6,7 +6,7 @@ sidebar_position: 2
 
 Spin up the full Elchi stack on any Kubernetes cluster with three commands. The default chart bundles MongoDB and VictoriaMetrics so you get a working install with zero external dependencies.
 
-:::tip Not on Kubernetes?
+:::tip[Not on Kubernetes?]
 This page uses Helm on an existing cluster. Prefer a different substrate? Elchi installs the same control plane on **[Docker Swarm](/installation/docker-swarm/quickstart)** (one command, container-based), a **[single VM with kind](/installation/kind-quickstart)** (evaluation), or **[bare-metal systemd](/installation/bare-metal/overview)** (no containers).
 :::
 

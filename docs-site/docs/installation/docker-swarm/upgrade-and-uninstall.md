@@ -38,7 +38,7 @@ docker service update --force elchi_elchi-coredns
 
 Because a bind-mount content change is invisible to Swarm on its own, a manual edit needs the `--force`. Re-running `install.sh` instead auto-applies changes via the `elchi.cfghash` label.
 
-:::note Multi-node edits
+:::note[Multi-node edits]
 On a multi-node cluster the config tree exists on **every** node. For a manual live edit, edit the file on every node that runs the service (or re-run the installer, which SSH-copies `/etc/elchi` to every node). One exception: `collector.env` is an `env_file:` read at deploy, so editing it needs a redeploy / `--force`.
 :::
 
@@ -60,6 +60,6 @@ deploy/docker/uninstall.sh --purge --leave-swarm   # + every node leaves the Swa
 | `--purge` | Everything `--purge-data` does, plus `/etc/elchi`, the state dir, legacy `elchi_*` config/secret objects, and the host tuning (`/etc/sysctl.d/99-elchi.conf`, `elchi-thp.service`). Leaves `/etc/docker/daemon.json` in place. |
 | `--leave-swarm` | Every node runs `docker swarm leave --force` to dissolve the Swarm. |
 
-:::warning Multi-node teardown
+:::warning[Multi-node teardown]
 Pass the **same `--nodes`** you installed with so M1 can SSH into the workers to remove their node-local volumes and make them leave the Swarm — a manager-only `docker volume rm` can't reach worker volumes. Teardown reuses the bootstrap SSH key (`~/.ssh/elchi_cluster`) by default.
 :::

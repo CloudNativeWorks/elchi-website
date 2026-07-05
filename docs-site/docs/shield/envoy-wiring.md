@@ -88,7 +88,7 @@ use_remote_address: true
 xff_num_trusted_hops: 0   # raise only for trusted proxies in front of Envoy
 ```
 
-:::warning No use_remote_address, no trustworthy source IP
+:::warning[No use_remote_address, no trustworthy source IP]
 Without `use_remote_address: true`, the rightmost XFF entry is whatever the client (or any upstream proxy) chose to send — and every source-IP control in Shield is built on that address: IP-reputation deny/allow lists and GeoIP rules, per-IP rate limiting, and bot verified-crawler checks. Shield deliberately never reads the leftmost XFF token (trivially spoofable), so with a misconfigured Envoy these engines act on an attacker-controlled value. If additional trusted proxies sit in front of Envoy, set Shield's `--xff-trusted-hops` to match.
 :::
 

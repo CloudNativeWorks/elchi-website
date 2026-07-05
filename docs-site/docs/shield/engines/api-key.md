@@ -118,7 +118,7 @@ curl -i -X POST https://auth.example.com/v1/admin/users \
 
 ## Gotchas
 
-:::warning Bindings are prefix matches
+:::warning[Bindings are prefix matches]
 `path_prefix: /admin` also matches `/administrator`. Use trailing slashes deliberately (e.g. `/admin/`) when you mean a directory-style boundary.
 :::
 

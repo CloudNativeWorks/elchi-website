@@ -103,7 +103,7 @@ Per-analysis token and cost figures shown in the UI come from the same tracking,
 you can attribute spend to individual analyses as well as watch the project-wide
 totals.
 
-:::info Your key, your model, your data path
+:::info[Your key, your model, your data path]
 Elchi doesn't ship an AI provider. Analysis runs against the OpenRouter key and
 model you configure and requires outbound access to OpenRouter. Configuration and
 log analysis operate on your resources and the logs you submit; when dependency

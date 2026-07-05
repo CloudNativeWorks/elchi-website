@@ -24,7 +24,7 @@ Discovery is passive and metadata-only — it never touches bodies or forwards a
 
 Give it a representative window. The inventory is only as complete as the traffic it has seen, so wait through a normal cycle — including daily batch jobs, webhook retries, and admin flows — before treating the catalog as done.
 
-:::tip Confirmed vs attack surface
+:::tip[Confirmed vs attack surface]
 Discovery splits every request into **confirmed** (matched a real Envoy route — your actual API) and **attack surface** (matched no route: `/.env`, `wp-login.php`, scanner noise). You build policies from the **confirmed** catalog. See [confirmed vs attack surface](/api-discovery/overview#confirmed-vs-attack-surface--route-match-ground-truth).
 :::
 
@@ -50,7 +50,7 @@ Back in the endpoints view, select one or more **path groups** and click **Sugge
 
 Each suggestion carries a **rationale** — the risk flag that prompted it.
 
-:::warning The draft is a starting point, not a finished policy
+:::warning[The draft is a starting point, not a finished policy]
 The suggestion opens in the [policy editor](/shield/ui/policy-editor) as **unsaved** work — it is not persisted server-side. Review every route and engine before deploying. Positive-security suggestions (an [OpenAPI](/shield/engines/openapi-validation) allow-list, IP allow-lists) especially need review — they block everything *not* explicitly permitted.
 :::
 
@@ -155,7 +155,7 @@ curl -i "https://api.example.com/v1/users/search?q=1%27%20UNION%20SELECT%20passw
 
 Keep Security Events open for the first hours of enforcement — every block is always audited, so a false positive surfaces immediately with the exact rule and reason.
 
-:::tip Enforce per-surface
+:::tip[Enforce per-surface]
 `mode` is a per-scope field, so you can `block` on a mature `/v1/` prefix while a new `/v2/` prefix stays in `detect` — same policy. See [per-route mode overrides](/shield/policies/modes-and-postures#per-route-mode-overrides).
 :::
 

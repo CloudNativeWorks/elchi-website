@@ -27,11 +27,11 @@ Runtime configuration lives in one singleton document in the `api_collector_conf
 }
 ```
 
-:::info Hot reload
+:::info[Hot reload]
 The collector re-reads this document every `RUNTIME_CONFIG_POLL_INTERVAL` (default **2 minutes**). On each poll it validates the new document and, if valid, atomically swaps the live pipeline. One edit fans out to the whole fleet — there is no per-host file distribution. The applied `version` is exported as the `runtime_config_version` metric; alert if it stalls while operators are editing (a dead watcher).
 :::
 
-:::warning Reload discards detector state
+:::warning[Reload discards detector state]
 An accepted reload rebuilds the stateful detectors, so their in-flight windows (BOLA distinct-id counts, brute-force rings, rate windows) are **discarded**. This is an acceptable trade-off for an occasional tuning change, but avoid editing the document in a tight loop.
 :::
 
@@ -53,7 +53,7 @@ db.api_collector_config.updateOne(
 )
 ```
 
-:::note Validation keeps live traffic safe
+:::note[Validation keeps live traffic safe]
 Validation runs on every reload. Invalid documents — negative thresholds, an uncompilable deny regex, an enabled detector with a zero threshold — are **rejected**, and the previously-loaded runtime stays live. A bad edit never takes down inspection; it just fails to apply (and bumps `runtime_config_poll_failures_total`).
 :::
 
@@ -73,7 +73,7 @@ Validation runs on every reload. Invalid documents — negative thresholds, an u
 | `store_raw_user_agent` | `*bool` | on (null = on) | Persist the raw `user_agent` column. Set `false` to opt out. |
 | `raw_sample_rate` | int | `0` | `0`/`1` = store every raw event; `N ≥ 2` = store only 1-in-N **benign** events (every risky/non-2xx event is always kept). |
 
-:::warning Sensitive headers are always dropped
+:::warning[Sensitive headers are always dropped]
 A fixed set of **14** sensitive headers is stripped before persistence no matter what `header_allowlist` says: `authorization`, `proxy-authorization`, `x-forwarded-authorization`, `x-original-authorization`, `x-forwarded-user`, `cookie`, `set-cookie`, `set-cookie2`, `x-api-key`, `x-auth-token`, `x-csrf-token`, `x-xsrf-token`, `traceparent`, `tracestate`. Their **presence** (for the auth-bearing subset) still sets `auth_observed=true` — the value itself is never stored.
 :::
 
@@ -110,7 +110,7 @@ db.api_collector_config.updateOne(
 )
 ```
 
-:::warning Exclusions blind every detector
+:::warning[Exclusions blind every detector]
 `policy.exclude` is stronger than `trusted_proxy_cidrs`: an excluded host/CIDR/UA is dropped entirely, so **all** attack detection for it is off. Use it only for genuine noise (CORS preflight, kube-probes, load-test sources) and fully-trusted internal traffic. To suppress *IP-keyed signals* without losing the event, use `trusted_proxy_cidrs` instead.
 :::
 

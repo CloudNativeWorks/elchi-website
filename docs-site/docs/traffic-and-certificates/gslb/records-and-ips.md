@@ -78,7 +78,7 @@ The record is placed in a shard (a `shard_id` derived from the FQDN hash) so the
 
 When the probe is updated or removed, all per-IP backoff timers are reset so the record's IPs get a fresh start.
 
-:::warning Auto-created records
+:::warning[Auto-created records]
 Auto-created records (`service_id != ""`) cannot be updated or deleted through these endpoints — you get `400 Bad Request` ("Delete the service instead"). Manage them via the service's deploy/undeploy lifecycle. You **can** still add manual backup IPs and override health states on them.
 :::
 
@@ -164,7 +164,7 @@ DELETE /api/v3/gslb/ip/507f1f77bcf86cd799439012/history
 
 This only removes historical entries — the current health state, monitoring, and DNS behavior are untouched, and the health checker resumes appending new entries. Useful for cleaning up test data or shrinking large documents.
 
-:::danger Irreversible
+:::danger[Irreversible]
 Clearing status history permanently deletes the historical probe records. There is no undo.
 :::
 

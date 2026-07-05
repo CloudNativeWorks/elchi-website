@@ -31,7 +31,7 @@ Configure under `policy.engines.jwt`.
 | `header_name` | string | no | `Authorization` | Header carrying the token. |
 | `leeway` | duration | no | `0` (strict) | Clock-skew tolerance for `exp`/`nbf`/`iat`. `≥ 0`, `≤ 5m`. |
 
-:::info Exactly one key
+:::info[Exactly one key]
 Set exactly **one** of `hmac_secret` / `public_key_file`. Mixing symmetric and asymmetric keys in one verifier is what enables algorithm-confusion attacks, so the config schema forbids it. The key family must also match the listed algorithms — an HS secret can't verify an RS token, and vice-versa; a mismatch fails at config load, not by silently rejecting every token.
 :::
 
@@ -104,7 +104,7 @@ curl -i https://secure.example.com/api/orders \
 
 ## Gotchas
 
-:::warning leeway defaults to 0
+:::warning[leeway defaults to 0]
 `leeway: 0` (the default) is strict: under real-world clock skew, tokens near `exp`/`nbf` get rejected. Set a small leeway (e.g. `30s`) in production.
 :::
 

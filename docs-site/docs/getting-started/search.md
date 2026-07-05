@@ -60,6 +60,6 @@ Clicking a result navigates straight to the underlying resource, with the correc
 
 This turns search into a navigation tool as much as a lookup: find the domain, click, and you are editing the resource that references it.
 
-:::note Scope of the index
+:::note[Scope of the index]
 Search targets domain and IP fields specifically — it is not a full-text search over arbitrary configuration values, resource names, or secret contents. If a value you expect isn't found, confirm it lives in one of the indexed fields above and that you are in the right project.
 :::

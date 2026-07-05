@@ -27,7 +27,7 @@ requires body inspection on its direction
 
 At least one of `block` / `redact` is required.
 
-:::warning DLP defaults to the response direction
+:::warning[DLP defaults to the response direction]
 With no `direction` set, DLP only scans **responses**. To scrub or block request
 bodies (e.g. stop users pasting credentials into your API), set
 `direction: request` or `both` — and enable body inspection for that direction.
@@ -97,7 +97,7 @@ Shield inspects the buffered body there even when trailers follow — a
 automatically; it is called out only to explain why redacting policies behave
 slightly differently from detect-only body policies in traces.
 
-:::warning Redaction changes the bytes downstream sees
+:::warning[Redaction changes the bytes downstream sees]
 Anything that verifies the body downstream of Shield — body digests, HMAC
 signatures, checksums — will see the redacted bytes, not the originals. If a
 route combines DLP redaction with [HMAC signing](/shield/engines/hmac-signing)
@@ -159,7 +159,7 @@ buffering — DLP adds latency and memory only where it runs, so keep it on the
 routes that return sensitive data (see the sizing guidance in
 [Body Inspection & Limits](/shield/policies/body-inspection)).
 
-:::tip Rollout
+:::tip[Rollout]
 Roll a `block` list out via `mode: detect` → `shadow` → `block` and watch
 [Security Events](/shield/ui/security-events) for false positives (the `email`
 kind in particular can match legitimate payload fields). A `redact` list needs

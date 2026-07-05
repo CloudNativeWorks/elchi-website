@@ -48,7 +48,7 @@ Edges are typed to describe the relationship between two nodes — for example
 `responds` — and carry the match conditions and weights as properties, so you can
 see *why* a given hop is taken, not just *that* it exists.
 
-:::tip Reading the map
+:::tip[Reading the map]
 Follow a request by starting at the filter node and descending: pick the virtual
 host whose domain matches the request `Host`/`:authority`, then scan its routes
 **top-down** until the first `matches` edge whose conditions your request

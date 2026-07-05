@@ -39,7 +39,7 @@ Reason from what each is best at:
 - **Use Shield's Coraza engine** when you already run Shield and want the WAF **alongside Shield's other engines** under one policy — with **response inspection** (outbound data-leakage rules) and native-Go behavior with a per-policy fail posture.
 - **Use both** for defense in depth: the WASM WAF as a broad edge filter over *all* traffic, and Shield adding the things a CRS can't do — **auth, per-consumer rate limiting, bot scoring, DLP redaction, and positive-security contract validation** on your API routes specifically.
 
-:::tip The honest overlap
+:::tip[The honest overlap]
 Running CRS in *both* the WASM filter and Shield's Coraza engine means the same request is scored by the same rules twice — wasted work and duplicate findings. Don't. If you run both layers, put **broad CRS in the WASM WAF** and use **Shield for what CRS doesn't do** (auth, rate-limit, DLP, OpenAPI). Reach for Shield's Coraza engine specifically when you need **response-side** inspection, which the WASM sandbox does only partially.
 :::
 
@@ -128,7 +128,7 @@ If you're **not** running the WASM WAF (or you specifically need response-side C
                 exclude_rule_ids: ["920350"]
 ```
 
-:::warning Don't double-run CRS
+:::warning[Don't double-run CRS]
 This is the layer that overlaps the WASM WAF. If both are active on the same route you're scoring identical rules twice. Choose one home for the CRS per route — the WASM filter for broad edge coverage, or Shield's engine when you need response inspection and native-Go fail posture on that specific surface.
 :::
 

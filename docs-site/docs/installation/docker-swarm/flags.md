@@ -60,7 +60,7 @@ MongoDB, ClickHouse and VictoriaMetrics each default to a local container; point
 | `--vm=local\|external` | `local` | VictoriaMetrics placement. |
 | `--vm-endpoint=<url\|host:port>` | — | Endpoint for `--vm=external`. |
 
-:::note Clustering has no flags
+:::note[Clustering has no flags]
 Whether MongoDB and ClickHouse run standalone or clustered is derived entirely from the `--nodes` count — there are **no storage/HA flags**. See [High Availability](/installation/docker-swarm/high-availability).
 :::
 

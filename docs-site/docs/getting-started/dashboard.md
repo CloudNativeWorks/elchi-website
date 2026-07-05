@@ -77,7 +77,7 @@ GET /custom/clear_errors?error_ids=<id1>,<id2>&mode=<clear|resolve>
 - `error_ids` — a comma-separated list of the error IDs to act on (required).
 - `mode` — `clear` removes the errors outright; `resolve` marks them as resolved and stamps who resolved them and when. Defaults to `clear`.
 
-:::warning Admin and owner only
+:::warning[Admin and owner only]
 Clearing and resolving errors is restricted to the **admin** and **owner** roles. Viewers and members receive an "insufficient privileges" response and the action is refused on the backend.
 :::
 

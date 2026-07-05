@@ -6,7 +6,7 @@ sidebar_position: 3
 
 Elchi manages multiple Envoy versions from a single interface. The registry routes each proxy to a control-plane that speaks its version, so mixed fleets are first-class.
 
-:::info Which versions are supported
+:::info[Which versions are supported]
 The exact supported set is not hardcoded — it is fetched dynamically from the release archive. Any version numbers shown in these docs are illustrative; see **[Envoy versions](/reference/envoy-versions)** for the authoritative, current list and how it is resolved.
 :::
 

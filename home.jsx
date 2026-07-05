@@ -55,7 +55,7 @@ function Hero({ variant }) {
           <div className="fade-in">
             <span className="eyebrow">
               <span className="dot"></span>
-              ENVOY MANAGEMENT & API SECURITY
+              TRAFFIC MANAGEMENT & API SECURITY
             </span>
             <h1 style={{ marginTop: 24 }}>
               Manage Traffic at <br/>

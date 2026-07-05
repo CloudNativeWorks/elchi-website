@@ -26,7 +26,7 @@ An MMDB-based country / ASN / city resolver. The database is a MaxMind GeoLite2 
 | `geo.asn_org` | ASN DB | `Cloudflare, Inc.` |
 | `geo.asn_type` | ASN DB | `hosting` (when the ASN is a known cloud/datacenter provider; absent otherwise) |
 
-:::info The MMDB databases come only from MongoDB GridFS
+:::info[The MMDB databases come only from MongoDB GridFS]
 There is no operator-placed file and no on-disk fallback. The backend uploads the city/asn databases to a GridFS bucket (`GEOIP_GRIDFS_BUCKET`, default `geoip`); every collector replica syncs them into `GEOIP_CACHE_DIR` and hot-reloads on every later upload. One backend upload fans out to the whole fleet. If the bucket holds no database, **GeoIP is simply off** — `geo.kind` is still tagged, but no country/ASN. A fresh deploy against an empty bucket starts fine and lights up GeoIP the moment a database is uploaded.
 :::
 
@@ -58,7 +58,7 @@ CIDR / IP blocklists matched against each event's source IP — a Spamhaus DROP 
 | `ti.source` | feed name(s), comma-joined when multiple feeds claim the IP |
 | risk flag | `threat_intel_hit` (Critical severity, score 10) |
 
-:::info Mongo-backed, not file-backed
+:::info[Mongo-backed, not file-backed]
 Feeds live in the `api_collector_threatintel` singleton document, managed by the backend (typically by parsing an operator-uploaded file). The collector polls the doc on the `RUNTIME_CONFIG_POLL_INTERVAL` cadence and hot-swaps the compiled blocklists into the enricher's `atomic.Pointer` — a single backend update fans out to every replica with no per-host file distribution, and swapping feeds does **not** rebuild the pipeline or reset detector state. An empty or missing feed doc is a zero-cost no-op (the legitimate "no current threats" state).
 :::
 

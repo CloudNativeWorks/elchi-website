@@ -92,7 +92,7 @@ Each command `type` maps to a registered processor on the controller. The verifi
 
 Many commands carry a **sub-type** to select the exact operation — for example the network command uses sub-types such as netplan apply/get/rollback and route/policy/table management, and the service command uses start/stop/restart/status. BGP operations are a large family of FRR sub-types.
 
-:::note Command routing across controllers
+:::note[Command routing across controllers]
 When the target client is connected to a different controller, the command is forwarded there transparently via the Registry. If routing is failing for reachable-but-remote clients, check [Registry & HA](/administration/registry-and-ha).
 :::
 
@@ -116,7 +116,7 @@ GET /api/op/clients/:client_id/openstack/subnets/:subnet_id/available_ips?osp_pr
 
 Returns the free and used IPs for a subnet — the subnet/network names, CIDR, gateway, the list of available IPs, the list of used IPs, and totals. Availability is computed from the subnet's allocation pools minus the network's in-use addresses and the gateway.
 
-:::note Cloud configuration
+:::note[Cloud configuration]
 These endpoints resolve the OpenStack credentials from the project's cloud settings. Configuring those credentials is covered in [Cloud & OpenStack](/administration/cloud-openstack).
 :::
 

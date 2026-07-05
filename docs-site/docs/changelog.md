@@ -26,7 +26,7 @@ scripts) are re-published for unauthenticated download.
 | **Helm charts** | `elchi-stack`, `elchi-discovery` | [charts.elchi.io](https://charts.elchi.io/) |
 | **Install scripts / mirror** | Standalone + single-host installers | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
 
-:::tip Current versions at a glance
+:::tip[Current versions at a glance]
 The UI and backend version badges in the top navigation bar always show the latest
 published release of each — they are fetched at build time from GitHub.
 :::

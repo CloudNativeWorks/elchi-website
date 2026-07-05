@@ -52,7 +52,7 @@ Three single-replica services `elchi-mongo-1..3`, each on its own volume, with k
 
 Three servers `elchi-clickhouse-1..3`, each with an embedded Keeper (Raft) and the `elchi_cluster` remote-servers config. The Replicated `elchi` database is created by `install.sh` right after deploy, against each member, so it is never accidentally created as a plain Atomic database.
 
-:::note ClickHouse first-connect race
+:::note[ClickHouse first-connect race]
 The installer waits for the Keeper cluster to converge before issuing the Replicated DDL. If a collector ever wins the race and creates a plain Atomic database, just re-run `install.sh` — it is idempotent and refuses to proceed past a non-Replicated database.
 :::
 

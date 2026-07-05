@@ -91,7 +91,7 @@ Audit events are emitted asynchronously (bounded queue, drop-on-full — never b
 - **ClickHouse** — the default whenever `--audit-clickhouse-dsn` is set. Batched inserts (default 500 rows, 1s time-based flush) into the central ClickHouse.
 - **OTLP** — `--audit-otel-endpoint` sends events to an OTel Collector instead.
 
-:::info There is no local-file sink
+:::info[There is no local-file sink]
 When neither sink is configured, audit is simply **off**: events are skipped, never written to a local file. A misconfigured or unreachable sink degrades to no-audit (non-fatal — traffic is unaffected); watch `audit_enabled` to catch a sidecar that booted without the audit you expected.
 :::
 

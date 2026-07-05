@@ -62,7 +62,7 @@ body-processing failure, a GeoIP database read error, or the per-request
 | `fail_open` | Allow the request. | `fail_open_total` |
 | `fail_close` | Block the request with a fixed reason (`fail_close_error` / `fail_close_timeout`). The underlying error string is never leaked into the audit reason. | `fail_close_total` |
 
-:::danger Fail posture is NOT an auth bypass valve
+:::danger[Fail posture is NOT an auth bypass valve]
 A **missing or invalid credential always blocks, regardless of `fail_mode`**.
 Auth engines ([JWT](/shield/engines/jwt), [JWKS](/shield/engines/jwks),
 [API key](/shield/engines/api-key), [HMAC signing](/shield/engines/hmac-signing),
@@ -90,7 +90,7 @@ Posture guidance:
   and DLP on sensitive response surfaces
   ([Data Loss Prevention](/shield/policies/dlp)).
 
-:::warning fail_open silently disables positive-security allow-lists
+:::warning[fail_open silently disables positive-security allow-lists]
 A `fail_open` policy with a **country allow-list** in
 [IP reputation](/shield/engines/ip-reputation) fails *open* on a GeoIP database
 read error — the geo-fence quietly stops fencing. Any allow-list-style control

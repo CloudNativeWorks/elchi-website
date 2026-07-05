@@ -33,7 +33,7 @@ The handler proxies the archive's `index.json` verbatim — each entry carries t
 }
 ```
 
-:::tip Always query the API for the real list
+:::tip[Always query the API for the real list]
 Any version number quoted in docs is a snapshot in time. To see what your platform can actually deploy right now, call `GET /api/v3/custom/available_versions` (or open the version picker in the UI). Do not treat a hardcoded number in prose as canonical.
 :::
 

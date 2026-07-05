@@ -78,7 +78,7 @@ each discovery cluster is currently feeding.
 To deregister a cluster, use the **Delete** action
 (`DELETE /api/discovery/clusters/{id}`). Deletion is confirmed and permanent.
 
-:::warning Check usage first
+:::warning[Check usage first]
 Deleting a discovery cluster removes it as a source of discovered addresses.
 Open its **Usage** view first: if endpoints still reference it (usage count &gt; 0),
 those endpoints will stop receiving updated addresses. Delete only clusters with no

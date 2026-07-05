@@ -30,7 +30,7 @@ Configure under `policy.engines.jwks`.
 | `refresh_interval` | duration | no | `10m` | Background URL refresh cadence. `≥ 0`. |
 | `http_timeout` | duration | no | `10s` | URL fetch timeout. `≥ 0`. |
 
-:::info Exactly one source
+:::info[Exactly one source]
 Set exactly **one** of `file` / `url`. `refresh_interval` and `http_timeout` apply to the `url` source only.
 :::
 
@@ -114,7 +114,7 @@ curl -i https://mtls.example.com/api/orders \
 
 ## Gotchas
 
-:::tip Rotation procedure
+:::tip[Rotation procedure]
 Publish the new key (new `kid`) in the JWKS **before** issuing tokens signed with it — a token whose `kid` Shield hasn't refreshed yet will block. Budget for the `refresh_interval` (default 10m) between publishing and issuing.
 :::
 

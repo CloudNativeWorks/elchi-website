@@ -9,7 +9,7 @@ The Docker Swarm installer brings the full Elchi **control plane** up on Docker 
 
 It reuses the **pre-built `jhonbrownn/*` images** already on Docker Hub — the same images the Helm chart consumes. Nothing is built locally. Third-party services (MongoDB, ClickHouse, VictoriaMetrics, Grafana, OpenTelemetry, Envoy) run their official upstream images. Source lives at [elchi-archive/deploy/docker/](https://github.com/CloudNativeWorks/elchi-archive/tree/main/deploy/docker).
 
-:::note This is Docker **Swarm**, not Compose
+:::note[This is Docker **Swarm**, not Compose]
 The installer runs `docker stack deploy` against a Swarm cluster (it initializes Swarm for you if needed). It is not a `docker compose` setup.
 :::
 

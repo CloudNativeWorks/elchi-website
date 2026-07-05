@@ -7,7 +7,7 @@ tags: [installation, docker]
 
 The root installer in [elchi-archive](https://github.com/CloudNativeWorks/elchi-archive) brings the full Elchi stack up on a **single Ubuntu 24.04 VM** with no existing Kubernetes cluster. It auto-provisions everything — Docker, kind, kubectl and Helm — creates a local kind cluster, and installs the `elchi-stack` Helm chart into it. It is the fastest way to get a complete evaluation environment on one machine.
 
-:::note This wraps the Helm chart
+:::note[This wraps the Helm chart]
 Under the hood this runs the same `elchi-stack` Helm chart as the production Kubernetes install — it just provides the cluster (a local kind cluster) for you. For a real Kubernetes deployment, use the [Helm platform install](/installation/helm-platform/overview) against your own cluster.
 :::
 

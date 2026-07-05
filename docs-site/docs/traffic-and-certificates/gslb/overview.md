@@ -76,7 +76,7 @@ Reach for GSLB when you need:
 
 It is **not** a substitute for in-path load balancing. DNS steering is coarse-grained and subject to client/resolver caching (bounded by your record TTL). Pair GSLB with Envoy for connection-level balancing behind each resolved IP.
 
-:::info Deploying GSLB nodes
+:::info[Deploying GSLB nodes]
 The elchi-coredns plugin and the GSLB zone are provisioned by the bare-metal installer (default-on, port 53 + a webhook on 8053). See the [bare-metal overview](/installation/bare-metal/overview) for topology and flags, and set zone defaults under **Settings → GSLB**. The health checker itself runs inside the Controller and shards its work across controllers for HA — see [Registry & HA](/administration/registry-and-ha).
 :::
 

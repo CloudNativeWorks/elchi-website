@@ -7,7 +7,7 @@ tags: [reference]
 
 Elchi is a two-tier system. The **central platform** runs once (the control plane, databases, observability, and the collector). Each **edge node** runs Envoy plus the local agents (`elchi-client`, `elchi-shield`). This page is the single cross-cutting map of every port either tier listens on, and how exposed each one should be.
 
-:::info Bare-metal specifics live elsewhere
+:::info[Bare-metal specifics live elsewhere]
 This atlas is the platform-wide view. For the exact ports the systemd installer opens per node role — including the Envoy front-door remapping, Registry/Controller/Control-plane port math, ClickHouse cluster ports, and CoreDNS — see the [bare-metal port atlas](/installation/bare-metal/port-atlas). Where the two disagree, the bare-metal atlas is authoritative for a systemd install; the numbers below are the process defaults.
 :::
 
@@ -60,7 +60,7 @@ Every data-plane host: Envoy plus the local Elchi agents.
 | _(UDS)_ | elchi-shield (ext_proc) | The Envoy `ext_proc` gRPC channel — a Unix domain socket by default (local by construction). | loopback |
 | _(outbound)_ | elchi-client | No inbound listener — dials **out** to the Controller gRPC (`CommandStream`) and ships logs/config. | n/a |
 
-:::danger Shield is never off-box
+:::danger[Shield is never off-box]
 `elchi-shield` refuses to bind its ext_proc or HTTP listeners to a non-loopback address unless `--allow-non-loopback` is set. It inspects raw request/response bodies and must stay local. Prefer the default Unix domain socket for ext_proc. See the [Shield reference](/shield/reference).
 :::
 

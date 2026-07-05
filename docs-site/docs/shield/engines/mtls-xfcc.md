@@ -26,7 +26,7 @@ Configure under `policy.engines.xfcc`.
 | `subjects` | string[] | — | — | Allowed certificate subjects. |
 | `hashes` | string[] | — | — | Allowed cert fingerprints. |
 
-:::info Validation rule
+:::info[Validation rule]
 `require_present: true` **or** at least one allow-list dimension (`uris`/`dns_names`/`subjects`/`hashes`) is required. The allow-list dimensions are **OR'd** — a certificate matching any one of them is allowed.
 :::
 
@@ -90,7 +90,7 @@ http_connection_manager:
     cert: true
 ```
 
-:::danger SANITIZE_SET is mandatory
+:::danger[SANITIZE_SET is mandatory]
 `SANITIZE_SET` replaces any client-supplied XFCC header with the identity Envoy itself verified. Under `APPEND_FORWARD`, earlier XFCC elements can be client-supplied — the engine defends by matching only the rightmost element, but the trusted configuration is `SANITIZE_SET`. The engine trusts that Envoy verified the peer certificate; it cannot detect spoofing itself.
 :::
 
@@ -117,7 +117,7 @@ curl -i https://mtls.example.com/mtls/transfer --cacert ca.crt
 
 ## Gotchas
 
-:::danger "Auth that authenticates nothing"
+:::danger["Auth that authenticates nothing"]
 `require_present: false` with no allow-list is a **no-op** — the engine always allows. It is easy to misconfigure this into auth that authenticates nothing. For real enforcement you need an allow-list (and usually `require_present: true`).
 :::
 

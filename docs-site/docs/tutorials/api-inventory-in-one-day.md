@@ -46,7 +46,7 @@ access_log:
       additional_response_headers_to_log: [content-type, grpc-status, location, strict-transport-security]
 ```
 
-:::warning Get the source IP right
+:::warning[Get the source IP right]
 Discovery derives the client IP from Envoy's downstream connection, never the spoofable leftmost `X-Forwarded-For`. Configure the listener with `use_remote_address` + `xff_num_trusted_hops` so the recorded IP is the real caller and not your CDN. See [collector configuration](/api-discovery/collector-configuration).
 :::
 
@@ -56,7 +56,7 @@ There is nothing to tune yet — just let traffic flow. Within a couple of flush
 
 Give it a **representative window**. The catalog only knows what it has seen, so leave it running through a full cycle — daily and weekly batch jobs, webhook retries, admin flows — before you treat it as complete. This is the "in a day" part: the wait is the work.
 
-:::tip Privacy posture
+:::tip[Privacy posture]
 No request/response bodies, no query strings, and sensitive headers (`Authorization`, `Cookie`, `X-Api-Key`…) are dropped before persistence — only their *presence* is recorded. Source IP and User-Agent are hashed. Turning Discovery on does not create a new exfiltration surface — see [PII & Auth Detection](/api-discovery/pii-and-auth).
 :::
 
@@ -99,7 +99,7 @@ The spec is assembled from observed operations, statuses, and content types — 
 - **It reflects reality.** Every path, method, status, and content type in it was actually observed. No aspirational or stale entries.
 - **It can miss never-exercised operations.** An endpoint that got no traffic in the window won't appear.
 
-:::warning Export confirmed, not attack surface
+:::warning[Export confirmed, not attack surface]
 Always export the **confirmed** catalog. Exporting the attack-surface view would bake probe paths (`/.env`, `wp-login.php`) into your spec. And review before you enforce — a traffic-derived spec captures everything that happened, including endpoints you'd rather not keep exposed. Trim it before it becomes an allow-list.
 :::
 

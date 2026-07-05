@@ -7,7 +7,7 @@ tags: [api-discovery, collector]
 
 This is the reference page for the **elchi-collector**, the ingest engine behind [API Discovery](/api-discovery/overview). It documents every bootstrap environment variable, the ports it listens on, the metrics it exports, and the storage schema the read API depends on. Runtime (hot-reloaded) configuration is covered separately in [Collector Configuration](/api-discovery/collector-configuration).
 
-:::info Bootstrap vs runtime
+:::info[Bootstrap vs runtime]
 Everything on this page is **bootstrap** — read from the environment once at process start; changing it needs a restart. The header policy, ingest exclusions, path-normalization rules, and detector thresholds are **runtime** config in MongoDB and hot-reload without a restart. Only set env vars you want to override; anything unset uses the compiled-in default.
 :::
 
@@ -108,7 +108,7 @@ Budgets are **total** and divided across shards, so raising `BATCH_SHARDS` does 
 | `BATCH_SHARDS` | `0` (auto) | Parallel batchers; `0` = `min(2 × GOMAXPROCS, 8)`. |
 | `BATCH_SHUTDOWN_DRAIN_TIMEOUT` | `20s` | Caps the final flush during shutdown; kept shorter than `SHUTDOWN_TIMEOUT`. `0` = unbounded. |
 
-:::note Defaults differ between docs
+:::note[Defaults differ between docs]
 The compiled-in defaults above (from the README's env table) are the production values. The shipped `.env.example` shows lower developer-oriented values (e.g. `BATCH_MAX_SIZE=1000`, `BATCH_FLUSH_INTERVAL=250ms`, `BATCH_QUEUE_SIZE=5000`) as override examples — the collector uses the production defaults when the vars are unset.
 :::
 
@@ -222,7 +222,7 @@ Three `AggregatingMergeTree` tables, populated by materialized views off the raw
 
 Aggregate columns: `events_count` (`countMerge`), `duration_quantiles` (`quantilesTDigestMerge(0.5,0.95,0.99)`), `duration_avg` (`avgMerge`), `response_bytes_sum`/`_max`, `max_risk_score` (`maxMerge`), `unique_consumers`/`unique_source_ips` (`uniqHLL12Merge`), `error_count` (5xx), `client_error_count` (4xx).
 
-:::warning Sampling caveat on the rollups
+:::warning[Sampling caveat on the rollups]
 The rollups are materialized from the raw table, so when `policy.raw_sample_rate ≥ 2` their `events_count` / `unique_consumers` under-count benign traffic. Derive exact request volume from the **MongoDB inventory** counters (fed before sampling), not from rollup or `COUNT(*)` queries.
 :::
 
@@ -295,7 +295,7 @@ access_log:
         - grpc-message                  # only stored when grpc-status != OK
 ```
 
-:::warning Source IP must be trustworthy
+:::warning[Source IP must be trustworthy]
 The collector hashes Envoy's `downstream_remote_address`, never the client-spoofable `X-Forwarded-For` directly. Behind an edge, configure Envoy with `use_remote_address` + `xff_num_trusted_hops` so `source_ip_hash` reflects the real client, not the edge.
 :::
 

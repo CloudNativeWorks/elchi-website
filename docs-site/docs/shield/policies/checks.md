@@ -68,7 +68,7 @@ Valid values:
 | `json` | the `require_json` body check |
 | `sensitive_data` | the `detect_sensitive_data` body hook |
 
-:::warning Structural protections are not skippable
+:::warning[Structural protections are not skippable]
 The body **truncation guard**, the content **decode** stage, and the process-wide
 body-memory **budget** are structural — they always run and honor no
 `skip_checks` entry. Only the six named built-in checks above can be exempted.

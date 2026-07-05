@@ -10,7 +10,7 @@ Fleet Operations is the console for the fleet you have already installed. Once t
 - **Services** — the Envoy deployments. A service is a named Envoy configuration (a bootstrap plus its xDS resources) and the set of clients it is deployed to. This is where you see deployment status, drill into a running Envoy, inspect configuration errors, and recover GSLB records.
 - **Clients** — the edge agent nodes. Each connected `elchi-client` is a row here. This is where you send remote lifecycle commands (deploy, restart, network, shield, and more), read host statistics and logs, and — on cloud hosts — look up interfaces and available IPs.
 
-:::note Where installation ends and operations begins
+:::note[Where installation ends and operations begins]
 [Installation](/installation/client/overview) covers getting the agent onto a host and connected. **Operations covers everything after that** — using the connected fleet. If a host is not appearing under Clients, that is an installation/connectivity problem; start with the [client installation guide](/installation/client/installation).
 :::
 
