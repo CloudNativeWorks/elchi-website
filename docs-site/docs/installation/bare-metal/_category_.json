@@ -1,0 +1,9 @@
+{
+  "label": "Bare-Metal (no Docker, no K8s)",
+  "position": 4,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Install the full Elchi stack on plain VMs with systemd \u2014 no containers required."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "label": "API Discovery",
+  "position": 5,
+  "collapsed": true,
+  "link": {"type": "generated-index", "description": "Traffic-derived API inventory, risk scoring, and the collector that powers it."}
+}

@@ -2,14 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elchi Documentation — Installation & Configuration Guide</title>
-  <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./docs.css">
+  <title>Redirecting to Elchi Docs…</title>
+  <link rel="canonical" href="https://www.elchi.io/docs/">
+  <meta name="robots" content="noindex">
+  <script>
+    // Legacy single-page docs anchors -> new per-page Docusaurus URLs.
+    // One entry per NAV id of the retired docs.jsx app. Frozen at migration.
+    var MAP = {
+      'introduction': '/docs/getting-started/introduction',
+      'quickstart': '/docs/getting-started/quickstart',
+      'concepts': '/docs/getting-started/concepts',
+      'network': '/docs/getting-started/network-access',
+      'platform-overview': '/docs/installation/helm-platform/overview',
+      'platform-prerequisites': '/docs/installation/helm-platform/prerequisites',
+      'platform-install': '/docs/installation/helm-platform/installation',
+      'platform-config': '/docs/installation/helm-platform/configuration',
+      'platform-storage': '/docs/installation/helm-platform/storage',
+      'platform-production': '/docs/installation/helm-platform/production',
+      'platform-security': '/docs/installation/helm-platform/security',
+      'baremetal-overview': '/docs/installation/bare-metal/overview',
+      'baremetal-prereq': '/docs/installation/bare-metal/prerequisites',
+      'baremetal-quickstart': '/docs/installation/bare-metal/quickstart',
+      'baremetal-install': '/docs/installation/bare-metal/install-sh',
+      'baremetal-upgrade': '/docs/installation/bare-metal/upgrade-sh',
+      'baremetal-uninstall': '/docs/installation/bare-metal/uninstall-sh',
+      'baremetal-validate': '/docs/installation/bare-metal/validate-sh',
+      'baremetal-helper': '/docs/installation/bare-metal/elchi-stack-helper',
+      'baremetal-ports': '/docs/installation/bare-metal/port-atlas',
+      'baremetal-topology': '/docs/installation/bare-metal/topology',
+      'baremetal-hardening': '/docs/installation/bare-metal/hardening',
+      'baremetal-distros': '/docs/installation/bare-metal/supported-distros',
+      'client-overview': '/docs/installation/client/overview',
+      'client-download': '/docs/installation/client/download',
+      'client-install': '/docs/installation/client/installation',
+      'client-config': '/docs/installation/client/configuration',
+      'client-os': '/docs/installation/client/supported-os',
+      'discovery-overview': '/docs/installation/discovery-agent/overview',
+      'discovery-prereq': '/docs/installation/discovery-agent/prerequisites',
+      'discovery-install': '/docs/installation/discovery-agent/installation',
+      'discovery-config': '/docs/installation/discovery-agent/configuration',
+      'config-model': '/docs/envoy-configuration/config-model',
+      'scenarios': '/docs/envoy-configuration/scenario-workflows',
+      'version-upgrade': '/docs/envoy-configuration/versions-and-upgrades',
+      'gslb': '/docs/traffic-and-certificates/gslb',
+      'acme': '/docs/traffic-and-certificates/acme',
+      'waf': '/docs/traffic-and-certificates/waf',
+      'api-discovery': '/docs/api-discovery/overview',
+      'api-discovery-config': '/docs/api-discovery/collector-configuration',
+      'observability': '/docs/observability/metrics-and-logs',
+      'audit': '/docs/observability/audit-and-syslog',
+      'jobs': '/docs/observability/background-jobs',
+      'registry-ha': '/docs/administration/registry-and-ha',
+      'auth-access': '/docs/administration/auth-and-access',
+      'security-data': '/docs/administration/threat-intel-geoip',
+      'ai-analysis': '/docs/administration/ai-analysis',
+      'licensing': '/docs/administration/licensing',
+      'cli-reference': '/docs/reference/cli',
+      'api-reference': '/docs/reference/api',
+      'troubleshoot': '/docs/troubleshooting/common-issues'
+    };
+    var h = location.hash.replace(/^#/, '');
+    location.replace(MAP[h] || '/docs/');
+  </script>
+  <noscript><meta http-equiv="refresh" content="0;url=/docs/"></noscript>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="module" src="./docs.jsx"></script>
+  <p>Redirecting to <a href="/docs/">the documentation</a>…</p>
 </body>
 </html>

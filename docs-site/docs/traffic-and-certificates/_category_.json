@@ -1,0 +1,6 @@
+{
+  "label": "Traffic & Certificates",
+  "position": 4,
+  "collapsed": true,
+  "link": {"type": "generated-index", "description": "Global server load balancing, ACME certificates, and the Web Application Firewall."}
+}

@@ -1,0 +1,46 @@
+---
+title: Elchi Documentation
+description: Manage Envoy proxies at scale — installation, configuration, traffic management, API discovery, and security.
+slug: /
+sidebar_position: 0
+hide_table_of_contents: true
+---
+
+# Elchi Documentation
+
+Elchi is an enterprise **Envoy management platform**: a central control plane with a
+visual editor for every Envoy resource, plus edge agents that deploy and operate
+Envoy on your hosts — with GSLB, ACME certificates, WAF, API discovery, and API
+security built in.
+
+## Start here
+
+- **[Introduction](/getting-started/introduction)** — what Elchi is and how the pieces fit together.
+- **[Architecture](/getting-started/architecture)** — the processes, the edge node, and how every wire connects.
+- **[Quick Start](/getting-started/quickstart)** — get the platform running on Kubernetes in four steps.
+
+## Install it
+
+Pick the deployment substrate that fits — all bring up the same control plane:
+
+- **[Helm](/installation/helm-platform/overview)** — on an existing Kubernetes cluster.
+- **[Docker Swarm](/installation/docker-swarm/overview)** — one command, container-based, single-node or HA, online or air-gapped.
+- **[Single-Host (kind)](/installation/kind-quickstart)** — the whole stack on one VM for evaluation.
+- **[Bare-Metal](/installation/bare-metal/overview)** — plain VMs with systemd, no containers.
+- **[Elchi Client](/installation/client/overview)** — then install the edge agent (+ [bundled Shield](/installation/client/shield-sidecar)) next to Envoy.
+
+## Configure & operate
+
+- **[The Dashboard](/getting-started/dashboard)** — the landing screen: resource counts, error summary, health at a glance.
+- **[Configuring](/envoy-configuration/config-model)** — the resource model: build, validate, publish. Or generate config with the **[Scenario wizard](/envoy-configuration/scenario-workflows)**.
+- **[Shield](/shield/overview)** — API-security enforcement at the edge (WAF, auth, rate-limit, DLP).
+- **[GSLB](/traffic-and-certificates/gslb)**, **[Certificates (ACME)](/traffic-and-certificates/acme)**, **[WAF](/traffic-and-certificates/waf)** — traffic and protection.
+- **[API Discovery](/api-discovery/overview)** — a live, risk-scored inventory of every API your gateways serve.
+- **[Fleet Operations](/operations/overview)** — manage running Envoy services and connected edge clients.
+- **[Observability](/observability/metrics-and-logs)** — metrics, logs, audit, and jobs.
+
+## Administer
+
+- **[Authentication & Access](/administration/auth-and-access)** — projects, RBAC, tokens, LDAP, 2FA.
+- **[Registry & High Availability](/administration/registry-and-ha)** — scaling the control plane.
+- **[Troubleshooting](/troubleshooting/common-issues)** — when something doesn't work.

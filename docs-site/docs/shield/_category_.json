@@ -1,0 +1,6 @@
+{
+  "label": "Shield (API Security)",
+  "position": 6,
+  "collapsed": false,
+  "link": {"type": "generated-index", "description": "Elchi Shield — the ext_proc API-security sidecar: policies, security engines, deployment, and observability."}
+}

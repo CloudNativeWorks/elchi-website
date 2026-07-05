@@ -42,7 +42,7 @@ function FeaturesHero() {
 function CoreFeatures() {
   const items = [
     { t: 'Proto to UI Auto-Generation', d: 'Automatically generates UI configuration components from Envoy protobuf definitions. Create Listeners, Clusters, Endpoints, and Routes with full TypeScript type safety and validation.', icon: 'proto' },
-    { t: 'Interactive Dependency Graphs', d: 'Cytoscape-powered visual diagrams display relationships between Envoy components. Understand resource dependencies, data flow, and troubleshoot configurations.', icon: 'graph' },
+    { t: 'Interactive Dependency Graphs', d: 'React Flow visual diagrams display relationships between Envoy components. Understand resource dependencies, data flow, and troubleshoot configurations.', icon: 'graph' },
     { t: 'Quick Start Scenarios', d: 'Pre-built templates for common Envoy configurations. Generate complete setups for API gateways, load balancers, and service mesh deployments with just a few clicks.', icon: 'spark' },
     { t: 'Go-Based Agent', d: 'Lightweight Go agent for client-side Envoy management. Automatic registration, health monitoring, log export to Syslog/ELK, and seamless integration with the control plane.', icon: 'agent' },
     { t: 'Full xDS Protocol Support', d: 'Complete implementation of xDS (ADS, CDS, EDS, LDS, RDS, VHDS) using go-control-plane. Delta xDS support for efficient incremental configuration updates.', icon: 'xds' },
@@ -95,6 +95,14 @@ function AdvancedFeatures() {
       bullets: ['Two-axis threat & exposure scoring', 'Drift detection vs. baselines', 'Consumer & PII analytics', 'OpenAPI 3.0.3 export'],
       accent: '#6366f1',
       visual: 'inventory',
+    },
+    {
+      tag: 'Edge API Security',
+      t: 'Shield',
+      d: 'A per-edge ext_proc sidecar that enforces API security right in the request path: WAF, authentication, rate limiting, bot defense, and data-loss prevention — twelve engines you compose per route and roll out safely from detect to block.',
+      bullets: ['12 engines: JWT, mTLS, WAF, DLP, bot & more', 'OWASP CRS + positive-security OpenAPI', 'Detect → shadow → block rollout', 'Live metrics & forensic event feed'],
+      accent: '#f43f5e',
+      visual: 'shield',
     },
     {
       tag: 'OpenRouter AI Integration',
@@ -272,6 +280,28 @@ function AdvVisual({ kind, accent }) {
               </circle>
             </g>
           ))}
+        </g>
+      </svg>
+    );
+  }
+  if (kind === 'shield') {
+    const shieldPath = "M0,-62 L54,-42 L54,8 C54,44 30,64 0,74 C-30,64 -54,44 -54,8 L-54,-42 Z";
+    return (
+      <svg viewBox="0 0 300 200" width="100%" height="100%">
+        <g transform="translate(150, 100)">
+          <path d={shieldPath} fill="white" stroke={accent} strokeWidth="2"/>
+          {/* scan lines sweeping the shield */}
+          {[-34, -18, -2, 14].map((y, i) => (
+            <line key={i} x1="-40" y1={y} x2="40" y2={y} stroke={accent} strokeWidth="1.5" opacity="0.35">
+              <animate attributeName="opacity" values="0.12;0.6;0.12" dur={`${2 + i * 0.3}s`} repeatCount="indefinite"/>
+            </line>
+          ))}
+          {/* verified check */}
+          <path d="M-20,6 l13,13 l26,-30" stroke={accent} strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          {/* pulse outline */}
+          <path d={shieldPath} fill="none" stroke={accent} strokeWidth="1.5" opacity="0.4">
+            <animateTransform attributeName="transform" type="scale" values="1;1.06;1" dur="3s" repeatCount="indefinite"/>
+          </path>
         </g>
       </svg>
     );

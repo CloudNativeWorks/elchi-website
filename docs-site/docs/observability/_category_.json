@@ -1,0 +1,9 @@
+{
+  "label": "Observability",
+  "position": 8,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Metrics, logs, audit forwarding, and background jobs."
+  }
+}

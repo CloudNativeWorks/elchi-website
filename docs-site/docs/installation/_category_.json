@@ -1,0 +1,6 @@
+{
+  "label": "Installation",
+  "position": 2,
+  "collapsed": true,
+  "link": {"type": "generated-index", "description": "Install the Elchi platform (Helm or bare-metal), the edge client, and the Kubernetes discovery agent."}
+}

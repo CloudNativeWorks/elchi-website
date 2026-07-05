@@ -1,0 +1,9 @@
+{
+  "label": "Configuring",
+  "position": 3,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "The Elchi resource model: build, validate, publish, and upgrade Envoy configuration."
+  }
+}

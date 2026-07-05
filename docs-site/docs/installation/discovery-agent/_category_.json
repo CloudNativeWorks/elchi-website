@@ -1,0 +1,9 @@
+{
+  "label": "Elchi Discovery",
+  "position": 6,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Deploy the Kubernetes service/endpoint discovery agent."
+  }
+}

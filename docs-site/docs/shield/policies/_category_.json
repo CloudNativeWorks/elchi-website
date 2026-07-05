@@ -1,0 +1,6 @@
+{
+  "label": "Policies",
+  "position": 4,
+  "collapsed": true,
+  "link": {"type": "generated-index", "description": "The SecurityPolicy model: domains, routes, modes, body inspection, checks, and DLP."}
+}

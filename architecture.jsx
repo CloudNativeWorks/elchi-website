@@ -8,6 +8,7 @@ function ArchApp() {
       <Nav active="architecture"/>
       <ArchHero/>
       <ThreeProcess/>
+      <EdgeDataPlane/>
       <LayeredArch/>
       <RequestFlow/>
       <Integrations/>
@@ -95,6 +96,55 @@ function ThreeProcess() {
   );
 }
 
+function EdgeDataPlane() {
+  const nodes = [
+    { name: 'Envoy', port: 'data plane', accent: '#3b82f6', desc: 'The L7 proxy that carries your traffic',
+      items: ['Receives config over xDS from the control-plane', 'Calls Shield over ext_proc for security decisions', 'Ships access logs (ALS) to the collector', 'No restarts — config applied live'] },
+    { name: 'elchi-client', port: 'edge agent', accent: '#8b5cf6', desc: 'The agent that operates each edge host',
+      items: ['Registers the node & runs controller commands (gRPC CommandStream)', 'Deploys / upgrades Envoy and bootstrap', 'Bundles & manages the Shield sidecar + Coraza WASM', 'Ships logs, manages BGP/FRR & networking'] },
+    { name: 'Shield', port: 'ext_proc', accent: '#f43f5e', desc: 'API security enforced in the request path',
+      items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot, DLP — 12 engines', 'Runs as a local sidecar over a UDS socket', 'Policies pushed as files, hot-reloaded', 'block / detect / shadow decisions, fail-open safe'] },
+    { name: 'Collector', port: ':18090', accent: '#10b981', desc: 'Turns traffic into an API inventory',
+      items: ['Ingests Envoy ALS access logs (gRPC)', 'Normalizes paths, scores risk & PII', 'Writes the endpoint catalog (MongoDB) + events (ClickHouse)', 'Powers API Discovery — metadata only, no bodies'] },
+  ];
+  return (
+    <section className="section">
+      <div className="container">
+        <div className="section-head">
+          <span className="eyebrow"><span className="dot"></span>EDGE &amp; DATA PLANE</span>
+          <h2>The control plane is half the story.<br/>The edge is where traffic lives.</h2>
+          <p>Each edge host runs Envoy plus the agents that deploy it, secure it, and observe it — driven by the central control plane.</p>
+        </div>
+
+        <div className="proc-grid-light">
+          {nodes.map((p, i) => (
+            <div key={i} className="proc-card-light card">
+              <div className="proc-head-light" style={{ borderBottomColor: `${p.accent}33` }}>
+                <span className="proc-dot" style={{ background: p.accent, boxShadow: `0 0 12px ${p.accent}` }}></span>
+                <span style={{ fontSize: 18, fontWeight: 600 }}>{p.name}</span>
+                <span className="mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--slate-500)', background: 'var(--slate-100)', padding: '3px 8px', borderRadius: 6 }}>{p.port}</span>
+              </div>
+              <p style={{ fontSize: 14, color: 'var(--slate-600)', margin: '14px 0 18px' }}>{p.desc}</p>
+              <ul className="proc-list-light">
+                {p.items.map((it, j) => (
+                  <li key={j}>
+                    <span style={{ color: p.accent, fontWeight: 700 }}>›</span> {it}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ textAlign: 'center', marginTop: 32, fontSize: 14.5, color: 'var(--slate-600)' }}>
+          Want the full wire map — every port, protocol, and data flow between the control plane and the edge?
+          See the <a href="/docs/getting-started/architecture" style={{ color: 'var(--blue-600)', fontWeight: 600 }}>Architecture reference</a> in the docs.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function LayeredArch() {
   return (
     <section className="section">
@@ -113,7 +163,7 @@ function LayeredArch() {
             items={[
               { name: 'React', desc: 'Modern UI Framework' },
               { name: 'TypeScript', desc: 'Type Safety' },
-              { name: 'Cytoscape', desc: 'Graph Visualization' },
+              { name: 'React Flow', desc: 'Graph Visualization' },
             ]}
           />
 
@@ -290,7 +340,7 @@ function ArchCTA() {
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 32, justifyContent: 'center' }}>
               <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">Try Demo</a>
-              <a href="https://artifacthub.io/packages/helm/elchi-stack/elchi-stack" target="_blank" rel="noopener" className="btn btn-ghost">Helm Chart</a>
+              <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="btn btn-ghost">Helm Charts</a>
             </div>
           </div>
         </div>

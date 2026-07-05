@@ -59,23 +59,14 @@ Visit [demo.elchi.io](https://demo.elchi.io) for 24-hour access to the platform.
 ### Deploy with Helm
 
 ```bash
-helm repo add elchi https://cloudnativeworks.github.io/helm-charts
+helm repo add elchi https://charts.elchi.io
 helm repo update
-helm install elchi elchi/elchi-platform
+helm install elchi-stack elchi/elchi-stack --set global.mainAddress=<your-host>
 ```
 
-For detailed installation instructions, visit [Artifact Hub](https://artifacthub.io/packages/helm/elchi/elchi-platform).
-
-### Local Development
-
-```bash
-# Clone repositories
-git clone https://github.com/CloudNativeWorks/elchi
-git clone https://github.com/CloudNativeWorks/elchi-backend
-
-# Start with Docker Compose
-docker-compose up -d
-```
+Not on Kubernetes? Elchi installs the same control plane on **Docker Swarm**, a
+single VM (**kind**), or **bare-metal systemd**. For all install methods and
+detailed instructions, see the documentation: **[www.elchi.io/docs](https://www.elchi.io/docs/installation/helm-platform/overview)**.
 
 ## 🏗️ Architecture
 
@@ -138,9 +129,10 @@ All processes communicate via gRPC and share MongoDB for state management.
 
 ## 📞 Resources
 
-- **Website**: [elchi.io](https://elchi.io)
+- **Website**: [elchi.io](https://www.elchi.io)
+- **Documentation**: [www.elchi.io/docs](https://www.elchi.io/docs)
 - **Demo Platform**: [demo.elchi.io](https://demo.elchi.io)
-- **Helm Chart**: [Artifact Hub](https://artifacthub.io/packages/helm/elchi/elchi-platform)
+- **Helm Charts**: [charts.elchi.io](https://charts.elchi.io)
 - **GitHub**: [CloudNativeWorks](https://github.com/orgs/CloudNativeWorks/repositories)
 - **Email**: info@elchi.io
 

@@ -1,0 +1,9 @@
+{
+  "label": "Elchi Client",
+  "position": 5,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Install and configure the elchi-client edge agent next to Envoy."
+  }
+}

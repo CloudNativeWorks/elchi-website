@@ -55,16 +55,16 @@ function Hero({ variant }) {
           <div className="fade-in">
             <span className="eyebrow">
               <span className="dot"></span>
-              ENTERPRISE PROXY MANAGEMENT
+              ENVOY MANAGEMENT & API SECURITY
             </span>
             <h1 style={{ marginTop: 24 }}>
               Manage Traffic at <br/>
               <span className="grad-text">enterprise scale.</span>
             </h1>
-            <p style={{ fontSize: 19, lineHeight: 1.55, color: 'var(--slate-600)', marginTop: 24, maxWidth: 540 }}>
-              Scalable 3-process distributed architecture with intelligent automation,
-              comprehensive xDS protocol support, and a modern UI for managing
-              clients at enterprise scale.
+            <p style={{ fontSize: 19, lineHeight: 1.55, color: 'var(--slate-600)', marginTop: 24, maxWidth: 560 }}>
+              A visual control plane for your entire Envoy fleet — full xDS config, GSLB,
+              and certificates — with <strong>edge API security</strong> and traffic-derived
+              <strong> API discovery</strong> built in. Scalable, automated, enterprise-ready.
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 36 }}>
               <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">Try Demo →</a>
@@ -119,13 +119,15 @@ function Logos() {
 function FeaturesGrid() {
   const items = [
     { t: 'Proto to UI Auto-Generation', d: 'Automatically generates UI configuration components from client protobuf definitions. Listeners, Clusters, Endpoints, Routes — with full TypeScript safety.', icon: 'proto' },
-    { t: 'Interactive Dependency Graphs', d: 'Cytoscape-powered visual diagrams display relationships between client components. Understand data flow and troubleshoot interactively.', icon: 'graph' },
+    { t: 'Interactive Dependency Graphs', d: 'React Flow visual diagrams display relationships between Envoy resources. Understand data flow and troubleshoot interactively.', icon: 'graph' },
+    { t: 'Shield — Edge API Security', d: 'A per-edge ext_proc sidecar that enforces API security in the request path: WAF (OWASP CRS), authentication, rate limiting, bot defense, and DLP — twelve engines, rolled out safely from detect to block.', icon: 'lock' },
+    { t: 'API Discovery & Inventory', d: 'Turn live traffic into a continuously-scored inventory of every API you expose — shadow endpoints, missing auth, PII leaks — and export it as OpenAPI.', icon: 'graph' },
     { t: 'Quick Start Scenarios', d: 'Pre-built templates for common client configurations. Generate complete setups for API gateways, load balancers, and service mesh in clicks.', icon: 'spark' },
     { t: 'Go-Based Agent', d: 'Lightweight Go agent for client-side management. Auto-registration, health monitoring, log export to Syslog/ELK.', icon: 'agent' },
     { t: 'Full xDS Protocol Support', d: 'Complete implementation of xDS (ADS, CDS, EDS, LDS, RDS, VHDS) using go-control-plane. Delta xDS for efficient updates.', icon: 'xds' },
     { t: 'Two-Step Validation', d: 'Frontend TypeScript validation and backend protoc-gen-validate ensures configurations are correct before deployment.', icon: 'check' },
     { t: 'Save & Publish Workflow', d: 'Draft mode for safe configuration changes. Save incrementally and publish bulk updates atomically. Rollback on demand.', icon: 'flow' },
-    { t: 'Multi-Version Client Support', d: 'Manage multiple client versions from a single interface. Intelligent version routing with seamless migration X → Y.', icon: 'version' },
+    { t: 'Multi-Version Envoy Support', d: 'Manage multiple Envoy versions from a single interface. Intelligent version routing with seamless migration X → Y.', icon: 'version' },
     { t: 'Project-Based Multi-Tenancy', d: 'Organize configurations by teams, environments, or customers. 4-tier RBAC (Owner, Admin, Editor, Viewer).', icon: 'lock' },
   ];
   return (
@@ -170,11 +172,11 @@ function Comparison() {
   const rows = [
     { f: 'Intelligent Configuration Analysis', e: true, m: false, s: false, sub: 'Automated config analysis with recommendations' },
     { f: 'Proto-to-UI Auto Generation', e: true, m: false, s: false, sub: 'UI auto-generated from client protobufs' },
-    { f: 'Multi-Version Client Support', e: true, m: false, s: 'partial', sub: 'Single interface, version routing' },
+    { f: 'Multi-Version Envoy Support', e: true, m: false, s: 'partial', sub: 'Single interface, version routing' },
     { f: '3-Process Distributed Architecture', e: true, m: false, s: false, sub: 'Registry, Controller, Control-Plane' },
     { f: 'Real-time Configuration Validation', e: true, m: false, s: 'basic', sub: 'Two-step validation before production' },
     { f: 'Kubernetes Auto-Discovery', e: true, m: false, s: true, sub: 'Real-time endpoint sync' },
-    { f: 'Visual Dependency Graphs', e: true, m: false, s: 'limited', sub: 'Cytoscape-based, interactive' },
+    { f: 'Visual Dependency Graphs', e: true, m: false, s: 'limited', sub: 'React Flow, interactive' },
     { f: 'Enterprise Multi-Tenancy', e: true, m: false, s: 'varies', sub: 'Project isolation, 4-tier RBAC' },
     { f: 'Version Upgrade & Migration', e: true, m: false, s: false, sub: 'Migrate configs X → Y' },
     { f: 'LDAP / AD Authentication', e: true, m: false, s: 'varies', sub: 'Centralized SSO' },
@@ -183,6 +185,7 @@ function Comparison() {
     { f: 'ACME Certificate Management', e: true, m: false, s: 'limited', sub: 'Let\'s Encrypt + Google Trust' },
     { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'DNS-based with health probing' },
     { f: 'API Discovery & Inventory', e: true, m: false, s: false, sub: 'Auto-discovered surface, risk & PII scoring' },
+    { f: 'Shield — Edge API Security', e: true, m: false, s: false, sub: 'ext_proc WAF/auth/rate-limit/DLP, 12 engines' },
   ];
 
   const Cell = ({ v }) => {
@@ -442,7 +445,7 @@ function FinalCTA() {
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
               <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">Try Demo</a>
-              <a href="https://artifacthub.io/packages/helm/elchi-stack/elchi-stack" target="_blank" rel="noopener" className="btn btn-ghost">Helm Chart</a>
+              <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="btn btn-ghost">Helm Charts</a>
             </div>
             <div style={{ display: 'flex', gap: 24, marginTop: 36, flexWrap: 'wrap' }}>
               {['Ready To Use','MongoDB Store','Multi-Version Proxy','Agent Support'].map(t => (

@@ -1,0 +1,9 @@
+{
+  "label": "Administration",
+  "position": 9,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Access control, high availability, threat intelligence, AI analysis, and licensing."
+  }
+}

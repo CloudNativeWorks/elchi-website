@@ -1,0 +1,9 @@
+{
+  "label": "Reference",
+  "position": 10,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "CLI and API references."
+  }
+}

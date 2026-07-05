@@ -1,0 +1,6 @@
+{
+  "label": "Platform (Helm)",
+  "position": 1,
+  "collapsed": true,
+  "link": {"type": "generated-index", "description": "Deploy the Elchi platform on Kubernetes with the elchi-stack Helm chart."}
+}

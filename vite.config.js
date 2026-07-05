@@ -5,7 +5,12 @@ import { resolve } from 'path';
 async function fetchLatestTag(repo) {
   try {
     const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
-      headers: { 'Accept': 'application/vnd.github+json', 'User-Agent': 'elchi-website-build' },
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'User-Agent': 'elchi-website-build',
+        // Authenticated in CI (shared runner IPs exhaust the anonymous rate limit).
+        ...(process.env.GITHUB_TOKEN ? { 'Authorization': `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+      },
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const data = await res.json();

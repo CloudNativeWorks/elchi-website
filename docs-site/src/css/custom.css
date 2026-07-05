@@ -1,0 +1,87 @@
+/**
+ * Elchi docs theming — bounded to matching the marketing site's light aesthetic
+ * (white surfaces, blue-600 primary, Geist / Geist Mono). Dark mode keeps stock
+ * Infima values apart from the primary scale. No swizzling.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* blue-600 primary scale (from marketing styles.css brand tokens) */
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+
+  --ifm-font-family-base: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --ifm-code-font-size: 90%;
+  --ifm-heading-font-weight: 700;
+  --docusaurus-highlighted-code-line-bg: rgba(37, 99, 235, 0.08);
+}
+
+/* Light-only surfaces. IMPORTANT: scoped to [data-theme='light'] — putting these
+   on :root would override Infima's dark background at equal specificity (custom
+   css loads last) and render light-gray dark-mode text on a white page. */
+[data-theme='light'] {
+  --ifm-background-color: #ffffff;
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-toc-border-color: rgba(15, 23, 42, 0.08);
+  --ifm-color-emphasis-300: rgba(15, 23, 42, 0.14);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+  --docusaurus-highlighted-code-line-bg: rgba(96, 165, 250, 0.12);
+}
+
+.navbar {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: none;
+}
+[data-theme='dark'] .navbar { border-bottom-color: rgba(148, 163, 184, 0.15); }
+
+/* ----- Version badges (ported from marketing styles.css .nav-version*) ----- */
+.nav-versions { display: flex; gap: 6px; align-items: center; }
+.nav-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 11px;
+  line-height: 1;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: #475569;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.nav-version:hover { background: white; border-color: #0f172a; color: #0f172a; text-decoration: none; }
+.nav-version-key { color: #64748b; font-weight: 500; letter-spacing: 0.03em; }
+.nav-version-tag { color: #0f172a; font-weight: 600; }
+[data-theme='dark'] .nav-version { background: #1e293b; border-color: #334155; color: #94a3b8; }
+[data-theme='dark'] .nav-version:hover { background: #0f172a; border-color: #94a3b8; color: #f1f5f9; }
+[data-theme='dark'] .nav-version-key { color: #94a3b8; }
+[data-theme='dark'] .nav-version-tag { color: #f1f5f9; }
+@media (max-width: 996px) { .nav-versions { display: none; } }
+
+/* ----- "Try Demo" navbar button ----- */
+.navbar-demo-btn {
+  background: var(--ifm-color-primary);
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 600;
+}
+.navbar-demo-btn:hover { background: var(--ifm-color-primary-dark); }

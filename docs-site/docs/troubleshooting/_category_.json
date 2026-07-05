@@ -1,0 +1,9 @@
+{
+  "label": "Troubleshooting",
+  "position": 11,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Diagnose and fix common problems."
+  }
+}

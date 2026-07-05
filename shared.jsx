@@ -13,7 +13,7 @@ function Nav({ active }) {
           <a href="index.html" className={active === 'home' ? 'active' : ''}>Home</a>
           <a href="features.html" className={active === 'features' ? 'active' : ''}>Features</a>
           <a href="architecture.html" className={active === 'architecture' ? 'active' : ''}>Architecture</a>
-          <a href="docs.html" className={active === 'docs' ? 'active' : ''}>Docs</a>
+          <a href="/docs/" className={active === 'docs' ? 'active' : ''}>Docs</a>
         </div>
         <div className="nav-cta">
           <div className="nav-versions">
@@ -80,11 +80,11 @@ function Footer() {
           <div>
             <h5>Resources</h5>
             <ul>
-              <li><a href="docs.html">Documentation</a></li>
-              <li><a href="https://artifacthub.io/packages/helm/elchi-stack/elchi-stack" target="_blank" rel="noopener">Helm Chart</a></li>
+              <li><a href="/docs/">Documentation</a></li>
+              <li><a href="https://charts.elchi.io" target="_blank" rel="noopener">Helm Charts</a></li>
               <li><a href="https://github.com/orgs/CloudNativeWorks/repositories" target="_blank" rel="noopener">GitHub</a></li>
-              <li><a href="docs.html#client-install">Client Install</a></li>
-              <li><a href="docs.html#platform-install">Platform Install</a></li>
+              <li><a href="/docs/installation/client/installation">Client Install</a></li>
+              <li><a href="/docs/installation/helm-platform/installation">Platform Install</a></li>
             </ul>
           </div>
           <div>
@@ -97,7 +97,7 @@ function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2025 Elchi. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Elchi. All rights reserved.</span>
         </div>
       </div>
     </footer>
