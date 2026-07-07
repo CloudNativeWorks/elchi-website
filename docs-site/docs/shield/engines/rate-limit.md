@@ -88,9 +88,14 @@ spec:
 
 **Key selection:**
 
-- `key: ip` (default) → the trusted derived source IP. An empty source IP is **not** limited — the engine fails open on a *missing* IP rather than falling back to a spoofable one.
+- `key: ip` (default) → the trusted derived source IP (never a spoofable XFF token).
 - `key: host` → the canonicalized host (port stripped, IPv6 brackets removed, lowercased).
-- `key: header` → the named header's value. **An absent header ⇒ empty key ⇒ not limited.**
+- `key: header` → the named header's value.
+
+**Missing key ⇒ shared bucket, not exempt.** When the selector can't be derived — an
+absent keyed header, or an empty source IP — the request is counted against one shared
+**"unkeyed"** bucket rather than being let through unlimited. This closes the bypass of
+simply dropping the header/IP to escape the limit; unkeyed traffic shares a single budget.
 
 **Bucket math:** `requests_per_second` is the refill rate; `burst` is the bucket capacity (default ≈ `requests_per_second`, floored to 1). The first sighting of a key allows the request and leaves `burst − 1` tokens; after that, `tokens += elapsed × rps`, capped at `burst`. If at least 1 token is available the request is allowed and one token is consumed; otherwise it is **blocked with 429**, reason **`ratelimit.exceeded`**, severity Low, and a `Retry-After` header.
 

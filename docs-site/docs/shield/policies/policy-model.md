@@ -110,7 +110,10 @@ Each entry is one of:
   wins**: exact > `*.x` (a longer suffix beats a shorter one) > `*`.
 - Host matching is on the **canonical** authority: userinfo and port stripped,
   trailing dot removed, lower-cased. A `Host` header disagreeing with
-  `:authority` is rejected.
+  `:authority` is a host-smuggling signal and is **rejected unconditionally** —
+  this is a structural integrity gate that runs regardless of the resolved policy's
+  mode (even `off` / excluded paths), so it can't be dodged by targeting a permissive
+  authority.
 - Validation: an entry must be `*` or match `^(\*\.)?label(\.label)*$`
   (alphanumerics, `_`, `-`). No port, `@`, or scheme is allowed.
 

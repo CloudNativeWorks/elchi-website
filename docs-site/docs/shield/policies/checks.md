@@ -45,10 +45,13 @@ Runs in the `body_checks` stage at the body phase.
 | `dlp` | `DLPSpec` | none | Data-loss prevention (block/redact) — see [DLP](/shield/policies/dlp). |
 
 :::note
-`checks.body.*` options need the body, but do not enable buffering by
-themselves — set `inspect_request_body` / `inspect_response_body` and the
-matching size cap for the relevant direction. See
-[Body Inspection & Limits](/shield/policies/body-inspection).
+Configuring any `checks.body.*` option (`require_json`, `detect_sensitive_data`,
+or `dlp`) **auto-enables body inspection** for the direction it needs, so the
+check can never silently no-op: `require_json` and `detect_sensitive_data`
+default to the **request** body, and `dlp` follows its `direction`. Set
+`inspect_request_body` / `inspect_response_body` explicitly only to pick a
+different direction, and raise the matching size cap if the default is too small.
+See [Body Inspection & Limits](/shield/policies/body-inspection).
 :::
 
 ## `skip_checks`
@@ -109,6 +112,15 @@ The structural stages (context init, policy resolve, early decision,
 body-truncation guard, content-decode, body gate) are always present at fixed
 positions and are **not** listed here — `pipeline` only orders the reorderable
 inspector stages.
+
+:::warning[List every configured inspector]
+Because an explicit order **replaces the default wholesale**, any inspector you
+omit is silently dropped — omitting `waf_engine` would disable every engine on
+the policy. To prevent this, config load **rejects an order that leaves out an
+inspector the policy actually configures** (`fast_pre_checks` when header checks
+are set, `body_checks` for body checks, `waf_engine` for engines). List them all,
+or drop the explicit `pipeline` and keep the default order.
+:::
 
 Valid stage names (no duplicates):
 

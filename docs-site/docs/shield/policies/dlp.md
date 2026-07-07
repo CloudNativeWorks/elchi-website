@@ -13,9 +13,10 @@ typically used to stop keys and credentials from leaving through API responses,
 and to mask PII before it reaches downstream consumers or logs.
 
 DLP is a built-in body check, not an engine — it runs inside the `body_checks`
-stage (see [Built-in Checks & Pipeline Order](/shield/policies/checks)) and
-requires body inspection on its direction
-(see [Body Inspection & Limits](/shield/policies/body-inspection)).
+stage (see [Built-in Checks & Pipeline Order](/shield/policies/checks)). It needs
+the body buffered on its direction; you do **not** have to set `inspect_request_body`
+/ `inspect_response_body` yourself — shield derives them from `direction` (see
+[Body Inspection & Limits](/shield/policies/body-inspection)).
 
 ## Configuration
 
@@ -30,27 +31,30 @@ At least one of `block` / `redact` is required.
 :::warning[DLP defaults to the response direction]
 With no `direction` set, DLP only scans **responses**. To scrub or block request
 bodies (e.g. stop users pasting credentials into your API), set
-`direction: request` or `both` — and enable body inspection for that direction.
+`direction: request` or `both`. Shield auto-enables body inspection for whichever
+direction you choose — no separate `inspect_*_body` flag needed.
 :::
 
-## The nine kinds
+## The ten kinds
 
 | Kind | What it matches | Redaction behavior |
 |---|---|---|
-| `credit_card` | Payment card numbers (Luhn-validated) | Keeps the **last 4 digits** |
-| `ssn` | US Social Security numbers | `[REDACTED:ssn]` |
+| `credit_card` | Payment card numbers (Luhn-validated, IIN 2–6) | Keeps the **last 4 digits** |
+| `ssn` | US Social Security numbers (dash- or space-separated) | `[REDACTED:ssn]` |
 | `email` | Email addresses | `[REDACTED:email]` |
 | `jwt` | JSON Web Tokens | `[REDACTED:jwt]` |
 | `aws_access_key` | AWS access key IDs | `[REDACTED:aws_access_key]` |
-| `private_key` | PEM private key material | `[REDACTED:private_key]` |
+| `private_key` | PEM private keys — RSA/EC/OpenSSH/DSA, **ENCRYPTED (PKCS#8), and PGP** blocks | `[REDACTED:private_key]` |
 | `google_api_key` | Google API keys | `[REDACTED:google_api_key]` |
 | `slack_token` | Slack tokens | `[REDACTED:slack_token]` |
-| `github_token` | GitHub tokens | `[REDACTED:github_token]` |
+| `github_token` | GitHub tokens — classic (`ghp_`/`gho_`/…) **and fine-grained (`github_pat_`)** | `[REDACTED:github_token]` |
+| `stripe_key` | Stripe secret/restricted keys (`sk_live_…`, `rk_…`) | `[REDACTED:stripe_key]` |
 
 :::note
-The related-but-different `checks.body.detect_sensitive_data` hook additionally
-recognizes `stripe_key`, but blocks on the **first** hit and never redacts.
-`stripe_key` cannot be named in a DLP `block`/`redact` list — it is detect-only.
+The Luhn check requires a valid leading card-issuer digit (2–6), so benign
+16-digit identifiers (all-zeros, sequential IDs) are not flagged as cards. All
+ten kinds are usable in both a DLP `block`/`redact` list and the simpler
+`checks.body.detect_sensitive_data` hook (which blocks on the first hit).
 :::
 
 ## Block vs redact: precedence
@@ -67,14 +71,15 @@ The recommended split: things whose presence is an *incident* (keys, private
 keys, tokens) → `block`; things that are legitimate data you must not expose in
 full (cards, SSNs, emails) → `redact`.
 
-Whether a `block` actually blocks is governed by the policy `mode` — in
-`detect`/`shadow` a `block` match is recorded as a would-block and the message
-passes (see [Modes & Fail Postures](/shield/policies/modes-and-postures)).
-**Redaction is not mode-gated.** A `redact` match is a body *mutation*, not a
-block, so it is applied whenever the body is inspected and a redact kind matches —
-even under `mode: detect` or `shadow`. Only `mode: off` skips it, because `off`
-performs no inspection at all. In other words: the `block[]` list follows the
-policy mode; the `redact[]` list always rewrites the body.
+Both lists follow the policy `mode` (see [Modes & Fail Postures](/shield/policies/modes-and-postures)):
+
+- In `block` mode a `block` match blocks and a `redact` match rewrites the body.
+- In `detect`/`shadow` **nothing is modified** — a `block` match is recorded as a
+  would-block and a `redact` match is recorded as a would-redaction (rule
+  `body.dlp_redact_would`, counted under `detections_total`/`shadow_detections_total`),
+  and the **original body is forwarded unchanged**. This keeps detect/shadow a true
+  observe-only dry run: staging a DLP policy never silently mutates live traffic.
+- `mode: off` skips inspection entirely.
 
 ## How redaction works mechanically
 

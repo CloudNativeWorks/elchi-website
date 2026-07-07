@@ -27,7 +27,7 @@ Body-phase WAF. The OWASP Core Rule Set is embedded in the binary — set `inclu
 | `directives` | string | one-of | — | Inline SecLang directives (run **after** the CRS so they can add/override rules). |
 | `directives_file` | string | one-of | — | Path to a SecLang file (concatenated into `directives`). |
 | `include_owasp` | bool | one-of | `false` | Load the embedded OWASP Core Rule Set. |
-| `exclude_rule_ids` | string[] | no | — | CRS/custom rule IDs to disable (`SecRuleRemoveById`, applied last). |
+| `exclude_rule_ids` | string[] | no | — | CRS/custom rule IDs to disable (`SecRuleRemoveById`, applied last). Each entry must be a bare numeric rule id or id range (e.g. `"942100"` or `"942100-942999"`); anything else is rejected at load. |
 | `paranoia_level` | int | no | `0` → CRS default (1) | CRS **blocking** paranoia level `1`–`4` (higher = stricter, more false positives). |
 | `detection_paranoia_level` | int | no | `0` → = `paranoia_level` | Run rules up to this PL in **detection** but only block at `paranoia_level`. Must be `≥ paranoia_level`. |
 | `inbound_anomaly_threshold` | int | no | `0` → CRS default (5) | Request-side collaborative score that triggers a block (lower = stricter). |

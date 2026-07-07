@@ -119,7 +119,7 @@ Evaluation is cheapest-decisive-first and short-circuits:
 1. **Deny CIDRs** ⇒ block `ipreputation.deny_cidr`. **Deny always wins**, even over allow.
 2. **Allow CIDRs ⇒ default-DENY mode.** If *any* `allow_cidrs` entry is set, an allow-listed (and not denied) IP is treated as **trusted and short-circuits to ALLOW** — skipping feeds and geo. Anything else ⇒ block `ipreputation.not_allowlisted`.
 3. **Threat feeds** (only reached when no allow list is configured) ⇒ block `ipreputation.feed:<name>` with the feed's configured severity (default medium).
-4. **GeoIP:** a total DB miss follows `on_missing` (`continue` default \| `block`, reason `ipreputation.geo_unknown`); a blocked country ⇒ block `ipreputation.geo_country:<CC>`; a country allow list blocks anything else (including an ASN-only hit with no confirmable country); a blocked ASN ⇒ block `ipreputation.geo_asn:<n>`. All geo blocks are 403.
+4. **GeoIP:** a blocked country ⇒ block `ipreputation.geo_country:<CC>`; a blocked ASN ⇒ block `ipreputation.geo_asn:<n>`. When a country **allow list** is set (default-deny), any IP whose country isn't allowed is blocked — this **includes an IP absent from the database entirely** (no confirmable country ⇒ not allow-listed ⇒ blocked, reason `ipreputation.geo_country:unknown`), consistent with an ASN-only hit. Otherwise (no allow list) a total DB miss follows `on_missing` (`continue` default \| `block`, reason `ipreputation.geo_unknown`). All geo blocks are 403.
 
 All block reasons are prefixed `ipreputation.` — grep audit logs for the full id (e.g. `ipreputation.deny_cidr`), not the bare suffix.
 

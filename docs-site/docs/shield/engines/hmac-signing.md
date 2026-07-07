@@ -27,7 +27,7 @@ Configure under `policy.engines.hmac_sign`.
 | `key_id_header` | string | no | `X-Key-Id` | Header selecting the key id (with `secrets`). |
 | `algorithm` | string | no | `sha256` | `sha256` \| `sha512`. |
 | `window` | duration | no | `5m` | Timestamp acceptance window. `0` (use default) or `≥ 1s`; `≤ 1h`. |
-| `nonce_ttl` | duration | no | `= window` | Replay-cache TTL. `≤ 1h`. |
+| `nonce_ttl` | duration | no | `= 2 × window` | Replay-cache TTL. Defaults to twice the window so a signature stays un-replayable for its full acceptance lifetime (a timestamp skewed up to `+window` into the future is valid until `ts + window`). `≤ 1h`. |
 | `require_nonce` | bool | no | `false` | Require a nonce (else identical replays within the window are caught by the timestamp). |
 | `require_body_digest` | bool | no | `false` | Require the signature to bind a body digest. |
 

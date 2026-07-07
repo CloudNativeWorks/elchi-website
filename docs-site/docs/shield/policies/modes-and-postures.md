@@ -40,6 +40,10 @@ Behavior details worth internalizing:
 - Findings in `detect`/`shadow` are **always audited** regardless of
   `sampling_rate` (sampling applies only to plain allow decisions — see
   [Built-in Checks](/shield/policies/checks)).
+- `detect` and `shadow` are strictly **observe-only: they never modify traffic.**
+  Even a [DLP](/shield/policies/dlp) `redact` match is recorded as a would-redaction
+  and the body is forwarded **unchanged** — only `block` mode actually rewrites it.
+  So staging any policy in detect/shadow is a true dry run.
 - `mode: off` is a per-policy switch and still goes through policy resolution.
   For paths that should skip resolution entirely (health checks, metrics), use
   `spec.exclude` instead — see

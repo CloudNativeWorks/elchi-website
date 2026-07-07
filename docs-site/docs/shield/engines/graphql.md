@@ -81,6 +81,10 @@ Only requests that look like GraphQL are inspected: a POST with a matching `cont
 
 A document that fails to parse blocks with **`graphql.parse_error`**. All blocks are severity Medium / 403.
 
+:::note[Parser is token-bounded]
+The query is parsed with a hard **token limit (100 000)** *before* any of the limits above are evaluated — the depth/complexity checks run on the parsed document, so the parser itself must be bounded first. An oversized or pathologically deep query (e.g. hundreds of thousands of nested brackets) is rejected as `graphql.parse_error` rather than being allowed to exhaust the parser. This bound is a fixed backstop and is not configurable.
+:::
+
 **Always-on backstops (cannot be disabled — a `0` falls back to the default):** `max_fragment_depth` (default **32**, the fragment-spread recursion bound) and `max_complexity` (default **100000**, a per-operation node-visit budget) — the hard guard against a fragment "bomb", a tiny query whose fragments fan out exponentially. Exceeding the node budget blocks **`graphql.complexity`** immediately.
 
 ## Envoy prerequisites

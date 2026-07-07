@@ -112,8 +112,9 @@ smuggle anything in the tail.
 Inspectors must see the real payload, never compressed bytes. The structural
 decode stage decompresses `gzip` and `deflate` bodies (decompression-bomb
 bounded) before any inspector runs. An encoding Shield cannot decode — `br`, or
-stacked/multiple encodings — **blocks fail-closed**. A Content-Encoded body is
-never inspected as if it were plaintext.
+stacked/multiple encodings — **blocks fail-closed**, whether the layers arrive
+comma-joined in one `Content-Encoding` header or split across several. A
+Content-Encoded body is never inspected as if it were plaintext.
 
 ### Process-wide in-flight body budget
 
@@ -162,11 +163,12 @@ signature to a body digest — pair it with request-body inspection.
 phase — pair it with request-body inspection.
 
 :::tip
-Any `checks.body.*` option that needs the body implies body inspection at the
-body phase — but it does **not** implicitly flip the inspect switch. Always set
-`inspect_request_body` / `inspect_response_body` and the matching size cap for
-the direction your body checks and engines run on. A DLP policy with
-`direction: response` and `inspect_response_body` left `false` inspects nothing.
+**DLP is the exception that auto-enables inspection:** shield derives
+`inspect_request_body` / `inspect_response_body` from the DLP `direction`, so a DLP
+policy never silently no-ops. For the other body checks (`require_json`,
+`detect_sensitive_data`) and body-phase engines you still set the matching
+`inspect_*_body` flag (and size cap) for the direction they run on — that flag is
+what picks the direction for those direction-agnostic checks.
 :::
 
 A typical Coraza route, sized deliberately:
