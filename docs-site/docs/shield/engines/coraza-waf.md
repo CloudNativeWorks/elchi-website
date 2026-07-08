@@ -22,6 +22,10 @@ The Elchi platform also delivers Coraza/OWASP-CRS as an **Envoy WASM filter** �
 
 Body-phase WAF. The OWASP Core Rule Set is embedded in the binary — set `include_owasp: true` to load it from memory.
 
+:::info[CRS version]
+The CRS version is **compiled into the Shield binary** (the `coraza-coreruleset` pin), so every edge enforces whatever ruleset *its* binary embeds — it is not selected per policy. Shield reports that version (its `/configz` `coreruleset_version` field and the `build_info` metric), and the **WAF Studio auto-pins the CRS Rule Library to the version your project's edges actually run** — with a version badge, and a warning if the fleet is running mixed versions. Excluding a rule id that isn't present in that version is flagged, since it would be a silent no-op. Upgrading is a binary bump (rebuild with a newer `coraza-coreruleset`); rule ids are stable across CRS minors, so existing tuning keeps working. This version axis is independent of the WASM WAF's own CRS.
+:::
+
 | Field | Type | Required | Default | Purpose |
 |---|---|---|---|---|
 | `directives` | string | one-of | — | Inline SecLang directives (run **after** the CRS so they can add/override rules). |

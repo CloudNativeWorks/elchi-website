@@ -97,3 +97,5 @@ Referencing a file with `Include @owasp_crs/<file>` keeps you aligned with the b
 ## Reuse across the platform
 
 The library is callback-driven so the same browser powers both this WASM-WAF editor and Shield's WAF authoring. On the WASM-WAF page it writes into your directive sets; hosted elsewhere it can toggle CRS rule IDs into an **exclude** list instead of copying them (the per-rule Disable/Enable affordance). In this editor, disabling a CRS rule is done with a `SecRuleRemoveById` directive — see [WAF Studio](/traffic-and-certificates/waf/waf-studio) for CRS tuning and exclusions.
+
+The two hosts differ in **which CRS store they browse**: this WASM-WAF editor lists the backend-managed CRS versions (default `4.14.0`), while Shield's WAF Studio browses the CRS version **compiled into your edge binaries** and auto-pins to whatever your project's fleet actually runs — see [Shield's Coraza engine](/shield/engines/coraza-waf). The component is shared; the rule source and version are not.
