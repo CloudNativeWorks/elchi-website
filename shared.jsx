@@ -7,7 +7,7 @@ const ELCHI_BACKEND_VERSION = typeof __ELCHI_BACKEND_VERSION__ !== 'undefined' ?
 // are intentionally kept in English in both locales.
 const SHARED = {
   en: {
-    nav: { home: 'Home', features: 'Features', architecture: 'Architecture', docs: 'Docs', demo: 'Try Demo →' },
+    nav: { home: 'Home', features: 'Features', architecture: 'Architecture', docs: 'Docs', contact: 'Contact', demo: 'Try Demo →' },
     footer: {
       tagline: 'Enterprise proxy management platform. 3-process distributed architecture with full xDS protocol support.',
       demoOnline: 'Demo online',
@@ -20,7 +20,7 @@ const SHARED = {
     },
   },
   tr: {
-    nav: { home: 'Ana Sayfa', features: 'Özellikler', architecture: 'Mimari', docs: 'Dokümanlar', demo: 'Demoyu Dene →' },
+    nav: { home: 'Ana Sayfa', features: 'Özellikler', architecture: 'Mimari', docs: 'Dokümanlar', contact: 'İletişim', demo: 'Demoyu Dene →' },
     footer: {
       tagline: 'Kurumsal proxy yönetim platformu. Tam xDS protokol desteğiyle 3 süreçli dağıtık mimari.',
       demoOnline: 'Demo çevrimiçi',
@@ -53,6 +53,7 @@ function Nav({ active }) {
           <a href={locHref('features')} className={active === 'features' ? 'active' : ''}>{t.features}</a>
           <a href={locHref('architecture')} className={active === 'architecture' ? 'active' : ''}>{t.architecture}</a>
           <a href={docsHref} className={active === 'docs' ? 'active' : ''}>{t.docs}</a>
+          <a href={locHref('contact')} className={active === 'contact' ? 'active' : ''}>{t.contact}</a>
         </div>
         <div className="nav-cta">
           <div className="lang-switch">
@@ -136,13 +137,19 @@ function Footer() {
             <h5>{t.company}</h5>
             <ul>
               <li><a href="https://www.cloudnativeworks.com" target="_blank" rel="noopener">{t.about}</a></li>
-              <li><a href="mailto:admin@cloudnativeworks.com">{t.contact}</a></li>
+              <li><a href={locHref('contact')}>{t.contact}</a></li>
               <li><a href="https://github.com/orgs/CloudNativeWorks/repositories" target="_blank" rel="noopener">{t.github}</a></li>
             </ul>
           </div>
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Elchi. {t.rights}</span>
+          <a href="https://profelis.com.tr" target="_blank" rel="noopener" className="powered-by">
+            <span>Powered by</span>
+            <span className="powered-by-logo">
+              <img src="/profelis-logo.webp" alt="Profelis" height="16" loading="lazy" />
+            </span>
+          </a>
         </div>
       </div>
     </footer>

@@ -36,6 +36,16 @@
     </url>
 
     <url>
+        <loc>https://www.elchi.io/contact.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/contact.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/contact.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/contact.html"/>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <url>
         <loc>https://www.elchi.io/tr/</loc>
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/"/>
@@ -63,6 +73,16 @@
         <lastmod>2026-07-05</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/contact.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/contact.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/contact.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/contact.html"/>
+        <lastmod>2026-07-08</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
     </url>
 
 </urlset>

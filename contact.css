@@ -1,0 +1,54 @@
+/* contact-page-specific */
+
+.offices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+@media (max-width: 980px) { .offices-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; } }
+
+.office-card {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.office-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.office-flag {
+  font-size: 26px;
+  line-height: 1;
+}
+.office-head h3 { font-size: 20px; }
+.office-sub {
+  font-size: 13px;
+  color: var(--slate-500);
+}
+
+.office-address {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--slate-600);
+}
+
+.office-lines {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.office-line {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--slate-500);
+}
+.office-line-key { color: var(--slate-400); }
+.office-line a { color: var(--slate-600); }
+.office-line a:hover { color: var(--blue-600); }

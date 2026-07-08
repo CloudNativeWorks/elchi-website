@@ -384,11 +384,32 @@ p { margin: 0; color: var(--slate-600); }
 .footer-bottom {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
   padding-top: 24px;
   border-top: 1px solid var(--border);
   font-size: 13px;
   color: var(--slate-500);
 }
+.powered-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--slate-500);
+  font-size: 13px;
+  transition: color .15s ease;
+}
+.powered-by:hover { color: var(--slate-900); }
+.powered-by-logo {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+.powered-by-logo img { height: 16px; width: auto; }
 @media (max-width: 880px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
