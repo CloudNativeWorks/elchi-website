@@ -41,7 +41,7 @@ strength policy — a password must:
 - contain at least one **uppercase** letter,
 - contain at least one **lowercase** letter,
 - contain at least one **number**, and
-- contain at least one **special character** (`@ $ ! % * ? &`).
+- contain at least one **special character** (any of `` !@#$%^&*()_+-=[]{}|;:,.<>? ``).
 
 As with email, password changes apply to local accounts; LDAP passwords are
 managed by the directory.

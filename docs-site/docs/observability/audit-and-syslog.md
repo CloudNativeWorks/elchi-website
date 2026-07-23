@@ -10,4 +10,4 @@ Every user action and configuration change is recorded in an immutable audit tra
 
 ## Forwarding to a SIEM
 
-Forward audit events to an external collector under **Settings → Syslog**. Elchi speaks **RFC5424** over UDP, TCP, or TLS, and includes a connection test so you can validate the destination before enabling it.
+Forward audit events to an external collector under **Settings → Audit Forwarding**. Elchi speaks **RFC5424** over UDP, TCP, or TLS, and includes a connection test so you can validate the destination before enabling it.

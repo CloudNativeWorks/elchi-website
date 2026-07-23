@@ -13,7 +13,7 @@ The standalone installer brings the entire Elchi stack up as **systemd services*
 | **elchi-registry** | Every node (HA peer set, gRPC HC pins to leader) | :1870 gRPC, :9091 metrics |
 | **elchi-controller** | Every node (singleton) | :1960 gRPC, :1980 REST |
 | **elchi-control-plane** | Every node (one per backend variant) | :1990 (per variant) |
-| **OTel Collector** | Every node (local sink for envoy `/opentelemetry`) | :4317 gRPC, :4318 HTTP, :13133 health, :8888 prom |
+| **OTel Collector** | Every node (local sink for envoy `/opentelemetry`) | :4317 gRPC, :4318 HTTP, :13133 health (`:8888` self-metrics is otelcol's built-in default — not configured or firewall-opened by the installer) |
 | **elchi-collector** | Every node (ALS sink — Envoy data-plane proxies push Access Log Service streams here; writes to local ClickHouse + MongoDB). Opt out with `--no-collector` | :18090 gRPC, :18091 HTTP/metrics |
 | **MongoDB** | 1–2 VM: M1 standalone · 3+ VM: M1+M2+M3 RS · 4+: no extra members | :27017 |
 | **ClickHouse** | 1–2 VM: standalone · 3+ VM: clustered with embedded Keeper on each member (Replicated engine, replicated tables) | :9000 native, :8123 HTTP, :9009 interserver (3+), :9181/:9234 Keeper (3+) |

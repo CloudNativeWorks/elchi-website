@@ -25,14 +25,15 @@ The control plane, its datastores, observability, and API-discovery ingest. Runs
 
 | Port | Component | Purpose | Exposure |
 |---|---|---|---|
+| `443` | Front Envoy (TLS) | The platform's public front door — one TLS listener carrying the UI, REST API, client `CommandStream` gRPC, Envoy xDS/ADS, and ALS; the registry's ext_proc filter sets `x-target-cluster` to route each stream internally. | external |
 | `8099` | Controller (REST) | The REST API surface (`/api/v3`, `/auth`, `/api/op`). Fronted by an internal Envoy on `127.0.0.1:8080`. | internal |
 | `50051` | Controller (gRPC) | `CommandStream` to each edge `elchi-client`. Per-instance override via `CONTROLLER_GRPC_PORT`. | internal |
 | `18000` | Control-plane (xDS) | Envoy ADS/VHDS management server — edge Envoys pull their config here. | internal |
 | `9090` | Registry (gRPC) | Service discovery + version-routing; also the port controllers/control-planes dial to register. | internal |
-| `9091` | Registry (metrics) | Prometheus `/metrics` scrape target (hardcoded). | internal |
+| `9091` | Registry (metrics) | Prometheus-format `/metrics` endpoint (hardcoded), scraped by VictoriaMetrics. | internal |
 | `27017` | MongoDB | System of record (config, users, projects, API inventory). | internal |
-| `8123` | ClickHouse (HTTP) | Query interface — used by the backend and collector for API events + audit. | internal |
-| `9000` | ClickHouse (native) | TCP wire protocol for the CH cluster. | internal |
+| `8123` | ClickHouse (HTTP) | HTTP interface — used only for the readiness `/ping` probe. | internal |
+| `9000` | ClickHouse (native) | TCP wire protocol — backend and collector queries connect here (`clickhouse://…:9000`). | internal |
 | `8428` | VictoriaMetrics | Long-term metrics store (management node, when enabled). | internal |
 | `3000` | Grafana | Dashboards, reverse-proxied at `/grafana/`. | loopback |
 | `4317` / `4318` | OTel Collector | OTLP gRPC / HTTP ingest for Envoy + shield telemetry. | internal |
@@ -41,7 +42,7 @@ The control plane, its datastores, observability, and API-discovery ingest. Runs
 | `18091` | elchi-collector (HTTP) | `/healthz`, `/readyz`, `/metrics`, plus gRPC health. | internal |
 
 :::note
-The controller **process** listens on `8099` by default (`CONTROLLER_PORT`); on a bare-metal install it sits behind an internal Envoy plaintext listener on `127.0.0.1:8080` that fronts the UI and API together. Treat `8080` as the front door and `8099` as the origin. See the [bare-metal port atlas](/installation/bare-metal/port-atlas) for the full remapping.
+The controller **process** listens on `8099` by default (`CONTROLLER_PORT`); on a bare-metal install it sits behind an internal Envoy plaintext listener on `127.0.0.1:8080` that fronts the UI and API together. The external front door is the front Envoy's TLS listener on `443`; treat `8080` as the internal plaintext path and `8099` as the origin. See the [bare-metal port atlas](/installation/bare-metal/port-atlas) for the full remapping.
 :::
 
 For the collector's env-config and its full metric set, see the [collector reference](/api-discovery/collector-reference).
@@ -53,7 +54,7 @@ Every data-plane host: Envoy plus the local Elchi agents.
 | Port | Component | Purpose | Exposure |
 |---|---|---|---|
 | `443` (or `--port`) | Envoy (public) | The client-facing TLS data-plane listener(s). This is the front door. | external |
-| `8080` | Envoy (internal) | Plaintext listener fronting the UI/API to the controller. | loopback |
+| `8080` | Envoy (internal) | Internal plaintext listener fronting the UI/API to the controller — not the front door (that is `443`). | loopback |
 | `9901` | Envoy (admin) | Envoy admin interface — always loopback-bound. | loopback |
 | _(varies)_ | Envoy listeners | Additional per-service listeners you define in config. | as configured |
 | `9001` | elchi-shield (HTTP) | `/healthz`, `/readyz`, `/metrics`, `/configz`, `/policyz`, `/debug/pprof` — the sidecar's management surface. Loopback-only unless `--allow-non-loopback`. | loopback |

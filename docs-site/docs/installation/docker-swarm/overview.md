@@ -49,11 +49,11 @@ The Elchi-specific images live on Docker Hub under `jhonbrownn/*`. Third-party s
 
 | Component | Image | Default tag | Override flag |
 |---|---|---|---|
-| Backend (registry / controller / control-plane) | `jhonbrownn/elchi-backend` | `v1.6.6-v0.14.0-envoy1.38.3` | `--backend-version=<csv>` |
-| UI (nginx SPA) | `jhonbrownn/elchi` | `v1.5.5` | `--ui-version` |
+| Backend (registry / controller / control-plane) | `jhonbrownn/elchi-backend` | `v1.6.9-v0.14.0-envoy1.38.3` | `--backend-version=<csv>` |
+| UI (nginx SPA) | `jhonbrownn/elchi` | `v1.5.12` | `--ui-version` |
 | CoreDNS (GSLB plugin) | `jhonbrownn/elchi-coredns` | `v0.1.4` | `--coredns-version` |
 | Collector (Envoy ALS ingest) | `jhonbrownn/elchi-collector` | `v0.1.11` | `--collector-version` |
-| Envoy (edge) | `envoyproxy/envoy` | `v1.37.0` | — |
+| Envoy (edge) | `envoyproxy/envoy` | `v1.38.3` | — |
 | MongoDB | `mongo` | `8.0` | — |
 | ClickHouse | `clickhouse/clickhouse-server` | `24.8` | — |
 | Grafana | `grafana/grafana` | `11.6.0` | — |

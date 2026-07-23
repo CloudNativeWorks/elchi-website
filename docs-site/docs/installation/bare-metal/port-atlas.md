@@ -18,14 +18,14 @@ sidebar_position: 9
 | OTel gRPC | `:4317` | Every node — local sink for envoy `/opentelemetry` |
 | OTel HTTP | `:4318` | Every node |
 | OTel health | `:13133` | Every node |
-| OTel prom self-metrics | `:8888` | Every node |
+| OTel prom self-metrics | `:8888` | otelcol-contrib's built-in default — the installer does not configure OTel self-telemetry and the firewall does not open this port |
 | MongoDB | `:27017` | Standalone for 1-2 VM topology, RS-3 for 3+ |
 | Grafana | `127.0.0.1:3000` | M1 only — reverse-proxied at `/grafana/` |
 | VictoriaMetrics | `0.0.0.0:8428` | M1 only (with `--vm=local`) |
 | CoreDNS | `:53/tcp+udp` | Every node when GSLB enabled |
 | CoreDNS webhook | `0.0.0.0:8053` | M1 → M2/M3 push notifications (X-Elchi-Secret auth) |
-| ClickHouse native | `0.0.0.0:9000` | CH server TCP wire protocol; cluster member on every node |
-| ClickHouse HTTP | `0.0.0.0:8123` | CH HTTP interface; used by collector + backend for queries |
+| ClickHouse native | `:9000` | CH server TCP wire protocol — collector + backend connect here (`clickhouse://…:9000`). Runs on the **first 3 nodes only** (M1 standalone for 1–2 VMs; 3-member cluster for 3+). Binds `127.0.0.1` on a true single-VM install, `0.0.0.0` with 2+ VMs |
+| ClickHouse HTTP | `:8123` | CH HTTP interface; used only for the readiness `/ping` probe — collector + backend queries go over native `:9000`. First 3 nodes only |
 | ClickHouse interserver | `0.0.0.0:9009` | Inter-replica replication (3+ node clusters only) |
 | ClickHouse Keeper | `0.0.0.0:9181` | Embedded Raft coordination client port (3+ node clusters only) |
 | ClickHouse Keeper Raft | `0.0.0.0:9234` | Keeper inter-peer Raft consensus traffic (3+ node) |

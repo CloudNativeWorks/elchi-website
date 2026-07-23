@@ -103,7 +103,7 @@ set_current_client_cert_details:
   uri: true       # SPIFFE / URI SANs
   dns: true       # DNS SANs
   subject: true   # certificate subject
-  cert: false
+  cert: true      # required for the engine's fingerprint (hashes) allow-list
 ```
 
 `SANITIZE_SET` replaces whatever XFCC the client sent with the details of the certificate from Envoy's own TLS handshake, so the engine's SPIFFE/DNS/subject/fingerprint allow-lists match against a verified identity, never a forged header.

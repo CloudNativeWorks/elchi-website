@@ -13,11 +13,11 @@ import { useEffect, useMemo, useState } from 'react';
 function ArchDiagram() {
   const pool = [
     { x: 506, y: 70,  ver: 'v1.33' },
-    { x: 626, y: 70,  ver: 'v1.32' },
+    { x: 626, y: 70,  ver: 'v1.36' },
     { x: 746, y: 70,  ver: 'v1.33' },
-    { x: 506, y: 132, ver: 'v1.32' },
+    { x: 506, y: 132, ver: 'v1.36' },
     { x: 626, y: 132, ver: 'v1.33' },
-    { x: 746, y: 132, ver: 'v1.32' },
+    { x: 746, y: 132, ver: 'v1.36' },
   ];
 
   return (

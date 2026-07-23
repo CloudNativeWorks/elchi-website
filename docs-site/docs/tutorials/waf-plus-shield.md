@@ -132,15 +132,25 @@ If you're **not** running the WASM WAF (or you specifically need response-side C
 This is the layer that overlaps the WASM WAF. If both are active on the same route you're scoring identical rules twice. Choose one home for the CRS per route — the WASM filter for broad edge coverage, or Shield's engine when you need response inspection and native-Go fail posture on that specific surface.
 :::
 
-## Step 6 — Verify the division of labor
+## Step 6 — Promote to block
 
-Confirm each layer catches its own class of attack:
+Everything so far runs in detect — the CRS layer in detection-only and the Shield policy with `mode: detect` — so findings are logged but nothing is enforced yet. Follow the [detect → shadow → block rollout](/shield/policies/modes-and-postures) for both layers: promote the WASM WAF out of detection-only in [WAF Studio](/traffic-and-certificates/waf/waf-studio), and once the Shield policy's shadow stream has been clean for a representative window, flip it to enforce:
+
+```yaml
+spec:
+  defaults:
+    mode: block
+```
+
+## Step 7 — Verify the division of labor
+
+With both layers enforcing, confirm each catches its own class of attack:
 
 ```bash
 # Injection → caught by the CRS layer (WASM WAF or Shield Coraza), 403
 curl -i "https://api.example.com/v1/search?q=1%27%20OR%201=1--"
 
-# Missing credential → caught by Shield's JWT engine (CRS has no concept of auth), 401/403
+# Missing credential → caught by Shield's JWT engine (CRS has no concept of auth), 403
 curl -i "https://api.example.com/v1/users/42"
 
 # Flood from one IP → throttled by Shield's rate-limit engine, 429

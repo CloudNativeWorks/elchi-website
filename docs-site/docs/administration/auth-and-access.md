@@ -108,7 +108,7 @@ Enrollment isn't complete until you verify a code — enable → verify → acti
 
 ### Manage
 
-When 2FA is active the panel shows **backup codes remaining (X / 10)** and warns when fewer than 5 remain. From here you can:
+When 2FA is active the panel shows how many **backup codes remain** (of the 10 issued) and warns when fewer than 5 remain. From here you can:
 
 - **Regenerate backup codes** — confirm with a current authenticator code; new codes replace and invalidate the old ones.
 - **Disable 2FA** — requires your password **plus** either a valid authenticator code or a backup code.

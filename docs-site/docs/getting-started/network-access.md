@@ -103,8 +103,8 @@ Open these only when the matching feature is enabled. None is needed for a vanil
 - **DNS provider APIs** (HTTPS 443) — For ACME DNS-01 challenges. Per provider: `api.cloudflare.com`, `api.godaddy.com`, `api.digitalocean.com`, `route53.amazonaws.com`, `lightsail.{region}.amazonaws.com`, Google Cloud DNS APIs. Only the providers you actually attach need to be reachable.
 - **OpenRouter API** (HTTPS 443) — `openrouter.ai/api/v1` for the AI Analyzer. Only contacted when an OpenRouter token is set per project. (All AI traffic goes through OpenRouter — no direct Anthropic/OpenAI egress.)
 - **OpenStack APIs** (HTTPS 443 / 5000) — Cloud provider integration (Keystone / Nova / Neutron). Only when a cloud is registered under `Settings → Clouds`.
-- **LDAP / LDAPS** (389 / 636) — Optional external auth, when LDAP is enabled in `Settings → LDAP Config`.
-- **Syslog / SIEM** (UDP, TCP, or TCP+TLS — your host:port) — Audit-log forwarding, when a syslog target is configured under `Settings → Syslog`.
+- **LDAP / LDAPS** (389 / 636) — Optional external auth, when LDAP is enabled in `Settings → LDAP`.
+- **Syslog / SIEM** (UDP, TCP, or TCP+TLS — your host:port) — Audit-log forwarding, when a syslog target is configured under `Settings → Audit Forwarding`.
 - **download.db-ip.com** (HTTPS 443) — Free DB-IP Lite GeoIP database (city / ASN `.mmdb`, ~80 MB) fetched on demand via `POST /api/v3/setting/geoip/download` for shield's GeoIP features. Not needed if you upload a database file manually instead.
 - **Kubernetes API** (HTTPS 6443) — For the Discovery agent syncing endpoints back to the controller. The agent runs in-cluster, so this is normally an internal call rather than true egress.
 - **GSLB probe targets** (HTTP / HTTPS / TCP) — When a GSLB record is created, the health checker continuously probes every IP/FQDN you list, on whatever port you configure. This is the largest egress surface — scope it by destination, not by port.

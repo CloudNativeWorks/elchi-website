@@ -46,7 +46,7 @@ API Discovery is deliberately built so that turning it on does **not** create a 
 
 - **No request or response bodies** are ever shipped or stored — ALS carries metadata, not payloads.
 - **No query strings** — the path is stored query-stripped and normalized; redirect `Location` headers have their query/fragment stripped (so OAuth `code`, SAML state, etc. can't leak).
-- **Sensitive headers are dropped** before persistence regardless of config: `Authorization`, `Proxy-Authorization`, `Cookie`, `Set-Cookie`, `X-Api-Key`, `X-Auth-Token`, `X-Csrf-Token`. Their *presence* is recorded as `auth_observed`; the value never is.
+- **Sensitive headers are dropped** before persistence regardless of config — a fixed set of **14**: `Authorization`, `Proxy-Authorization`, `X-Forwarded-Authorization`, `X-Original-Authorization`, `X-Forwarded-User`, `Cookie`, `Set-Cookie`, `Set-Cookie2`, `X-Api-Key`, `X-Auth-Token`, `X-Csrf-Token`, `X-Xsrf-Token`, `Traceparent`, `Tracestate`. Their *presence* is recorded as `auth_observed`; the value never is.
 - **Source IP and User-Agent are always hashed** (`SHA-256(salt + value)`). The raw columns are **also populated by default** — raw retention is a per-field **opt-out** (`store_raw_source_ip` / `store_raw_user_agent: false`) for a stricter, hash-only posture. See [PII, Auth & Consumers](/api-discovery/pii-and-auth).
 - **PII is scrubbed before it is stored** — a detected email / SSN / card number in a path segment is replaced with `{pii}`; only the *category* is recorded, never the value.
 

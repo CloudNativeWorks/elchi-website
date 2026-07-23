@@ -8,7 +8,7 @@ sidebar_position: 1
 
 Everything you need to install, configure, and operate the Elchi proxy management platform — from quick local trials to production-grade Kubernetes deployments.
 
-Elchi is a comprehensive proxy management platform that provides a UI-driven workflow for managing clients at enterprise scale. It bundles three coordinated processes — Registry, Controller, and Control-Plane — alongside a modern React UI, MongoDB for state, and VictoriaMetrics for time-series.
+Elchi is a comprehensive proxy management platform that provides a UI-driven workflow for managing clients at enterprise scale. It bundles three coordinated processes — Registry, Controller, and Control-Plane — alongside a modern React UI, MongoDB for state, VictoriaMetrics for time-series, and ClickHouse for API events and audit.
 
 - **[Quick Start](/getting-started/quickstart)** — Get Elchi running on a Kubernetes cluster in under five minutes with Helm.
 - **[Install the Platform](/installation/helm-platform/installation)** — Full Helm install — controller, control-plane, registry, MongoDB & VictoriaMetrics.

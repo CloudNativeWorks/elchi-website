@@ -57,7 +57,7 @@ not reproduced — set your own for every secret and address.
 | `global.installGslb` | `false` | default `false` | `true` | `true` | default `false` |
 | `global.internalCommunication` | `false` | `false` | `false` | `false` | `false` |
 | Envoy versions | 1 | 1 | **2** | 1 | 1 |
-| `global.storageClass` | `""` | default `standard` | `local-path` | `""` | default `standard` |
+| `global.storageClass` | `""` | inherits base `""` | `local-path` | `""` | inherits base `""` |
 | Controller / control-plane replicas | 4 / 4 | 2 / 2 | 4 / 4 | 1 / 1 | 2 / 2 |
 | External MongoDB (`mongodb.hosts`) | none | none | configured | configured | none |
 | `envoy.service.httpNodePort` | `30000` | `30080` | `30083` | `30000` | `30010` |

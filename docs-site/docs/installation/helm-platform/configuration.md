@@ -6,9 +6,10 @@ sidebar_position: 4
 
 Every chart value lives under the `global` namespace so it can be shared across sub-charts. The most common parameters:
 
+The chart does not create or select a Kubernetes namespace — choose one at install time with `helm install --namespace <ns> --create-namespace`.
+
 | Parameter | Description | Default |
 |---|---|---|
-| `global.namespace` | Namespace where all components deploy. | `"elchi-stack"` |
 | `global.mainAddress` | Public base URL for all components. | **required** |
 | `global.port` | Controller API port. Falls back to 80/443 based on TLS. | `""` |
 | `global.tlsEnabled` | Enable HTTPS for external traffic. | `false` |
@@ -18,12 +19,12 @@ Every chart value lives under the `global` namespace so it can be shared across 
 | `global.installCollector` | Deploy the bundled elchi-collector (API discovery). | `true` |
 | `global.installGslb` | Deploy the GSLB DNS component. | `false` |
 | `global.internalCommunication` | Enable internal-only communication between services. | `false` |
-| `global.versions` | List of Elchi backend versions to deploy (illustrative — see [Envoy versions](/reference/envoy-versions) for the current set). | `[v0.14.0-envoy1.37.0, v0.14.0-envoy1.38.3]` |
+| `global.versions` | List of Elchi backend versions to deploy (illustrative — see [Envoy versions](/reference/envoy-versions) for the current set). | `[v1.6.9-v0.14.0-envoy1.38.3]` |
 | `global.jwt.secret` | JWT signing secret (min 32 chars). | **change me** |
 | `global.jwt.accessTokenDuration` | Access token lifetime. | `"1h"` |
 | `global.jwt.refreshTokenDuration` | Refresh token lifetime. | `"5h"` |
-| `global.elchiBackend.controlPlaneDefaultReplicas` | Default replica count for control-plane services. | `2` |
-| `global.elchiBackend.controllerDefaultReplicas` | Default replica count for controller services. | `2` |
+| `global.elchiBackend.controlPlaneDefaultReplicas` | Default replica count for control-plane services. | `4` |
+| `global.elchiBackend.controllerDefaultReplicas` | Default replica count for controller services. | `4` |
 | `global.cors.allowedOrigins` | CORS allowed origins. Comma-separated, or `*` for all. | `"*"` |
 
 ## External MongoDB parameters

@@ -47,7 +47,8 @@ The UI renders them in distinct colour families (Threat = red family, Exposure =
 internal_host, external_host, unauthenticated, plain_text_transport,
 legacy_protocol, weak_tls_version, missing_hsts, missing_csp,
 missing_x_frame_options, missing_x_content_type_options,
-version_disclosure, permissive_cors, weak_token_ttl
+version_disclosure, permissive_cors, weak_token_ttl,
+error_status, client_error_status
 ```
 
 ## Severity weights

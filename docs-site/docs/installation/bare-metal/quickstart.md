@@ -13,9 +13,9 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
   | sudo bash -s -- \
       --main-address=elchi.example.com \
       --gslb-zone=gslb.example.com \
-      --ui-version=v1.4.4 \
-      --backend-version=elchi-v1.4.8-v0.14.0-envoy1.36.2 \
-      --envoy-version=v1.36.2
+      --ui-version=v1.5.12 \
+      --backend-version=elchi-v1.6.9-v0.14.0-envoy1.38.3 \
+      --envoy-version=v1.38.3
 ```
 
 ## 3-VM cluster, multi-version backend, key-based SSH
@@ -27,9 +27,9 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
       --ssh-user=ubuntu --ssh-key=/root/.ssh/cluster_key \
       --main-address=elchi.example.com \
       --gslb-zone=gslb.example.com \
-      --ui-version=v1.4.4 \
-      --backend-version=elchi-v1.4.8-v0.14.0-envoy1.35.3,elchi-v1.4.8-v0.14.0-envoy1.36.2,elchi-v1.4.8-v0.14.0-envoy1.38.0 \
-      --envoy-version=v1.36.2
+      --ui-version=v1.5.12 \
+      --backend-version=elchi-v1.6.9-v0.14.0-envoy1.37.4,elchi-v1.6.9-v0.14.0-envoy1.38.3 \
+      --envoy-version=v1.38.3
 ```
 
 :::info[GSLB zone (default elchi.local)]
@@ -45,7 +45,7 @@ The installer ships and boots the CoreDNS daemon (TCP/UDP `:53`, webhook `:8053`
 4. Paste the **DNS Secret**. Grab it on M1 with `sudo elchi-stack show-secret gslb` — this is the `X-Elchi-Secret` the plugin uses to authenticate its `/dns/snapshot` poll to the backend, and the values MUST match.
 5. Click **Update Configuration**. Within one `--gslb-sync-interval` (default 1 min) every node's CoreDNS plugin pulls the fresh snapshot and starts answering queries.
 
-Verify after activation: `dig @<node-ip> <zone> SOA +short` on any node should return the SOA record. If it doesn't, `journalctl -u elchi-coredns -n 50` and the plugin `/health` endpoint on `127.0.0.1:8053` will say why (auth failure / snapshot poll error).
+Verify after activation: `dig @<node-ip> <zone> SOA +short` on any node should return the SOA record. If it doesn't, `journalctl -u elchi-coredns -n 50` will say why (auth failure / snapshot poll error). Note that `8053` is the plugin's **webhook** listener (bound on `0.0.0.0:8053`, `X-Elchi-Secret`-authenticated) that the backend pushes record-change notifications to — it is not a health endpoint.
 :::
 
 :::info[Variants & replicas]
@@ -61,7 +61,7 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
       --ssh-bootstrap \
       --main-address=elchi.example.com \
       --gslb-zone=gslb.example.com \
-      --backend-version=elchi-v1.4.8-v0.14.0-envoy1.36.2
+      --backend-version=elchi-v1.6.9-v0.14.0-envoy1.38.3
 ```
 
 `--ssh-bootstrap` mints a fresh ed25519 key on M1, then prompts the operator *once per remote node* for that node's password. Each password is used only for that node's `ssh-copy-id` and is discarded immediately after. M1 itself is local — no password prompt for it. Subsequent SSH (orchestration, upgrades, uninstall) all use the generated key.

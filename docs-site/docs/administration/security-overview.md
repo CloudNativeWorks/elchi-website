@@ -58,7 +58,7 @@ Two platform-wide controls govern *who can act* and *what happened*.
 
 Resources are isolated by **project** (the tenancy boundary); scoping and cleanup queries filter on it. Full detail — roles, projects, tokens, LDAP JIT-provisioning, and TOTP 2FA — is in [Authentication & Access](/administration/auth-and-access).
 
-**Audit.** Every user action and config change is recorded in an **immutable audit trail** (browse under **Audit**, filter, open any event for before/after detail). It can be forwarded to a SIEM over **RFC5424 syslog** (UDP/TCP/TLS) from **Settings → Syslog**. See [Audit & Syslog Forwarding](/observability/audit-and-syslog). This is distinct from Shield's own **security-event audit** (blocked/detected requests → ClickHouse), covered in [Shield Observability](/shield/observability).
+**Audit.** Every user action and config change is recorded in an **immutable audit trail** (browse under **Audit**, filter, open any event for before/after detail). It can be forwarded to a SIEM over **RFC5424 syslog** (UDP/TCP/TLS) from **Settings → Audit Forwarding**. See [Audit & Syslog Forwarding](/observability/audit-and-syslog). This is distinct from Shield's own **security-event audit** (blocked/detected requests → ClickHouse), covered in [Shield Observability](/shield/observability).
 
 ## Hardening and data at rest
 

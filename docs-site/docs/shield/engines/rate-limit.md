@@ -134,13 +134,13 @@ In `detect` mode the 429s show up in `detections_total` instead of being returne
 ## Gotchas
 
 :::warning
-**Never key on an attacker-controlled header.** A spoofable key lets an attacker mint unlimited fresh buckets and bypass the limit entirely. Key-flood resilience is also coarse: each shard caps at 16384 keys and **resets the whole shard map when full**, which can let a burst through during a key flood. Prefer `key: ip` or `key: host` over `key: header` unless the header is a credential your edge guarantees.
+**Never key on an attacker-controlled header.** A spoofable key lets an attacker mint unlimited fresh buckets and bypass the limit entirely. Key-flood resilience is bounded but degrades gracefully: each shard caps at 16384 keys; when full, only **idle (fully-refilled) buckets are evicted**, and if the shard is still saturated the new key is served from a fresh bucket **without being stored** — existing keys keep their state, so a key flood cannot reset active limits, but brand-new keys go effectively unlimited while the flood lasts. Prefer `key: ip` or `key: host` over `key: header` unless the header is a credential your edge guarantees.
 :::
 
 :::warning
 **Shared state follows policy inheritance.** A `rate_limit` defined at the **domain** level and inherited by N routes is **one combined limiter** across all of them (shared buckets); the same block written on a **route** is independent; two separately-written identical blocks are independent. Define the limit at the scope it should actually apply to — see [policy resolution](/shield/policies/policy-model).
 :::
 
-- An empty key (missing IP or absent header) is **not limited** — by design, but it means `key: header` only limits requests that carry the header.
+- An empty key (missing IP or absent header) is **still limited**: it is routed to the shared **"unkeyed"** bucket (see above), so with `key: header` all requests lacking the header share a single budget rather than escaping the limit.
 
 Related engines: [IP reputation](/shield/engines/ip-reputation), [Bot detection](/shield/engines/bot-detection).

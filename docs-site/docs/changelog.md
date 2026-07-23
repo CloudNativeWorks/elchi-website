@@ -48,7 +48,7 @@ published release of each — they are fetched at build time from GitHub.
   resources move between them.
 - **Backend release tags encode the trio.** Backend tags carry the platform,
   control-plane, and Envoy versions together (for example
-  `elchi-v1.4.8-v0.14.0-envoy1.36.2`), so a tag tells you exactly which
+  `elchi-v1.6.9-v0.14.0-envoy1.38.3`), so a tag tells you exactly which
   go-control-plane and Envoy baseline it targets.
 
 ## Upgrading

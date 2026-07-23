@@ -167,8 +167,9 @@ routes that return sensitive data (see the sizing guidance in
 :::tip[Rollout]
 Roll a `block` list out via `mode: detect` → `shadow` → `block` and watch
 [Security Events](/shield/ui/security-events) for false positives (the `email`
-kind in particular can match legitimate payload fields). A `redact` list needs
-no such ramp — redaction applies as soon as the policy is live (in any mode
-except `off`), and `body_mutations_total` starts moving immediately. See
+kind in particular can match legitimate payload fields). A `redact` list rides
+the same ramp — in `detect`/`shadow` each match is only recorded as a
+would-redaction and the body is untouched; redaction actually rewrites the body
+in `block` mode, which is when `body_mutations_total` starts moving. See
 [Modes & Fail Postures](/shield/policies/modes-and-postures).
 :::

@@ -14,8 +14,9 @@ mongodb:
   persistence:
     enabled: true
     size: "10Gi"            # adjust for production
-    storageClass: "fast-ssd"
 ```
+
+The storage class is not set per subchart — it comes from the global `global.storageClass` key, which applies to all bundled PVCs (MongoDB, VictoriaMetrics, ClickHouse).
 
 ## External MongoDB
 
@@ -36,12 +37,12 @@ global:
 ```yaml
 global:
   installVictoriaMetrics: true
+  storageClass: "standard"   # storage class for all bundled PVCs
 
 victoriametrics:
-  storage:
+  persistence:
     size: "20Gi"
-    storageClass: "standard"
-  retentionPeriod: "30d"
+  retentionPeriod: "30d"     # default 15d
 ```
 
 ## External VictoriaMetrics

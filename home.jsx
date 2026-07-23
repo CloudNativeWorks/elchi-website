@@ -51,7 +51,7 @@ const STR = {
 
     // Logos
     logosLabel: 'TRUSTED INTEGRATIONS',
-    logosItems: ['Kubernetes', 'Docker', 'gRPC', 'Prometheus', 'MongoDB', 'Grafana', 'OpenRouter'],
+    logosItems: ['Kubernetes', 'Docker', 'gRPC', 'VictoriaMetrics', 'MongoDB', 'Grafana', 'OpenRouter'],
 
     // Features
     featuresEyebrow: 'CORE FEATURES',
@@ -61,7 +61,7 @@ const STR = {
     features: [
       { t: 'Proto to UI Auto-Generation', d: 'Automatically generates UI configuration components from client protobuf definitions. Listeners, Clusters, Endpoints, Routes — with full TypeScript safety.', icon: 'proto' },
       { t: 'Interactive Dependency Graphs', d: 'React Flow visual diagrams display relationships between Envoy resources. Understand data flow and troubleshoot interactively.', icon: 'graph' },
-      { t: 'Shield — Edge API Security', d: 'A per-edge ext_proc sidecar that enforces API security in the request path: WAF (OWASP CRS), authentication, rate limiting, bot defense, and DLP — twelve engines, rolled out safely from detect to block.', icon: 'lock' },
+      { t: 'Shield — Edge API Security', d: 'A per-edge ext_proc sidecar that enforces API security in the request path: WAF (OWASP CRS), authentication, rate limiting, and bot defense — twelve engines plus built-in DLP, rolled out safely from detect to block.', icon: 'lock' },
       { t: 'API Discovery & Inventory', d: 'Turn live traffic into a continuously-scored inventory of every API you expose — shadow endpoints, missing auth, PII leaks — and export it as OpenAPI.', icon: 'graph' },
       { t: 'Quick Start Scenarios', d: 'Pre-built templates for common client configurations. Generate complete setups for API gateways, load balancers, and service mesh in clicks.', icon: 'spark' },
       { t: 'Go-Based Agent', d: 'Lightweight Go agent for client-side management. Auto-registration, health monitoring, log export to Syslog/ELK.', icon: 'agent' },
@@ -97,7 +97,7 @@ const STR = {
       { f: 'ACME Certificate Management', e: true, m: false, s: 'limited', sub: 'Let\'s Encrypt + Google Trust' },
       { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'DNS-based with health probing' },
       { f: 'API Discovery & Inventory', e: true, m: false, s: false, sub: 'Auto-discovered surface, risk & PII scoring' },
-      { f: 'Shield — Edge API Security', e: true, m: false, s: false, sub: 'ext_proc WAF/auth/rate-limit/DLP, 12 engines' },
+      { f: 'Shield — Edge API Security', e: true, m: false, s: false, sub: 'ext_proc WAF/auth/rate-limit, 12 engines + built-in DLP' },
     ],
     cmpUnique: [
       ['Intelligent Automation', 'Advanced automated analysis for configuration optimization and intelligent log troubleshooting.'],
@@ -205,7 +205,7 @@ const STR = {
 
     // Logos
     logosLabel: 'GÜVENİLİR ENTEGRASYONLAR',
-    logosItems: ['Kubernetes', 'Docker', 'gRPC', 'Prometheus', 'MongoDB', 'Grafana', 'OpenRouter'],
+    logosItems: ['Kubernetes', 'Docker', 'gRPC', 'VictoriaMetrics', 'MongoDB', 'Grafana', 'OpenRouter'],
 
     // Features
     featuresEyebrow: 'TEMEL ÖZELLİKLER',
@@ -215,7 +215,7 @@ const STR = {
     features: [
       { t: 'Proto’dan UI’ya Otomatik Üretim', d: 'Client protobuf tanımlarından UI yapılandırma bileşenlerini otomatik üretir. Listener, Cluster, Endpoint, Route — tam TypeScript güvenliğiyle.', icon: 'proto' },
       { t: 'Etkileşimli Bağımlılık Grafikleri', d: 'Envoy kaynakları arasındaki ilişkileri gösteren React Flow görsel diyagramları. Veri akışını anlayın ve etkileşimli olarak sorun giderin.', icon: 'graph' },
-      { t: 'Shield — Edge API Güvenliği', d: 'Request path’inde API güvenliğini uygulayan, her edge’de çalışan bir ext_proc sidecar: WAF (OWASP CRS), kimlik doğrulama, rate limiting, bot savunması ve DLP — on iki motor, detect’ten block’a güvenle devreye alınır.', icon: 'lock' },
+      { t: 'Shield — Edge API Güvenliği', d: 'Request path’inde API güvenliğini uygulayan, her edge’de çalışan bir ext_proc sidecar: WAF (OWASP CRS), kimlik doğrulama, rate limiting ve bot savunması — on iki motor artı yerleşik DLP, detect’ten block’a güvenle devreye alınır.', icon: 'lock' },
       { t: 'API Keşfi ve Envanteri', d: 'Canlı trafiği, sunduğunuz her API’nin sürekli puanlanan bir envanterine dönüştürün — shadow endpoint’ler, eksik kimlik doğrulama, PII sızıntıları — ve bunu OpenAPI olarak dışa aktarın.', icon: 'graph' },
       { t: 'Hızlı Başlangıç Senaryoları', d: 'Yaygın client yapılandırmaları için hazır şablonlar. API gateway, load balancer ve service mesh için eksiksiz kurulumları birkaç tıklamayla oluşturun.', icon: 'spark' },
       { t: 'Go Tabanlı Agent', d: 'Client tarafı yönetimi için hafif Go agent’ı. Otomatik kayıt, sağlık izleme, Syslog/ELK’ye log aktarımı.', icon: 'agent' },
@@ -251,7 +251,7 @@ const STR = {
       { f: 'ACME Sertifika Yönetimi', e: true, m: false, s: 'sınırlı', sub: 'Let\'s Encrypt + Google Trust' },
       { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'Sağlık kontrollü, DNS tabanlı' },
       { f: 'API Keşfi ve Envanteri', e: true, m: false, s: false, sub: 'Otomatik keşfedilen yüzey, risk ve PII puanlaması' },
-      { f: 'Shield — Edge API Güvenliği', e: true, m: false, s: false, sub: 'ext_proc WAF/auth/rate-limit/DLP, 12 motor' },
+      { f: 'Shield — Edge API Güvenliği', e: true, m: false, s: false, sub: 'ext_proc WAF/auth/rate-limit, 12 motor + yerleşik DLP' },
     ],
     cmpUnique: [
       ['Akıllı Otomasyon', 'Yapılandırma optimizasyonu ve akıllı log sorun giderme için gelişmiş otomatik analiz.'],

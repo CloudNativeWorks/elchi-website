@@ -19,7 +19,7 @@ The `openapi` engine is Shield's **positive-security** engine: instead of denyin
 |---|---|---|---|---|
 | `spec_file` | string | **yes** | — | Path to the OpenAPI 3.x document. |
 | `validate_request_body` | bool | no | `false` | Validate the request body against the schema (implies body inspection). |
-| `reject_undeclared_path` | bool | no | `false` | **Currently a no-op** — the flag is accepted but not read. An undeclared path is *always* blocked regardless of its value (see below). Leave it unset. |
+| `reject_undeclared_path` | bool | no | `false` | **Currently a no-op** — the flag is loaded into the engine but never consulted in any decision path. An undeclared path is *always* blocked regardless of its value (see below). Leave it unset. |
 
 ## Example
 
@@ -51,7 +51,7 @@ spec:
 
 ## How it decides
 
-1. **Resolve the operation against the spec.** A path not in the contract is **blocked with `openapi.undeclared_path`** — always. `reject_undeclared_path` has no effect on this: the flag is stored but never read, so undeclared paths are denied whether it is set or not. Positive security means undeclared is denied, period.
+1. **Resolve the operation against the spec.** A path not in the contract is **blocked with `openapi.undeclared_path`** — always. `reject_undeclared_path` has no effect on this: the flag is read into the engine but never consulted in any decision path, so undeclared paths are denied whether it is set or not. Positive security means undeclared is denied, period.
 2. **A spec-resolution error also blocks** (`openapi.invalid`) — the engine is **fail-closed** on its own contract; a broken spec never silently admits traffic.
 3. **Validate the request.** With `validate_request_body: true`, parameters **and** the body are validated against the schema. With it off, only params/headers/query/security are validated (validating the body would falsely reject a required-body operation whose body wasn't buffered).
 4. Any violation ⇒ block **`openapi.invalid`** (severity Medium / 403).

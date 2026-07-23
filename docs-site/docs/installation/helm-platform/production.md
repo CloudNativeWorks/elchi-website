@@ -4,22 +4,27 @@ description: A reference production values file and high-availability guidelines
 sidebar_position: 6
 ---
 
-A reference values file for production-grade deployments:
+Generate the JWT secret in your shell first — command substitution does not run inside a values file:
+
+```bash
+JWT_SECRET=$(openssl rand -base64 32)
+```
+
+A reference values file for production-grade deployments (paste the generated secret, or leave it out and pass `--set-string global.jwt.secret=$JWT_SECRET` at install time):
 
 ```yaml
 global:
-  namespace: "elchi-production"
   mainAddress: "elchi.company.com"
   tlsEnabled: true
   jwt:
-    secret: "$(openssl rand -base64 32)"
+    secret: "<paste-the-generated-secret-here>"  # 32+ characters
     accessTokenDuration: "1h"
     refreshTokenDuration: "24h"
   elchiBackend:
     controlPlaneDefaultReplicas: 3
     controllerDefaultReplicas: 3
   versions:
-    - tag: v0.1.0-v0.14.0-envoy1.38.3
+    - tag: v1.6.9-v0.14.0-envoy1.38.3
 
 # Resource limits
 elchi:

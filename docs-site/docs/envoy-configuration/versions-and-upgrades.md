@@ -16,7 +16,7 @@ When a proxy connects, the registry matches it to the right control-plane instan
 
 ## Upgrading resources
 
-The upgrade subsystem migrates configurations from one Envoy version to another. Trigger it from **Settings → Upgrade**; the controller:
+The upgrade subsystem migrates configurations from one Envoy version to another. Trigger it from the **Listeners** list (**Resources → Listener**): select the listeners to move, then click **Upgrade** to open the upgrade modal and pick a target version. The controller then:
 
 1. Runs a per-listener dependency analysis to find everything that must move together.
 2. Recreates the dependencies, then the listeners, in topological order.

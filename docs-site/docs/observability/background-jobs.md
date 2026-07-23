@@ -26,6 +26,6 @@ The Jobs view surfaces the whole async subsystem, backed by these controller end
 | **Stats** (`GET /jobs/stats`) | Aggregate counts by phase — how much work is queued, running, and failed. |
 | **Workers** (`GET /jobs/workers`) | The worker-pool status — how many workers are alive and what they're claiming. |
 | **Stuck jobs** (`GET /jobs/stuck`) | Jobs whose heartbeat has gone stale (> 5 min) — a worker died or a step hung. |
-| **Retry** (`POST /jobs/:id/retry`) | Re-run a failed (or stuck) job from the beginning. |
+| **Retry** (`POST /jobs/:id/retry`) | Re-run a failed (or stuck) job from the beginning. Restricted to **Admins, Owners, or the job's creator**. |
 
 A healthy system shows workers alive, few or no stuck jobs, and failures clearing on retry. Persistent stuck jobs or a failing retry point at an upstream problem (control-plane unreachable, a bad config, a DNS-01 that can't validate) — open the job's live log to see the failing phase.

@@ -39,7 +39,7 @@ helm install my-elchi elchi/elchi-stack \
 Sign in with the bootstrap credentials `admin` / `admin` and change them on first login.
 
 :::warning[Don't ship the defaults]
-Before production, set `global.tlsEnabled: true`, replace `global.jwt.secret` with a 32+ character random value, point at a managed MongoDB, and run ≥3 replicas of the controller and control-plane. See the [production checklist](/installation/helm-platform/installation).
+Before production, set `global.tlsEnabled: true`, replace `global.jwt.secret` with a 32+ character random value, point at a managed MongoDB, and run ≥3 replicas of the controller and control-plane. See the [production checklist](/installation/helm-platform/production).
 :::
 
 ## Step 2 — Connect an edge client

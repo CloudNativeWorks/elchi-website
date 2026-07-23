@@ -16,7 +16,7 @@ Route configurations live under **Resources → Route** (`/resource/route`). Cre
 The editor is organized around the `RouteConfiguration` message. A tag bar lets you switch on the parts you need; the headline element is **`virtual_hosts`**, which opens a dedicated drawer (**HTTP Route Components**) where you build and reorder virtual hosts. The other route-config-level sections — request/response header manipulation, request mirror policies, and per-filter config — are edited inline.
 
 :::note[Inline vs. dynamic virtual hosts]
-Elchi authors virtual hosts inline in the route config. The Envoy VHDS (Virtual Host Discovery Service) path is intentionally not offered here — the upstream Envoy behavior it depends on is not yet supported for this flow — so define your virtual hosts directly. See [Virtual Hosts](/envoy-configuration/resources/virtual-hosts).
+Elchi authors virtual hosts inline in the route config. The control-plane does serve VHDS (Virtual Host Discovery Service), but this resource flow doesn't use it — define your virtual hosts directly. See [Virtual Hosts](/envoy-configuration/resources/virtual-hosts).
 :::
 
 ## Key fields

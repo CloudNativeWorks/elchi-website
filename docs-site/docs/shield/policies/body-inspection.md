@@ -163,12 +163,14 @@ signature to a body digest — pair it with request-body inspection.
 phase — pair it with request-body inspection.
 
 :::tip
-**DLP is the exception that auto-enables inspection:** shield derives
-`inspect_request_body` / `inspect_response_body` from the DLP `direction`, so a DLP
-policy never silently no-ops. For the other body checks (`require_json`,
-`detect_sensitive_data`) and body-phase engines you still set the matching
-`inspect_*_body` flag (and size cap) for the direction they run on — that flag is
-what picks the direction for those direction-agnostic checks.
+**Every `checks.body.*` option auto-enables inspection:** shield derives
+`inspect_request_body` / `inspect_response_body` from the DLP `direction`, and if
+`require_json` or `detect_sensitive_data` is configured with **neither** inspect
+flag set, it defaults to the **request** body — so no body check can silently
+no-op. Set `inspect_*_body` explicitly only to pick a different direction for
+those direction-agnostic checks (and raise the size cap if needed). Body-phase
+**engines**, by contrast, still require you to set the matching `inspect_*_body`
+flag yourself. See [Checks](/shield/policies/checks).
 :::
 
 A typical Coraza route, sized deliberately:

@@ -54,6 +54,7 @@ flowchart LR
     M[("MongoDB")]
     CH[("ClickHouse")]
     VM[("VictoriaMetrics")]
+    OT["OTel Collector<br/>:4317/:4318"]
   end
   subgraph EdgeNode["Edge node"]
     direction TB
@@ -73,8 +74,11 @@ flowchart LR
   COL --> CH
   COL --> M
   S -->|audit events| CH
-  S -->|metrics OTLP| VM
+  S -->|metrics OTLP| OT
+  OT -->|remote-write| VM
 ```
+
+**One public front door.** Externally, the whole central platform is reached through a single front Envoy TLS listener on `:443`. That one port carries the UI, the REST API, each edge client's `CommandStream` gRPC, Envoy xDS/ADS, and ALS; the registry's **ext_proc** filter inspects each incoming stream and sets the `x-target-cluster` header, which routes it to the right internal service (Controller `8099`/`50051`, Control-Plane `18000`, collector `18090`). The internal ports in the diagram and table below are therefore never internet-exposed themselves.
 
 The table below is the exhaustive reference for the same connections. Ports are process defaults (a bare-metal systemd install remaps some — see the [Port Reference](/reference/ports)). "Exposure": **loopback** (same host only), **internal** (trusted platform/edge network), **external** (client-facing).
 
@@ -88,7 +92,7 @@ The table below is the exhaustive reference for the same connections. Ports are 
 | gRPC (ext_proc) | UDS (`/run/elchi-shield/*.sock`) | Edge Envoy → elchi-shield | Filesystem perms (loopback) | Per-request headers/body for WAF inspection → allow/block/continue |
 | gRPC (ALS v3) | `18090` | Edge Envoy → elchi-collector | plain TCP, or TLS/mTLS when configured | Access logs for API discovery (`node.id` = `listener::project::ip`) |
 | TCP (CH native) / HTTP | `9000` / `8123` | elchi-collector, Controller → ClickHouse | DSN credentials (`CLICKHOUSE_URI`) | `api_events_raw` writes + read-API queries; Shield audit events |
-| MongoDB wire | `27017` | Controller, Control-Plane, collector → MongoDB | DSN credentials (`MONGO_URI`) | System-of-record reads/writes; `api_inventory` |
+| MongoDB wire | `27017` | Controller, Control-Plane, collector → MongoDB | credentials via `MONGODB_HOSTS` / `MONGODB_USERNAME` / `MONGODB_PASSWORD` | System-of-record reads/writes; `api_inventory` |
 | OTLP gRPC/HTTP | `4317` / `4318` | Envoy stats-sink, elchi-shield → OTel Collector | internal | Metrics push |
 | HTTP | `8428` | OTel Collector → VictoriaMetrics | internal | Metrics remote-write |
 | HTTPS | `8053` | Controller → GSLB nodes (CoreDNS) | `X-Elchi-Secret` | Notify-on-change (push) |
@@ -96,7 +100,7 @@ The table below is the exhaustive reference for the same connections. Ports are 
 | DNS UDP/TCP | `53` | Resolvers/clients → GSLB nodes (CoreDNS) | none (public authoritative) | GSLB DNS answers |
 | HTTPS | `8099` (`/api/discovery`) | Discovery agent → Controller | Per-project **discovery token** | K8s cluster + endpoint sync |
 
-¹ The exact credential on the `CommandStream` (`50051`) and the xDS stream (`18000`) is network-restricted and node-identity-based; treat both as **internal-only, firewalled to the edge fleet** rather than internet-exposed. See [Network & External Access](/getting-started/network-access).
+¹ Neither the `CommandStream` (`50051`) nor the xDS stream (`18000`) is dialed directly by edge nodes: all edge traffic (client gRPC, xDS/ADS, ALS) arrives at the platform's public front Envoy on `:443` and is routed to these internal ports via the registry's ext_proc `x-target-cluster` header. The credential on each stream is node-identity-based; keep both ports **internal-only**, reachable solely from the front Envoy. See [Network & External Access](/getting-started/network-access).
 
 ## Node identity — `listener::project::ip` {#node-identity}
 
@@ -119,7 +123,7 @@ Because Shield's metrics/audit and the collector's inventory both key off the *s
 The `CommandStream` and all edge agent communication share a single protobuf contract, published in **`elchi-proto`** (`github.com/CloudNativeWorks/elchi-proto`). It is consumed as a Go module (or a git submodule) so the Controller server and the `elchi-client` agent are generated from the same definitions. The `client/` package holds the service and message definitions — `client.proto` (the main service), `commands.proto` / `subcommands.proto` (command types), plus the per-subsystem messages (`register`, `identity`, `network`, `frr`, `stats`, `rsyslog`, `filebeat`, `shield`, …). Keeping the wire contract in one repo is what lets the control plane and the edge agents evolve in lockstep.
 
 :::note
-`elchi-proto` is the transport contract only. The **policy content** an edge receives (Envoy bootstrap, WAF version, and — as it lands — Shield policy files) rides these messages; the message shapes live in `elchi-proto`, the semantics in the Controller and the agents.
+`elchi-proto` is the transport contract only. The **policy content** an edge receives (Envoy bootstrap, WAF version, and Shield policy files) rides these messages; the message shapes live in `elchi-proto`, the semantics in the Controller and the agents.
 :::
 
 ## End-to-end flows

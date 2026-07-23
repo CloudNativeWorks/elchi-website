@@ -22,8 +22,8 @@ Component image tags. `versions.env` holds the defaults; these flags override pe
 
 | Flag | Default | Purpose |
 |---|---|---|
-| `--backend-version=<csv>` | `v1.6.6-v0.14.0-envoy1.38.3` | Backend variant tag(s), comma-separated. One control-plane + Envoy cluster is generated per variant; the embedded Envoy version must be unique per variant. |
-| `--ui-version=<tag>` | `v1.5.5` | UI image tag. |
+| `--backend-version=<csv>` | `v1.6.9-v0.14.0-envoy1.38.3` | Backend variant tag(s), comma-separated. One control-plane + Envoy cluster is generated per variant; the embedded Envoy version must be unique per variant. |
+| `--ui-version=<tag>` | `v1.5.12` | UI image tag. |
 | `--coredns-version=<tag>` | `v0.1.4` | CoreDNS GSLB image tag. |
 | `--collector-version=<tag>` | `v0.1.11` | elchi-collector image tag. |
 | `--image-repo=<repo>` | `jhonbrownn` | Docker Hub namespace / registry for the Elchi images (point at a private mirror for air-gapped installs). |

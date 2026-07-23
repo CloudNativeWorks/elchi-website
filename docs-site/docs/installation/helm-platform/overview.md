@@ -15,3 +15,8 @@ The Elchi platform Helm chart deploys every component you need to run the manage
 | **Envoy Proxy** | Internal gateway for intelligent traffic routing between components. |
 | **MongoDB** | Stores configurations, users, audit log, and platform state. |
 | **VictoriaMetrics** | Time-series database for metrics storage and monitoring. |
+| **OpenTelemetry Collector** | Scrapes Envoy metrics and remote-writes them to VictoriaMetrics. |
+| **Grafana** | Dashboards over the collected platform and Envoy metrics. |
+| **ClickHouse** | Raw API-events store feeding API discovery (default on via `installClickhouse`). |
+| **elchi-collector** | Envoy access-log (ALS) ingestion into ClickHouse (default on via `installCollector`). |
+| **Elchi CoreDNS** | GSLB DNS server — deployed only when `installGslb: true` (default off). |

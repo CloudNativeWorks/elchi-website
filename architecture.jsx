@@ -46,7 +46,7 @@ const STR = {
         { name: 'elchi-client', port: 'edge agent', accent: '#8b5cf6', desc: 'The agent that operates each edge host',
           items: ['Registers the node & runs controller commands (gRPC CommandStream)', 'Deploys / upgrades Envoy and bootstrap', 'Bundles & manages the Shield sidecar + Coraza WASM', 'Ships logs, manages BGP/FRR & networking'] },
         { name: 'Shield', port: 'ext_proc', accent: '#f43f5e', desc: 'API security enforced in the request path',
-          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot, DLP — 12 engines', 'Runs as a local sidecar over a UDS socket', 'Policies pushed as files, hot-reloaded', 'block / detect / shadow decisions, fail-open safe'] },
+          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 engines + built-in DLP', 'Runs as a local sidecar over a UDS socket', 'Policies pushed as files, hot-reloaded', 'block / detect / shadow decisions, fail-open safe'] },
         { name: 'Collector', port: ':18090', accent: '#10b981', desc: 'Turns traffic into an API inventory',
           items: ['Ingests Envoy ALS access logs (gRPC)', 'Normalizes paths, scores risk & PII', 'Writes the endpoint catalog (MongoDB) + events (ClickHouse)', 'Powers API Discovery — metadata only, no bodies'] },
       ],
@@ -153,7 +153,7 @@ const STR = {
         { name: 'elchi-client', port: 'edge agent', accent: '#8b5cf6', desc: "Her edge host'u işleten ajan",
           items: ["Node'u kaydeder ve Controller komutlarını çalıştırır (gRPC CommandStream)", "Envoy ve bootstrap'i dağıtır / yükseltir", "Shield sidecar'ını + Coraza WASM'ı paketler ve yönetir", 'Logları gönderir, BGP/FRR ve ağ yönetimini üstlenir'] },
         { name: 'Shield', port: 'ext_proc', accent: '#f43f5e', desc: 'İstek yolunda uygulanan API güvenliği',
-          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot, DLP — 12 motor', 'UDS socket üzerinden yerel bir sidecar olarak çalışır', 'Politikalar dosya olarak iletilir, anlık yeniden yüklenir', 'block / detect / shadow kararları, fail-open güvenli'] },
+          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 motor + yerleşik DLP', 'UDS socket üzerinden yerel bir sidecar olarak çalışır', 'Politikalar dosya olarak iletilir, anlık yeniden yüklenir', 'block / detect / shadow kararları, fail-open güvenli'] },
         { name: 'Collector', port: ':18090', accent: '#10b981', desc: 'Trafiği bir API envanterine dönüştürür',
           items: ['Envoy ALS erişim loglarını alır (gRPC)', 'Yolları normalleştirir, risk ve PII puanlar', 'Endpoint kataloğunu (MongoDB) + olayları (ClickHouse) yazar', "API Discovery'yi besler — yalnızca meta veri, gövde yok"] },
       ],
@@ -460,7 +460,7 @@ function RequestFlow() {
 
 function Integrations() {
   const t = STR[getLocale()].integrations;
-  const ints = ['Kubernetes', 'Docker', 'gRPC', 'Prometheus', 'MongoDB', 'Grafana', 'Envoy', 'OpenRouter', 'LDAP', 'Syslog', 'ELK Stack', 'Let\'s Encrypt'];
+  const ints = ['Kubernetes', 'Docker', 'gRPC', 'VictoriaMetrics', 'MongoDB', 'Grafana', 'Envoy', 'OpenRouter', 'LDAP', 'Syslog', 'ELK Stack', 'Let\'s Encrypt'];
   return (
     <section className="section">
       <div className="container">

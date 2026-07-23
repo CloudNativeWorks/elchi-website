@@ -23,11 +23,11 @@ Every variant tag in `--backend-version` is a full release-asset name (`elchi-vX
 
 | Flag | Description | Default |
 |---|---|---|
-| `--backend-version=<csv>` | One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: `--backend-variants=`. | elchi-v1.4.8-v0.14.0-envoy1.36.2 |
-| `--ui-version=<vX.Y.Z>` | UI bundle version (`elchi-dist-vX.Y.Z.tar.gz`). Mirrored to the public elchi-archive releases by the build-elchi-ui workflow. | v1.4.4 |
-| `--envoy-version=<vX.Y.Z>` | Front-door Envoy proxy binary version. | v1.37.0 |
+| `--backend-version=<csv>` | One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: `--backend-variants=`. | elchi-v1.6.9-v0.14.0-envoy1.38.3 |
+| `--ui-version=<vX.Y.Z>` | UI bundle version (`elchi-dist-vX.Y.Z.tar.gz`). Mirrored to the public elchi-archive releases by the build-elchi-ui workflow. | v1.5.12 |
+| `--envoy-version=<vX.Y.Z>` | Front-door Envoy proxy binary version. | v1.38.3 |
 | `--coredns-version=<vX.Y.Z>` | Custom CoreDNS-with-elchi-plugin version (used only when GSLB is enabled). | v0.1.4 |
-| `--collector-version=<vX.Y.Z>` | elchi-collector binary version (ALS gRPC sink → ClickHouse / Mongo). Mirrored to the public elchi-archive releases by the build-elchi-collector workflow. | v0.1.8 |
+| `--collector-version=<vX.Y.Z>` | elchi-collector binary version (ALS gRPC sink → ClickHouse / Mongo). Mirrored to the public elchi-archive releases by the build-elchi-collector workflow. | v0.1.11 |
 | `--no-collector` | Skip the elchi-collector install entirely (cluster runs without ALS ingestion; envoy data-plane logs are not captured). | — |
 
 ## Backend instance count per node
@@ -81,11 +81,23 @@ Capacity for a different Envoy version → add another variant tag. Capacity for
 | `--vm-data-dir=<path>` | Local TSDB path. | /var/lib/elchi/victoriametrics |
 | `--vm-retention=<dur>` | Storage retention. | 15d |
 
+## elchi-collector & ClickHouse
+
+The collector + ClickHouse feature is **default ON** (mirroring the Helm chart's `installCollector` / `installClickhouse` defaults); opt out entirely with `--no-collector` (see [Versioning](#versioning)).
+
+| Flag | Description | Default |
+|---|---|---|
+| `--clickhouse=local\|external` | ClickHouse deployment. `local` installs ClickHouse on the **first 3 nodes** — standalone for clusters of fewer than 3 nodes, a Keeper + ReplicatedMergeTree cluster for 3+. `external` installs nothing and uses the operator-supplied endpoint. | local |
+| `--clickhouse-uri=<uri>` | Full `clickhouse://user:pass@host:9000/<db>` URI (credentials embedded) for `--clickhouse=external`. | — |
+| `--clickhouse-version=<X.Y.Z\|stable>` | `stable` installs the current stable from the official ClickHouse repo; a fully-qualified version (e.g. `24.8.14.39`) is pinned exactly. | stable |
+| `--clickhouse-database=<name>` | Database the collector + backend write to. | elchi |
+| `--collector-retention-days=<n>` | Raw-event retention in days. | 7 |
+
 ## Grafana
 
 | Flag | Description | Default |
 |---|---|---|
-| `--grafana-user` | Admin login. | admin |
+| `--grafana-user` | Admin login. | elchi |
 | `--grafana-password` | Admin password. | random (printed in summary) |
 | `--grafana-allow-plugin=<csv>` | Allow-list of unsigned plugin IDs. Pass once per plugin or comma-separated. | — |
 

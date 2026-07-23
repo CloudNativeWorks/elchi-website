@@ -85,4 +85,4 @@ Shield and the collector expose Prometheus metrics and structured logs; Shield c
 
 ### How is Elchi licensed?
 
-License status is a badge in the header, managed under **Settings → Licensing**; activation and periodic checks need outbound access to the Elchi license API. See [Licensing](/administration/licensing).
+License status is a badge in the header, managed under **Settings → License**; activation and periodic checks need outbound access to the Elchi license API. See [Licensing](/administration/licensing).

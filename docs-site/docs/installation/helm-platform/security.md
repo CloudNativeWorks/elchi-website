@@ -9,7 +9,7 @@ sidebar_position: 7
 - **JWT secret** — must be a randomly generated value of 32+ characters. The default ships unsafe and must be replaced.
 - **TLS** — always enable TLS for production deployments.
 - **MongoDB** — use strong passwords and enable authentication.
-- **Network policies** — restrict pod-to-pod communication using Kubernetes NetworkPolicies.
+- **Network policies** — restrict pod-to-pod communication using Kubernetes NetworkPolicies. The chart does not ship NetworkPolicy manifests — author your own.
 
 :::
 

@@ -138,7 +138,7 @@ elchi_collector_event_processing_duration_seconds    # ingest → sink-submit la
 elchi_collector_normalize_duration_seconds
 ```
 
-`events_dropped_total` reasons: `ingest_filter`, `exclude_method`/`exclude_host`/`exclude_listener`/`exclude_project`/`exclude_source_ip`/`exclude_user_agent`, `malformed`, `panic`, `backpressure`/`drop_new`/`drop_old`, `inventory_cardinality`.
+`events_dropped_total` reasons: `ingest_filter`, `exclude_method`/`exclude_host`/`exclude_listener`/`exclude_project`/`exclude_source_ip`/`exclude_user_agent`, `malformed`, `panic`, `backpressure`, `inventory_cardinality`, `brute_force_no_key`.
 
 **Backends / batching**
 
@@ -253,7 +253,7 @@ Key document fields:
 | `sample_event_ids` | Last 5 `event_id`s — join back to `api_events_raw`. |
 | `clusters` / `routes` / `content_types` / `origins` | Discovered sets. |
 
-Indexes the read API relies on: `inventory_unique` (the eight key fields), `project_last_seen`, `project_risk_lastseen`, `project_endpoint_categories`, `project_host_path`, `project_riskscore_lastseen`.
+Indexes the read API relies on: `inventory_unique` (the eight key fields), `project_last_seen`, `project_risk_lastseen`, `project_endpoint_categories`, `project_host_path`, `project_riskscore_lastseen`, `inventory_created_at` (`{created_at: -1}`).
 
 ## Envoy ALS wiring
 

@@ -50,7 +50,7 @@ The installer prints the access URLs and the Grafana credentials, for example:
   Grafana:      https://<main-address>/grafana/   (user: admin, pass: elchi-XXXXXXXX)
   Backend API:  https://<main-address>/  (envoy edge :443)
   GSLB zone:    elchi.local
-  Variants:     v1.6.6-v0.14.0-envoy1.38.3
+  Variants:     v1.6.9-v0.14.0-envoy1.38.3
   Manage:       docker stack services elchi
   Teardown:     deploy/docker/uninstall.sh
 └────────────────────────────────────────────────────────

@@ -78,7 +78,7 @@ GET /custom/clear_errors?error_ids=<id1>,<id2>&mode=<clear|resolve>
 - `mode` — `clear` removes the errors outright; `resolve` marks them as resolved and stamps who resolved them and when. Defaults to `clear`.
 
 :::warning[Admin and owner only]
-Clearing and resolving errors is restricted to the **admin** and **owner** roles. Viewers and members receive an "insufficient privileges" response and the action is refused on the backend.
+Clearing and resolving errors is restricted to the **admin** and **owner** roles. Editors and viewers receive an "insufficient privileges" response and the action is refused on the backend.
 :::
 
 ## Health at a glance
@@ -91,5 +91,3 @@ Taken together, the widgets give you a fast triage loop:
 4. **WAF Security** and **Shield Security** show whether the security layers are blocking or merely detecting.
 
 From here, most day-to-day work starts either in the [resource model](/envoy-configuration/config-model) or, for a guided build, in the [Scenario wizard](/envoy-configuration/scenario-workflows).
-</content>
-</invoke>

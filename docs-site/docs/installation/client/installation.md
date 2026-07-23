@@ -81,6 +81,9 @@ Skip the installer and place the binary yourself:
 ```bash
 # AMD64
 wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.1.0/elchi-client-linux-amd64
-sudo mv elchi-client-linux-amd64 /usr/local/bin/elchi-client
-sudo chmod +x /usr/local/bin/elchi-client
+sudo mkdir -p /etc/elchi/bin
+sudo mv elchi-client-linux-amd64 /etc/elchi/bin/elchi-client
+sudo chmod +x /etc/elchi/bin/elchi-client
 ```
+
+`/etc/elchi/bin/elchi-client` is the path the `elchi-client.service` systemd unit executes (`ExecStart=/etc/elchi/bin/elchi-client start --config /etc/elchi/config.yaml`), so the binary must live there — not in `/usr/local/bin`.

@@ -30,7 +30,7 @@ An MMDB-based country / ASN / city resolver. The database is a MaxMind GeoLite2 
 There is no operator-placed file and no on-disk fallback. The backend uploads the city/asn databases to a GridFS bucket (`GEOIP_GRIDFS_BUCKET`, default `geoip`); every collector replica syncs them into `GEOIP_CACHE_DIR` and hot-reloads on every later upload. One backend upload fans out to the whole fleet. If the bucket holds no database, **GeoIP is simply off** — `geo.kind` is still tagged, but no country/ASN. A fresh deploy against an empty bucket starts fine and lights up GeoIP the moment a database is uploaded.
 :::
 
-Point `GEOIP_CACHE_DIR` at a stable, writable, persistent path in production — the syncer then skips the ~100 MB re-download on restart when the cached file's hash already matches GridFS. Downloads are atomic (temp file + rename), so a concurrent reader never sees a half-written file. The databases can also be swapped in place with a `SIGHUP` (`kill -HUP $(pgrep -f elchi-collector)`), which reloads the readers behind an `atomic.Pointer` with a 5s grace window — no restart, no traffic interruption.
+Point `GEOIP_CACHE_DIR` at a stable, writable, persistent path in production — the syncer then skips the ~80 MB re-download on restart when the cached file's hash already matches GridFS. Downloads are atomic (temp file + rename), so a concurrent reader never sees a half-written file. The databases can also be swapped in place with a `SIGHUP` (`kill -HUP $(pgrep -f elchi-collector)`), which reloads the readers behind an `atomic.Pointer` with a 5s grace window — no restart, no traffic interruption.
 
 ### User-Agent classifier
 

@@ -4,7 +4,7 @@ description: View, activate, re-validate, and remove license keys, and the egres
 sidebar_position: 5
 ---
 
-License status is shown as a badge in the header and managed under **Settings → Licensing**. From there you can:
+License status is shown as a badge in the header and managed under **Settings → License**. From there you can:
 
 - **View status** — current entitlement and validity (available to any signed-in user).
 - **Activate** a license key (Admin/Owner).

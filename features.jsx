@@ -28,7 +28,7 @@ const STR = {
         { t: 'Full xDS Protocol Support', d: 'Complete implementation of xDS (ADS, CDS, EDS, LDS, RDS, VHDS) using go-control-plane. Delta xDS support for efficient incremental configuration updates.' },
         { t: 'Two-Step Validation', d: 'Frontend TypeScript validation and backend protoc-gen-validate ensures configurations are correct before deployment. Catch errors early and prevent misconfigurations.' },
         { t: 'Save & Publish Workflow', d: 'Draft mode for safe configuration changes. Save incrementally and publish bulk updates atomically when ready. Rollback support for quick recovery from issues.' },
-        { t: 'Multi-Version Envoy Support', d: 'Manage Envoy versions 1.27 through 1.38+ from a single interface. Intelligent version-based routing with seamless version upgrade capability.' },
+        { t: 'Multi-Version Envoy Support', d: 'Manage Envoy versions 1.33 through 1.38 from a single interface. Intelligent version-based routing with seamless version upgrade capability.' },
         { t: 'Project-Based Multi-Tenancy', d: 'Organize configurations by teams, environments, or customers. Complete resource isolation with 4-tier RBAC (Owner, Admin, Editor, Viewer).' },
       ],
     },
@@ -47,8 +47,8 @@ const STR = {
         {
           tag: 'Edge API Security',
           t: 'Shield',
-          d: 'A per-edge ext_proc sidecar that enforces API security right in the request path: WAF, authentication, rate limiting, bot defense, and data-loss prevention — twelve engines you compose per route and roll out safely from detect to block.',
-          bullets: ['12 engines: JWT, mTLS, WAF, DLP, bot & more', 'OWASP CRS + positive-security OpenAPI', 'Detect → shadow → block rollout', 'Live metrics & forensic event feed'],
+          d: 'A per-edge ext_proc sidecar that enforces API security right in the request path: WAF, authentication, rate limiting, and bot defense — twelve engines you compose per route and roll out safely from detect to block, plus built-in data-loss prevention.',
+          bullets: ['12 engines: JWT, mTLS, WAF, bot & more — plus built-in DLP', 'OWASP CRS + positive-security OpenAPI', 'Detect → shadow → block rollout', 'Live metrics & forensic event feed'],
         },
         {
           tag: 'OpenRouter AI Integration',
@@ -138,7 +138,7 @@ const STR = {
         { t: "Tam xDS Protokol Desteği", d: "go-control-plane kullanan eksiksiz xDS (ADS, CDS, EDS, LDS, RDS, VHDS) implementasyonu. Verimli artımlı yapılandırma güncellemeleri için Delta xDS desteği." },
         { t: "İki Aşamalı Doğrulama", d: "Frontend TypeScript doğrulaması ve backend protoc-gen-validate, yapılandırmaların dağıtımdan önce doğru olmasını sağlar. Hataları erken yakalayın ve hatalı yapılandırmaları önleyin." },
         { t: "Kaydet & Yayınla İş Akışı", d: "Güvenli yapılandırma değişiklikleri için taslak modu. Değişiklikleri kademeli kaydedin, hazır olduğunuzda toplu güncellemeleri atomik biçimde yayınlayın. Sorunlardan hızlı kurtulmak için geri alma desteği." },
-        { t: "Çok Sürümlü Envoy Desteği", d: "Envoy 1.27'den 1.38+'a kadar sürümleri tek bir arayüzden yönetin. Kusursuz sürüm yükseltme yeteneğiyle akıllı, sürüm tabanlı yönlendirme." },
+        { t: "Çok Sürümlü Envoy Desteği", d: "Envoy 1.33'ten 1.38'e kadar sürümleri tek bir arayüzden yönetin. Kusursuz sürüm yükseltme yeteneğiyle akıllı, sürüm tabanlı yönlendirme." },
         { t: "Proje Bazlı Çok Kiracılı Yapı", d: "Yapılandırmaları ekiplere, ortamlara veya müşterilere göre düzenleyin. 4 katmanlı RBAC (Owner, Admin, Editor, Viewer) ile tam kaynak izolasyonu." },
       ],
     },
@@ -157,8 +157,8 @@ const STR = {
         {
           tag: 'Edge API Güvenliği',
           t: 'Shield',
-          d: "API güvenliğini doğrudan istek yolunda uygulayan, her edge'de çalışan bir ext_proc sidecar: WAF, kimlik doğrulama, rate limiting, bot savunması ve veri sızıntısı önleme — her route için birleştirdiğiniz ve detect'ten block'a güvenle yaydığınız on iki engine.",
-          bullets: ['12 engine: JWT, mTLS, WAF, DLP, bot ve daha fazlası', 'OWASP CRS + pozitif güvenlik OpenAPI', 'Detect → shadow → block dağıtımı', 'Canlı metrikler & adli olay akışı'],
+          d: "API güvenliğini doğrudan istek yolunda uygulayan, her edge'de çalışan bir ext_proc sidecar: WAF, kimlik doğrulama, rate limiting ve bot savunması — her route için birleştirdiğiniz ve detect'ten block'a güvenle yaydığınız on iki engine, artı yerleşik veri sızıntısı önleme.",
+          bullets: ['12 engine: JWT, mTLS, WAF, bot ve daha fazlası — artı yerleşik DLP', 'OWASP CRS + pozitif güvenlik OpenAPI', 'Detect → shadow → block dağıtımı', 'Canlı metrikler & adli olay akışı'],
         },
         {
           tag: 'OpenRouter AI Entegrasyonu',
