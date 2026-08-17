@@ -75,7 +75,7 @@ export default async function createConfig(): Promise<Config> {
           pages: false,
           theme: {customCss: './src/css/custom.css'},
           sitemap: {changefreq: 'weekly'},
-          googleTagManager: {containerId: 'GTM-TZFN48ZD'},
+          googleTagManager: {containerId: 'GTM-5G5WC537'},
         } satisfies Preset.Options,
       ],
     ],
