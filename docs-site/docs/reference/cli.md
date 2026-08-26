@@ -31,7 +31,7 @@ Tears down an Elchi install: stops and removes the systemd units and (optionally
 
 ### `validate.sh`
 
-A read-only preflight/health checker — verifies prerequisites and that a running install's services and ports are healthy. Run it before `install.sh` on a new host, or after an upgrade to confirm the stack came back cleanly.
+A read-only per-node health audit — verifies that a running install's services, rendered configs, and ports are healthy. It is dropped onto each node by `install.sh` (at `/etc/elchi/validate.sh`) and reads the install's topology and systemd units, so run it **after** an install or upgrade to confirm the stack came back cleanly. (Pre-install checking is handled by `install.sh`'s own preflight pass.)
 
 → [`validate.sh` reference](/installation/bare-metal/validate-sh)
 

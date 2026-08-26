@@ -85,7 +85,7 @@ const PRODUCTS = {
       title1: 'API security, enforced',
       title2: 'at the edge.',
       subtitle: 'Shield is an ext_proc engine running next to each Envoy: authentication, rate limiting, bot defense, data-loss prevention, and a built-in OWASP CRS WAF — composed per route and rolled out safely from detect to block.',
-      badges: ['12+ Security Engines', 'Built-in DLP', 'OWASP CRS WAF', 'Detect → Shadow → Block'],
+      badges: ['12 Security Engines', 'Built-in DLP', 'OWASP CRS WAF', 'Detect → Shadow → Block'],
       positioning: 'Add-on to Elchi Core. Deployed and configured centrally, enforced locally on every edge host — traffic never leaves the box.',
       caps: [
         { t: 'Authentication engines', d: 'JWT and JWKS (remote keys refreshed in the background), API keys with SHA-256 hashing and scopes, HMAC request signing including RFC 9421, and mTLS client-certificate checks.' },
@@ -114,7 +114,7 @@ const PRODUCTS = {
       title1: 'API güvenliği,',
       title2: 'edge\'de uygulanır.',
       subtitle: 'Shield, her Envoy\'un yanında çalışan bir ext_proc motorudur: kimlik doğrulama, rate limiting, bot savunması, veri sızıntısı önleme ve yerleşik OWASP CRS WAF — route başına birleştirilir, detect\'ten block\'a güvenle yayılır.',
-      badges: ['12+ Güvenlik Engine\'i', 'Yerleşik DLP', 'OWASP CRS WAF', 'Detect → Shadow → Block'],
+      badges: ['12 Güvenlik Engine\'i', 'Yerleşik DLP', 'OWASP CRS WAF', 'Detect → Shadow → Block'],
       positioning: 'Elchi Core eklentisidir. Merkezden dağıtılır ve yönetilir, her edge sunucuda yerel olarak uygulanır — trafik makineden dışarı çıkmaz.',
       caps: [
         { t: 'Kimlik doğrulama engine\'leri', d: 'JWT ve JWKS (uzak anahtarlar arka planda yenilenir), SHA-256 ile saklanan scope\'lu API key\'ler, RFC 9421 dahil HMAC istek imzalama ve mTLS istemci sertifikası kontrolleri.' },

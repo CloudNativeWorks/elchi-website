@@ -21,15 +21,25 @@ The backend surfaces this to the UI through:
 GET /api/v3/custom/available_versions
 ```
 
-The handler proxies the archive's `index.json` verbatim — each entry carries the `version`, `release_date`, download `url`, `sha256`, and `size`. Because the list is fetched on demand, **new Envoy builds become available in Elchi as soon as they are published to the archive**, with no backend release required.
+The handler proxies the archive's `index.json` verbatim. Envoy builds live under the top-level `releases` array; each release carries a `version`, a `date`, and per-architecture `binaries` entries with a `download_url` (pointing at the `elchi-archive` GitHub releases) and a `sha256`. Because the list is fetched on demand, **new Envoy builds become available in Elchi as soon as they are published to the archive**, with no backend release required.
 
 ```json
 {
-  "versions": [
-    { "version": "1.38.3", "release_date": "…", "url": "https://archive.elchi.io/…", "sha256": "…", "size": 0 }
+  "releases": [
+    {
+      "version": "v1.38.3",
+      "date": "…",
+      "binaries": [
+        {
+          "arch": "linux-amd64",
+          "download_url": "https://github.com/CloudNativeWorks/elchi-archive/releases/…",
+          "sha256": "…"
+        }
+      ]
+    }
   ],
-  "last_updated": "…",
-  "source": "archive.elchi.io"
+  "elchi_client_releases": ["…"],
+  "ui_releases": ["…"]
 }
 ```
 
@@ -44,7 +54,7 @@ The management plane is built against a pinned **versioned go-control-plane**, w
 - `versioned-go-control-plane` — `v0.14.0-envoy1.38.3`
 - `versioned-go-control-plane/envoy` — `v1.38.3`
 
-That baseline is **~1.38**. The supported deployable range spans roughly **1.33 – 1.38** — the archive lists what is actually available, and the pinned control-plane defines the newest API vocabulary the platform can emit. Older data-plane binaries in the range are configured against a compatible subset.
+That baseline is **~1.38**. The supported deployable range currently spans roughly **1.35 – 1.39** — the archive lists what is actually available, and the pinned control-plane defines the newest API vocabulary the platform can emit. Older data-plane binaries in the range are configured against a compatible subset.
 
 ## Everything is version-scoped
 

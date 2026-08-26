@@ -8,7 +8,7 @@ sidebar_position: 3
 
 ```bash
 # Fetch the installer
-wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.1.0/elchi-install.sh
+wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.6.3/elchi-install.sh
 ```
 
 ## Production setup
@@ -80,7 +80,7 @@ Skip the installer and place the binary yourself:
 
 ```bash
 # AMD64
-wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.1.0/elchi-client-linux-amd64
+wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.6.3/elchi-client-linux-amd64
 sudo mkdir -p /etc/elchi/bin
 sudo mv elchi-client-linux-amd64 /etc/elchi/bin/elchi-client
 sudo chmod +x /etc/elchi/bin/elchi-client

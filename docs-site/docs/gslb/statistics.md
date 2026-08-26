@@ -21,7 +21,7 @@ Four headline cards summarize the IP population:
 | Card | Meaning |
 | --- | --- |
 | **Total IPs** | All IPs under health checking. |
-| **Healthy IPs** | IPs in `passing` (served in DNS), shown against the total. |
+| **Healthy IPs** | Non-critical IPs (`passing` + `warning` — both are served in DNS), shown against the total. |
 | **Critical IPs** | IPs evicted from DNS. A non-zero, rising count is your primary alert signal. |
 | **Backoff Active** | IPs currently in circuit-breaker backoff (repeatedly-failing `critical` IPs being probed on graduated backoff). |
 
@@ -31,7 +31,7 @@ The **IP Health Distribution** donut breaks the population into Healthy / Warnin
 
 - **Probe Success Rate** — a gauge (red < 30%, amber 30–70%, green ≥ 70%) with raw success and failure counts beneath it. This is the single best "is GSLB healthy?" indicator.
 - **Success Rate Timeline** — success percentage over the selected window; a dip localizes when things went wrong.
-- **Error Breakdown** — a donut of failure causes (e.g. timeout, connection refused, DNS failure). The health checker categorizes 21+ error types, so this tells you *why* probes fail — a wave of `connection_refused` points at dead backends, `timeout` at network or overloaded targets, `dns_failure` at resolution problems.
+- **Error Breakdown** — a donut of failure causes (e.g. timeout, connection refused, DNS failure). The health checker categorizes ~18 error types, so this tells you *why* probes fail — a wave of `connection_refused` points at dead backends, `timeout` at network or overloaded targets, `dns_failure` at resolution problems.
 
 ## Latency
 
