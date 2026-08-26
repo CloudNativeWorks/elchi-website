@@ -57,9 +57,6 @@
 
 ## 📦 Quick Start
 
-### Try Demo
-Visit [demo.elchi.io](https://demo.elchi.io) for 24-hour access to the platform.
-
 ### Deploy with Helm
 
 ```bash
@@ -137,7 +134,6 @@ All processes communicate via gRPC and share MongoDB for state management.
 
 - **Website**: [elchi.io](https://www.elchi.io)
 - **Documentation**: [www.elchi.io/docs](https://www.elchi.io/docs)
-- **Demo Platform**: [demo.elchi.io](https://demo.elchi.io)
 - **Helm Charts**: [charts.elchi.io](https://charts.elchi.io)
 - **GitHub**: [CloudNativeWorks](https://github.com/orgs/CloudNativeWorks/repositories)
 - **Email**: info@elchi.io

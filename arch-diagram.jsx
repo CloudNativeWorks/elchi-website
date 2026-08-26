@@ -394,7 +394,7 @@ function ArchTerminal() {
       <div className="term-foot">
         <span className="pill" style={{background:'#dcfce7',color:'#15803d',borderColor:'#bbf7d0'}}>
           <span style={{width:6,height:6,borderRadius:'50%',background:'#22c55e'}}></span>
-          Demo connected
+          Client connected
         </span>
         <span className="mono" style={{fontSize:11,color:'#94a3b8'}}>
           xDS / gRPC · ADS · VHDS

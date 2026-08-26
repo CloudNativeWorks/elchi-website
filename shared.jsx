@@ -9,12 +9,11 @@ const ELCHI_BACKEND_VERSION = typeof __ELCHI_BACKEND_VERSION__ !== 'undefined' ?
 // are intentionally kept in English in both locales.
 const SHARED = {
   en: {
-    nav: { home: 'Home', products: 'Products', features: 'Features', architecture: 'Architecture', plans: 'Plans', docs: 'Docs', contact: 'Contact', demo: 'Try Demo →', allPlans: 'Plans & Licensing' },
+    nav: { home: 'Home', products: 'Products', features: 'Features', architecture: 'Architecture', plans: 'Plans', docs: 'Docs', contact: 'Contact', getStarted: 'Get Started →', allPlans: 'Plans & Licensing' },
     footer: {
       tagline: 'Enterprise proxy management platform. 3-process distributed architecture with full xDS protocol support.',
-      demoOnline: 'Demo online',
       products: 'Products', platform: 'Platform', resources: 'Resources', company: 'Company',
-      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', demo: 'Demo', plans: 'Plans & Licensing',
+      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', plans: 'Plans & Licensing',
       documentation: 'Documentation', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Install', platformInstall: 'Platform Install',
       about: 'About', contact: 'Contact',
@@ -22,12 +21,11 @@ const SHARED = {
     },
   },
   tr: {
-    nav: { home: 'Ana Sayfa', products: 'Ürünler', features: 'Özellikler', architecture: 'Mimari', plans: 'Paketler', docs: 'Dokümanlar', contact: 'İletişim', demo: 'Demoyu Dene →', allPlans: 'Paketler & Lisanslama' },
+    nav: { home: 'Ana Sayfa', products: 'Ürünler', features: 'Özellikler', architecture: 'Mimari', plans: 'Paketler', docs: 'Dokümanlar', contact: 'İletişim', getStarted: 'Başlayın →', allPlans: 'Paketler & Lisanslama' },
     footer: {
       tagline: 'Kurumsal proxy yönetim platformu. Tam xDS protokol desteğiyle 3 süreçli dağıtık mimari.',
-      demoOnline: 'Demo çevrimiçi',
       products: 'Ürünler', platform: 'Platform', resources: 'Kaynaklar', company: 'Şirket',
-      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', demo: 'Demo', plans: 'Paketler & Lisanslama',
+      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', plans: 'Paketler & Lisanslama',
       documentation: 'Dokümantasyon', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Kurulumu', platformInstall: 'Platform Kurulumu',
       about: 'Hakkında', contact: 'İletişim',
@@ -179,7 +177,7 @@ function Nav({ active }) {
               <span className="nav-version-tag">{ELCHI_BACKEND_VERSION}</span>
             </a>
           </div>
-          <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-primary">{t.demo}</a>
+          <a href="/docs/getting-started/quickstart" className="btn btn-primary">{t.getStarted}</a>
         </div>
       </div>
     </nav>
@@ -202,10 +200,6 @@ function Footer() {
               {t.tagline}
             </p>
             <div style={{display: 'flex', gap: 8, marginTop: 18}}>
-              <span className="pill" style={{background: '#dcfce7', color: '#15803d', borderColor: '#bbf7d0'}}>
-                <span style={{width:6,height:6,borderRadius:'50%',background:'#22c55e'}}></span>
-                {t.demoOnline}
-              </span>
               <span className="pill">UI {ELCHI_UI_VERSION}</span>
               <span className="pill">API {ELCHI_BACKEND_VERSION}</span>
             </div>
@@ -225,7 +219,6 @@ function Footer() {
               <li><a href={locHref('features')}>{t.features}</a></li>
               <li><a href={locHref('architecture')}>{t.architecture}</a></li>
               <li><a href={locHref('home#screenshots')}>{t.screenshots}</a></li>
-              <li><a href="https://demo.elchi.io" target="_blank" rel="noopener">{t.demo}</a></li>
             </ul>
           </div>
           <div>

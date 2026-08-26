@@ -111,8 +111,8 @@ const STR = {
       eyebrow: 'READY TO DEPLOY',
       headingLine1: 'Bring this architecture',
       headingLine2: 'to your cluster.',
-      subtitle: 'Try the full stack with our demo, or deploy to your Kubernetes cluster using our Helm chart.',
-      tryDemo: 'Try Demo',
+      subtitle: 'Deploy to your Kubernetes cluster with our Helm chart, or install on bare metal.',
+      tryDemo: 'Get Started',
       helmCharts: 'Helm Charts',
     },
   },
@@ -218,8 +218,8 @@ const STR = {
       eyebrow: 'DAĞITMAYA HAZIR',
       headingLine1: 'Bu mimariyi',
       headingLine2: "cluster'ınıza taşıyın.",
-      subtitle: "Tüm yığını demomuzla deneyin ya da Helm chart'ımızı kullanarak Kubernetes cluster'ınıza dağıtın.",
-      tryDemo: 'Demoyu Dene',
+      subtitle: "Helm chart'ımızla Kubernetes cluster'ınıza dağıtın ya da bare-metal kurulumu kullanın.",
+      tryDemo: 'Başlayın',
       helmCharts: 'Helm Charts',
     },
   },
@@ -501,7 +501,7 @@ function ArchCTA() {
               {t.subtitle}
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 32, justifyContent: 'center' }}>
-              <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">{t.tryDemo}</a>
+              <a href="/docs/getting-started/quickstart" className="btn btn-blue">{t.tryDemo}</a>
               <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="btn btn-ghost">{t.helmCharts}</a>
             </div>
           </div>

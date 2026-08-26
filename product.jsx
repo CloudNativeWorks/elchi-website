@@ -16,14 +16,14 @@ const PAGE = {
     foundation: 'Foundation · Included in every deployment',
     capsEyebrow: 'CAPABILITIES',
     capsTitle: 'What you get.',
-    btnDemo: 'Try Demo →',
+    btnDemo: 'Get Started →',
     btnDocs: 'Read the docs',
     btnPlans: 'See plans',
     relatedEyebrow: 'BETTER TOGETHER',
     relatedTitle: 'Works with the rest of the platform.',
     learnMore: 'Learn more →',
     ctaTitle: 'See it live.',
-    ctaSubtitle: 'Explore the full platform in the interactive demo, or talk to us about a proof of concept.',
+    ctaSubtitle: 'Talk to us about a proof of concept, or start with the quickstart guide.',
     ctaContact: 'Contact us',
   },
   tr: {
@@ -31,14 +31,14 @@ const PAGE = {
     foundation: 'Temel · Her kurulumda dahildir',
     capsEyebrow: 'YETENEKLER',
     capsTitle: 'Neler sunar.',
-    btnDemo: 'Demoyu Dene →',
+    btnDemo: 'Başlayın →',
     btnDocs: 'Dokümanları okuyun',
     btnPlans: 'Paketleri görün',
     relatedEyebrow: 'BİRLİKTE DAHA GÜÇLÜ',
     relatedTitle: 'Platformun geri kalanıyla birlikte çalışır.',
     learnMore: 'İncele →',
     ctaTitle: 'Canlı görün.',
-    ctaSubtitle: 'Platformun tamamını etkileşimli demoda keşfedin ya da bir proof of concept için bizimle konuşun.',
+    ctaSubtitle: 'Bir proof of concept için bizimle konuşun ya da quickstart rehberiyle başlayın.',
     ctaContact: 'Bize ulaşın',
   },
 };
@@ -72,7 +72,7 @@ function ProductPage({ slug }) {
             ))}
           </div>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 30, flexWrap: 'wrap' }}>
-            <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">{pg.btnDemo}</a>
+            <a href="/docs/getting-started/quickstart" className="btn btn-blue">{pg.btnDemo}</a>
             <a href={p.docs} className="btn btn-ghost">{pg.btnDocs}</a>
             <a href={locHref('plans')} className="btn btn-ghost">{pg.btnPlans}</a>
           </div>
@@ -184,7 +184,7 @@ function ProductPage({ slug }) {
           <h2 style={{ color: 'white' }}>{pg.ctaTitle}</h2>
           <p style={{ color: '#94a3b8', maxWidth: 560, margin: '12px auto 28px' }}>{pg.ctaSubtitle}</p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">{pg.btnDemo}</a>
+            <a href="/docs/getting-started/quickstart" className="btn btn-blue">{pg.btnDemo}</a>
             <a href={locHref('contact')} className="btn btn-ghost-dark">{pg.ctaContact}</a>
           </div>
         </div>

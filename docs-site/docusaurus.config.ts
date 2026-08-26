@@ -122,7 +122,7 @@ export default async function createConfig(): Promise<Config> {
           // add the language switcher here:
           //   {type: 'localeDropdown', position: 'right'},
           {href: 'https://github.com/orgs/CloudNativeWorks/repositories', label: 'GitHub', position: 'right'},
-          {href: 'https://demo.elchi.io', label: 'Try Demo →', position: 'right', className: 'navbar-demo-btn'},
+          {to: '/getting-started/quickstart', label: 'Get Started →', position: 'right', className: 'navbar-demo-btn'},
         ],
       },
       footer: {

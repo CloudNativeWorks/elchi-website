@@ -12,7 +12,7 @@ const STR = {
       title1: 'A complete proxy ',
       title2: 'management toolkit.',
       subtitle: 'Comprehensive platform for enterprise proxy management with modern UI, intelligent automation, and powerful enterprise capabilities.',
-      btnDemo: 'Try Demo →',
+      btnDemo: 'Get Started →',
       btnArch: 'See architecture',
     },
     core: {
@@ -122,7 +122,7 @@ const STR = {
       title1: 'Eksiksiz bir proxy ',
       title2: 'yönetim araç seti.',
       subtitle: 'Modern arayüz, akıllı otomasyon ve güçlü kurumsal yeteneklerle donatılmış, kurumsal proxy yönetimi için kapsamlı bir platform.',
-      btnDemo: 'Demoyu Dene →',
+      btnDemo: 'Başlayın →',
       btnArch: 'Mimariyi inceleyin',
     },
     core: {
@@ -258,7 +258,7 @@ function FeaturesHero() {
           {t.hero.subtitle}
         </p>
         <div style={{ display:'flex', gap:12, justifyContent:'center', marginTop: 32 }}>
-          <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">{t.hero.btnDemo}</a>
+          <a href="/docs/getting-started/quickstart" className="btn btn-blue">{t.hero.btnDemo}</a>
           <a href={locHref('architecture')} className="btn btn-ghost">{t.hero.btnArch}</a>
         </div>
       </div>

@@ -41,7 +41,7 @@ const STR = {
     heroPara2: ' and traffic-derived',
     heroParaStrong2: ' API discovery',
     heroPara3: ' built in. Scalable, automated, enterprise-ready.',
-    heroBtnDemo: 'Try Demo →',
+    heroBtnDemo: 'Get Started →',
     heroBtnArch: 'View architecture',
     heroBadges: [
       ['3-Process', 'Distributed Architecture'],
@@ -180,7 +180,7 @@ const STR = {
     ctaH2a: 'Ready to simplify your',
     ctaH2b: 'client management?',
     ctaIntro: 'Try the stack solution for proxy management with our demo, or deploy to your Kubernetes cluster using our Helm chart.',
-    ctaBtnDemo: 'Try Demo',
+    ctaBtnDemo: 'Contact us',
     ctaBtnHelm: 'Helm Charts',
     ctaBadges: ['Ready To Use','MongoDB Store','Multi-Version Proxy','Agent Support'],
   },
@@ -195,7 +195,7 @@ const STR = {
     heroPara2: ' ve trafikten türetilen',
     heroParaStrong2: ' API keşfi',
     heroPara3: ' yerleşik olarak. Ölçeklenebilir, otomatik ve kurumsala hazır.',
-    heroBtnDemo: 'Demoyu Dene →',
+    heroBtnDemo: 'Başlayın →',
     heroBtnArch: 'Mimariyi görün',
     heroBadges: [
       ['3 Süreç', 'Dağıtık Mimari'],
@@ -334,7 +334,7 @@ const STR = {
     ctaH2a: 'Client yönetiminizi',
     ctaH2b: 'basitleştirmeye hazır mısınız?',
     ctaIntro: 'Proxy yönetimi için yığın çözümünü demomuzla deneyin veya Helm chart’ımızı kullanarak Kubernetes cluster’ınıza dağıtın.',
-    ctaBtnDemo: 'Demoyu Dene',
+    ctaBtnDemo: 'Bize Ulaşın',
     ctaBtnHelm: 'Helm Charts',
     ctaBadges: ['Kullanıma Hazır','MongoDB Deposu','Çok Sürümlü Proxy','Agent Desteği'],
   },
@@ -385,7 +385,7 @@ function Hero({ variant }) {
               <strong>{t.heroParaStrong2}</strong>{t.heroPara3}
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 36 }}>
-              <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">{t.heroBtnDemo}</a>
+              <a href="/docs/getting-started/quickstart" className="btn btn-blue">{t.heroBtnDemo}</a>
               <a href={locHref('architecture')} className="btn btn-ghost">{t.heroBtnArch}</a>
             </div>
             <div style={homeStyles.badges}>
@@ -754,7 +754,7 @@ function FinalCTA() {
               {t.ctaIntro}
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
-              <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-blue">{t.ctaBtnDemo}</a>
+              <a href={locHref('contact')} className="btn btn-blue">{t.ctaBtnDemo}</a>
               <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="btn btn-ghost">{t.ctaBtnHelm}</a>
             </div>
             <div style={{ display: 'flex', gap: 24, marginTop: 36, flexWrap: 'wrap' }}>

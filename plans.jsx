@@ -39,7 +39,7 @@ const STR = {
       title: 'Let\'s scope your deployment.',
       subtitle: 'Tell us about your fleet and the products you need — we\'ll come back with a tailored quote and a proof-of-concept plan.',
       contact: 'Contact us',
-      demo: 'Try Demo →',
+      docs: 'Read the docs',
     },
   },
   tr: {
@@ -73,7 +73,7 @@ const STR = {
       title: 'Kurulumunuzu birlikte planlayalım.',
       subtitle: 'Filonuzu ve ihtiyacınız olan ürünleri anlatın — size özel bir teklif ve proof-of-concept planıyla dönelim.',
       contact: 'Bize ulaşın',
-      demo: 'Demoyu Dene →',
+      docs: 'Dokümanları okuyun',
     },
   },
 };
@@ -175,7 +175,7 @@ function PlansApp() {
           <p style={{ color: '#94a3b8', maxWidth: 560, margin: '12px auto 28px' }}>{t.cta.subtitle}</p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href={locHref('contact')} className="btn btn-blue">{t.cta.contact}</a>
-            <a href="https://demo.elchi.io" target="_blank" rel="noopener" className="btn btn-ghost-dark">{t.cta.demo}</a>
+            <a href="/docs/" className="btn btn-ghost-dark">{t.cta.docs}</a>
           </div>
         </div>
       </section>
