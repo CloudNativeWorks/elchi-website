@@ -5,10 +5,10 @@ sidebar_position: 5
 tags: [waf, security]
 ---
 
-Beyond referencing the OWASP CRS, the WAF editor is a full authoring environment for **custom rules and CRS tuning** — writing your own `SecRule`s, excluding or adjusting CRS rules, and dialing in paranoia and anomaly thresholds. This is the "studio" side of the editor: the [template builder](/traffic-and-certificates/waf/building-config#the-template-builder), the CRS Library's per-rule controls, and the built-in **How to write rules** reference, working together.
+Beyond referencing the OWASP CRS, the WAF editor is a full authoring environment for **custom rules and CRS tuning** — writing your own `SecRule`s, excluding or adjusting CRS rules, and dialing in paranoia and anomaly thresholds. This is the "studio" side of the editor: the [template builder](/waf/building-config#the-template-builder), the CRS Library's per-rule controls, and the built-in **How to write rules** reference, working together.
 
 :::note[On the name]
-"WAF Studio" is the *authoring experience* — the collection of drawers and editors described here and in [Building a configuration](/traffic-and-certificates/waf/building-config), not a separate product surface. There is no standalone "Studio" screen distinct from the WAF detail editor. This page collects the custom-rule and tuning workflows that live across those drawers.
+"WAF Studio" is the *authoring experience* — the collection of drawers and editors described here and in [Building a configuration](/waf/building-config), not a separate product surface. There is no standalone "Studio" screen distinct from the WAF detail editor. This page collects the custom-rule and tuning workflows that live across those drawers.
 :::
 
 ## Two ways to build a rule
@@ -87,7 +87,7 @@ Put the engine in detection-only mode so rules still match and log but nothing i
 SecRuleEngine DetectionOnly
 ```
 
-The **Detect-only** and **Detect-everything** [presets](/traffic-and-certificates/waf/building-config#starting-a-config-presets) wire this up for you.
+The **Detect-only** and **Detect-everything** [presets](/waf/building-config#starting-a-config-presets) wire this up for you.
 
 ## Excluding and adjusting CRS rules
 
@@ -105,11 +105,11 @@ SecRule REMOTE_ADDR "@ipMatch 10.0.0.0/8" \
     "id:1000,phase:1,pass,nolog,ctl:ruleEngine=Off"
 ```
 
-In the [CRS Library](/traffic-and-certificates/waf/crs-library), when hosted with exclusion support each rule row offers a **Disable/Enable** toggle that adds the rule ID to an exclude list; in this WASM-WAF editor you express the same intent with a `SecRuleRemoveById` directive in your set.
+In the [CRS Library](/waf/crs-library), when hosted with exclusion support each rule row offers a **Disable/Enable** toggle that adds the rule ID to an exclude list; in this WASM-WAF editor you express the same intent with a `SecRuleRemoveById` directive in your set.
 
 ### Per-set scoping
 
-Need one host strict and another permissive? Create two sets (e.g. `strict` and `permissive`) and map domains to them with **Per-authority** overrides in the Advanced drawer — see [Building a configuration](/traffic-and-certificates/waf/building-config#advanced-per-authority-and-metric-labels).
+Need one host strict and another permissive? Create two sets (e.g. `strict` and `permissive`) and map domains to them with **Per-authority** overrides in the Advanced drawer — see [Building a configuration](/waf/building-config#advanced-per-authority-and-metric-labels).
 
 ## Recipes
 

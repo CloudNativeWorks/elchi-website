@@ -70,7 +70,7 @@ Stateless services (envoy / otel / collector / coredns / registry are `global`; 
 
 ## HA limitations
 
-- **CoreDNS GSLB `node_ip`**: a Swarm overlay container can't learn its host's external IP, so `node_ip` is set to `--main-address`. True multi-region GSLB (per-node external IPs) needs host-network CoreDNS and is out of scope here — the control plane itself is fully HA without it. See [GSLB](/traffic-and-certificates/gslb/overview).
+- **CoreDNS GSLB `node_ip`**: a Swarm overlay container can't learn its host's external IP, so `node_ip` is set to `--main-address`. True multi-region GSLB (per-node external IPs) needs host-network CoreDNS and is out of scope here — the control plane itself is fully HA without it. See [GSLB](/gslb/overview).
 - **Multi-node offline**: `--offline` `docker load`s only on the node it runs on. For a multi-node air-gapped install, load the bundle on every node or use a local registry — see [Offline / Air-Gapped](/installation/docker-swarm/offline-airgap).
 
 ## Config distribution

@@ -9,7 +9,7 @@ tags: [gslb, traffic]
 
 Global Server Load Balancing (GSLB) is Elchi's DNS-based traffic-steering layer. Instead of routing packets, GSLB decides **which IP addresses a hostname resolves to** and continuously prunes unhealthy endpoints from the answer. Elchi actively probes every IP behind a record, tracks its health, and serves only live targets — so clients are always steered to a reachable backend, across regions and data centers.
 
-GSLB complements the in-path proxying done by Envoy and the [WAF](/traffic-and-certificates/waf). It operates one level up, at name resolution: a client asks for `api.global.example.com`, and Elchi answers with the set of healthy IPs for that name.
+GSLB complements the in-path proxying done by Envoy and the [WAF](/waf). It operates one level up, at name resolution: a client asks for `api.global.example.com`, and Elchi answers with the set of healthy IPs for that name.
 
 ## How it fits together
 
@@ -43,7 +43,7 @@ elchi-coredns consumes two endpoints on the Controller:
 
 Both are authenticated by a **shared secret**, not a JWT. The plugin sends it in the `X-Elchi-Secret` header, and the Controller validates it against the zone's configured `dns_secret`. This is the same secret you set under **Settings → GSLB** (or `--gslb-secret` at install time). Every response carries a `version_hash` (a SHA-256 of the sorted records) that the plugin echoes back as `since=` so polls are cheap when nothing has changed.
 
-See [Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns) for the full API and node lifecycle.
+See [Nodes & CoreDNS](/gslb/nodes-coredns) for the full API and node lifecycle.
 
 ## Key concepts
 
@@ -82,7 +82,7 @@ The elchi-coredns plugin and the GSLB zone are provisioned by the bare-metal ins
 
 ## Where to go next
 
-- [Records & IPs](/traffic-and-certificates/gslb/records-and-ips) — create records, manage IPs, assign regions, override health.
-- [Health model](/traffic-and-certificates/gslb/health-model) — probe types, the quad-state model, and how state drives DNS.
-- [Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns) — the snapshot API, node tracking, and notify operations.
-- [Statistics](/traffic-and-certificates/gslb/statistics) — probe metrics and what to monitor.
+- [Records & IPs](/gslb/records-and-ips) — create records, manage IPs, assign regions, override health.
+- [Health model](/gslb/health-model) — probe types, the quad-state model, and how state drives DNS.
+- [Nodes & CoreDNS](/gslb/nodes-coredns) — the snapshot API, node tracking, and notify operations.
+- [Statistics](/gslb/statistics) — probe metrics and what to monitor.

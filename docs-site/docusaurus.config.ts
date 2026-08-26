@@ -80,6 +80,22 @@ export default async function createConfig(): Promise<Config> {
       ],
     ],
 
+    plugins: [
+      [
+        '@docusaurus/plugin-client-redirects',
+        {
+          // GSLB and WAF were promoted from "Traffic & Certificates" to
+          // top-level product categories; keep the old URLs working.
+          createRedirects(existingPath: string) {
+            if (existingPath.startsWith('/gslb') || existingPath.startsWith('/waf')) {
+              return [`/traffic-and-certificates${existingPath}`];
+            }
+            return undefined;
+          },
+        },
+      ],
+    ],
+
     themes: [
       [
         '@easyops-cn/docusaurus-search-local',

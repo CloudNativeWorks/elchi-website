@@ -73,5 +73,5 @@ Restore is the fast fix when a newly shipped rule set causes false positives in 
 
 ## Related
 
-- [Building a configuration](/traffic-and-certificates/waf/building-config) — the editor that produces each version.
-- [WAF Overview](/traffic-and-certificates/waf/overview) — how a saved config propagates to Envoy.
+- [Building a configuration](/waf/building-config) — the editor that produces each version.
+- [WAF Overview](/waf/overview) — how a saved config propagates to Envoy.

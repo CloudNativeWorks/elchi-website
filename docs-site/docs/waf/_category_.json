@@ -1,0 +1,10 @@
+{
+  "label": "WAF",
+  "position": 7,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "slug": "/waf",
+    "description": "The Coraza/OWASP-CRS WAF: rule library, building configs, and versioning."
+  }
+}

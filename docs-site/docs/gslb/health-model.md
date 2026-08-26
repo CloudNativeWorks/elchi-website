@@ -104,7 +104,7 @@ recovery + failure → critical (reset)
 
 ### Manual overrides
 
-An operator can force a state via `PUT /api/v3/gslb/:id/ips/:ip` (see [Records & IPs](/traffic-and-certificates/gslb/records-and-ips)). The override sets a `manual_reset_at` timestamp and resets the failure counter, so the next probe establishes a fresh baseline. Overrides are not sticky: the health checker keeps probing and will move the IP again on real results. Forcing `passing` on a genuinely-down endpoint simply flips back to `critical` on the next failed probe.
+An operator can force a state via `PUT /api/v3/gslb/:id/ips/:ip` (see [Records & IPs](/gslb/records-and-ips)). The override sets a `manual_reset_at` timestamp and resets the failure counter, so the next probe establishes a fresh baseline. Overrides are not sticky: the health checker keeps probing and will move the IP again on real results. Forcing `passing` on a genuinely-down endpoint simply flips back to `critical` on the next failed probe.
 
 ## Probe scheduling and the circuit breaker
 
@@ -136,4 +136,4 @@ When elchi-coredns polls the snapshot API, the Controller builds each record's a
 
 Because DNS answers are cached by resolvers and clients for up to the record's TTL, choose a TTL that balances failover speed against query volume. Shorter TTLs propagate evictions faster but increase resolver traffic. Combined with `warning`-state monitoring at half interval and the circuit breaker, this gives fast, resource-proportional failover.
 
-Each probe result is appended to the IP's `status_history` (state, timestamp, response code, response time, and an error message on failure), which you can review per IP or clear — see [Records & IPs](/traffic-and-certificates/gslb/records-and-ips). Aggregate probe health is on the [Statistics](/traffic-and-certificates/gslb/statistics) page.
+Each probe result is appended to the IP's `status_history` (state, timestamp, response code, response time, and an error message on failure), which you can review per IP or clear — see [Records & IPs](/gslb/records-and-ips). Aggregate probe health is on the [Statistics](/gslb/statistics) page.

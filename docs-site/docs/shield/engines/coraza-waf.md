@@ -8,7 +8,7 @@ tags: [shield, engine]
 The `coraza` engine is Shield's flagship content-inspection engine: a full ModSecurity-style WAF that protects against injection attacks (SQLi, XSS, command injection, path traversal, protocol abuse and the rest of the OWASP attack classes) using the **OWASP Core Rule Set embedded directly in the Shield binary** — there are no rule files to ship. It is a **body-phase** engine, and it is the **only engine that inspects responses** as well as requests (CRS phase 3/4 outbound rules).
 
 :::info
-The Elchi platform also delivers Coraza/OWASP-CRS as an **Envoy WASM filter** — the standalone [WAF product](/traffic-and-certificates/waf) configured from the UI and shipped through xDS. The Shield `coraza` engine is a different, complementary delivery of the same rule set: an `ext_proc` sidecar engine governed by Shield [policies](/shield/policies/policy-model), not a replacement for that path. See [How Shield Works](/shield/how-it-works) for where it sits.
+The Elchi platform also delivers Coraza/OWASP-CRS as an **Envoy WASM filter** — the standalone [WAF product](/waf) configured from the UI and shipped through xDS. The Shield `coraza` engine is a different, complementary delivery of the same rule set: an `ext_proc` sidecar engine governed by Shield [policies](/shield/policies/policy-model), not a replacement for that path. See [How Shield Works](/shield/how-it-works) for where it sits.
 :::
 
 ## When to use it

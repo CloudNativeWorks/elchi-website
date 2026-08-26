@@ -205,7 +205,7 @@ const PRODUCTS = {
 
   gslb: {
     accent: '#f59e0b',
-    docs: '/docs/traffic-and-certificates/gslb/overview',
+    docs: '/docs/gslb/overview',
     related: ['core'],
     en: {
       metaName: 'Elchi GSLB',
@@ -267,7 +267,7 @@ const PRODUCTS = {
 
   waf: {
     accent: '#8b5cf6',
-    docs: '/docs/traffic-and-certificates/waf/overview',
+    docs: '/docs/waf/overview',
     related: ['api-security'],
     en: {
       metaName: 'Elchi WAF',

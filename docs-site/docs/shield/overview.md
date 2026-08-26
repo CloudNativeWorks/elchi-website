@@ -20,7 +20,7 @@ Shield is strictly a **data-plane sidecar** — it never runs in the central man
 
 ## Shield and the WAF (WASM) feature
 
-Elchi already ships an integrated [WAF](/traffic-and-certificates/waf): Coraza with the OWASP Core Rule Set, delivered as an **Envoy WASM filter** through the normal xDS configuration path. Shield is a **parallel, complementary delivery** — a separate `ext_proc` sidecar process with its own file-driven policy model — not a replacement wired into that path.
+Elchi already ships an integrated [WAF](/waf): Coraza with the OWASP Core Rule Set, delivered as an **Envoy WASM filter** through the normal xDS configuration path. Shield is a **parallel, complementary delivery** — a separate `ext_proc` sidecar process with its own file-driven policy model — not a replacement wired into that path.
 
 | | WAF (WASM filter) | Shield (ext_proc sidecar) |
 |---|---|---|

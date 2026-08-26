@@ -1,0 +1,10 @@
+{
+  "label": "GSLB",
+  "position": 6,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "slug": "/gslb",
+    "description": "Global Server Load Balancing: DNS-based traffic steering with health checks."
+  }
+}

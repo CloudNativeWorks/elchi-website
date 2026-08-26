@@ -50,7 +50,7 @@ The Elchi platform delivers Coraza/OWASP CRS **two different ways**. They share 
 | Runtime | Runs *inside* Envoy (Proxy-Wasm sandbox, TinyGo) | Runs *beside* Envoy as a local Go process |
 | Rules | CRS 4.14.0 embedded in the WASM plugin | OWASP CRS embedded in the Shield binary (`include_owasp: true`) |
 | Response inspection | Partial (WASM sandbox limits) | Full — the only Shield engine that inspects responses |
-| Constraints | No persistent collections, no `exec`/Lua, no filesystem (see [WASM limits](/traffic-and-certificates/waf/waf-studio)) | Native Go — fewer runtime limits, per-policy fail posture |
+| Constraints | No persistent collections, no `exec`/Lua, no filesystem (see [WASM limits](/waf/waf-studio)) | Native Go — fewer runtime limits, per-policy fail posture |
 
 Use the **standalone WAF** when your protection lives in the Envoy config you already manage through Elchi and you want it delivered with the rest of your xDS snapshot — one control plane, one propagation path. Use the **Shield Coraza engine** when you run Shield as a security sidecar and want the WAF alongside Shield's other engines (JWT, rate-limit, bot, DLP, OpenAPI...) under a single policy with response inspection and native-Go behavior. They are complementary, not exclusive — you can run both. See [Shield's Coraza WAF engine](/shield/engines/coraza-waf) and the [Shield overview](/shield/overview).
 :::
@@ -64,7 +64,7 @@ Use the **standalone WAF** when your protection lives in the Envoy config you al
 
 ## Where to go next
 
-- [CRS rule library](/traffic-and-certificates/waf/crs-library) — browse and add OWASP CRS rules.
-- [Building a configuration](/traffic-and-certificates/waf/building-config) — the editor, presets, includes, and live preview.
-- [Versioning & restore](/traffic-and-certificates/waf/versioning-restore) — history, diff, and rollback.
-- [WAF Studio: custom rules & tuning](/traffic-and-certificates/waf/waf-studio) — writing your own SecLang and tuning the CRS.
+- [CRS rule library](/waf/crs-library) — browse and add OWASP CRS rules.
+- [Building a configuration](/waf/building-config) — the editor, presets, includes, and live preview.
+- [Versioning & restore](/waf/versioning-restore) — history, diff, and rollback.
+- [WAF Studio: custom rules & tuning](/waf/waf-studio) — writing your own SecLang and tuning the CRS.

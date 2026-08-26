@@ -33,7 +33,7 @@ Add the version to the platform's deployed set so its resources and bootstrap be
 
 ### What's the difference between Shield and the WAF?
 
-They're **complementary WAF deliveries**. The platform WAF is **Coraza/OWASP-CRS delivered as an Envoy WASM filter**, configured under [WAF](/traffic-and-certificates/waf) and injected into the xDS snapshot. **Shield** is a separate **ext_proc sidecar** next to Envoy with a broader engine set (JWT/JWKS, rate limiting, IP reputation, bot detection, API keys, HMAC/HTTP signatures, GraphQL/OpenAPI guards, DLP, and its own embedded Coraza CRS). Shield is not a replacement wired into the WASM path — it's a parallel, security-focused processor. See [Shield overview](/shield/overview).
+They're **complementary WAF deliveries**. The platform WAF is **Coraza/OWASP-CRS delivered as an Envoy WASM filter**, configured under [WAF](/waf) and injected into the xDS snapshot. **Shield** is a separate **ext_proc sidecar** next to Envoy with a broader engine set (JWT/JWKS, rate limiting, IP reputation, bot detection, API keys, HMAC/HTTP signatures, GraphQL/OpenAPI guards, DLP, and its own embedded Coraza CRS). Shield is not a replacement wired into the WASM path — it's a parallel, security-focused processor. See [Shield overview](/shield/overview).
 
 ### Do I have to run Shield to use Elchi?
 
@@ -77,7 +77,7 @@ Elchi automates the full lifecycle via **ACME with DNS-01 validation**, storing 
 
 ### How does GSLB failover work?
 
-Elchi actively health-probes each endpoint and serves only healthy IPs through a **CoreDNS** plugin, steering clients to live targets and failing over automatically. See [GSLB](/traffic-and-certificates/gslb).
+Elchi actively health-probes each endpoint and serves only healthy IPs through a **CoreDNS** plugin, steering clients to live targets and failing over automatically. See [GSLB](/gslb).
 
 ### Where do I see metrics and logs?
 

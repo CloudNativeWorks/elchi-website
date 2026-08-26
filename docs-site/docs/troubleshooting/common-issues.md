@@ -131,7 +131,7 @@ See the source-IP section in [Wiring Shield into Envoy](/shield/envoy-wiring).
 
 **Cause.** The CoreDNS node serving the zone hasn't pulled the latest snapshot, or the zone isn't authoritative for the name.
 
-**Fix.** Under **GSLB** (`/gslb`), open the node's drawer, check its health, and **push a notify** so it pulls the latest snapshot/change feed. Confirm the record's IPs are marked healthy on **GSLB → Statistics** and that the zone defaults under **Settings → GSLB** cover the queried name. See [GSLB](/traffic-and-certificates/gslb).
+**Fix.** Under **GSLB** (`/gslb`), open the node's drawer, check its health, and **push a notify** so it pulls the latest snapshot/change feed. Confirm the record's IPs are marked healthy on **GSLB → Statistics** and that the zone defaults under **Settings → GSLB** cover the queried name. See [GSLB](/gslb).
 
 ## Access & login
 

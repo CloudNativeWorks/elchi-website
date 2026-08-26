@@ -42,7 +42,7 @@ Inside a filter chain, the **HTTP Connection Manager** is the network filter tha
 - **References HTTP/network filters** — the filter chain is built from [Filters](/envoy-configuration/resources/filters); the HCM's HTTP filter list is where the [Router](/envoy-configuration/resources/routes), WAF, and security filters live.
 - **References secrets via a transport socket** — TLS termination attaches a downstream [Transport Socket](/envoy-configuration/resources/transport-sockets) that pulls certificates from [Secrets](/envoy-configuration/resources/secrets).
 - **Referenced by bootstrap indirectly** — the proxy learns its listeners over LDS from the control-plane it connects to via its [Bootstrap](/envoy-configuration/resources/bootstrap).
-- **The WAF and Shield hook in here** — the OWASP/Coraza WAF is delivered as an HTTP filter in the chain (see [WAF](/traffic-and-certificates/waf)), and the Elchi Shield ext_proc sidecar is wired via an External Processor HTTP filter (see [Shield: Envoy wiring](/shield/envoy-wiring)).
+- **The WAF and Shield hook in here** — the OWASP/Coraza WAF is delivered as an HTTP filter in the chain (see [WAF](/waf)), and the Elchi Shield ext_proc sidecar is wired via an External Processor HTTP filter (see [Shield: Envoy wiring](/shield/envoy-wiring)).
 
 ## Example
 

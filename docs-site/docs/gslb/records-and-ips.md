@@ -64,7 +64,7 @@ Manual records are created with `POST /api/v3/gslb`. The record is created **wit
 | `enabled` | yes | Whether the record is served and health-checked. |
 | `ttl` | yes | DNS TTL, 1–86400 seconds. |
 | `failover_zone` | no | Per-record failover zone. Defaults to the first entry in the project's `failover_zones` setting. |
-| `probe` | no | Health-check config — see [Health model](/traffic-and-certificates/gslb/health-model). |
+| `probe` | no | Health-check config — see [Health model](/gslb/health-model). |
 
 The record is placed in a shard (a `shard_id` derived from the FQDN hash) so the distributed health checker can pick it up.
 
@@ -170,4 +170,4 @@ Clearing status history permanently deletes the historical probe records. There 
 
 ## Applying changes to DNS
 
-Record and IP changes are written to the database and reflected the next time elchi-coredns polls the snapshot API (on its sync interval). To push a change to nodes immediately rather than waiting for the poll, use the **notify** operations described in [Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns).
+Record and IP changes are written to the database and reflected the next time elchi-coredns polls the snapshot API (on its sync interval). To push a change to nodes immediately rather than waiting for the poll, use the **notify** operations described in [Nodes & CoreDNS](/gslb/nodes-coredns).

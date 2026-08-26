@@ -5,7 +5,7 @@ sidebar_position: 4
 tags: [tutorial]
 ---
 
-Elchi delivers the same Coraza/OWASP Core Rule Set **two different ways**, and it ships API-specific engines the CRS was never meant to cover. This tutorial helps you decide which to run — the [WASM WAF](/traffic-and-certificates/waf/overview), [Shield's Coraza engine](/shield/engines/coraza-waf), or both — and then builds a layered setup where each layer does the job it's best at. It's honest about where they overlap.
+Elchi delivers the same Coraza/OWASP Core Rule Set **two different ways**, and it ships API-specific engines the CRS was never meant to cover. This tutorial helps you decide which to run — the [WASM WAF](/waf/overview), [Shield's Coraza engine](/shield/engines/coraza-waf), or both — and then builds a layered setup where each layer does the job it's best at. It's honest about where they overlap.
 
 ## What you'll build
 
@@ -19,7 +19,7 @@ A defense-in-depth edge: the WASM WAF providing broad CRS coverage inside Envoy,
 
 ## Step 1 — Understand the two WAF deliveries
 
-Both share a rule engine (Coraza) and rule set (OWASP CRS). They differ entirely in how they're wired into the data path — pick by **how you run inspection**, not by the rules. The [WAF overview](/traffic-and-certificates/waf/overview) has the full table; the essentials:
+Both share a rule engine (Coraza) and rule set (OWASP CRS). They differ entirely in how they're wired into the data path — pick by **how you run inspection**, not by the rules. The [WAF overview](/waf/overview) has the full table; the essentials:
 
 | | **Standalone WASM WAF** | **Shield Coraza engine** |
 |---|---|---|
@@ -45,13 +45,13 @@ Running CRS in *both* the WASM filter and Shield's Coraza engine means the same 
 
 ## Step 3 — Layer 1: broad CRS at the edge (WASM WAF)
 
-Author the ruleset in the UI under **WAF** (`/waf`). Reference the embedded CRS and go — see [building a configuration](/traffic-and-certificates/waf/building-config) and the [CRS library](/traffic-and-certificates/waf/crs-library):
+Author the ruleset in the UI under **WAF** (`/waf`). Reference the embedded CRS and go — see [building a configuration](/waf/building-config) and the [CRS library](/waf/crs-library):
 
 ```text
 Include @owasp_crs/*.conf
 ```
 
-On save, the controller injects the encoded rules into every WASM extension that references this config and re-snapshots — the rules ride your normal xDS pipeline to Envoy, no restart. Roll out the CRS in **detection-only** mode first, watch what *would* have blocked, then promote — see [WAF Studio](/traffic-and-certificates/waf/waf-studio) for tuning and custom `SecRule`s.
+On save, the controller injects the encoded rules into every WASM extension that references this config and re-snapshots — the rules ride your normal xDS pipeline to Envoy, no restart. Roll out the CRS in **detection-only** mode first, watch what *would* have blocked, then promote — see [WAF Studio](/waf/waf-studio) for tuning and custom `SecRule`s.
 
 This layer sees **all** traffic to the listener and catches the broad attack classes: SQLi, XSS, command injection, path traversal, scanners, protocol abuse.
 
@@ -134,7 +134,7 @@ This is the layer that overlaps the WASM WAF. If both are active on the same rou
 
 ## Step 6 — Promote to block
 
-Everything so far runs in detect — the CRS layer in detection-only and the Shield policy with `mode: detect` — so findings are logged but nothing is enforced yet. Follow the [detect → shadow → block rollout](/shield/policies/modes-and-postures) for both layers: promote the WASM WAF out of detection-only in [WAF Studio](/traffic-and-certificates/waf/waf-studio), and once the Shield policy's shadow stream has been clean for a representative window, flip it to enforce:
+Everything so far runs in detect — the CRS layer in detection-only and the Shield policy with `mode: detect` — so findings are logged but nothing is enforced yet. Follow the [detect → shadow → block rollout](/shield/policies/modes-and-postures) for both layers: promote the WASM WAF out of detection-only in [WAF Studio](/waf/waf-studio), and once the Shield policy's shadow stream has been clean for a representative window, flip it to enforce:
 
 ```yaml
 spec:
@@ -164,4 +164,4 @@ In [Security Events](/shield/ui/security-events), filter by **Engine** to see th
 
 - [Secure an API with Shield](/tutorials/secure-an-api-with-shield) — the full Discovery → policy → enforcement journey.
 - [OpenAPI validation](/shield/engines/openapi-validation) — add positive security so the WAF denies known-bad while a contract allows known-good.
-- [WAF versioning & restore](/traffic-and-certificates/waf/versioning-restore) — diff and one-click rollback when a rule false-positives.
+- [WAF versioning & restore](/waf/versioning-restore) — diff and one-click rollback when a rule false-positives.

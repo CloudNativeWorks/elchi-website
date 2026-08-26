@@ -21,7 +21,7 @@ Settings is a set of tabs, each an entry point to one management area. Most map 
 | **AI** | The per-project OpenRouter key for AI features. | [AI Analysis](/administration/ai-analysis) |
 | **Clouds** | OpenStack cloud registration. | [Cloud & OpenStack](/administration/cloud-openstack) |
 | **LDAP** | Directory (LDAP/AD) login configuration, per project. | [Authentication & Access](/administration/auth-and-access#ldap--active-directory) |
-| **GSLB** | GSLB zone defaults and the DNS zone secret. | [GSLB Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns) |
+| **GSLB** | GSLB zone defaults and the DNS zone secret. | [GSLB Nodes & CoreDNS](/gslb/nodes-coredns) |
 | **API-Discovery** | Runtime config for the discovery collector. | [API Discovery](/api-discovery/overview) |
 | **Audit-Forwarding** | Forward the audit trail to a SIEM over syslog. | [Audit & Syslog Forwarding](/observability/audit-and-syslog) |
 | **License** | License activation and status. | [Licensing](/administration/licensing) |

@@ -32,7 +32,7 @@ Within the HCM, HTTP filters run **in the order listed**, and the Router must be
 
 Two Elchi security features are delivered as HTTP filters in the HCM chain:
 
-- **WAF (Coraza / OWASP CRS)** — delivered as an HTTP **WASM** filter. On an HCM you set the WAF config by name, and Elchi injects the corresponding WASM filter into the chain. See [WAF](/traffic-and-certificates/waf).
+- **WAF (Coraza / OWASP CRS)** — delivered as an HTTP **WASM** filter. On an HCM you set the WAF config by name, and Elchi injects the corresponding WASM filter into the chain. See [WAF](/waf).
 - **Elchi Shield (API security)** — a local ext_proc sidecar reached through an Envoy **External Processor (ext_proc)** HTTP filter. Toggling API Security on an HCM prepends the `elchi-shield` ext_proc filter so it runs first in the chain, ahead of routing. See [Shield: Envoy wiring](/shield/envoy-wiring).
 
 Both are ordinary HTTP filters from Envoy's perspective — the difference is that Elchi manages their injection and keeps the filter list consistent for you.

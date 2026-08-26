@@ -1,6 +1,9 @@
 {
-  "label": "Traffic & Certificates",
-  "position": 4,
+  "label": "Certificates",
+  "position": 8,
   "collapsed": true,
-  "link": {"type": "generated-index", "description": "Global server load balancing, ACME certificates, and the Web Application Firewall."}
+  "link": {
+    "type": "generated-index",
+    "description": "Automated TLS certificates via ACME DNS-01: CA providers, DNS credentials, and renewal."
+  }
 }

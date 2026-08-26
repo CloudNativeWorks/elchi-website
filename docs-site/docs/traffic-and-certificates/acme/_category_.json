@@ -1,1 +1,10 @@
-{"label":"Certificates (ACME)","position":2,"collapsed":true,"link":{"type":"generated-index","slug":"/traffic-and-certificates/acme","description":"Automated TLS certificates via ACME DNS-01: CA providers, DNS credentials, and renewal."}}
+{
+  "label": "ACME",
+  "position": 1,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "slug": "/traffic-and-certificates/acme",
+    "description": "Automated TLS certificates via ACME DNS-01: CA providers, DNS credentials, and renewal."
+  }
+}

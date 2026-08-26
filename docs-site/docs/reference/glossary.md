@@ -90,12 +90,12 @@ rate-limiting, bot defense, and DLP across 12 engines. See [Shield](/shield/over
 produces the API inventory. See [Collector reference](/api-discovery/collector-reference).
 
 **CoreDNS plugin (elchi-gslb)** — the DNS server that answers **GSLB** queries from
-the control-plane's DNS snapshot. See [GSLB nodes](/traffic-and-certificates/gslb/nodes-coredns).
+the control-plane's DNS snapshot. See [GSLB nodes](/gslb/nodes-coredns).
 
 ## Security & API protection
 
 **WAF** — Web Application Firewall. Elchi has two deliveries: the standalone
-[Coraza WASM WAF](/traffic-and-certificates/waf/overview) and Shield's
+[Coraza WASM WAF](/waf/overview) and Shield's
 [Coraza engine](/shield/engines/coraza-waf).
 
 **Coraza** — the Go implementation of the ModSecurity WAF engine used by Elchi.
@@ -157,7 +157,7 @@ Elchi uses via DNS-01 challenges. See [Certificates (ACME)](/traffic-and-certifi
 **EAB** — External Account Binding, credentials some CAs require to bind an ACME account.
 
 **GSLB** — Global Server Load Balancing: DNS-based traffic steering with health checks.
-See [GSLB](/traffic-and-certificates/gslb).
+See [GSLB](/gslb).
 
 ## Deployment & operations
 

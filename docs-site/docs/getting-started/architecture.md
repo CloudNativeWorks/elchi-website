@@ -179,7 +179,7 @@ flowchart LR
   C -.->|record change → notify :8053| CD
 ```
 
-The GSLB CoreDNS nodes are authoritative for your zone; they poll the Controller's snapshot API on an interval and are nudged by a push notification on change. See [GSLB Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns).
+The GSLB CoreDNS nodes are authoritative for your zone; they poll the Controller's snapshot API on an interval and are nudged by a push notification on change. See [GSLB Nodes & CoreDNS](/gslb/nodes-coredns).
 
 ## See also
 

@@ -76,7 +76,7 @@ If the control plane recorded errors while building this service's configuration
 
 ## Recreate GSLB (disaster recovery)
 
-The **Create GSLB** action — from the list row menu or the confirmation dialog — recreates the [GSLB](/traffic-and-certificates/gslb/overview) record for a service:
+The **Create GSLB** action — from the list row menu or the confirmation dialog — recreates the [GSLB](/gslb/overview) record for a service:
 
 ```bash
 POST /api/op/services/:service_id/recreate-gslb?project=<project>
@@ -104,7 +104,7 @@ The response reports what happened:
 ```
 
 :::warning[Probe configuration is not restored]
-Recreate-GSLB rebuilds the record and its IP health entries, but it does **not** restore probe configuration. After recreating, reconfigure the health probes manually. See [GSLB Overview](/traffic-and-certificates/gslb/overview).
+Recreate-GSLB rebuilds the record and its IP health entries, but it does **not** restore probe configuration. After recreating, reconfigure the health probes manually. See [GSLB Overview](/gslb/overview).
 :::
 
 :::note[Requirements]
@@ -114,5 +114,5 @@ Recreate-GSLB requires the **Admin** or **Owner** role, a `project`, and that **
 ## Related
 
 - **[Clients](./clients.md)** — the edge nodes a service is deployed to, and the command dispatch behind deploy/lifecycle actions.
-- **[GSLB Overview](/traffic-and-certificates/gslb/overview)** — global load balancing and health probes.
+- **[GSLB Overview](/gslb/overview)** — global load balancing and health probes.
 - **[Bootstrap](/envoy-configuration/resources/bootstrap)** — the Envoy bootstrap a service deploys.

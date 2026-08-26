@@ -81,4 +81,4 @@ For day-to-day operation, the signals that matter most:
 4. **Owned Shards balance** across controllers — an uneven distribution, or a controller with zero executed probes, signals a sharding or HA problem (see [Registry & HA](/administration/registry-and-ha)).
 5. **Flush Errors** and **queue capacity bars** — infrastructure saturation that can stall state updates from reaching DNS.
 
-For the per-IP detail behind these aggregates — individual health states, backoff, and probe error messages — drill into a record's IPs in [Records & IPs](/traffic-and-certificates/gslb/records-and-ips).
+For the per-IP detail behind these aggregates — individual health states, backoff, and probe error messages — drill into a record's IPs in [Records & IPs](/gslb/records-and-ips).

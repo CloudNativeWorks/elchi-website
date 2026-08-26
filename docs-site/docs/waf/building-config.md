@@ -62,7 +62,7 @@ The WASM plugin resolves three special `Include` paths to files bundled inside i
 |---|---|---|
 | `@demo-conf` | Body parsing setup: `SecRequestBodyAccess On`, body limits, JSON/XML processor selection, parse-error handling, audit defaults. | **Demo Conf** |
 | `@crs-setup-conf` | The upstream `crs-setup.conf.example`. Almost every line is commented out; it stamps the CRS setup version. | **CRS Setup** |
-| `@owasp_crs/*.conf` | The actual OWASP CRS rule files — the defenses themselves. | (browse in [CRS Library](/traffic-and-certificates/waf/crs-library)) |
+| `@owasp_crs/*.conf` | The actual OWASP CRS rule files — the defenses themselves. | (browse in [CRS Library](/waf/crs-library)) |
 
 Order is load-bearing. A working baseline is:
 
@@ -86,7 +86,7 @@ The **Demo Conf** drawer renders the bundled `coraza-demo-0.6.0.conf` read-only 
 
 ## The template builder
 
-The **Templates** button in the editor opens the **Directive Template Builder** drawer — a guided form for constructing a directive without hand-writing SecLang. Pick a directive type (`SecRule`, `SecAction`, and others), fill in the fields the type needs, and watch a **live, syntax-highlighted preview** update as you type. **Build & Add Directive** appends it to the active set. It's the friendly on-ramp; see [WAF Studio](/traffic-and-certificates/waf/waf-studio) for hand-writing rules and the full SecLang reference (the **How to write rules** drawer).
+The **Templates** button in the editor opens the **Directive Template Builder** drawer — a guided form for constructing a directive without hand-writing SecLang. Pick a directive type (`SecRule`, `SecAction`, and others), fill in the fields the type needs, and watch a **live, syntax-highlighted preview** update as you type. **Build & Add Directive** appends it to the active set. It's the friendly on-ramp; see [WAF Studio](/waf/waf-studio) for hand-writing rules and the full SecLang reference (the **How to write rules** drawer).
 
 ## Advanced: per-authority and metric labels
 
@@ -106,8 +106,8 @@ The **Live .conf** tab renders the whole configuration as the single `.conf` fil
 
 ## Saving and propagation
 
-Saving (⌘S or the top-bar button) serializes the editor to the API shape and writes the config. On update, the backend finds every WASM extension that references the config, re-injects the encoded rules, and kicks off a propagation job — the success message tells you how many extensions are being updated (or that none reference this WAF yet). Names must be unique within a project (a clash returns `WAF_NAME_TAKEN`). Creating and updating require **Admin** or **Owner** role. Every save also records a version snapshot — see [Versioning & restore](/traffic-and-certificates/waf/versioning-restore).
+Saving (⌘S or the top-bar button) serializes the editor to the API shape and writes the config. On update, the backend finds every WASM extension that references the config, re-injects the encoded rules, and kicks off a propagation job — the success message tells you how many extensions are being updated (or that none reference this WAF yet). Names must be unique within a project (a clash returns `WAF_NAME_TAKEN`). Creating and updating require **Admin** or **Owner** role. Every save also records a version snapshot — see [Versioning & restore](/waf/versioning-restore).
 
 :::warning[WASM runtime limits apply]
-Because the runtime is a WebAssembly sandbox, some ModSecurity directives are parsed but never enforced (persistent collections for rate-limiting, `exec`/Lua, filesystem audit logs, GeoIP, external pattern files). Building rules on them means the control you intended quietly doesn't exist. The presets and templates steer clear of these; the full list is in [WAF Studio](/traffic-and-certificates/waf/waf-studio).
+Because the runtime is a WebAssembly sandbox, some ModSecurity directives are parsed but never enforced (persistent collections for rate-limiting, `exec`/Lua, filesystem audit logs, GeoIP, external pattern files). Building rules on them means the control you intended quietly doesn't exist. The presets and templates steer clear of these; the full list is in [WAF Studio](/waf/waf-studio).
 :::

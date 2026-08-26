@@ -21,7 +21,7 @@ The mental model has three layers:
 | **API / client tokens** | Automation + client-agent auth against the REST API. Per project; the project is embedded as a `--<project>` suffix. Shown once on creation. | Issued under **Settings → Tokens**; stored hashed. See [Authentication & Access](/administration/auth-and-access). |
 | **Discovery token** | A single per-project token endpoint/K8s discovery agents use to push endpoints. Returned unmasked so the agent can parse its project. | **Settings → Tokens → Discovery Token**. |
 | **OpenRouter token** | Powers AI features (LLM calls); one per project. Keys begin `sk-or-`. | **Settings → AI**. |
-| **GSLB zone secret** (`dns_secret`) | Authenticates the CoreDNS ↔ Controller snapshot/notify channel via the `X-Elchi-Secret` header. | Set with `--gslb-secret` or **Settings → GSLB**. See [GSLB Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns). |
+| **GSLB zone secret** (`dns_secret`) | Authenticates the CoreDNS ↔ Controller snapshot/notify channel via the `X-Elchi-Secret` header. | Set with `--gslb-secret` or **Settings → GSLB**. See [GSLB Nodes & CoreDNS](/gslb/nodes-coredns). |
 | **DNS provider / cloud / LDAP credentials** | ACME DNS-01 challenges, OpenStack integration, directory login. Per project, only for enabled features. | Controller config / **Settings** (Clouds, LDAP). |
 | **Datastore DSNs** | MongoDB (`MONGO_URI`) and ClickHouse (`CLICKHOUSE_URI`) connection credentials. | Process env / config; on bare-metal, a restricted `EnvironmentFile`. |
 | **Collector `HASH_SALT`** | Keeps IP / user-agent / consumer hashes one-way in the discovery pipeline; rotating it invalidates downstream joins. | elchi-collector env (required, non-empty). See [Collector Reference](/api-discovery/collector-reference). |
@@ -36,7 +36,7 @@ Each connection in the stack is authenticated differently. The [Architecture wir
 - **elchi-client → Controller `CommandStream`** and **Envoy → Control-Plane xDS** — internal, node-identity / token-based, **network-restricted to the edge fleet**. These are not internet-facing; firewall them to known subnets. See [Network & External Access](/getting-started/network-access).
 - **Envoy → elchi-shield (ext_proc)** — a **Unix domain socket, local by construction**; Shield **refuses** to bind ext_proc or its HTTP surface to a non-loopback address unless `--allow-non-loopback` is set. This is a hard invariant: Shield inspects raw bodies and must never be reachable off-box. See [How Shield Works](/shield/how-it-works).
 - **Envoy → elchi-collector (ALS)** — plain gRPC by default, or **TLS/mTLS** when the collector's cert/CA env is configured.
-- **CoreDNS ↔ Controller (GSLB)** — the `X-Elchi-Secret` shared-secret header on the `/dns/snapshot` poll and the `:8053` notify; **not** JWT. See [GSLB Nodes & CoreDNS](/traffic-and-certificates/gslb/nodes-coredns).
+- **CoreDNS ↔ Controller (GSLB)** — the `X-Elchi-Secret` shared-secret header on the `/dns/snapshot` poll and the `:8053` notify; **not** JWT. See [GSLB Nodes & CoreDNS](/gslb/nodes-coredns).
 - **Discovery agent → Controller** — the per-project discovery token.
 
 :::danger[Shield is never off-box]

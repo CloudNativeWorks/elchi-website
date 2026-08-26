@@ -12,7 +12,7 @@ client downloads and installs its `.wasm` binaries on demand, driven by the cont
 :::info[Two different WAFs]
 - **Coraza WASM filter** (this page) — an Envoy WASM extension configured through xDS; the
   client's job is only to fetch and stage the `.wasm` binary versions on the host. This is the
-  delivery behind the platform's [WAF product](/traffic-and-certificates/waf/overview).
+  delivery behind the platform's [WAF product](/waf/overview).
 - **elchi-shield** — a parallel, `ext_proc` sidecar WAF/API-security engine (its own Coraza
   build is compiled into the binary). Different delivery, different lifecycle. See
   [Shield overview](/shield/overview).
@@ -56,4 +56,4 @@ The controller decides which Coraza WASM version an edge should run and pushes `
 stage it; the WAF rule/config for the filter itself rides the normal xDS snapshot into Envoy as
 a WASM extension `typed_config`. The client never authors WAF rules — it only ensures the
 requested `.wasm` binary is present on the host. Manage the WAF product and its rules from the
-UI as described in [WAF overview](/traffic-and-certificates/waf/overview).
+UI as described in [WAF overview](/waf/overview).
