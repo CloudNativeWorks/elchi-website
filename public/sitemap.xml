@@ -85,4 +85,125 @@
         <priority>0.5</priority>
     </url>
 
+
+    <url>
+        <loc>https://www.elchi.io/products/core.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/core.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/core.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/core.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/products/api-security.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-security.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-security.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-security.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/products/api-discovery.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-discovery.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-discovery.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-discovery.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/products/gslb.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/gslb.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/gslb.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/gslb.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/products/waf.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/waf.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/waf.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/waf.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/plans.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/plans.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/plans.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/plans.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/products/core.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/core.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/core.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/core.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/products/api-security.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-security.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-security.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-security.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/products/api-discovery.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-discovery.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-discovery.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-discovery.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/products/gslb.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/gslb.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/gslb.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/gslb.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/products/waf.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/waf.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/waf.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/waf.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/plans.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/plans.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/plans.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/plans.html"/>
+        <lastmod>2026-08-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
 </urlset>

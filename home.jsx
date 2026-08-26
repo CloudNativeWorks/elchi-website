@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { getLocale, locHref } from './i18n.js';
 import { Nav, Footer } from './shared.jsx';
+import { PRODUCTS } from './products-data.js';
 import { ArchDiagram, ArchOrbit, ArchTerminal } from './arch-diagram.jsx';
 
 const homeStyles = {
@@ -345,6 +346,7 @@ function App() {
       <Nav active="home" />
       <Hero variant="flow" />
       <Logos />
+      <ProductFamily />
       <FeaturesGrid />
       <Comparison />
       <ScreenshotsGallery />
@@ -428,6 +430,71 @@ function Logos() {
 }
 
 /* ====================== FEATURES GRID ====================== */
+// ============== PRODUCT FAMILY ==============
+// One card per licensed product; copy comes from products-data.js so the home
+// page, nav dropdown, and product pages never drift apart.
+const PF_STR = {
+  en: {
+    eyebrow: 'THE ELCHI PRODUCT FAMILY',
+    h2a: 'One platform.',
+    h2b: 'Five products.',
+    intro: 'Start with Elchi Core — the complete Envoy management platform — and license security, discovery, and traffic products as you need them.',
+    base: 'Base platform',
+    addon: 'Add-on',
+    learnMore: 'Learn more →',
+    plansCta: 'See plans & licensing →',
+  },
+  tr: {
+    eyebrow: 'ELCHI ÜRÜN AİLESİ',
+    h2a: 'Tek platform.',
+    h2b: 'Beş ürün.',
+    intro: 'Eksiksiz Envoy yönetim platformu Elchi Core ile başlayın; güvenlik, keşif ve trafik ürünlerini ihtiyacınız oldukça lisanslayın.',
+    base: 'Temel platform',
+    addon: 'Eklenti',
+    learnMore: 'İncele →',
+    plansCta: 'Paketleri & lisanslamayı görün →',
+  },
+};
+
+function ProductFamily() {
+  const locale = getLocale();
+  const t = PF_STR[locale];
+  const slugs = ['core', 'api-security', 'api-discovery', 'gslb', 'waf'];
+  return (
+    <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+      <div className="container">
+        <div className="section-head">
+          <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
+          <h2>{t.h2a}<br/>{t.h2b}</h2>
+          <p>{t.intro}</p>
+        </div>
+        <div className="pf-grid">
+          {slugs.map((slug) => {
+            const p = PRODUCTS[slug];
+            const pt = p[locale];
+            const isCore = slug === 'core';
+            return (
+              <a key={slug} href={locHref(`products/${slug}`)} className={`card pf-card${isCore ? ' pf-card-core' : ''}`} style={isCore ? { borderColor: `${p.accent}55` } : {}}>
+                <div className="pf-card-head">
+                  <span className="pf-kind mono" style={isCore ? { color: p.accent, background: `${p.accent}14`, borderColor: `${p.accent}33` } : {}}>
+                    {isCore ? t.base : t.addon}
+                  </span>
+                </div>
+                <h3><span className="pf-dot" style={{ background: p.accent }}></span>{pt.metaName}</h3>
+                <p>{pt.subtitle.length > 140 ? pt.subtitle.slice(0, 137) + '…' : pt.subtitle}</p>
+                <span className="pf-more" style={{ color: p.accent }}>{t.learnMore}</span>
+              </a>
+            );
+          })}
+        </div>
+        <div style={{ textAlign: 'center', marginTop: 32 }}>
+          <a href={locHref('plans')} className="btn btn-ghost">{t.plansCta}</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FeaturesGrid() {
   const t = STR[getLocale()];
   const items = t.features;

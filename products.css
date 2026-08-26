@@ -1,0 +1,212 @@
+/* Product & plans page styles. Nav dropdown styles live in styles.css (global). */
+
+/* ---------- Product hero ---------- */
+.product-hero { padding-top: 80px; padding-bottom: 60px; }
+
+.product-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 26px;
+}
+.product-badge { font-weight: 500; }
+
+.product-positioning {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  margin: 34px auto 0;
+  max-width: 640px;
+  padding: 14px 22px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 14.5px;
+  color: var(--slate-700);
+  line-height: 1.55;
+}
+.product-positioning-tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Capability cards ---------- */
+.product-cap-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.product-also {
+  margin-top: 40px;
+  text-align: center;
+}
+.product-also h4 {
+  font-size: 15px;
+  color: var(--slate-700);
+  margin-bottom: 14px;
+}
+.product-also-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* ---------- Versus table (WAF page) ---------- */
+.versus-table { padding: 0; overflow: hidden; }
+.versus-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--border);
+}
+.versus-row:last-child { border-bottom: none; }
+.versus-row > div {
+  padding: 14px 20px;
+  font-size: 14.5px;
+  color: var(--slate-700);
+  line-height: 1.5;
+}
+.versus-row > div:first-child { border-right: 1px solid var(--border); }
+.versus-head > div {
+  font-weight: 600;
+  font-size: 14px;
+  background: var(--bg-tint);
+  color: var(--slate-900);
+}
+@media (max-width: 640px) {
+  .versus-row { grid-template-columns: 1fr; }
+  .versus-row > div:first-child { border-right: none; border-bottom: 1px dashed var(--border); }
+}
+
+/* ---------- Flow steps ---------- */
+.product-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.product-flow-step { position: relative; padding: 22px; }
+.product-flow-step h3 { font-size: 16.5px; margin: 12px 0 8px; }
+.product-flow-step p { font-size: 14px; color: var(--slate-600); line-height: 1.55; }
+.product-flow-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+}
+@media (max-width: 900px) { .product-flow { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .product-flow { grid-template-columns: 1fr; } }
+
+/* ---------- Related products ---------- */
+.product-related {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  max-width: 1020px;
+  margin: 0 auto;
+}
+.product-related-card {
+  display: block;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.product-related-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15,23,42,.08); }
+.product-related-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+.product-related-card p { font-size: 13.5px; color: var(--slate-600); line-height: 1.55; }
+.product-related-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.product-related-more {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+/* ---------- Plans page ---------- */
+.plans-core {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px 36px;
+}
+.plans-core-side { flex-shrink: 0; }
+@media (max-width: 720px) {
+  .plans-core { flex-direction: column; align-items: flex-start; }
+}
+
+.plans-addons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  max-width: 940px;
+  margin: 0 auto;
+}
+.plans-addon-card {
+  display: block;
+  padding: 26px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.plans-addon-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15,23,42,.08); }
+.plans-addon-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 18px;
+  margin: 14px 0 8px;
+}
+.plans-addon-card p { font-size: 14px; color: var(--slate-600); line-height: 1.6; }
+.plans-addon-head {
+  display: flex;
+  justify-content: flex-end;
+}
+.plans-addon-req {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  background: var(--slate-100);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+@media (max-width: 720px) { .plans-addons { grid-template-columns: 1fr; } }
+
+.plans-how {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) { .plans-how { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .plans-how { grid-template-columns: 1fr; } }

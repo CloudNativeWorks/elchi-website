@@ -534,3 +534,58 @@
   overflow: hidden;
 }
 @media (max-width: 720px) { .cta-card { padding: 36px 28px; } }
+
+/* ----- Product family (home) ----- */
+.pf-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+.pf-card {
+  grid-column: span 2;
+  display: block;
+  padding: 26px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.pf-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15,23,42,.08); }
+.pf-card-core { grid-column: span 3; }
+.pf-card-core + .pf-card { grid-column: span 3; }
+.pf-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17.5px;
+  margin: 14px 0 8px;
+}
+.pf-card p { font-size: 14px; color: var(--slate-600); line-height: 1.6; }
+.pf-card-head {
+  display: flex;
+  justify-content: flex-end;
+}
+.pf-dot { width: 10px; height: 10px; border-radius: 50%; }
+.pf-kind {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  background: var(--slate-100);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.pf-more {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .pf-grid { grid-template-columns: 1fr 1fr; }
+  .pf-card, .pf-card-core, .pf-card-core + .pf-card { grid-column: span 1; }
+}
+@media (max-width: 560px) {
+  .pf-grid { grid-template-columns: 1fr; }
+}

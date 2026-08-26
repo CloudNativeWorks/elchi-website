@@ -171,6 +171,13 @@ p { margin: 0; color: var(--slate-600); }
   border: 1px solid var(--border-strong);
 }
 .btn-ghost:hover { border-color: var(--slate-900); }
+/* ghost button on dark sections */
+.btn-ghost-dark {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, .35);
+}
+.btn-ghost-dark:hover { border-color: white; background: rgba(255, 255, 255, .08); }
 
 /* ----- Nav ----- */
 .nav {
@@ -231,6 +238,59 @@ p { margin: 0; color: var(--slate-600); }
   background: var(--blue-600);
   border-radius: 2px;
 }
+/* Products dropdown */
+.nav-dd { position: relative; }
+.nav-dd-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: var(--slate-600);
+  border: none;
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color .15s ease, background .15s ease;
+}
+.nav-dd-trigger:hover, .nav-dd:hover .nav-dd-trigger { color: var(--slate-900); background: var(--slate-100); }
+.nav-dd-trigger.active { color: var(--slate-900); }
+.nav-dd-caret { transition: transform .15s ease; }
+.nav-dd:hover .nav-dd-caret, .nav-dd.open .nav-dd-caret { transform: rotate(180deg); }
+.nav-dd-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 230px;
+  background: #fff;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, .12);
+  padding: 8px;
+  display: none;
+  z-index: 60;
+}
+.nav-dd:hover .nav-dd-menu, .nav-dd.open .nav-dd-menu { display: block; }
+.nav-dd-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--slate-700);
+}
+.nav-dd-menu a:hover { background: var(--slate-100); color: var(--slate-900); }
+.nav-dd-menu a.active { color: var(--slate-900); font-weight: 600; }
+.nav-dd-menu a.active::after { content: none; }
+.nav-dd-icon { flex-shrink: 0; }
+.nav-dd-sep {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 4px;
+}
+
 .nav-cta { display: flex; gap: 10px; align-items: center; }
 .nav-cta .btn { height: 36px; padding: 0 14px; font-size: 13.5px; }
 .nav-versions { display: flex; gap: 6px; align-items: center; }
@@ -365,8 +425,8 @@ p { margin: 0; color: var(--slate-600); }
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 40px;
   margin-bottom: 48px;
 }
 .footer h5 {
