@@ -32,7 +32,7 @@ const STR = {
         { t: 'Client count', d: 'Licenses scale with the number of managed clients (edge nodes) connected to the platform.' },
         { t: 'Product modules', d: 'Enable only the products you need — API Security, API Discovery, GSLB, and WAF are licensed individually on top of Core.' },
         { t: 'Resilient validation', d: 'Licenses activate online; a transient network outage never downgrades a validly licensed deployment.' },
-        { t: 'Free to start', d: 'Without a license, Elchi runs in the free tier — the full platform with a single managed client. Perfect for evaluation.' },
+        { t: 'Free to start', d: 'Without a license, Elchi runs the free tier — Elchi Core with a single managed client. Perfect for evaluation.' },
       ],
     },
     cta: {
@@ -66,7 +66,7 @@ const STR = {
         { t: 'Client sayısı', d: 'Lisanslar, platforma bağlı yönetilen client (edge node) sayısıyla ölçeklenir.' },
         { t: 'Ürün modülleri', d: 'Yalnızca ihtiyacınız olan ürünleri açın — API Security, API Discovery, GSLB ve WAF, Core üzerine tek tek lisanslanır.' },
         { t: 'Dayanıklı doğrulama', d: 'Lisanslar online etkinleşir; geçici bir ağ kesintisi, geçerli lisanslı bir kurulumu asla alt seviyeye düşürmez.' },
-        { t: 'Ücretsiz başlangıç', d: 'Lisanssız Elchi ücretsiz seviyede çalışır — tek yönetilen client ile tam platform. Değerlendirme için idealdir.' },
+        { t: 'Ücretsiz başlangıç', d: 'Lisanssız Elchi ücretsiz seviyede çalışır — tek yönetilen client ile Elchi Core. Değerlendirme için idealdir.' },
       ],
     },
     cta: {

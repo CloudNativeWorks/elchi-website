@@ -11,19 +11,18 @@ License status is shown as a badge in the header and managed under **Settings �
 - **Force a check** to re-validate immediately (Admin/Owner).
 - **Remove** the active license (Admin/Owner).
 
-## What a license controls
+## How Elchi is licensed
 
-Today the license gates the **number of clients (edge nodes) that may be concurrently connected** to the controller:
+Elchi licensing has two dimensions:
 
-| Plan | Concurrent clients |
-|------|--------------------|
-| Free (no license) | 1 |
-| Advance | 5 |
-| Enterprise | Unlimited |
+- **Managed clients** — the number of clients (edge nodes) that may be concurrently connected to the controller.
+- **Products** — [Elchi Core](https://www.elchi.io/products/core.html) is the base of every deployment; the add-on products ([API Security](/shield/overview), [API Discovery](/api-discovery/overview), [GSLB](/gslb), [WAF](/waf)) are licensed individually on top of it.
 
-All platform features run on every plan — the free tier is the full platform limited to a single managed client. When a client connects beyond the plan's cap, the connection is rejected with a `license limit reached` error; removing a license (or an expired/invalid one) reverts the platform to the free tier.
+Without a license the platform runs the **free tier: Elchi Core with a single managed client** — ideal for evaluation. When a client connects beyond the licensed cap, the connection is rejected with a `license limit reached` error; removing a license (or an expired/invalid one) reverts the platform to the free tier.
 
-Per-product licensing for the add-on modules ([API Security](/shield/overview), [API Discovery](/api-discovery/overview), [GSLB](/gslb), [WAF](/waf)) is planned but not yet enforced by the platform.
+:::note
+Per-product entitlements are being rolled out; on current releases the enforced limit is the concurrent client count.
+:::
 
 ## Activation
 
