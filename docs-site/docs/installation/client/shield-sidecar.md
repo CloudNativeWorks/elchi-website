@@ -35,7 +35,7 @@ workflow.
 | Flag | Description |
 | --- | --- |
 | `--no-shield` | Do **not** install the shield sidecar (it is installed by default). |
-| `--shield-version=vX.Y.Z` | Pin a specific elchi-shield release (default: the bundled/latest version). |
+| `--shield-version=vX.Y.Z` | Only meaningful when running `elchi-install.sh` straight from a source checkout. A release install takes the shield **bundled with that client release** — pin the pair with `get.sh --client-version=` instead. |
 
 ```bash
 # Install the client only, without the shield sidecar

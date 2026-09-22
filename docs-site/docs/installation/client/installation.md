@@ -75,7 +75,7 @@ sudo bash elchi-install.sh \
 | `--cloud=CLOUD` | Cloud / infrastructure provider. Defaults to `other`. | no |
 | `--enable-bgp` | Install FRR for BGP routing. | no |
 | `--no-shield` | Do **not** install the elchi-shield sidecar (installed by default). | no |
-| `--shield-version=vX.Y.Z` | Pin the elchi-shield release (default: bundled/latest). | no |
+| `--shield-version=vX.Y.Z` | Source-checkout runs only — a release install uses the shield bundled with that client release. Pin the pair with `--client-version=` above. | no |
 | `--shield-audit-dsn=DSN` | Send shield audit events to central ClickHouse (else off). | no |
 | `--shield-metrics-otlp=H:P` | Push shield metrics to an OTel Collector (OTLP/gRPC). | no |
 | `--shield-metrics-insecure` | Use plaintext gRPC to the shield metrics collector. | no |
