@@ -47,9 +47,8 @@ Before production, set `global.tlsEnabled: true`, replace `global.jwt.secret` wi
 Each edge host runs Envoy plus the **elchi-client** agent, which registers the node and applies what the controller pushes. Install it with one command — grab your project's auth token from the UI first:
 
 ```bash
-wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.6.3/elchi-install.sh
-
-sudo bash elchi-install.sh \
+curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/client/get.sh \
+  | sudo bash -s -- \
   --name=edge-01 \
   --host=elchi.example.com \
   --port=443 \

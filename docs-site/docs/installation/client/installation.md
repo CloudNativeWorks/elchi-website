@@ -20,7 +20,7 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
       --token=your-auth-token
 ```
 
-Pin a version with `--client-version=v1.6.3`. Every other flag is forwarded to
+Pin a version with `--client-version=v1.7.0`. Every other flag is forwarded to
 the installer; `--help` lists them. To install from a file instead, fetch
 `elchi-install.sh` from the release you want on the
 [archive's releases page](https://github.com/CloudNativeWorks/elchi-archive/releases)
@@ -96,7 +96,7 @@ Skip the installer and place the binary yourself:
 
 ```bash
 # AMD64
-wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.6.3/elchi-client-linux-amd64
+wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.7.0/elchi-client-linux-amd64
 sudo mkdir -p /etc/elchi/bin
 sudo mv elchi-client-linux-amd64 /etc/elchi/bin/elchi-client
 sudo chmod +x /etc/elchi/bin/elchi-client

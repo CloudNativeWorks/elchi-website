@@ -37,9 +37,9 @@ export default async function createConfig(): Promise<Config> {
   const versionBadgesHtml = `
     <span class="nav-versions">
       <a class="nav-version" href="https://github.com/CloudNativeWorks/elchi-archive/releases" target="_blank" rel="noopener">
-        <span class="nav-version-key">UI</span> <span class="nav-version-tag">${uiVersion}</span></a>
+        <span class="nav-version-key">UI</span> <span class="nav-version-tag" data-archive="ui_releases">${uiVersion}</span></a>
       <a class="nav-version" href="https://github.com/CloudNativeWorks/elchi-archive/releases" target="_blank" rel="noopener">
-        <span class="nav-version-key">API</span> <span class="nav-version-tag">${backendVersion}</span></a>
+        <span class="nav-version-key">API</span> <span class="nav-version-tag" data-archive="backend_releases">${backendVersion}</span></a>
     </span>`;
 
   return {
@@ -64,6 +64,8 @@ export default async function createConfig(): Promise<Config> {
     // shell snippets stay literal); .mdx files opt into MDX when they need
     // components. Keeps bulk-converted content robust.
     markdown: {format: 'detect', mermaid: true},
+
+    clientModules: [require.resolve('./src/js/archive-versions.js')],
 
     presets: [
       [

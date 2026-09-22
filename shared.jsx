@@ -1,9 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getLocale, locHref, otherLocaleHref } from './i18n.js';
 import { PRODUCTS } from './products-data.js';
 
 const ELCHI_UI_VERSION = typeof __ELCHI_UI_VERSION__ !== 'undefined' ? __ELCHI_UI_VERSION__ : 'dev';
 const ELCHI_BACKEND_VERSION = typeof __ELCHI_BACKEND_VERSION__ !== 'undefined' ? __ELCHI_BACKEND_VERSION__ : 'dev';
+
+// Those two are a snapshot of the release manifest taken when the site was BUILT,
+// so a component mirrored after the last deploy leaves the badge behind (the nav
+// read UI v1.5.21 for hours after v1.5.22 was published). archive.elchi.io serves
+// index.json with `access-control-allow-origin: *`, so refresh it in the browser
+// too and let the build-time value be the first paint and the offline fallback.
+const ARCHIVE_INDEX = 'https://archive.elchi.io/index.json';
+let archiveFetch = null;   // one request per page load, shared by nav + footer
+
+function useArchiveVersions() {
+  const [versions, setVersions] = useState({ ui: ELCHI_UI_VERSION, backend: ELCHI_BACKEND_VERSION });
+  useEffect(() => {
+    let alive = true;
+    if (!archiveFetch) {
+      archiveFetch = fetch(ARCHIVE_INDEX).then((r) => (r.ok ? r.json() : Promise.reject(r.status)));
+    }
+    archiveFetch
+      .then((index) => {
+        const ui = index?.ui_releases?.[0]?.version;
+        const backend = index?.backend_releases?.[0]?.version;
+        if (alive && ui && backend) setVersions({ ui, backend });
+      })
+      .catch(() => {});   // blocked, offline or a bad manifest → keep the snapshot
+    return () => { alive = false; };
+  }, []);
+  return versions;
+}
 
 // Shared nav/footer strings. Technical terms (Envoy, proxy, xDS, Helm, GitHub, Demo…)
 // are intentionally kept in English in both locales.
@@ -110,6 +137,7 @@ const docsHref = '/docs/';
 function Nav({ active }) {
   const locale = getLocale();
   const t = SHARED[locale].nav;
+  const { ui: uiVersion, backend: backendVersion } = useArchiveVersions();
   const [ddOpen, setDdOpen] = useState(false);
   const onProductPage = typeof active === 'string' && active.startsWith('products/');
   return (
@@ -157,24 +185,24 @@ function Nav({ active }) {
           </div>
           <div className="nav-versions">
             <a
-              href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-ui-${ELCHI_UI_VERSION}`}
+              href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-ui-${uiVersion}`}
               target="_blank"
               rel="noopener"
               className="nav-version"
-              title={`Elchi UI ${ELCHI_UI_VERSION}`}
+              title={`Elchi UI ${uiVersion}`}
             >
               <span className="nav-version-key">UI</span>
-              <span className="nav-version-tag">{ELCHI_UI_VERSION}</span>
+              <span className="nav-version-tag">{uiVersion}</span>
             </a>
             <a
-              href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-backend-${ELCHI_BACKEND_VERSION}`}
+              href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-backend-${backendVersion}`}
               target="_blank"
               rel="noopener"
               className="nav-version"
-              title={`Elchi Backend ${ELCHI_BACKEND_VERSION}`}
+              title={`Elchi Backend ${backendVersion}`}
             >
               <span className="nav-version-key">API</span>
-              <span className="nav-version-tag">{ELCHI_BACKEND_VERSION}</span>
+              <span className="nav-version-tag">{backendVersion}</span>
             </a>
           </div>
           <a href="/docs/getting-started/quickstart" className="btn btn-primary">{t.getStarted}</a>
@@ -188,6 +216,7 @@ function Nav({ active }) {
 function Footer() {
   const locale = getLocale();
   const t = SHARED[locale].footer;
+  const { ui: uiVersion, backend: backendVersion } = useArchiveVersions();
   return (
     <footer className="footer">
       <div className="container">
@@ -200,8 +229,8 @@ function Footer() {
               {t.tagline}
             </p>
             <div style={{display: 'flex', gap: 8, marginTop: 18}}>
-              <span className="pill">UI {ELCHI_UI_VERSION}</span>
-              <span className="pill">API {ELCHI_BACKEND_VERSION}</span>
+              <span className="pill">UI {uiVersion}</span>
+              <span className="pill">API {backendVersion}</span>
             </div>
           </div>
           <div>
