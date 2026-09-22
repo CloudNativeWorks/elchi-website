@@ -1,41 +1,32 @@
-# Website
+# Elchi documentation site
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+The documentation at [www.elchi.io/docs](https://www.elchi.io/docs), built with
+[Docusaurus](https://docusaurus.io/). The marketing site lives in the parent directory and is a
+separate Vite build.
 
-## Installation
-
-```bash
-yarn
-```
-
-## Local Development
+## Develop
 
 ```bash
-yarn start
+npm install
+npm start          # dev server with live reload
+npm run build      # production build into build/
+npm run serve      # serve the production build locally
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```bash
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+`npm run build` is the gate that matters: `onBrokenLinks: 'throw'` turns any dead internal link
+into a build failure, so run it before pushing.
 
 ## Deployment
 
-Using SSH:
+Deployment is **not** run from a laptop — no `yarn deploy`, no `gh-pages` branch. Pushing to
+`main` builds the site in CI and publishes it with the rest of elchi.io.
 
-```bash
-USE_SSH=true yarn deploy
-```
+## Version numbers in the docs
 
-Not using SSH:
+The UI/API badges in the navbar are resolved at build time from the public release manifest,
+[`archive.elchi.io/index.json`](https://archive.elchi.io/index.json) — never from the component
+repositories' releases API, which is private and answers 404 outside the org. See
+`archiveVersions()` in `docusaurus.config.ts`.
 
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Version numbers written into the prose (install commands, image tags, Envoy variants) are plain
+text and have to be bumped by hand when a release is mirrored.

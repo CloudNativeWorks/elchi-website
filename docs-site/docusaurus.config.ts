@@ -4,36 +4,41 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js at build time — no client-side code here.
 
-// Latest release tags for the navbar version badges — fetched once at build time,
-// mirroring the vite `define` globals used by the marketing site's nav.
-async function latestTag(repo: string): Promise<string> {
+// Latest release versions for the navbar version badges — fetched once at build
+// time. They come from elchi-archive's index.json, not from the components'
+// own repositories: those are private, so api.github.com answers 404 for an
+// unauthenticated build and every badge rendered "unknown". The archive is the
+// public mirror and index.json is kept sorted newest-first by semver
+// (tools/index-upsert.py --check enforces it), so [0] is the current release.
+const ARCHIVE_INDEX = 'https://archive.elchi.io/index.json';
+
+async function archiveVersions(): Promise<{ui: string; backend: string}> {
+  const fallback = {ui: 'unknown', backend: 'unknown'};
   try {
-    const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
-      headers: {
-        Accept: 'application/vnd.github+json',
-        'User-Agent': 'elchi-website-build',
-        ...(process.env.GITHUB_TOKEN ? {Authorization: `Bearer ${process.env.GITHUB_TOKEN}`} : {}),
-      },
+    const res = await fetch(ARCHIVE_INDEX, {
+      headers: {Accept: 'application/json', 'User-Agent': 'elchi-website-build'},
     });
-    if (!res.ok) return 'unknown';
-    const json = (await res.json()) as {tag_name?: string};
-    return json.tag_name ?? 'unknown';
+    if (!res.ok) return fallback;
+    const json = (await res.json()) as Record<string, unknown>;
+    const newest = (key: string): string => {
+      const list = json[key] as Array<{version?: string}> | undefined;
+      if (!Array.isArray(list) || list.length === 0) return 'unknown';
+      return list[0]?.version ?? 'unknown';
+    };
+    return {ui: newest('ui_releases'), backend: newest('backend_releases')};
   } catch {
-    return 'unknown';
+    return fallback;
   }
 }
 
 export default async function createConfig(): Promise<Config> {
-  const [uiVersion, backendVersion] = await Promise.all([
-    latestTag('CloudNativeWorks/elchi'),
-    latestTag('CloudNativeWorks/elchi-backend'),
-  ]);
+  const {ui: uiVersion, backend: backendVersion} = await archiveVersions();
 
   const versionBadgesHtml = `
     <span class="nav-versions">
-      <a class="nav-version" href="https://github.com/CloudNativeWorks/elchi/releases" target="_blank" rel="noopener">
+      <a class="nav-version" href="https://github.com/CloudNativeWorks/elchi-archive/releases" target="_blank" rel="noopener">
         <span class="nav-version-key">UI</span> <span class="nav-version-tag">${uiVersion}</span></a>
-      <a class="nav-version" href="https://github.com/CloudNativeWorks/elchi-backend/releases" target="_blank" rel="noopener">
+      <a class="nav-version" href="https://github.com/CloudNativeWorks/elchi-archive/releases" target="_blank" rel="noopener">
         <span class="nav-version-key">API</span> <span class="nav-version-tag">${backendVersion}</span></a>
     </span>`;
 

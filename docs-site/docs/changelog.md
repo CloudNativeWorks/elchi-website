@@ -18,8 +18,8 @@ scripts) are re-published for unauthenticated download.
 
 | Component | What it is | Releases |
 |---|---|---|
-| **elchi** (UI) | The React management console | [github.com/CloudNativeWorks/elchi/releases](https://github.com/CloudNativeWorks/elchi/releases) |
-| **elchi-backend** | Controller + Control-Plane + Registry | [elchi-backend/releases](https://github.com/CloudNativeWorks/elchi-backend/releases) |
+| **elchi** (UI) | The React management console | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
+| **elchi-backend** | Controller + Control-Plane + Registry | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
 | **elchi-client** | The edge agent (bundles Shield) | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
 | **elchi-shield** | The ext_proc API-security sidecar | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
 | **elchi-collector** | The API Discovery ingest service | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
@@ -28,7 +28,9 @@ scripts) are re-published for unauthenticated download.
 
 :::tip[Current versions at a glance]
 The UI and backend version badges in the top navigation bar always show the latest
-published release of each — they are fetched at build time from GitHub.
+published release of each — they are read at build time from the public release
+archive (`archive.elchi.io/index.json`), which is also where the installers and
+the appliance pull their artifacts from.
 :::
 
 ## How the pieces are versioned
@@ -48,7 +50,7 @@ published release of each — they are fetched at build time from GitHub.
   resources move between them.
 - **Backend release tags encode the trio.** Backend tags carry the platform,
   control-plane, and Envoy versions together (for example
-  `elchi-v1.6.9-v0.14.0-envoy1.38.3`), so a tag tells you exactly which
+  `elchi-v1.6.15-v0.14.0-envoy1.39.0`), so a tag tells you exactly which
   go-control-plane and Envoy baseline it targets.
 
 ## Upgrading

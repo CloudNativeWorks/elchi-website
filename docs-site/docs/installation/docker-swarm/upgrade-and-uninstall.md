@@ -14,8 +14,8 @@ Re-run with the new `--*-version` flags:
 ```bash
 deploy/docker/upgrade.sh \
   --main-address=elchi.example.com \
-  --ui-version=v1.5.5 \
-  --backend-version=v1.6.6-v0.14.0-envoy1.38.3
+  --ui-version=v1.5.22 \
+  --backend-version=v1.6.15-v0.14.0-envoy1.39.0
 ```
 
 Under the hood this re-renders the configs and stack file. Each service carries an `elchi.cfghash` container label over its mounted files, so a changed image tag or config file changes the label, and `docker stack deploy` rolling-updates exactly the affected services — nothing else is bounced.
@@ -24,7 +24,7 @@ The bootstrap one-liner also supports upgrades directly:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/docker/get.sh \
-  | sudo bash -s -- --upgrade --main-address=elchi.example.com --ui-version=v1.5.5
+  | sudo bash -s -- --upgrade --main-address=elchi.example.com --ui-version=v1.5.22
 ```
 
 ## Editing live configs

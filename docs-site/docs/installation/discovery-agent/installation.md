@@ -28,8 +28,11 @@ helm install endpoint-discovery elchi/elchi-discovery \
 kubectl get pods -n elchi-stack
 ```
 
-## Install from a local chart
+## Install from a values file
+
+Once the overrides outgrow `--set`, keep them in a file:
 
 ```bash
-helm install endpoint-discovery . --values values.yaml
+helm show values elchi/elchi-discovery > values.yaml   # start from the defaults
+helm install endpoint-discovery elchi/elchi-discovery --values values.yaml
 ```

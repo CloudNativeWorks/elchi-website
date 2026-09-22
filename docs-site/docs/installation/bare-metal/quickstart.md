@@ -13,9 +13,9 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
   | sudo bash -s -- \
       --main-address=elchi.example.com \
       --gslb-zone=gslb.example.com \
-      --ui-version=v1.5.12 \
-      --backend-version=elchi-v1.6.9-v0.14.0-envoy1.38.3 \
-      --envoy-version=v1.38.3
+      --ui-version=v1.5.22 \
+      --backend-version=elchi-v1.6.15-v0.14.0-envoy1.39.0 \
+      --envoy-version=v1.39.0
 ```
 
 ## 3-VM cluster, multi-version backend, key-based SSH
@@ -27,9 +27,9 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
       --ssh-user=ubuntu --ssh-key=/root/.ssh/cluster_key \
       --main-address=elchi.example.com \
       --gslb-zone=gslb.example.com \
-      --ui-version=v1.5.12 \
-      --backend-version=elchi-v1.6.9-v0.14.0-envoy1.37.4,elchi-v1.6.9-v0.14.0-envoy1.38.3 \
-      --envoy-version=v1.38.3
+      --ui-version=v1.5.22 \
+      --backend-version=elchi-v1.6.15-v0.14.0-envoy1.39.0,elchi-v1.6.15-v0.14.0-envoy1.39.1 \
+      --envoy-version=v1.39.0
 ```
 
 :::info[GSLB zone (default elchi.local)]
@@ -61,7 +61,7 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
       --ssh-bootstrap \
       --main-address=elchi.example.com \
       --gslb-zone=gslb.example.com \
-      --backend-version=elchi-v1.6.9-v0.14.0-envoy1.38.3
+      --backend-version=elchi-v1.6.15-v0.14.0-envoy1.39.0
 ```
 
 `--ssh-bootstrap` mints a fresh ed25519 key on M1, then prompts the operator *once per remote node* for that node's password. Each password is used only for that node's `ssh-copy-id` and is discarded immediately after. M1 itself is local — no password prompt for it. Subsequent SSH (orchestration, upgrades, uninstall) all use the generated key.

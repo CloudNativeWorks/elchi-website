@@ -81,7 +81,7 @@ dynamic_resources:
           cluster_name: elchi-control-plane
         initial_metadata:
           - { key: nodeid, value: "https_ingress::my-project" }
-          - { key: envoy-version, value: "v1.38.3" }
+          - { key: envoy-version, value: "v1.39.0" }
 ```
 
 ## Tips

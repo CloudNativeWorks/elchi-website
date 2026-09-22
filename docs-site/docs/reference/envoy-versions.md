@@ -27,7 +27,7 @@ The handler proxies the archive's `index.json` verbatim. Envoy builds live under
 {
   "releases": [
     {
-      "version": "v1.38.3",
+      "version": "v1.39.0",
       "date": "…",
       "binaries": [
         {
@@ -51,10 +51,10 @@ Any version number quoted in docs is a snapshot in time. To see what your platfo
 
 The management plane is built against a pinned **versioned go-control-plane**, which sets the Envoy API baseline the control-plane speaks. As of the current backend `go.mod`:
 
-- `versioned-go-control-plane` — `v0.14.0-envoy1.38.3`
-- `versioned-go-control-plane/envoy` — `v1.38.3`
+- `versioned-go-control-plane` — `v0.14.0-envoy1.39.0`
+- `versioned-go-control-plane/envoy` — `v1.39.0`
 
-That baseline is **~1.38**. The supported deployable range currently spans roughly **1.35 – 1.39** — the archive lists what is actually available, and the pinned control-plane defines the newest API vocabulary the platform can emit. Older data-plane binaries in the range are configured against a compatible subset.
+That baseline is **~1.39**. The supported deployable range currently spans roughly **1.35 – 1.39** — the archive lists what is actually available, and the pinned control-plane defines the newest API vocabulary the platform can emit. Older data-plane binaries in the range are configured against a compatible subset.
 
 ## Everything is version-scoped
 

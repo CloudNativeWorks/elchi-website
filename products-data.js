@@ -223,7 +223,7 @@ const PRODUCTS = {
         { t: 'Geo / region routing', d: 'Tag IPs with regions and serve region-filtered answers, so users land on the closest healthy endpoint.' },
         { t: 'Circuit-breaker probing', d: 'Failing IPs back off gradually (10s → 120s) instead of hammering dead hosts; state transitions trigger immediate re-probes.' },
         { t: 'Record & IP management', d: 'Full CRUD with bulk operations, manual health overrides, per-IP history, and IPs auto-generated from service deployments.' },
-        { t: 'Built for scale & HA', d: 'Sharded health storage, MongoDB leader-election leases, and automatic rebalancing when a controller fails — proven past 100K IPs.' },
+        { t: 'Built for scale & HA', d: 'Sharded health storage, MongoDB leader-election leases, and automatic rebalancing when a controller fails — designed for 100K+ IP records.' },
       ],
       flow: {
         title: 'How it works',
@@ -251,7 +251,7 @@ const PRODUCTS = {
         { t: 'Coğrafi / bölgesel yönlendirme', d: 'IP\'leri bölgelerle etiketleyin, bölge filtreli yanıtlar sunun — kullanıcılar en yakın sağlıklı endpoint\'e ulaşsın.' },
         { t: 'Circuit-breaker\'lı problama', d: 'Başarısız IP\'lerde prob aralığı kademeli artar (10sn → 120sn), ölü sunucular boşuna yoklanmaz; durum geçişleri anında yeniden prob tetikler.' },
         { t: 'Kayıt & IP yönetimi', d: 'Toplu işlemli tam CRUD, manuel sağlık geçersiz kılma, IP başına geçmiş ve servis dağıtımlarından otomatik üretilen IP\'ler.' },
-        { t: 'Ölçek & HA için tasarlandı', d: 'Parçalı (sharded) sağlık deposu, MongoDB leader-election kiraları ve controller arızasında otomatik yeniden dengeleme — 100K+ IP\'de kanıtlanmış.' },
+        { t: 'Ölçek & HA için tasarlandı', d: 'Parçalı (sharded) sağlık deposu, MongoDB leader-election kiraları ve controller arızasında otomatik yeniden dengeleme — 100K+ IP kaydı için tasarlandı.' },
       ],
       flow: {
         title: 'Nasıl çalışır',

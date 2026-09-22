@@ -5,27 +5,30 @@ sidebar_position: 8
 tags: [installation]
 ---
 
-The `elchi-stack` chart ships several **profile overlays** — `values_<profile>.yaml` files that
-layer on top of the base `values.yaml` to describe a concrete deployment shape (local dev, an
-on-prem office cluster, a cloud production node, …). Apply one with `-f`:
+The `elchi-stack` chart is maintained alongside several **profile overlays** —
+`values_<profile>.yaml` files that layer on top of the base `values.yaml` to describe a concrete
+deployment shape (local dev, an on-prem office cluster, a cloud production node, …). They are
+reference shapes rather than packaged files: the matrix below is the whole content, so copy the
+column you want into your own overlay and apply it with `-f`:
 
 ```bash
-helm install elchi ./charts/elchi-stack \
-  -f charts/elchi-stack/values.yaml \
-  -f charts/elchi-stack/values_office.yaml
+helm show values elchi/elchi-stack > values.yaml     # the base, as published
+# …write my-office.yaml with the overrides from the matrix below…
+helm install elchi elchi/elchi-stack -f my-office.yaml
 ```
 
-Later `-f` files win, so a profile overrides the base. Everything you can override lives under
+Later `-f` files win, so your overlay overrides the base. Everything you can override lives under
 the shared `global` namespace — see [Configuration](/installation/helm-platform/configuration)
 for the parameter reference and [Storage Options](/installation/helm-platform/storage) for the
 datastore toggles.
 
 :::info[Values are schema-validated]
 `values.schema.json` (JSON Schema draft-07) validates your merged values at install time. Only
-`global.mainAddress` is strictly required (plus `global.jwt.secret`, and `tag` on each
-`versions[]` entry). It enforces types (booleans for the `install*` toggles, integers for
-replica counts), an enum on `envoy.service.type` (`ClusterIP | NodePort | LoadBalancer`),
-`minLength: 32` on `jwt.secret`, and NodePort bounds (`30000–32767`). It does **not** enforce
+`global.mainAddress` is strictly required (plus `tag` on each `versions[]` entry) — credentials
+are [generated when omitted](/installation/helm-platform/configuration#credentials). It enforces
+types (booleans for the `install*` toggles, integers for replica counts), an enum on
+`envoy.service.type` (`ClusterIP | NodePort | LoadBalancer`), a 32-character minimum on a
+**non-empty** `jwt.secret`, and NodePort bounds (`30000–32767`). It does **not** enforce
 cross-field rules — e.g. it won't force `mongodb.hosts` when `installMongo: false`; that
 discipline is on you.
 :::

@@ -2,30 +2,40 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
-async function fetchLatestTag(repo) {
+// Release versions for the nav/footer badges, resolved at build time.
+//
+// They come from elchi-archive's index.json, NOT from the components' own
+// repositories: elchi and elchi-backend are private, so
+// api.github.com/repos/<private>/releases/latest answers 404 to an
+// unauthenticated build — and CI's GITHUB_TOKEN is scoped to this repository
+// only, so it cannot read them either. Every badge rendered "unknown" and the
+// links they build (…/releases/tag/elchi-ui-unknown) 404'd. The archive is the
+// public mirror and its index is kept sorted newest-first by semver, so [0] is
+// the current release. The docs site resolves them the same way
+// (docs-site/docusaurus.config.ts).
+const ARCHIVE_INDEX = 'https://archive.elchi.io/index.json';
+
+async function fetchArchiveVersions() {
+  const fallback = { ui: 'unknown', backend: 'unknown' };
   try {
-    const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'elchi-website-build',
-        // Authenticated in CI (shared runner IPs exhaust the anonymous rate limit).
-        ...(process.env.GITHUB_TOKEN ? { 'Authorization': `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
-      },
+    const res = await fetch(ARCHIVE_INDEX, {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'elchi-website-build' },
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const data = await res.json();
-    return data.tag_name || 'unknown';
+    const newest = (key) => {
+      const list = data[key];
+      return Array.isArray(list) && list.length > 0 && list[0].version ? list[0].version : 'unknown';
+    };
+    return { ui: newest('ui_releases'), backend: newest('backend_releases') };
   } catch (err) {
-    console.warn(`[vite] failed to fetch latest release for ${repo}:`, err.message);
-    return 'unknown';
+    console.warn(`[vite] failed to read ${ARCHIVE_INDEX}:`, err.message);
+    return fallback;
   }
 }
 
 export default defineConfig(async () => {
-  const [uiVersion, backendVersion] = await Promise.all([
-    fetchLatestTag('CloudNativeWorks/elchi'),
-    fetchLatestTag('CloudNativeWorks/elchi-backend'),
-  ]);
+  const { ui: uiVersion, backend: backendVersion } = await fetchArchiveVersions();
   console.log(`[vite] elchi UI: ${uiVersion} · elchi backend: ${backendVersion}`);
 
   return {

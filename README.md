@@ -140,11 +140,13 @@ All processes communicate via gRPC and share MongoDB for state management.
 
 ## 📄 License
 
-MIT License - See [LICENSE](LICENSE) file for details.
+Apache License 2.0 - See [LICENSE](LICENSE) file for details.
 
-## ⚠️ Status
+## ✅ Status
 
-**Experimental Project**: Currently in active development. Suitable for testing and evaluation. Use with caution in production environments.
+**Production platform, actively developed.** Elchi ships as a versioned platform (UI + backend) with install paths for Kubernetes (Helm), Docker Swarm, single-host (kind) and bare-metal systemd, and is validated end-to-end against real Envoy data planes before release.
+
+**Elchi Core is free for a single managed client** — no license needed to evaluate. Production fleets are licensed by managed client (edge node) count plus the product modules you enable (API Security, API Discovery, GSLB, WAF). See [elchi.io/plans](https://www.elchi.io/plans.html).
 
 ---
 

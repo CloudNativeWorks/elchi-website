@@ -4,27 +4,33 @@ description: A reference production values file and high-availability guidelines
 sidebar_position: 6
 ---
 
-Generate the JWT secret in your shell first — command substitution does not run inside a values file:
+The chart generates every credential on first install and keeps them in one Secret
+([Credentials](/installation/helm-platform/configuration#credentials)), so a production values
+file carries no passwords at all. Set them explicitly only when the values must come from your
+own secret store — or when you render manifests outside the cluster (GitOps), where generation
+cannot work:
 
 ```bash
+# Only if you are supplying it yourself. Command substitution does not run inside a values file,
+# so pass it at install time: --set-string global.jwt.secret="$JWT_SECRET"
 JWT_SECRET=$(openssl rand -base64 32)
 ```
 
-A reference values file for production-grade deployments (paste the generated secret, or leave it out and pass `--set-string global.jwt.secret=$JWT_SECRET` at install time):
+A reference values file for production-grade deployments:
 
 ```yaml
 global:
   mainAddress: "elchi.company.com"
   tlsEnabled: true
   jwt:
-    secret: "<paste-the-generated-secret-here>"  # 32+ characters
+    # secret: ""   # omit → generated once and kept in elchi-stack-secrets
     accessTokenDuration: "1h"
     refreshTokenDuration: "24h"
   elchiBackend:
     controlPlaneDefaultReplicas: 3
     controllerDefaultReplicas: 3
   versions:
-    - tag: v1.6.9-v0.14.0-envoy1.38.3
+    - tag: v1.6.15-v0.14.0-envoy1.39.0
 
 # Resource limits
 elchi:

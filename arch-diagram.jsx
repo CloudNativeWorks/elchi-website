@@ -217,14 +217,14 @@ function ArchDiagram() {
           <text x="664" y="396" fontSize="9" fontFamily="Geist Mono, monospace" fill="#1d4ed8" textAnchor="end">xDS · ADS · VHDS</text>
           <g transform="translate(356, 414)">
             <rect width="148" height="56" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
-            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.35.3</text>
+            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.39.0</text>
             <circle cx="136" cy="16" r="3" fill="#3b82f6" className="blink"/>
             <text x="12" y="38" fontSize="9" fontFamily="Geist, sans-serif" fill="#475569">snapshot cache</text>
             <text x="12" y="50" fontSize="8" fontFamily="Geist Mono, monospace" fill="#94a3b8">:18000</text>
           </g>
           <g transform="translate(516, 414)">
             <rect width="148" height="56" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
-            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.36.2</text>
+            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.39.1</text>
             <circle cx="136" cy="16" r="3" fill="#3b82f6" className="blink" style={{animationDelay:'.5s'}}/>
             <text x="12" y="38" fontSize="9" fontFamily="Geist, sans-serif" fill="#475569">snapshot cache</text>
             <text x="12" y="50" fontSize="8" fontFamily="Geist Mono, monospace" fill="#94a3b8">:18000</text>
@@ -347,10 +347,10 @@ function ArchOrbit() {
 function ArchTerminal() {
   const [lines, setLines] = useState([]);
   const allLines = useMemo(() => [
-    { t: 'cmd', text: '$ elchi connect --version=1.34' },
-    { t: 'log', text: '› registering with registry @ :9090' },
-    { t: 'ok',  text: '✓ assigned controller-prod-3 (v1.34)' },
-    { t: 'log', text: '› requesting xDS subscription' },
+    { t: 'cmd', text: '$ elchi-client status' },
+    { t: 'log', text: '› registered · controller @ :50051' },
+    { t: 'ok',  text: '✓ envoy v1.39.0 · listener web-edge' },
+    { t: 'log', text: '› xDS subscription over ADS' },
     { t: 'log', text: '  CDS: 12 clusters' },
     { t: 'log', text: '  LDS: 4 listeners' },
     { t: 'log', text: '  RDS: 28 routes' },

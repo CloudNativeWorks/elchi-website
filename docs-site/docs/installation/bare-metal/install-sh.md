@@ -23,11 +23,11 @@ Every variant tag in `--backend-version` is a full release-asset name (`elchi-vX
 
 | Flag | Description | Default |
 |---|---|---|
-| `--backend-version=<csv>` | One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: `--backend-variants=`. | elchi-v1.6.9-v0.14.0-envoy1.38.3 |
-| `--ui-version=<vX.Y.Z>` | UI bundle version (`elchi-dist-vX.Y.Z.tar.gz`). Mirrored to the public elchi-archive releases by the build-elchi-ui workflow. | v1.5.12 |
-| `--envoy-version=<vX.Y.Z>` | Front-door Envoy proxy binary version. | v1.38.3 |
+| `--backend-version=<csv>` | One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: `--backend-variants=`. | elchi-v1.6.15-v0.14.0-envoy1.39.0 |
+| `--ui-version=<vX.Y.Z>` | UI bundle version (`elchi-dist-vX.Y.Z.tar.gz`). Mirrored to the public elchi-archive releases by the build-elchi-ui workflow. | v1.5.22 |
+| `--envoy-version=<vX.Y.Z>` | Front-door Envoy proxy binary version. | v1.39.0 |
 | `--coredns-version=<vX.Y.Z>` | Custom CoreDNS-with-elchi-plugin version (used only when GSLB is enabled). | v0.1.4 |
-| `--collector-version=<vX.Y.Z>` | elchi-collector binary version (ALS gRPC sink → ClickHouse / Mongo). Mirrored to the public elchi-archive releases by the build-elchi-collector workflow. | v0.1.11 |
+| `--collector-version=<vX.Y.Z>` | elchi-collector binary version (ALS gRPC sink → ClickHouse / Mongo). Mirrored to the public elchi-archive releases by the build-elchi-collector workflow. | v0.1.13 |
 | `--no-collector` | Skip the elchi-collector install entirely (cluster runs without ALS ingestion; envoy data-plane logs are not captured). | — |
 
 ## Backend instance count per node

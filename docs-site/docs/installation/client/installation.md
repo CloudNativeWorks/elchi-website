@@ -6,10 +6,25 @@ sidebar_position: 3
 
 ## Quick install
 
+One URL, always the current release: the bootstrap script resolves the newest
+published client from the public `elchi-archive` mirror, verifies the
+installer's sha256 against `index.json` and runs it.
+
 ```bash
-# Fetch the installer
-wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.6.3/elchi-install.sh
+curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/client/get.sh \
+  | sudo bash -s -- \
+      --name=web-server-01 \
+      --host=backend.elchi.io \
+      --port=443 \
+      --tls=true \
+      --token=your-auth-token
 ```
+
+Pin a version with `--client-version=v1.6.3`. Every other flag is forwarded to
+the installer; `--help` lists them. To install from a file instead, fetch
+`elchi-install.sh` from the release you want on the
+[archive's releases page](https://github.com/CloudNativeWorks/elchi-archive/releases)
+and run the commands below.
 
 ## Production setup
 
@@ -51,6 +66,7 @@ sudo bash elchi-install.sh \
 
 | Flag | Description | Required |
 | --- | --- | --- |
+| `--client-version=vX.Y.Z` | Install a specific client release instead of the newest. Handled by `get.sh`, not by the installer itself. | no |
 | `--name=NAME` | Client name as it appears in Elchi. | yes |
 | `--host=HOST` | Controller server address. | yes |
 | `--port=PORT` | Server port (1–65535). | yes |

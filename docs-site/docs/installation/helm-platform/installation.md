@@ -30,11 +30,13 @@ For anything beyond a quick trial, pass a `values.yaml` with your overrides:
 global:
   mainAddress: "elchi.example.com"
   tlsEnabled: true
-  jwt:
-    secret: "your-secure-32-character-minimum-secret-key-here"
   versions:
-    - tag: v1.6.9-v0.14.0-envoy1.38.3
+    - tag: v1.6.15-v0.14.0-envoy1.39.0
 ```
+
+Only `global.mainAddress` is required. Credentials — the JWT secret, the MongoDB and ClickHouse
+passwords, the collector hash salt — are generated on first install and kept in one Secret, so
+you only set them when you want specific values. See [Credentials](/installation/helm-platform/configuration#credentials).
 
 ```bash
 helm install my-elchi elchi/elchi-stack -f values.yaml
@@ -47,7 +49,7 @@ Default bootstrap credentials are `admin` / `admin`. Change them on first login.
 :::warning[Production checklist]
 
 - Terminate TLS at your external load balancer or ingress (the chart manages no certificates), and set `global.tlsEnabled: true` so the platform generates `https://` URLs.
-- Replace `global.jwt.secret` with a 32+ character random value.
+- Let the chart generate the credentials, or set all six explicitly from your own secret store — and if this is an upgrade from a chart older than 2.0.0, read [Credentials](/installation/helm-platform/configuration#credentials) **before** running it.
 - Disable the bundled MongoDB and point at a managed replica set.
 - Run at least 3 replicas of the controller and control-plane.
 
