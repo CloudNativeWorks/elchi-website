@@ -1,7 +1,7 @@
 ---
 title: OpenAPI Export
 description: Turn the traffic-derived API inventory into an OpenAPI 3.x document — and feed it into Shield's positive-security enforcement.
-sidebar_position: 8
+sidebar_position: 9
 tags: [api-discovery]
 ---
 
@@ -18,14 +18,21 @@ Both call the inventory OpenAPI endpoint (`/api/v3/inventory/openapi`) for the c
 
 ## What the exported spec contains
 
-The document is assembled from the discovered inventory:
+The export is an **OpenAPI 3.0.3** document built from the **confirmed** inventory rows (up to 20 000, ordered by host, path, method):
 
 | OpenAPI element | Source in the inventory |
 |---|---|
-| Paths | Normalized operations (e.g. `/users/{id}`) — see [Path Normalization](/api-discovery/path-normalization) |
+| Paths + path parameters | Normalized operations (e.g. `/users/{id}`) — every `{name}` becomes a path parameter. See [Path Normalization](/api-discovery/path-normalization) |
 | Operations | The HTTP methods observed on each path |
-| Responses | The status codes actually seen (from the endpoint's status distribution) |
-| Content types | The response content types observed on the endpoint |
+| Query parameters | The observed query-parameter **names** (`in: query`) — values are never collected |
+| Responses | The status codes actually seen |
+| Security | The observed auth schemes: `jwt` (bearer), `basic`, `apikey` (header `X-Api-Key`), `mtls` |
+| `servers` | Every observed host at the root; an operation seen on only some hosts gets an operation-level `servers` list with exactly those |
+| `x-elchi-*` extensions | Observed metadata such as seen count, max risk score and last seen |
+
+OpenAPI keys an operation by *(path, method)*, so rows that share that pair — the same path on several hosts or listeners, or several GraphQL operations of one endpoint — are **merged** into one operation: responses, query parameters, security alternatives and `x-elchi-*` sets are unioned, the seen count is summed, max risk score and last seen take the maximum.
+
+The export honours the listener and host filters. When the 20 000-operation limit is hit the document is marked truncated (`x-elchi-truncated: true` at the root, plus the `X-Export-Truncated` response header).
 
 Because the spec is **traffic-derived, not hand-authored**, it has two defining properties:
 
@@ -61,6 +68,7 @@ For the same "discovery → enforcement" motion at the policy level rather than 
 
 ## Related
 
+- [OpenAPI Specs & Coverage](/api-discovery/specs-and-coverage) — import your own specs and compare them with observed traffic.
 - [Path Normalization](/api-discovery/path-normalization) — how paths become the operation templates in the spec.
 - [Suggest a Policy](/api-discovery/suggest-policy) — turn discovered endpoints into Shield policy targets.
 - [Shield OpenAPI validation](/shield/engines/openapi-validation) — enforce the exported contract at the edge.

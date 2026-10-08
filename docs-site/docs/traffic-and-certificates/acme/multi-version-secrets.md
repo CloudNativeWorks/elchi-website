@@ -9,7 +9,7 @@ An Elchi certificate is **version-scoped**. A single certificate — one set of 
 
 ## Why version-scoped
 
-Elchi resources are stored per Envoy version because Envoy's config schema evolves between releases. A TLS secret referenced by a listener must exist **for the same version** as that listener. If a certificate only existed for `v1.36.0`, a listener built for `v1.37.0` could not find it. Version-scoping a certificate means the same key material is available to every Envoy version you run, under the same secret name.
+Elchi resources are stored per Envoy version because Envoy's config schema evolves between releases. A TLS secret referenced by a listener must exist **for the same version** as that listener. If a certificate only existed for `v1.39.1`, a listener built for `v1.39.3` could not find it. Version-scoping a certificate means the same key material is available to every Envoy version you run, under the same secret name.
 
 ## How a certificate binds to Envoy secrets
 
@@ -25,9 +25,8 @@ Because the secret uses the same `secret_name` on every version, a listener refe
 
 ```text
 ACME certificate  "example-tls"
-   ├── secret "example-tls" @ v1.36.0   (TLSCertificate: chain + key)
-   ├── secret "example-tls" @ v1.37.0   (TLSCertificate: chain + key)
-   └── secret "example-tls" @ v1.38.0   (TLSCertificate: chain + key)
+   ├── secret "example-tls" @ v1.39.1   (TLSCertificate: chain + key)
+   └── secret "example-tls" @ v1.39.3   (TLSCertificate: chain + key)
 ```
 
 :::info[Renewal updates every version together]
@@ -46,7 +45,7 @@ Content-Type: application/json
   "domains": ["example.com", "*.example.com"],
   "secret_name": "example-tls",
   "acme_account_id": "<account id>",
-  "versions": ["v1.36.0", "v1.37.0"],
+  "versions": ["v1.39.1", "v1.39.3"],
   "environment": "production",
   "dns_credential_id": "<credential id>"
 }
@@ -68,7 +67,7 @@ POST /api/v3/acme/certificates/{cert_id}/duplicate?project=<project-id>
 Content-Type: application/json
 
 {
-  "version": "v1.38.0"
+  "version": "v1.39.3"
 }
 ```
 

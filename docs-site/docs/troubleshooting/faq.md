@@ -21,7 +21,7 @@ The control plane serves Envoy config over **xDS (ADS)**; each edge Envoy mainta
 
 ### Is my traffic or request data forwarded off-box?
 
-No. Edge data-plane traffic stays local. Shield inspects requests in-process next to Envoy and never forwards payloads off the host. API Discovery ships only **access-log metadata** (never request/response bodies or query strings) to the collector. The management plane distributes configuration, not traffic.
+No. Edge data-plane traffic stays local. Shield inspects requests in-process next to Envoy and never forwards payloads off the host. API Discovery ships only **access-log metadata** (never request/response bodies; of the query string, only parameter names are kept) to the collector. The management plane distributes configuration, not traffic.
 
 ### Which Envoy versions are supported?
 
@@ -45,7 +45,7 @@ Through Envoy's `ext_proc` HTTP filter over a local gRPC stream — preferably a
 
 ### Is API Discovery a privacy risk? What does it store?
 
-API Discovery is **metadata-only** — it never persists request/response bodies or query strings. Source IP and User-Agent are **always hashed** with a salt. The raw IP/UA columns are **also populated by default**, but that raw retention is a per-field **opt-out** (`store_raw_source_ip` / `store_raw_user_agent: false`) for a stricter hash-only posture. See [PII, Auth & Consumers](/api-discovery/pii-and-auth).
+API Discovery is **metadata-only** — it never persists request/response bodies or query-string values (only accepted query-parameter names). Source IP and User-Agent are **always hashed** with a salt. The raw IP/UA columns are **also populated by default**, but that raw retention is a per-field **opt-out** (`store_raw_source_ip` / `store_raw_user_agent: false`) for a stricter hash-only posture. See [PII, Auth & Consumers](/api-discovery/pii-and-auth).
 
 ### How does API Discovery get its data?
 

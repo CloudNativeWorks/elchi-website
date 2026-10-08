@@ -57,7 +57,7 @@ There is nothing to tune yet — just let traffic flow. Within a couple of flush
 Give it a **representative window**. The catalog only knows what it has seen, so leave it running through a full cycle — daily and weekly batch jobs, webhook retries, admin flows — before you treat it as complete. This is the "in a day" part: the wait is the work.
 
 :::tip[Privacy posture]
-No request/response bodies, no query strings, and sensitive headers (`Authorization`, `Cookie`, `X-Api-Key`…) are dropped before persistence — only their *presence* is recorded. Source IP and User-Agent are hashed. Turning Discovery on does not create a new exfiltration surface — see [PII & Auth Detection](/api-discovery/pii-and-auth).
+No request/response bodies, no query-string values (only parameter names), and sensitive headers (`Authorization`, `Cookie`, `X-Api-Key`…) are dropped before persistence — only their *presence* is recorded. Source IP and User-Agent are hashed. Turning Discovery on does not create a new exfiltration surface — see [PII & Auth Detection](/api-discovery/pii-and-auth).
 :::
 
 ## Step 3 — Review the dashboards
@@ -69,7 +69,7 @@ The landing page at `/api-discovery` is a strip of tabbed [dashboards](/api-disc
 - **Auth Coverage** — what's reachable without credentials, and where auth is inconsistent (`auth_inconsistent` — often a bypass path or mid-rollout misconfig).
 - **PII** — which endpoints carry personal data, by category. Your GDPR/PCI review list.
 - **Zombies** — old and formerly-popular endpoints you can safely retire. A stale endpoint no client uses is pure attack surface.
-- **Risk** and **Security Score** — the project-wide triage view and a single A–F posture grade for the surface.
+- **Risk** and **Security Score** — the project-wide triage view of active findings and a 0–100 score with an A–F grade for the surface.
 
 ## Step 4 — Understand confirmed vs attack surface
 

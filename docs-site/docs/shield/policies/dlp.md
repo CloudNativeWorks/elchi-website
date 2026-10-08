@@ -25,6 +25,8 @@ the body buffered on its direction; you do **not** have to set `inspect_request_
 | `direction` | string | `response` | Where DLP runs: `response` \| `request` \| `both`. |
 | `block` | string[] | empty | DLP kinds that cause a **block**. |
 | `redact` | string[] | empty | DLP kinds **masked in place**. |
+| `tr_national_id_mode` | string | `named` | `named`: a Turkish national id (TCKN) acts only under a national-id key or label; `any`: every checksum-valid 11-digit value. |
+| `phone_mode` | string | `named` | `named`: a compact `05XXXXXXXXX` mobile number needs a phone-like key or label; `any`: it does not. |
 
 At least one of `block` / `redact` is required.
 
@@ -35,7 +37,7 @@ bodies (e.g. stop users pasting credentials into your API), set
 direction you choose — no separate `inspect_*_body` flag needed.
 :::
 
-## The ten kinds
+## Kinds
 
 | Kind | What it matches | Redaction behavior |
 |---|---|---|
@@ -53,9 +55,13 @@ direction you choose — no separate `inspect_*_body` flag needed.
 :::note
 The Luhn check requires a valid leading card-issuer digit (2–6), so benign
 16-digit identifiers (all-zeros, sequential IDs) are not flagged as cards. All
-ten kinds are usable in both a DLP `block`/`redact` list and the simpler
+kinds are usable in both a DLP `block`/`redact` list and the simpler
 `checks.body.detect_sensitive_data` hook (which blocks on the first hit).
 :::
+
+### Turkish national id and phone
+
+Two PII kinds are context-gated: `tr_national_id` (Turkish national id, T.C. kimlik no, checksum-validated) and `phone`. A random 11-digit id passes the TCKN checksum often enough that matching every one would mask unrelated numbers, so both default to **named** mode — a TCKN acts only under a national-id key or label, and a compact `05XXXXXXXXX` mobile only under a phone-like key or label. Set `tr_national_id_mode` / `phone_mode` to `any` to match unnamed values as well, at the cost of more false positives.
 
 ## Block vs redact: precedence
 

@@ -12,7 +12,7 @@ The management plane **distributes configuration only** — there is no per-upda
 
 ## One project, one bundle
 
-All of a project's Shield policies are **merged into a single full-sync bundle** — the complete desired state every edge mirrors. Each policy contributes its generated config file (e.g. `api-public.yaml`) plus any data files; file paths must be unique across the project's policies (collisions are rejected at save time). The bundle version is a deterministic digest of the merged content, so the edge's active config version changes if — and only if — the content does.
+All of a project's Shield policies are **merged into a single full-sync bundle** — the complete desired state every edge mirrors. Each policy contributes its generated config file (e.g. `api-public.yaml`) plus any data files; file paths must be unique across the project's policies (collisions are rejected at save time). A policy can reference the data files it ships (a JWKS file, an OpenAPI spec, …) by a `files/…` path relative to `conf.d`, so the bundle is self-contained. The bundle version is a deterministic digest of the merged content, so the edge's active config version changes if — and only if — the content does.
 
 Deploys are **automatic and asynchronous**:
 

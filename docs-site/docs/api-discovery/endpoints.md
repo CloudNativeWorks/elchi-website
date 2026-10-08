@@ -1,13 +1,24 @@
 ---
 title: Exploring Endpoints
-description: The per-listener endpoints view — confirmed vs attack surface, flat vs path-grouped, the full filter set, two-axis columns, and the endpoint detail page.
+description: The per-listener endpoints view — confirmed vs attack surface, flat vs path-grouped, GraphQL operations, the full filter set, active two-axis scores, CSV export, and the endpoint detail page.
 sidebar_position: 3
 tags: [api-discovery]
 ---
 
 Clicking a listener on the [dashboards](/api-discovery/dashboards) home opens its **endpoints view** — the working surface of API Discovery. This is where you browse the actual operations the listener serves, filter them down, read their two-axis risk, and drill into any one of them.
 
-An **operation** is a unique `(method, host, normalized_path)` — the OpenAPI notion of an operation. Each is one `api_inventory` document.
+An **operation** is a unique `(method, host, normalized_path)` on a listener — the OpenAPI notion of an operation — refined by protocol: a gRPC method or a GraphQL operation is its own operation. Each is one `api_inventory` document.
+
+## GraphQL operations
+
+A GraphQL API is one URL; the operation is the endpoint. A `GET` / `POST` whose normalized path ends with a `policy.graphql_paths` entry (default `/graphql` — segment-aligned and case-insensitive, so `/api/graphql` and `/tenants/{id}/graphql` match, `/mygraphql` does not) is stored with protocol `graphql` and one row per **operation**. The collector never reads request bodies; the operation comes from request metadata, first present source wins:
+
+1. the `operationName` query parameter (GraphQL over HTTP `GET`);
+2. the `x-apollo-operation-name` request header;
+3. an Apollo persisted-query hash in the `extensions` query parameter;
+4. the `x-apollo-operation-id` request header when it is a sha256.
+
+Names must be valid GraphQL names; hashes are stored as `sha256:<first 16 hex>`. Otherwise the row is `(invalid)` (a source was present but failed validation — the client string is never stored), `(anonymous)` (no source: an operation name that only lives in a POST body is invisible by design) or `(other)` (the endpoint already has `policy.graphql_ops_cap` distinct operations, default 200). `OPTIONS` preflights stay plain HTTP rows. Set `graphql_paths` to `[]` to turn GraphQL detection off.
 
 ## Source toggle: Confirmed vs Attack surface
 
@@ -50,13 +61,15 @@ The collapsible **Filters** panel narrows the list. Filters live in the URL (sha
 | Filter | Notes |
 |---|---|
 | **Method** | Multi-select: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS, CONNECT, TRACE. |
-| **Protocol** | Multi-select: `http/1.0`, `http/1.1`, `http/2`, `http/3`, `tcp`, `grpc`. |
-| **Risk Flag** | Multi-select over the full [risk-flag catalog](/api-discovery/risk-flags-reference). |
-| **PII Category** | Multi-select: `email`, `phone`, `ssn`, `credit_card`, `iban`. |
+| **Protocol** | Multi-select: `http/1.0`, `http/1.1`, `http/2`, `http/3`, `tcp`, `grpc`, `graphql`. |
+| **Risk Flag** | Multi-select over the [risk-flag catalog](/api-discovery/risk-flags-reference). Matches **active** flags only (derived flags included). |
+| **PII Category** | Multi-select: `email`, `phone`, `ssn`, `credit_card`, `iban`, `tr_national_id`, `secret_in_path`, `jwt_in_path`. Matches **active** categories only. |
+| **Query parameter** | Exact query-parameter **name** observed on the endpoint (values are never stored). |
 | **Endpoint Category** | Multi-select: admin / auth / account / payment / data-export / api-docs / metadata-leak. |
 | **Host** | Prefix match on the Host header (Mongo `^value` regex, case-sensitive). |
 | **Path prefix** | Prefix match on the normalized templated path (e.g. `/api/v1/`). |
-| **Risk score range** | Dual slider, 0–255, over `max_risk_score` (the Threat axis). |
+| **Risk score range** | Dual slider, 0–255, over the **active** threat score (a row last seen before the active window scores 0). |
+| **Ownership** | Team, owner, criticality, tag, data class, *unowned*, *no team* — see [Ownership & Teams](/api-discovery/ownership-and-teams). |
 | **Last seen** | Date range, with Today / Last 7 days / Last 30 days presets. |
 
 ### Geo & raw cross-filters (ClickHouse-backed)
@@ -84,17 +97,17 @@ The flat table shows, per operation:
 | **Calls** | `seen_count` — total requests observed since `first_seen` (a running counter, not windowed). |
 | **Errors** | 5xx sum ÷ calls. Coloured ≥1% red, ≥0.1% amber. |
 | **Latency Max** | Slowest single request (`latency_max_ms`), rendered in seconds when ≥1s. |
-| **Threat** | The threat-axis flags + `max_risk_score` badge — active attack/abuse. Shows the **current** (last-7d) max when ClickHouse is available; a moon = dormant (hover for lifetime max), a green ↓ = improved below the all-time peak. |
-| **Exposure** | The posture-axis flags + `max_posture_score` badge — standing config hygiene. |
+| **Threat** | The active threat-axis flags + the **active** threat score. Hover for the lifetime max; a green ↓ = the active score is below the lifetime peak. |
+| **Exposure** | The active posture-axis flags + the **active** exposure score, same conventions. |
 | **Last Seen** | Relative time, with a freshness dot (green if within the hour). |
 
-The two axes are the heart of the model — see [Risk Scoring](/api-discovery/risk-scoring). A **Scoring guide** popover on the toolbar summarizes the threat-vs-exposure matrix (`Clean` / `boring-but-open` / `solid-but-under-attack` / `open-&-under-attack`). Sorting is always on the **lifetime** score even when the badge shows current.
+The two axes are the heart of the model — see [Risk Scoring](/api-discovery/risk-scoring). A **Scoring guide** popover on the toolbar summarizes the threat-vs-exposure matrix (`Clean` / `boring-but-open` / `solid-but-under-attack` / `open-&-under-attack`). Sorting by Threat or Exposure uses the **active** score (ties: lifetime score, then last seen). Historical flags remain visible on the detail page.
 
-Header actions on this view: **Export OpenAPI** (YAML/JSON — see [OpenAPI Export](/api-discovery/openapi-export)) and, when path-groups are selected, **Suggest Shield Policy** (see [Suggest Policy](/api-discovery/suggest-policy)).
+Header actions on this view: **Export OpenAPI** (YAML/JSON — see [OpenAPI Export](/api-discovery/openapi-export)), **Export CSV** (the confirmed rows matching the filters, with ownership and active findings — see [Ownership & Teams](/api-discovery/ownership-and-teams#filters-and-csv-export)) and, when path-groups are selected, **Suggest Shield Policy** (see [Suggest Policy](/api-discovery/suggest-policy)).
 
 ## Endpoint detail
 
-Every path links to a deep-linkable detail page with four tabs.
+Every path links to a deep-linkable detail page with four tabs. The header shows the spec-coverage badge (documented / overlap / undocumented / unscoped — see [OpenAPI Specs & Coverage](/api-discovery/specs-and-coverage)). If the row was merged into a learned `{id}` template, the old link resolves to the template (the API answers 410 with the template id).
 
 ### Overview
 
@@ -104,7 +117,8 @@ MongoDB-sourced aggregates for the operation:
 - **Current-vs-ever posture card** — *"is this endpoint STILL bad?"* — the windowed current posture next to the monotonic lifetime KPIs, so a remediated endpoint reads as improved rather than stuck at its all-time worst.
 - **Latency distribution** — fixed buckets: `<5ms`, `5–25ms`, `25–100ms`, `100–500ms`, `500ms–2s`, `≥2s`.
 - **Status distribution** — a donut over status classes (2xx/3xx/4xx/5xx/1xx).
-- **Categorisation** — the observed metadata: threat flags, exposure flags, PII categories, endpoint categories, auth schemes (with an *Anonymously reachable* warning when `none` + `noauth_observed`), Envoy clusters, routes, content-types, and caller **Origins**.
+- **Categorisation** — the observed metadata: threat and exposure flags and PII categories, each split into **active** and **historical**, endpoint categories, auth schemes, observed **query-parameter names**, Envoy clusters, routes, content-types, and caller **Origins**.
+- **Ownership** — the effective team, owner, criticality, data classes and tags, the rules that produced them, an override editor (Admin/Owner) and data-class suggestions. See [Ownership & Teams](/api-discovery/ownership-and-teams).
 - **How to fix this endpoint** — a consolidated remediation action plan grouping the endpoint's flags by the single Envoy change that closes several at once, each linking into its [risk-flag guide](/api-discovery/risk-flags-reference).
 - **Consumers (hashed)** and **Sample events** — the retained `consumer_hash` values and `sample_event_ids` (drill into them via *Inspect sample requests*, which opens the Events tab in sample mode over a 7-day window).
 
@@ -114,11 +128,16 @@ The raw per-request log from ClickHouse (up to 500/page over a window, max 7 day
 
 ### Analytics
 
-Time-series rollups (1m / 1h / 1d buckets): stacked request volume by status class, latency percentiles (p50/p95/p99), error and client-error rate, throughput (response bytes), and unique-consumer / unique-source-IP counts, plus max risk over time.
+Time-series rollups (1m / 1h / 1d buckets, window up to 7 days): stacked request volume by status class, latency percentiles (p50/p95/p99), error and client-error rate, throughput (response bytes), and unique-consumer / unique-source-IP counts, plus max risk over time.
+
+- **Exact window edges.** A window is read as a 1-minute head, a 1-hour body and a 1-minute tail, so every counter is exact to the minute instead of being snapped to the hour. Minute buckets are kept 30 days: a `1m` series older than that is refused, and a minute edge older than that is read from the hourly rollup (the response reports `edge_precision: hour`).
+- **Percentiles** come from t-digest sketches in the rollups and are merged across status classes for the totals.
+- **Sampling.** With raw sampling on, event counts are weighted by `sample_weight`; distinct counts (consumers, source IPs) are lower bounds and are badged as such.
+- **GraphQL / gRPC.** Since collector ClickHouse migration 014 the rollups carry the operation, so a GraphQL operation's series is its own. Rollup rows written before 014 hold every operation of the endpoint; the page says when a series is aggregated across operations.
 
 ### Insights (geo & threat)
 
-Top source **countries**, **ASNs**, and **cities**; the **User-Agent** breakdown; and **threat-intel** hits — each optionally with a time-series stack. Raw UA / IP dimensions are an explicit toggle (they cost extra ClickHouse scans). Requires ClickHouse.
+Top source **countries**, **ASNs**, and **cities**; the **User-Agent** breakdown; and **threat-intel** hits — each optionally with a time-series stack. Raw UA / IP dimensions are an explicit toggle (they cost extra ClickHouse scans). A **Top enumerators** card lists the consumers that touched the most distinct object ids on this operation — see [Consumers & Enumeration](/api-discovery/consumers-and-enumeration#per-endpoint-enumerators). Requires ClickHouse.
 
 ### Admin actions
 
@@ -151,3 +170,4 @@ One endpoint can carry several (`/admin/export` matches both `admin_endpoint` an
 - [OpenAPI Export](/api-discovery/openapi-export)
 - [Suggest Policy](/api-discovery/suggest-policy)
 - [Path Normalization](/api-discovery/path-normalization)
+- [Ownership & Teams](/api-discovery/ownership-and-teams)

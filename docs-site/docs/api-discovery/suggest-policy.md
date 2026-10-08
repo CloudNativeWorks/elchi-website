@@ -1,7 +1,7 @@
 ---
 title: Suggest a Shield Policy
 description: Turn a discovered API inventory into a draft Shield SecurityPolicy — the bridge from API Discovery to API Security.
-sidebar_position: 9
+sidebar_position: 13
 tags: [api-discovery, shield]
 ---
 
@@ -39,6 +39,10 @@ the endpoints:
   `unauthenticated` or `auth_inconsistent` are called out.
 - **Data protection** — operations that returned PII get a
   [DLP](/shield/policies/dlp) suggestion (redact the observed categories).
+- **Object ownership** — for operations with an `{id}` segment, a JWT
+  [`claim_bindings`](/shield/engines/jwt) entry can be proposed that requires the
+  verified `sub` claim to equal that path segment — the edge hand-off for
+  [BOLA](/api-discovery/consumers-and-enumeration#the-bola-detector).
 - **Rate limiting / bot / WAF** — proposed against operations whose risk flags
   (rate anomalies, scanner traffic, injection-style probes) warrant them.
 

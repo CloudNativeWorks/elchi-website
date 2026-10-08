@@ -112,7 +112,7 @@ Content-Type: application/json
   "domains": ["example.com", "*.example.com"],
   "secret_name": "example-tls",
   "acme_account_id": "<account id>",
-  "versions": ["v1.36.0"],
+  "versions": ["v1.39.3"],
   "environment": "production",
   "dns_credential_id": "<credential id>"
 }

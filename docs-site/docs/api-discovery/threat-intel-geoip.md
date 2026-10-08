@@ -1,7 +1,7 @@
 ---
 title: Threat Intelligence & GeoIP
 description: The elchi-collector enrichment chain — GeoIP, User-Agent classification, and Mongo-backed threat-intel feeds that add geo, reputation, and bot context to API Discovery.
-sidebar_position: 11
+sidebar_position: 15
 tags: [api-discovery, collector]
 ---
 
@@ -25,6 +25,10 @@ An MMDB-based country / ASN / city resolver. The database is a MaxMind GeoLite2 
 | `geo.asn` | ASN DB | `13335` |
 | `geo.asn_org` | ASN DB | `Cloudflare, Inc.` |
 | `geo.asn_type` | ASN DB | `hosting` (when the ASN is a known cloud/datacenter provider; absent otherwise) |
+
+:::note[Hosting / VPN AS list for impossible travel]
+The `impossible_travel` escalation (one continent switch onto a hosting / VPN network) does **not** use the lenient `geo.asn_type` org-name match, which also matches corporate and privacy-relay networks. It uses a curated **AS-number** list built into the collector (major clouds, hosting providers and commercial VPNs), extended by `policy.hosting_asns` and reduced by `policy.trusted_egress_asns` — put your own corporate VPN / SASE / VDI / BFF egress there. A source IP inside `policy.trusted_proxy_cidrs` never counts as hosting. Without the ASN database the detector stays at the informational `geo_change`. See [Collector Configuration](/api-discovery/collector-configuration#detector-thresholds).
+:::
 
 :::info[The MMDB databases come only from MongoDB GridFS]
 There is no operator-placed file and no on-disk fallback. The backend uploads the city/asn databases to a GridFS bucket (`GEOIP_GRIDFS_BUCKET`, default `geoip`); every collector replica syncs them into `GEOIP_CACHE_DIR` and hot-reloads on every later upload. One backend upload fans out to the whole fleet. If the bucket holds no database, **GeoIP is simply off** — `geo.kind` is still tagged, but no country/ASN. A fresh deploy against an empty bucket starts fine and lights up GeoIP the moment a database is uploaded.

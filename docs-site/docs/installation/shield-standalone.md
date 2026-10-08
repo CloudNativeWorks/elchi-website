@@ -202,7 +202,7 @@ must be **writable by uid 65532**:
 docker run --rm \
   -v /etc/elchi/elchi-shield:/etc/elchi/elchi-shield \
   -v /run/elchi-shield:/run/elchi-shield \
-  jhonbrownn/elchi-shield:v0.4.13 \
+  jhonbrownn/elchi-shield:v0.5.0 \
     --config-dir /etc/elchi/elchi-shield/conf.d \
     --extproc-network unix \
     --extproc-addr /run/elchi-shield/extproc.sock \

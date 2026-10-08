@@ -1,97 +1,111 @@
 ---
 title: Discovery Dashboards
-description: The tabbed dashboards at /api-discovery — listeners, new APIs, auth coverage, bots, PII, zombies, risk, security score, transport, errors, drift, and consumers.
+description: The tabbed dashboards at /api-discovery — listeners, new APIs, auth coverage, bots, PII, zombies, risk, security score, transport, errors, drift, consumers, specs and teams.
 sidebar_position: 2
 tags: [api-discovery]
 ---
 
-The landing page at `/api-discovery` is a strip of tabbed dashboards. The first tab is the **Listeners** catalog; the rest are focused security lenses over the same inventory, each answering one operational question. Every dashboard is scoped to the currently-selected project and reads the live `api_inventory` (with time-series panels backed by the ClickHouse rollups).
+The landing page at `/api-discovery` is a strip of tabbed dashboards. The first tab is the **Listeners** catalog; the rest are focused security lenses over the same inventory, each answering one operational question. Every dashboard is scoped to the currently-selected project.
 
-:::info[Geo lives on the endpoint, not here]
-The dashboard strip has **twelve** tabs (Listeners plus eleven lenses). Country / ASN / city / threat-intel geo insights are presented on the **Insights** tab of an individual endpoint's detail page, and as geo cross-filters in the endpoints view — not as a top-level dashboard. See [Exploring Endpoints](/api-discovery/endpoints).
+:::info[Active findings and time windows]
+Inventory-backed dashboards (Risk, PII, Auth Coverage, New APIs) count **active** findings — those seen within the active window (`policy.risk_active_days`, default 7 days) — and show lifetime counts next to them where useful; see [active, historical and derived flags](/api-discovery/risk-flags-reference#active-historical-and-derived-flags). ClickHouse-backed dashboards (Bot / Scanner, Security Score, Transport, Errors, Consumers) take a time window of up to **7 days**; a longer window is rejected rather than silently clamped. All windows are half-open `[from, to)`.
 :::
+
+The strip has **fourteen** tabs. Country / ASN / city / threat-intel insights live on the **Insights** tab of an individual endpoint and as cross-filters in the endpoints view — see [Exploring Endpoints](/api-discovery/endpoints).
 
 ## Listeners
 
 **Answers:** *What Envoy listeners are serving API traffic, and how healthy is each?*
 
-The home tab. A paginated table of listeners, one row each, with the distinct-endpoint count (normalized paths collapsed to templates), the hostnames served, the union of risk flags seen under the listener, an aggregated HTTP **status distribution** bar (1xx–5xx), and last activity. Header KPIs summarize total listeners, endpoints, and how many carry risk. Click a listener to drill into its [endpoints](/api-discovery/endpoints).
+A paginated table of listeners: distinct normalized paths and operations, the hostnames served, lifetime and **active** risk flags, an aggregated HTTP **status distribution** bar, and last activity. Header KPIs summarize total endpoints, operations, and how many listeners carry at least one active, non-info flag. Click a listener to drill into its [endpoints](/api-discovery/endpoints).
 
-Two panels and a set of admin actions live on this tab:
+Panels and admin actions on this tab:
 
-- **Normalization Gaps panel** — path prefixes that are accumulating many distinct un-normalized child segments (a deployment-specific ID format the built-in detectors missed, bloating the catalog). Admins/Owners get a one-click *"Add normalize rule"* that appends a `path_normalize_patterns` rule to the collector config (applied within ~2 min). See [Path Normalization](/api-discovery/path-normalization).
-- **Reset risk scores** (Admin/Owner) — project-wide re-baseline of the monotonic `max_risk_score` / `max_posture_score`; the collector re-accumulates from the next event. Nothing is deleted.
-- **Cleanup stale** (Admin/Owner) — bulk-delete endpoints not seen for N days (7–3650, default 90; server-clamped). Endpoints still receiving traffic are recreated on the next request, so this only clears genuinely dead entries.
+- **Normalization Gaps panel** — path prefixes accumulating many distinct un-normalized child segments. Admins/Owners get a one-click *"Add normalize rule"* and a link to **Learned path shapes**. See [Path Normalization](/api-discovery/path-normalization).
+- **Rebaseline** (Admin/Owner) — project-wide reset of the lifetime scores that also makes every earlier finding historical. See [Risk Scoring](/api-discovery/risk-scoring#resetting-scores-admin).
+- **Cleanup stale** (Admin/Owner) — delete endpoints not seen for N days (7–3650, default 90). Endpoints still receiving traffic are recreated on the next request.
 
 ## New APIs
 
 **Answers:** *What appeared on my surface recently?*
 
-Endpoints whose `first_seen` falls inside a selectable window. This is the shadow-API early-warning: a newly-appeared unauthenticated or PII-bearing endpoint is the thing to look at before an attacker does. Use it as a review queue every time you deploy.
+Endpoints whose `first_seen` falls inside a selectable window (default 24 hours, up to 90 days), with their active flags and scores. The shadow-API early-warning: review it after every deploy.
 
 ## Auth Coverage
 
 **Answers:** *What is reachable without credentials, and where is auth inconsistent?*
 
-Splits the surface by auth posture: endpoints only ever seen **unauthenticated**, endpoints seen with **inconsistent** auth (some calls with a credential, some without — the `auth_inconsistent` signal, often a bypass path or a mid-rollout misconfig), and the detected **auth schemes** (`jwt` / `mtls` / `apikey` / `none`). The prioritized list is *public endpoints that should not be*. See [PII & Auth Detection](/api-discovery/pii-and-auth).
+Two modes over **active** auth markers — **Unauthenticated** (accepted anonymous traffic and no authenticated traffic) and **Inconsistent** (both) — write methods by default, with a toggle for reads. See [PII, Auth & Consumers](/api-discovery/pii-and-auth#the-auth-coverage-dashboard).
 
 ## Bot / Scanner
 
 **Answers:** *Who is automating against me — and is it a good bot or a scanner?*
 
-Automated and scanner traffic, derived from the collector's User-Agent classifier (`scanner` / `bot` / `monitor` / `sdk` / `cli` / `browser`) and the scanner/probe risk flags (`scanner_user_agent`, `vuln_probe_path`, `path_scan_suspect`). Use it to separate legitimate crawlers and SDKs from active reconnaissance, and to find the source IPs worth an RBAC deny or a rate limit.
+Automated and scanner traffic from the collector's User-Agent classifier (`scanner` / `bot` / `monitor` / `sdk` / `cli` / `browser`) and the probe flags (`scanner_user_agent`, `vuln_probe_path`, `path_scan_suspect`). Cells are per path **and operation** (GraphQL operations and gRPC methods apart) and link to the inventory row when it is unambiguous.
 
 ## PII
 
 **Answers:** *Which endpoints carry personal data, and of what kind?*
 
-The PII inventory: endpoints where a PII pattern was observed in the path, broken down by category (`email`, `phone`, `ssn`, `credit_card`, `iban`, plus the normalize-driven `secret_in_path` / `jwt_in_path`). The raw values are never stored — only that PII of a given category flowed through this endpoint. It is the GDPR/PCI review list. See [PII & Auth Detection](/api-discovery/pii-and-auth).
+Category cards (`email`, `phone`, `ssn`, `credit_card`, `iban`, `tr_national_id`, `secret_in_path`, `jwt_in_path`) with active, lifetime and historical endpoint counts, and the list of endpoints with active PII. See [PII, Auth & Consumers](/api-discovery/pii-and-auth#pii-detection).
 
 ## Zombies
 
 **Answers:** *What can I safely retire?*
 
-Two flavours of dead weight: **old** endpoints (not seen in a long time) and **formerly-popular** endpoints (once high-traffic, now quiet). Both are decommission candidates — a stale endpoint that no client uses is pure attack surface. Feed this into the **Cleanup stale** action on the Listeners tab.
+Endpoints silent for a while (default 30 days, up to 365) that once carried real traffic (default ≥ 1000 calls). Because a zombie is silent, its active score is ~0, so this tab ranks by **lifetime** scores. Feed it into **Cleanup stale**.
 
 ## Risk
 
 **Answers:** *What are my worst risks, by class and severity?*
 
-The project-wide risk summary: risk-flag occurrences aggregated **by class** (auth / attack_pattern / transport / data_leak / discovery / behavior / consistency) and **by severity** (Critical / High / Medium / Low), with endpoint counts per flag. It is the top-level triage view; each flag links into the [Risk Flags Reference](/api-discovery/risk-flags-reference) and its remediation. The same data drives the **API Risk Guide** (`/api-discovery/risks`), which adds a consolidated remediation action plan and an OWASP API Top-10 coverage panel.
+The project-wide summary of **active** findings: endpoint counts per flag, **by class**, and **by severity** (Critical / High / Medium / Low / Info). *Flagged endpoints* counts endpoints with at least one active, non-info flag. Derived flags are included. The same data drives the **API Risk Guide** (`/api-discovery/risks`), which adds a remediation action plan and an OWASP API Top-10 coverage panel.
 
 ## Security Score
 
-**Answers:** *What's my one-letter grade, and what moved it?*
+**Answers:** *What's my grade, and what moved it?*
 
-An overall **A–F** posture grade for an API surface, computed from the mix of threat and exposure signals, with the contributing factors called out. It is the number to put in front of a stakeholder and to track release-over-release.
+A **0–100** score and an A–F grade for a time window (default 1 hour, max 7 days), from five weighted pillars — auth coverage, transport security, risk exposure, attack surface and threat activity. A pillar with too little traffic is marked *insufficient data*, shown with its provisional score, and left out of the overall score. See [Risk Scoring](/api-discovery/risk-scoring#security-score) for the formulas and gates.
 
 ## Transport
 
 **Answers:** *How is my TLS posture?*
 
-Connection-layer hygiene across the surface: TLS version distribution, plain-text (`plain_text_transport`) endpoints, weak/legacy TLS (`weak_tls_version`, `legacy_protocol`), and missing security headers (`missing_hsts` and friends). These are the [Exposure-axis](/api-discovery/risk-scoring) flags — standing config you fix once at the listener, not per-request attacks.
+TLS version mix (TLS 1.3 / 1.2 / 1.0–1.1 / plaintext / TLS via a trusted proxy), HTTP protocol mix (HTTP/1.x, HTTP/2, HTTP/3, TCP), weak-TLS and plaintext percentages, HTTP/2 adoption, and a per-operation list of weak-transport issues. Effective TLS includes **TLS terminated by a trusted proxy** (`policy.trusted_tls_proxy_cidrs` + `x-forwarded-proto: https`); plaintext requests that *claim* https from an untrusted peer are counted separately. Legacy protocol is reported for information only.
 
 ## Errors
 
 **Answers:** *Where are my 4xx / 5xx hotspots?*
 
-Endpoints and time windows with elevated client-error (4xx) and server-error (5xx) rates, with time series. A 5xx cluster is usually an outage or a bad deploy; a 4xx cluster from one source cross-references with `path_scan_suspect` / `brute_force_suspect`. Cross-check against the endpoint's Events tab to classify the failures.
+One hotspot per **operation** (GraphQL operations and gRPC methods apart) with 4xx, 5xx, error rate, **shield blocks** and block rate, plus a dense UTC time series. Shield blocks are their own class: they are subtracted from the status class they were served in, so the error rate is the **upstream's** — `(4xx + 5xx) / (total − blocked)`. Counters are exact to the minute: the window's edges are read from the 1-minute rollup and the body from the hourly one, never snapped to the hour; an edge older than the 30-day minute retention is read hourly and marked as such.
 
 ## Drift
 
 **Answers:** *What changed against my baseline?*
 
-Field-level diffs of the API surface against baseline snapshots: what **appeared**, what **vanished**, and what **changed** since the last captured baseline. Elchi captures a baseline on a daily cadence (admins can capture one on demand). Drift is how you catch an endpoint silently gaining an unauthenticated code path, a new PII category, or a route that shouldn't exist.
+The change feed against daily (or on-demand) snapshots — new and removed operations, auth downgrades, new PII categories and flags, cleared flags, risk increases, status regressions, zombie resurrections and templated merges. See [Drift & Snapshots](/api-discovery/drift).
 
 ## Consumers
 
 **Answers:** *Who are my top API consumers, and how do they behave?*
 
-Per-identity behaviour, keyed on the hashed `consumer_hash` (JWT `sub` or mTLS peer subject), plus an anonymous bucket for unfingerprinted traffic. For each consumer: the endpoints and methods they touch, their status mix, geo, and risk. It is how you spot the one credential enumerating IDs (`bola_suspect`), abusing a payment flow (`payment_abuse_suspect`), or showing up from two continents at once (`impossible_travel`). See [PII & Auth Detection](/api-discovery/pii-and-auth) for how consumers are fingerprinted.
+Per-consumer behaviour keyed on the hashed consumer identity, with machine-vs-human classification, new-consumer and trend signals, and the enumeration / scraping / auth-failure indicators. See [Consumers & Enumeration](/api-discovery/consumers-and-enumeration).
 
-## Geo & threat insights (on endpoint detail)
+## Specs
 
-Geolocation and threat intelligence are presented **per endpoint**, on the **Insights** tab of the detail page: top source **countries**, **ASNs**, and **cities**, a **User-Agent** breakdown, and **threat-intel** hits, each with an optional time-series stack. The endpoints list also exposes **country / ASN / source-IP / user-agent cross-filters** so you can pivot the whole catalog to "endpoints served from this country/network". Both require ClickHouse to be configured. See [Exploring Endpoints](/api-discovery/endpoints).
+**Answers:** *How does traffic line up with our OpenAPI contracts?*
+
+Imported specs with versions and scopes, coverage (documented / overlap / undocumented / unscoped), unused operations and parameter / status drift. See [OpenAPI Specs & Coverage](/api-discovery/specs-and-coverage).
+
+## Teams
+
+**Answers:** *Which team owns which risk?*
+
+Per-team endpoint counts, active risk distribution, unauthenticated writes, PII and ownership gaps. See [Ownership & Teams](/api-discovery/ownership-and-teams).
+
+## Raw-event sampling
+
+With `policy.raw_sample_rate` ≥ 2, benign raw events are stored 1-in-N and carry a `sample_weight`. ClickHouse-backed event **counts** are weighted, so they estimate the real request count; **distinct** counts (consumers, IPs, object ids) become lower bounds and are badged in the UI. Errors, blocks and every risky event are never sampled.
 
 ## Related
 

@@ -1,7 +1,7 @@
 ---
 title: Collector Reference
 description: Complete reference for the elchi-collector — bootstrap environment variables, ports, Prometheus metrics, ClickHouse and MongoDB schema, and Envoy ALS wiring.
-sidebar_position: 12
+sidebar_position: 16
 tags: [api-discovery, collector]
 ---
 
@@ -64,7 +64,7 @@ Everything on this page is **bootstrap** — read from the environment once at p
 | `MONGO_BASELINE_COLLECTION` | `api_collector_baselines` | Per-instance self-learning detector baselines, restored on startup. |
 | `MONGO_NORMALIZE_GAP_COLLECTION` | `api_collector_normalize_gaps` | Suspected path-normalization gaps (TTL-indexed). |
 | `MONGO_CONNECT_TIMEOUT` | `5s` | |
-| `MONGO_MAX_POOL_SIZE` | `200` | Connection pool cap (`.env.example` shows `100` only as a dev override). |
+| `MONGO_MAX_POOL_SIZE` | `100` | Connection pool cap. |
 | `MONGO_MIN_POOL_SIZE` | `10` | |
 | `MONGO_WRITE_CONCERN_W` | `1` | `1` or `majority`. |
 | `MONGO_WRITE_CONCERN_JOURNAL` | `false` | |
@@ -136,6 +136,7 @@ elchi_collector_events_dropped_total{reason}         # every drop site labels it
 elchi_collector_active_streams                       # live ALS streams
 elchi_collector_event_processing_duration_seconds    # ingest → sink-submit latency
 elchi_collector_normalize_duration_seconds
+elchi_collector_query_params_truncated_total         # queries with > 256 &/; pieces
 ```
 
 `events_dropped_total` reasons: `ingest_filter`, `exclude_method`/`exclude_host`/`exclude_listener`/`exclude_project`/`exclude_source_ip`/`exclude_user_agent`, `malformed`, `panic`, `backpressure`, `inventory_cardinality`, `brute_force_no_key`.
@@ -168,6 +169,27 @@ elchi_collector_geoip_lookups_total{result}             # hit|miss|no_db|interna
 elchi_collector_threatintel_feed_entries{feed}
 elchi_collector_consumer_identity_total{identified}
 elchi_collector_raw_events_sampled_out_total
+elchi_collector_raw_events_shed_total                   # benign rows shed under raw-sink back-pressure
+elchi_collector_inventory_skipped_total{reason}
+elchi_collector_unknown_risk_flags_total{flag}          # should stay 0
+elchi_collector_brute_force_fired_total{key_type}       # consumer | ip
+elchi_collector_detector_suppressed_total{detector}     # withheld by a false-positive guard
+elchi_collector_consumers_upserted_total
+elchi_collector_consumers_dropped_total
+elchi_collector_consumers_backfill_rows_total{result}
+elchi_collector_graphql_events_total{source}
+elchi_collector_graphql_ops_overflow_total
+```
+
+**Learned templating** (merge job runs on the lease holder only)
+
+```promql
+elchi_collector_shapes_learned_total
+elchi_collector_path_merge_docs_total
+elchi_collector_path_merge_errors_total{kind}           # fold|restore|corrupt|query|lease|shapes|audit
+elchi_collector_path_merge_lease_holder                 # 0/1
+elchi_collector_path_shapes_loaded
+elchi_collector_path_shape_observations_dropped_total{reason}
 ```
 
 **Config / lifecycle**
@@ -192,17 +214,22 @@ Key columns the read API relies on:
 | Column | Type | Notes |
 | --- | --- | --- |
 | `event_id` | `String` | Hex `bson.ObjectID`; cross-DB join key to `api_inventory.sample_event_ids[]`. |
-| `ts` | `DateTime64(3)` | Extraction wall-clock; primary time axis. |
+| `ts` | `DateTime64(3)` | Event timestamp; primary time axis. |
 | `project_id`, `listener_name`, `listener_ip` | `LowCardinality(String)` | Parsed from Envoy `node.id` = `listener::project::ip`. |
-| `protocol`, `method`, `host` | `LowCardinality(String)` | `protocol` ∈ `http/1.0`…`http/3`, `tcp`. |
+| `protocol`, `method`, `host` | `LowCardinality(String)` | `protocol` ∈ `http/1.0`…`http/3`, `tcp`, `graphql`. |
 | `normalized_path` | `String` | Templated path; query string always stripped. |
-| `grpc_service`, `grpc_method` | `LowCardinality(String)` | For gRPC paths. |
+| `grpc_service`, `grpc_method` | `LowCardinality(String)` | For gRPC paths; a GraphQL operation is stored in `grpc_method`. |
 | `status_code` | `UInt16` | `grpc_status` (`Nullable(Int32)`), `grpc_message` (only when status ≠ 0). |
 | `duration_ms` | `Float64` | Request → last downstream tx byte. |
 | `request_bytes`, `response_bytes` | `UInt64` | |
 | `source_ip_hash`, `user_agent_hash`, `consumer_hash` | `String` | SHA-256(salt + value), 16 hex chars. |
 | `source_ip`, `user_agent` | `String` | Raw values, only when the `store_raw_*` policy is on. |
-| `auth_observed` | `UInt8` | 1 when an auth-bearing header was present (value never stored). |
+| `auth_observed` | `UInt8` | 1 when an auth-bearing header was present or the auth gate saw other evidence (mTLS, session-cookie name, webhook signature, signed URL); values never stored. |
+| `query_params` | `Array(LowCardinality(String))` | Accepted query-parameter **names** only, ≤ 32 (migration 009, scrubbed by 011). |
+| `object_id_hash` | `String` | Salted hash of the value under the last `{placeholder}` segment — enumeration evidence; value never stored (migration 010). |
+| `shield_blocked` | `UInt8` | 1 = answered by the Shield, not the upstream (migration 008). |
+| `tls_via_proxy`, `x_forwarded_proto` | `UInt8`, `LowCardinality(String)` | TLS terminated by a trusted proxy; XFP as a closed class `''`/`http`/`https`/`mixed`/`other` (migration 012). |
+| `sample_weight` | `UInt16` | `raw_sample_rate` for a kept benign row, else 1; `sum(sample_weight)` estimates the request count (migration 013). |
 | `risk_flags` | `Array(LowCardinality(String))` | Detection output. |
 | `pii_categories`, `endpoint_categories` | `Array(LowCardinality(String))` | |
 | `risk_score`, `posture_score` | `UInt8` | Two-axis severity (threat vs exposure). |
@@ -216,15 +243,38 @@ Three `AggregatingMergeTree` tables, populated by materialized views off the raw
 
 | Table | Bucket | Dimensions | Retention |
 | --- | --- | --- | --- |
-| `api_events_1m` | 1 minute | project, listener, method, path, status class | 30 days |
-| `api_events_1h` | 1 hour | project, listener, method, path, status class | 180 days |
-| `api_events_1d` | 1 day | project, listener, method, status class (no path) | 730 days |
+| `api_events_1m` | 1 minute | project, listener, method, path, status class, protocol, gRPC service / method | 30 days |
+| `api_events_1h` | 1 hour | project, listener, method, path, status class, protocol, gRPC service / method | 180 days |
+| `api_events_1d` | 1 day | project, listener, method, status class, protocol (no path) | 730 days |
 
-Aggregate columns: `events_count` (`countMerge`), `duration_quantiles` (`quantilesTDigestMerge(0.5,0.95,0.99)`), `duration_avg` (`avgMerge`), `response_bytes_sum`/`_max`, `max_risk_score` (`maxMerge`), `unique_consumers`/`unique_source_ips` (`uniqHLL12Merge`), `error_count` (5xx), `client_error_count` (4xx).
+The operation dimensions were added by migration 014, so GraphQL operations and gRPC methods are separate rollup rows from then on; rows written before 014 carry no operation.
 
-:::warning[Sampling caveat on the rollups]
-The rollups are materialized from the raw table, so when `policy.raw_sample_rate ≥ 2` their `events_count` / `unique_consumers` under-count benign traffic. Derive exact request volume from the **MongoDB inventory** counters (fed before sampling), not from rollup or `COUNT(*)` queries.
+Aggregate columns: `events_count` (`countMerge`), `duration_quantiles` (`quantilesTDigestMerge(0.5,0.95,0.99)` — t-digest latency percentiles), `duration_avg` (`avgMerge`), `response_bytes_sum`/`_max`, `max_risk_score` (`maxMerge`), `unique_consumers`/`unique_source_ips` (`uniqHLL12Merge`), `error_count` (5xx), `client_error_count` (4xx), `blocked_count` (shield blocks, migration 008), `unsampled_count` (migration 013).
+
+:::warning[Sampling and the rollups]
+With `policy.raw_sample_rate ≥ 2` the rollups see only the kept benign rows. The estimated request count is `countMerge(events_count) + sumMerge(unsampled_count)` (raw: `sum(sample_weight)`); distinct counts are lower bounds. The inventory's `seen_count` is fed before sampling and stays exact.
 :::
+
+### Schema migrations
+
+Migrations are append-only and run on every start under a per-datastore lease (one replica applies, the others wait). The recent ones:
+
+| ID | Store | Purpose |
+| --- | --- | --- |
+| 008 | ClickHouse | `shield_blocked` column + rollup `blocked_count` |
+| 009 | ClickHouse | `query_params` (parameter names only) |
+| 010 | ClickHouse | `object_id_hash` (enumeration evidence) |
+| 011 | ClickHouse | One-time scrub of `query_params` names the name filter rejects (raw retention window) |
+| 012 | ClickHouse | `tls_via_proxy` + `x_forwarded_proto` |
+| 013 | ClickHouse | `sample_weight` + rollup `unsampled_count` |
+| 014 | ClickHouse | Rollup operation dimensions (`protocol`, `grpc_service`, `grpc_method`) |
+| 005 | MongoDB | One-time scrub of inventory query-parameter names the name filter rejects |
+| 006 | MongoDB | `api_path_shapes` / `api_path_shape_merges` indexes (candidate TTL, 90-day audit TTL) |
+| 007 | MongoDB | `api_consumers` indexes |
+| 008 | MongoDB | Trim inventory `origins[]` arrays longer than 50 |
+| 009 | MongoDB | FP-first detector defaults for existing installs (only values still equal to the old defaults) |
+
+A one-time background job (marker `1001`) backfills `api_consumers` from the last 7 days of raw events.
 
 ### MongoDB — `api_inventory`
 
@@ -241,19 +291,42 @@ Key document fields:
 | `confirmed` | Sticky boolean — `true` once a real route-matched hit is seen; scanner/probe/static-asset hits force `false`. Drives the confirmed-vs-attack-surface split. |
 | `seen_count` | `$inc` per event; the exact request count (unaffected by raw sampling). |
 | `first_seen` / `last_seen` | Timestamps. |
-| `risk_flags` | `$addToSet` union of every flag ever seen on the endpoint. |
-| `max_risk_score` / `max_posture_score` | `$max` — worst-ever threat / posture severity. |
+| `risk_flags` | `$addToSet` union of every stored flag ever seen (derived flags are never stored), with `flag_last_seen.<flag>` per flag — the basis of active vs historical. |
+| `max_risk_score` / `max_posture_score` | `$max` — worst-ever threat / posture score, without derived flags. |
 | `endpoint_categories` | `admin_endpoint`, `auth_endpoint`, `payment_endpoint`, `data_export`, … |
-| `pii_categories` | `email`, `phone`, `ssn`, `credit_card`, `iban`, `secret_in_path`, `jwt_in_path`. |
-| `auth_schemes` | `$addToSet` of `jwt` / `mtls` / `apikey` / `none`. |
-| `auth_observed` / `noauth_observed` | Drive the cross-batch `auth_inconsistent` flag. |
-| `consumers` | Consumer hash values (last ~5–10). |
+| `pii_categories` | `email`, `phone`, `ssn`, `credit_card`, `iban`, `tr_national_id`, `secret_in_path`, `jwt_in_path` (+ `pii_last_seen.<category>`). |
+| `auth_schemes` | `$addToSet` of `jwt` / `mtls` / `apikey` / `basic` / `cookie` / `none` (+ `auth_scheme_last_seen.<scheme>`). |
+| `auth_last_seen` / `noauth_last_seen` / `anon_rejected_last_seen` | Newest authenticated, accepted-anonymous and refused-anonymous request — the evidence of the derived `auth_inconsistent`. The sticky `auth_observed` / `noauth_observed` booleans are still written. |
+| `cors_reflected_origin_last_seen` / `cors_foreign_origin_last_seen` | Hashed reflected origins (8 newest) — the evidence of the derived `cors_origin_reflection`. |
+| `query_params` | Accepted query-parameter names (cap `policy.query_params_cap`, default 50) + `query_param_last_seen.<name>`. |
+| `tr_id_candidates` / `tr_id_valid` | Endpoint-level TCKN evidence counters. |
+| `shield_blocked_count` | Requests the Shield answered instead of the upstream (also per status in `shield_blocked_status`). |
+| `consumers` | First-seen consumer hashes, capped at `policy.consumers_cap` (default 10). |
 | `status_dist` | Per-status counters, e.g. `{"200": 1100, "404": 100}`. |
 | `latency_buckets` | `lt5`/`lt25`/`lt100`/`lt500`/`lt2000`/`ge2000` counters + `latency_max_ms`. |
 | `sample_event_ids` | Last 5 `event_id`s — join back to `api_events_raw`. |
 | `clusters` / `routes` / `content_types` / `origins` | Discovered sets. |
 
-Indexes the read API relies on: `inventory_unique` (the eight key fields), `project_last_seen`, `project_risk_lastseen`, `project_endpoint_categories`, `project_host_path`, `project_riskscore_lastseen`, `inventory_created_at` (`{created_at: -1}`).
+Indexes the read API relies on: `inventory_unique` (the eight key fields), `project_last_seen`, `project_risk_lastseen`, `project_endpoint_categories`, `project_host_path`, `project_riskscore_lastseen`, `inventory_created_at` (`{created_at: -1}`). elchi-backend additionally materialises an `act` summary of the active rules on each document so active-score sorts and filters are answered from indexes; every collector write removes it in the same write, so it never goes stale.
+
+### MongoDB — other collections
+
+| Collection | Owner | Purpose |
+| --- | --- | --- |
+| `api_consumers` | collector | Persistent consumer records — first/last seen, events, schemes, listeners |
+| `api_consumer_tracking` | collector | Consumer-tracking cutover and per-project `history_since` |
+| `api_collector_config` | backend writes, collector reads | Singleton runtime config |
+| `api_collector_threatintel` | backend writes, collector reads | Threat-intel feeds |
+| `api_collector_baselines` | collector | Per-instance detector baselines |
+| `api_collector_normalize_gaps` | collector | Suspected normalization gaps (TTL 7 days) |
+| `api_path_shapes` | collector (backend sets `override`) | Learned templating candidates / learned positions |
+| `api_path_shape_merges` | collector | Audit of literal → `{id}` merges (TTL 90 days) |
+| `api_collector_leases` | collector | Leader leases (migrations, path-shape merge, consumers backfill) |
+| `api_specs`, `api_spec_counters` | backend | Imported OpenAPI specs and version counters |
+| `api_inventory_snapshots` | backend | Drift baselines (TTL 30 days) |
+| `api_ownership_rules`, `api_ownership_overrides` | backend | Ownership |
+
+Deleting a project removes its inventory, consumers, path shapes, specs, snapshots and ownership documents; ClickHouse rows age out by TTL.
 
 ## Envoy ALS wiring
 
@@ -265,7 +338,7 @@ node:
   cluster: envoy
 ```
 
-The header allowlist below maps directly to the fields the collector extracts. The `authorization` header is logged for **presence only** — its value is dropped by policy.
+The header lists below are the ones elchi-backend seeds into every project's `elchi-als` extension (headers added later are back-filled into existing extensions once); they map directly to the fields the collector extracts. A header missing from the list is invisible to the collector, so the flag that needs it cannot fire. The seeded request list also carries the common webhook signature header names (presence only — values are never stored). The `authorization` header is logged for **presence only**.
 
 ```yaml
 access_log:
@@ -285,11 +358,27 @@ access_log:
         - user-agent
         - x-forwarded-for               # source-IP fallback
         - x-request-id                  # correlation
+        - accept-language
+        - x-api-key                     # presence + apikey consumer fingerprint
+        - origin                        # caller discovery + CORS reflection
+        - x-forwarded-proto             # only believed from policy.trusted_tls_proxy_cidrs
+        - x-apollo-operation-name       # GraphQL operation (metadata only)
+        - x-apollo-operation-id
+        # - cookie                      # only while detection.cookie_inspection is on
       additional_response_headers_to_log:
         - content-type
         - grpc-status
-        - location                      # query string stripped before persistence
         - strict-transport-security     # presence drives the missing_hsts flag
+        - location                      # query string stripped before persistence
+        - x-content-type-options
+        - x-frame-options
+        - content-security-policy
+        - access-control-allow-origin
+        - access-control-allow-credentials
+        - server
+        - x-powered-by
+        - x-elchi-shield                # shield (WAF) block classification
+        # - set-cookie                  # only while detection.cookie_inspection is on
       additional_response_trailers_to_log:
         - grpc-status
         - grpc-message                  # only stored when grpc-status != OK

@@ -25,6 +25,7 @@ Configure under `policy.engines.jwks`.
 | `audience` | string | no | — | Expected `aud`. |
 | `algorithms` | string[] | **yes** | — | **Asymmetric only**: `RS*`/`ES*`/`PS*`. `HS*` is rejected (a JWKS holds asymmetric keys; allowing HS invites RS256→HS256 confusion). `EdDSA` passes config validation but is **not currently loadable** — the JWKS parser builds only RSA and EC keys, so OKP/Ed25519 keys are silently skipped; don't rely on it yet. |
 | `required_claims` | string[] | no | — | Claims that must be present. |
+| `claim_bindings` | list | no | — | Object-ownership (BOLA) guard: each entry `{claim, path_segment}` requires the verified `claim` to equal the `path_segment`-th (0-based, 0–31) non-empty segment of the normalized request path. At most 8 entries. |
 | `header_name` | string | no | `Authorization` | Header carrying the token. |
 | `leeway` | duration | no | `0` | `≥ 0`, `≤ 5m`. |
 | `refresh_interval` | duration | no | `10m` | Background URL refresh cadence. `≥ 0`. |
@@ -86,7 +87,8 @@ The block flow is identical to the `jwt` engine, with `jwks.*` reasons:
 1. Read the token header (default `Authorization`). Missing or blank ⇒ block **`jwks.missing`**.
 2. Strip the `Bearer ` prefix, parse and verify. Any failure (bad signature, expired, wrong `iss`/`aud`, disallowed `alg`) ⇒ block **`jwks.invalid`**.
 3. Enforce `required_claims` (present and non-empty) ⇒ otherwise block **`jwks.missing_claim`**.
-4. Otherwise allow.
+4. Enforce `claim_bindings`, if any: the claim must equal the bound path segment ⇒ otherwise block (rule **`jwks.claim_binding`**).
+5. Otherwise allow.
 
 Key resolution looks up the token's `kid` in an in-memory map. **An unknown `kid` blocks — it never triggers a hot-path network fetch.** If the token omits `kid` and exactly one key is configured, that key is used. A token with no `exp` is always rejected.
 

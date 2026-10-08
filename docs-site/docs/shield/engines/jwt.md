@@ -28,6 +28,7 @@ Configure under `policy.engines.jwt`.
 | `hmac_secret` | string | one-of | — | Symmetric key (for `HS*`). |
 | `public_key_file` | string | one-of | — | PEM file (for `RS*`/`ES*`/`PS*`/`EdDSA`). |
 | `required_claims` | string[] | no | — | Claims that must be present. |
+| `claim_bindings` | list | no | — | Object-ownership (BOLA) guard: each entry `{claim, path_segment}` requires the verified `claim` to equal the `path_segment`-th (0-based, 0–31) non-empty segment of the normalized request path. At most 8 entries. |
 | `header_name` | string | no | `Authorization` | Header carrying the token. |
 | `leeway` | duration | no | `0` (strict) | Clock-skew tolerance for `exp`/`nbf`/`iat`. `≥ 0`, `≤ 5m`. |
 
@@ -74,7 +75,8 @@ For each request, in order:
 2. Strip a case-insensitive `Bearer ` prefix.
 3. Parse and verify the token. Any failure — bad signature, expired, wrong `iss`/`aud`, disallowed `alg` ⇒ block **`jwt.invalid`**.
 4. Enforce `required_claims`: each must be present **and** non-empty ⇒ otherwise block **`jwt.missing_claim`**.
-5. Otherwise allow.
+5. Enforce `claim_bindings`, if any: the claim must equal the bound path segment ⇒ otherwise block (rule **`jwt.claim_binding`**).
+6. Otherwise allow.
 
 **A token with no `exp` is always rejected** — expiry is mandatory, not optional. Block reasons are fixed strings with stable rule IDs; the token, claims, and library error text never appear in logs or audit events.
 

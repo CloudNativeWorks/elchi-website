@@ -60,7 +60,7 @@ with the scenario ID, the finalized components, the project, the chosen version,
   "scenario_id": "edge_gateway_1042",
   "components": [ /* named, value-filled component instances */ ],
   "project": "team-a",
-  "version": "1.35.0",
+  "version": "1.39.3",
   "managed": true
 }
 ```

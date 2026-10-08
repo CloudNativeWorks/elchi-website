@@ -136,7 +136,8 @@ route; unmatched probe/scanner traffic is the *attack surface*. See
 [Endpoints](/api-discovery/endpoints).
 
 **Threat vs Exposure** — the two-axis risk model: `max_risk_score` (active attack/abuse)
-vs `max_posture_score` (standing config hygiene). See [Risk scoring](/api-discovery/risk-scoring).
+vs `max_posture_score` (standing config hygiene), each also reported as an **active** score over
+the flags seen within the active window. See [Risk scoring](/api-discovery/risk-scoring).
 
 **Risk flag** — a signal raised on an endpoint (e.g. `bola_suspect`, `weak_tls_version`),
 mapped to OWASP API Top-10. See the [Risk flags reference](/api-discovery/risk-flags-reference).
@@ -144,8 +145,8 @@ mapped to OWASP API Top-10. See the [Risk flags reference](/api-discovery/risk-f
 **Path normalization** — collapsing dynamic path segments (`/users/123` → `/users/{id}`)
 so operations group correctly. See [Path normalization](/api-discovery/path-normalization).
 
-**PII** — Personally Identifiable Information (email, phone, SSN, card, IBAN) that
-Discovery detects and Shield can redact.
+**PII** — Personally Identifiable Information (email, phone, SSN, card, IBAN, Turkish
+national id) that Discovery detects and Shield can redact.
 
 ## Certificates & traffic
 
