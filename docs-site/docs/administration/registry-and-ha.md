@@ -4,7 +4,8 @@ description: Live topology visibility for controllers, control-planes, and clien
 sidebar_position: 1
 ---
 
-![The service registry](/img/docs/registry.png)
+![The service registry](/img/docs/registry-light.webp#gh-light-mode-only)
+![The service registry](/img/docs/registry-dark.webp#gh-dark-mode-only)
 
 The registry is the discovery hub that tracks controllers, control-planes, and clients. The **Registry** page gives you live visibility into your topology:
 

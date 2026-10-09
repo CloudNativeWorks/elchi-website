@@ -5,7 +5,8 @@ sidebar_position: 4
 tags: [administration, ai]
 ---
 
-![The AI-powered analyzer](/img/docs/ai.png)
+![The AI-powered analyzer](/img/docs/ai-analyzer-light.webp#gh-light-mode-only)
+![The AI-powered analyzer](/img/docs/ai-analyzer-dark.webp#gh-dark-mode-only)
 
 Elchi's AI features let you point any model you like at your own Envoy config and
 logs to explain, review, and troubleshoot them. Elchi never bundles or brokers an

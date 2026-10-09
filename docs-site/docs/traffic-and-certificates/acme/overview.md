@@ -5,7 +5,8 @@ sidebar_position: 1
 tags: [acme, tls, certificates]
 ---
 
-![ACME certificate management](/img/docs/acme1.png)
+![Requesting an ACME certificate over DNS-01](/img/docs/acme-light.webp#gh-light-mode-only)
+![Requesting an ACME certificate over DNS-01](/img/docs/acme-dark.webp#gh-dark-mode-only)
 
 Elchi issues and renews TLS certificates automatically using the ACME protocol with **DNS-01 challenges**. You register an ACME account with a Certificate Authority (CA), store your DNS provider's API token once as a **DNS credential**, and Elchi handles the rest: creating the ACME order, publishing the `_acme-challenge` TXT records, waiting for propagation, completing validation, downloading the certificate, and storing it as an Envoy secret your listeners can use. A background scheduler renews certificates before they expire.
 

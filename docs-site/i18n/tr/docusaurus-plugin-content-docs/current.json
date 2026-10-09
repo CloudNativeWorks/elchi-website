@@ -179,14 +179,6 @@
     "message": "Access control, high availability, threat intelligence, AI analysis, and licensing.",
     "description": "The generated-index page description for category 'Administration' in sidebar 'docs'"
   },
-  "sidebar.docs.category.Reference": {
-    "message": "Reference",
-    "description": "The label for category 'Reference' in sidebar 'docs'"
-  },
-  "sidebar.docs.category.Reference.link.generated-index.description": {
-    "message": "CLI and API references.",
-    "description": "The generated-index page description for category 'Reference' in sidebar 'docs'"
-  },
   "sidebar.docs.category.Troubleshooting": {
     "message": "Troubleshooting",
     "description": "The label for category 'Troubleshooting' in sidebar 'docs'"
@@ -202,17 +194,5 @@
   "sidebar.docs.category.Tutorials.link.generated-index.description": {
     "message": "End-to-end, task-oriented walkthroughs.",
     "description": "The generated-index page description for category 'Tutorials' in sidebar 'docs'"
-  },
-  "sidebar.docs.category.Contributing": {
-    "message": "Contributing",
-    "description": "The label for category 'Contributing' in sidebar 'docs'"
-  },
-  "sidebar.docs.category.Contributing.link.generated-index.title": {
-    "message": "Contributing",
-    "description": "The generated-index page title for category 'Contributing' in sidebar 'docs'"
-  },
-  "sidebar.docs.category.Contributing.link.generated-index.description": {
-    "message": "How to contribute to the Elchi documentation — including translating it into another language.",
-    "description": "The generated-index page description for category 'Contributing' in sidebar 'docs'"
   }
 }

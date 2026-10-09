@@ -6,6 +6,9 @@ sidebar_position: 10
 
 Shield is built to be operated: every decision, failure, and resource bound is observable. This page catalogs the Prometheus metrics, the audit pipeline and its ClickHouse schema, and the loopback health endpoints. The [Overview dashboard](/shield/ui/overview-dashboard) in the UI is built on exactly these series.
 
+![Shield security events — each block with its engine, rule and request](/img/docs/shield-events-light.webp#gh-light-mode-only)
+![Shield security events — each block with its engine, rule and request](/img/docs/shield-events-dark.webp#gh-dark-mode-only)
+
 ## Prometheus metrics
 
 All metrics live under the **`elchi_shield_`** namespace and carry a constant **`instance`** label (`--instance-id`, default `<hostname>-shield`) so a fleet of sidecars never mixes series. Per-request series additionally carry a **`listener`** label — the first ext_proc `request_attribute` Envoy sends (by convention the node id, `listener::project::ip`), falling back to `--listener-id`. Histograms use exponential buckets sized for sub-millisecond work.

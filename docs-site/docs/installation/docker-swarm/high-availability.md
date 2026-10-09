@@ -31,7 +31,7 @@ Whether you let M1 auto-join or join workers manually, open the standard Swarm p
 | `7946` | TCP + UDP | Node-to-node control plane (gossip) |
 | `4789` | UDP | Overlay network data plane (VXLAN) |
 
-See the [Ports reference](/reference/ports) for the full platform port map.
+See [Architecture](/getting-started/architecture) for the full platform port map.
 
 ## How clustering is derived from the node count
 

@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { getLocale, locHref } from './i18n.js';
 import { Nav, Footer } from './shared.jsx';
 import { PRODUCTS } from './products-data.js';
 import { ArchDiagram, ArchOrbit, ArchTerminal } from './arch-diagram.jsx';
+import { ScreenGallery } from './screens.jsx';
 
 const homeStyles = {
   hero: {
@@ -115,28 +115,7 @@ const STR = {
     ssEyebrow: 'PLATFORM SCREENSHOTS',
     ssH2a: 'Designed for the operator,',
     ssH2b: 'built for the platform team.',
-    ssIntro: "Explore Elchi's powerful interface designed for enterprise-grade proxy management.",
-    ssCats: ['All','Management','Tools','Configuration','Monitoring','Visualization','Overview','AI','Security','Discovery','Documentation','Load Balancing'],
-    ssShots: [
-      { src: '/main.png',          cat: 'Overview',       title: 'Platform Overview',     desc: 'Complete overview of Elchi platform capabilities' },
-      { src: '/service.png',       cat: 'Management',     title: 'Service Management',    desc: 'Manage your services and their configurations' },
-      { src: '/configuration.png', cat: 'Configuration',  title: 'xDS Configuration',     desc: 'Comprehensive xDS protocol configuration interface' },
-      { src: '/metric.png',        cat: 'Monitoring',     title: 'Metrics Dashboard',     desc: 'Real-time metrics visualization with ECharts' },
-      { src: '/dependency.png',    cat: 'Visualization',  title: 'Dependency Graph',      desc: 'Interactive visual representation of dependencies' },
-      { src: '/ai.png',            cat: 'AI',             title: 'AI Assistant',          desc: 'Intelligent configuration help with OpenRouter' },
-      { src: '/filter.png',        cat: 'Tools',          title: 'Advanced Filters',      desc: 'Powerful filters to find and manage proxies' },
-      { src: '/scenario.png',      cat: 'Configuration',  title: 'Scenario Workflows',    desc: 'Wizard-based configuration management' },
-      { src: '/audit.png',         cat: 'Security',       title: 'Audit Trail',           desc: 'Complete audit logging for compliance' },
-      { src: '/logs.png',          cat: 'Monitoring',     title: 'Log Viewer',            desc: 'Advanced log viewing and analysis' },
-      { src: '/agent.png',         cat: 'Management',     title: 'Agent Management',      desc: 'Distribute configurations and manage agents' },
-      { src: '/registry.png',      cat: 'Discovery',      title: 'Service Registry',      desc: 'Service discovery and registry management' },
-      { src: '/routemap.png',      cat: 'Configuration',  title: 'Route Mapping',         desc: 'Visual route configuration and traffic flow' },
-      { src: '/flow.png',          cat: 'Documentation',  title: 'Architecture Flow',     desc: 'Visual diagram of how Elchi works end-to-end' },
-      { src: '/acme1.png',         cat: 'Security',       title: 'ACME Certificates',     desc: 'Automatic certificate management' },
-      { src: '/gslb1.png',         cat: 'Load Balancing', title: 'GSLB Overview',         desc: 'Global Server Load Balancing dashboard' },
-      { src: '/gslb2.png',         cat: 'Load Balancing', title: 'GSLB Health Checks',    desc: 'Configure health checks and failover policies' },
-      { src: '/jobs.png',          cat: 'Management',     title: 'Background Jobs',       desc: 'Monitor and manage background processing' },
-    ],
+    ssIntro: 'Captured from a live environment — real Envoy traffic, Shield blocks and discovered APIs. Drag the slider to see each screen in light and dark.',
 
     // Architecture (3-process)
     archEyebrow: '3-PROCESS ARCHITECTURE',
@@ -269,28 +248,7 @@ const STR = {
     ssEyebrow: 'PLATFORM EKRAN GÖRÜNTÜLERİ',
     ssH2a: 'Operatör için tasarlandı,',
     ssH2b: 'platform ekibi için inşa edildi.',
-    ssIntro: 'Kurumsal düzeyde proxy yönetimi için tasarlanan Elchi’nin güçlü arayüzünü keşfedin.',
-    ssCats: ['All','Management','Tools','Configuration','Monitoring','Visualization','Overview','AI','Security','Discovery','Documentation','Load Balancing'],
-    ssShots: [
-      { src: '/main.png',          cat: 'Overview',       title: 'Platform Genel Bakışı',  desc: 'Elchi platform yeteneklerinin eksiksiz görünümü' },
-      { src: '/service.png',       cat: 'Management',     title: 'Servis Yönetimi',        desc: 'Servislerinizi ve yapılandırmalarını yönetin' },
-      { src: '/configuration.png', cat: 'Configuration',  title: 'xDS Yapılandırması',     desc: 'Kapsamlı xDS protokol yapılandırma arayüzü' },
-      { src: '/metric.png',        cat: 'Monitoring',     title: 'Metrik Dashboard’u',     desc: 'ECharts ile gerçek zamanlı metrik görselleştirmesi' },
-      { src: '/dependency.png',    cat: 'Visualization',  title: 'Bağımlılık Grafiği',     desc: 'Bağımlılıkların etkileşimli görsel temsili' },
-      { src: '/ai.png',            cat: 'AI',             title: 'AI Asistanı',            desc: 'OpenRouter ile akıllı yapılandırma yardımı' },
-      { src: '/filter.png',        cat: 'Tools',          title: 'Gelişmiş Filtreler',     desc: 'Proxy’leri bulmak ve yönetmek için güçlü filtreler' },
-      { src: '/scenario.png',      cat: 'Configuration',  title: 'Senaryo Akışları',       desc: 'Sihirbaz tabanlı yapılandırma yönetimi' },
-      { src: '/audit.png',         cat: 'Security',       title: 'Denetim İzi',            desc: 'Uyumluluk için eksiksiz denetim kaydı' },
-      { src: '/logs.png',          cat: 'Monitoring',     title: 'Log Görüntüleyici',      desc: 'Gelişmiş log görüntüleme ve analiz' },
-      { src: '/agent.png',         cat: 'Management',     title: 'Agent Yönetimi',         desc: 'Yapılandırmaları dağıtın ve agent’ları yönetin' },
-      { src: '/registry.png',      cat: 'Discovery',      title: 'Servis Registry’si',     desc: 'Servis keşfi ve registry yönetimi' },
-      { src: '/routemap.png',      cat: 'Configuration',  title: 'Route Eşleme',           desc: 'Görsel route yapılandırması ve trafik akışı' },
-      { src: '/flow.png',          cat: 'Documentation',  title: 'Mimari Akışı',           desc: 'Elchi’nin uçtan uca nasıl çalıştığını gösteren görsel diyagram' },
-      { src: '/acme1.png',         cat: 'Security',       title: 'ACME Sertifikaları',     desc: 'Otomatik sertifika yönetimi' },
-      { src: '/gslb1.png',         cat: 'Load Balancing', title: 'GSLB Genel Bakışı',      desc: 'Global Server Load Balancing dashboard’u' },
-      { src: '/gslb2.png',         cat: 'Load Balancing', title: 'GSLB Sağlık Kontrolleri', desc: 'Sağlık kontrollerini ve failover politikalarını yapılandırın' },
-      { src: '/jobs.png',          cat: 'Management',     title: 'Arka Plan İşleri',       desc: 'Arka plan işlemeyi izleyin ve yönetin' },
-    ],
+    ssIntro: 'Canlı bir ortamdan alındı — gerçek Envoy trafiği, Shield engellemeleri ve keşfedilen API’ler. Her ekranı açık ve koyu temada görmek için kaydırıcıyı sürükleyin.',
 
     // Architecture (3-process)
     archEyebrow: '3 SÜREÇLİ MİMARİ',
@@ -592,45 +550,7 @@ function Comparison() {
 /* ====================== SCREENSHOTS GALLERY ====================== */
 function ScreenshotsGallery() {
   const t = STR[getLocale()];
-  const cats = t.ssCats;
-  const [active, setActive] = useState('All');
-  const shots = t.ssShots;
-  const filtered = active === 'All' ? shots : shots.filter(s => s.cat === active);
-
-  return (
-    <section className="section" id="screenshots">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.ssEyebrow}</span>
-          <h2>{t.ssH2a}<br/>{t.ssH2b}</h2>
-          <p>{t.ssIntro}</p>
-        </div>
-
-        <div className="ss-tabs">
-          {cats.map(c => (
-            <button key={c} className={`ss-tab ${active === c ? 'active' : ''}`} onClick={() => setActive(c)}>
-              {c}
-            </button>
-          ))}
-        </div>
-
-        <div className="ss-grid">
-          {filtered.map((s, i) => (
-            <a key={i} href={s.src} target="_blank" rel="noopener" className="ss-card">
-              <div className="ss-img">
-                <img src={s.src} alt={s.title} loading="lazy"/>
-                <span className="ss-cat mono">{s.cat}</span>
-              </div>
-              <div className="ss-meta">
-                <h4>{s.title}</h4>
-                <p>{s.desc}</p>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return <ScreenGallery eyebrow={t.ssEyebrow} title1={t.ssH2a} title2={t.ssH2b} intro={t.ssIntro}/>;
 }
 
 /* ====================== 3-PROCESS ARCHITECTURE ====================== */

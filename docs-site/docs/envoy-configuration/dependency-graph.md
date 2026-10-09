@@ -5,7 +5,8 @@ sidebar_position: 5
 tags: [envoy]
 ---
 
-![The resource dependency graph](/img/docs/dependency.png)
+![The resource dependency graph](/img/docs/dependency-light.webp#gh-light-mode-only)
+![The resource dependency graph](/img/docs/dependency-dark.webp#gh-dark-mode-only)
 
 Authoring config is only half the job — the other half is **understanding** what
 you already have and **confirming** what actually shipped. Elchi provides three

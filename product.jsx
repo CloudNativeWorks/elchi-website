@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { Nav, Footer } from './shared.jsx';
 import { getLocale, locHref } from './i18n.js';
 import { PRODUCTS } from './products-data.js';
+import { ProductShots } from './screens.jsx';
 
 // Product pages share one component; the HTML shell selects the product via
 // <div id="root" data-product="core">. Copy lives here as STR-style {en,tr}
@@ -25,6 +26,8 @@ const PAGE = {
     ctaTitle: 'See it live.',
     ctaSubtitle: 'Talk to us about a proof of concept, or start with the quickstart guide.',
     ctaContact: 'Contact us',
+    shotsEyebrow: 'IN THE PRODUCT',
+    shotsTitle: 'See it in action.',
   },
   tr: {
     addon: 'Eklenti · Elchi Core gerektirir',
@@ -40,6 +43,8 @@ const PAGE = {
     ctaTitle: 'Canlı görün.',
     ctaSubtitle: 'Bir proof of concept için bizimle konuşun ya da quickstart rehberiyle başlayın.',
     ctaContact: 'Bize ulaşın',
+    shotsEyebrow: 'ÜRÜNDEN',
+    shotsTitle: 'İş başında görün.',
   },
 };
 
@@ -111,6 +116,8 @@ function ProductPage({ slug }) {
           )}
         </div>
       </section>
+
+      {p.shots && <ProductShots ids={p.shots} eyebrow={pg.shotsEyebrow} title={pg.shotsTitle}/>}
 
       {/* WAF comparison (only when defined) */}
       {t.versus && (

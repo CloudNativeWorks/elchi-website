@@ -5,7 +5,8 @@ sidebar_position: 3
 tags: [operations]
 ---
 
-![The Clients console — connected edge agents](/img/docs/agent.png)
+![The Clients console — connected edge agents](/img/docs/clients-light.webp#gh-light-mode-only)
+![The Clients console — connected edge agents](/img/docs/clients-dark.webp#gh-dark-mode-only)
 
 A **client** is an edge node running the [`elchi-client`](/installation/client/overview) agent next to Envoy. The Clients console is the fleet's remote-control surface: it lists every connected node and is where you send it commands, read its host metrics and logs, and — on cloud hosts — look up network interfaces and available IPs.
 

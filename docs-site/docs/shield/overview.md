@@ -7,6 +7,9 @@ tags: [shield, security]
 
 Elchi Shield (`elchi-shield`) is a **local Envoy `ext_proc` API-security / WAF engine**. It runs as a sidecar next to Envoy on each edge host, inspects request and response headers and (optionally) bodies through an ordered, Envoy-style security filter pipeline, and returns a per-request decision: **allow**, **block** (an immediate `403`), or record-only **detect** / **shadow**.
 
+![The Shield overview — throughput, block share and latency](/img/docs/shield-overview-light.webp#gh-light-mode-only)
+![The Shield overview — throughput, block share and latency](/img/docs/shield-overview-dark.webp#gh-dark-mode-only)
+
 Envoy streams each transaction's headers and body chunks to Shield over a local socket (Unix domain socket preferred); Shield answers with allow/block/continue verdicts before the request reaches your backend.
 
 ## Where Shield sits in the stack

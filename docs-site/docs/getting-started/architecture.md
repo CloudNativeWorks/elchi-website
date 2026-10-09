@@ -27,7 +27,7 @@ Supporting stores and observability:
 - **OTel Collector** (`4317`/`4318` OTLP, `13133` health) — the telemetry ingest hub for Envoy stats and Shield metrics.
 - **elchi-collector** (`18090` ALS gRPC, `18091` HTTP) — the passive **Envoy ALS v3** access-log sink behind [API Discovery](/api-discovery/overview).
 
-See the [Port Reference](/reference/ports) for the exposure classification (loopback / internal / external) of every listener.
+The connection table below gives the exposure classification (loopback / internal / external) of every listener.
 
 ## The edge node
 
@@ -80,7 +80,7 @@ flowchart LR
 
 **One public front door.** Externally, the whole central platform is reached through a single front Envoy TLS listener on `:443`. That one port carries the UI, the REST API, each edge client's `CommandStream` gRPC, Envoy xDS/ADS, and ALS; the registry's **ext_proc** filter inspects each incoming stream and sets the `x-target-cluster` header, which routes it to the right internal service (Controller `8099`/`50051`, Control-Plane `18000`, collector `18090`). The internal ports in the diagram and table below are therefore never internet-exposed themselves.
 
-The table below is the exhaustive reference for the same connections. Ports are process defaults (a bare-metal systemd install remaps some — see the [Port Reference](/reference/ports)). "Exposure": **loopback** (same host only), **internal** (trusted platform/edge network), **external** (client-facing).
+The table below is the exhaustive reference for the same connections. Ports are process defaults (a bare-metal systemd install remaps some). "Exposure": **loopback** (same host only), **internal** (trusted platform/edge network), **external** (client-facing).
 
 | Protocol | Port | From → To | Auth | Carries |
 |---|---|---|---|---|
@@ -184,7 +184,6 @@ The GSLB CoreDNS nodes are authoritative for your zone; they poll the Controller
 ## See also
 
 - [Core Concepts](/getting-started/concepts) — the short intro to the three processes.
-- [Port Reference](/reference/ports) — exposure classification for every listener.
 - [Network & External Access](/getting-started/network-access) — the firewall checklist (egress + ingress).
 - [Wiring Shield into Envoy](/shield/envoy-wiring) · [Collector Reference](/api-discovery/collector-reference) — the two edge data-path integrations.
 - [Security Model](/administration/security-overview) — the platform's trust and secrets map.

@@ -12,6 +12,9 @@ on every change. This page covers the document structure end to end: the envelop
 `spec`, domains, routes, match predicates, the inheritance model, and how multiple
 files merge.
 
+![The policy builder — domains, routes and the engines on each route](/img/docs/shield-policy-light.webp#gh-light-mode-only)
+![The policy builder — domains, routes and the engines on each route](/img/docs/shield-policy-dark.webp#gh-dark-mode-only)
+
 For how the files get onto the node and how Envoy is pointed at Shield, see
 [Deployment](/shield/deployment) and [Envoy wiring](/shield/envoy-wiring). For the
 enforcement semantics of the resolved policy, see

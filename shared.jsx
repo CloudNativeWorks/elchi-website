@@ -129,8 +129,7 @@ function ProductIcon({ slug, size = 16 }) {
   );
 }
 
-// Docs stays at /docs/ for both locales until the docs themselves are translated
-// (see docs-site/docs/contributing/translating.md).
+// Docs stays at /docs/ for both locales until the docs themselves are translated.
 const docsHref = '/docs/';
 
 // ============== NAV ==============

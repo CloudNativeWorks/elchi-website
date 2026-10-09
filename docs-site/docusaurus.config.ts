@@ -125,7 +125,7 @@ export default async function createConfig(): Promise<Config> {
           {href: 'https://www.elchi.io/features.html', label: 'Features', position: 'left', target: '_self'},
           {href: 'https://www.elchi.io/architecture.html', label: 'Architecture', position: 'left', target: '_self'},
           {type: 'html', position: 'right', value: versionBadgesHtml},
-          // When a second locale is enabled (see docs/contributing/translating.md),
+          // When a second locale is enabled,
           // add the language switcher here:
           //   {type: 'localeDropdown', position: 'right'},
           {href: 'https://github.com/orgs/CloudNativeWorks/repositories', label: 'GitHub', position: 'right'},

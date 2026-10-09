@@ -43,7 +43,7 @@ A banner surfaces the three versions that define what this deployment can manage
 - **API Version** — the Controller/backend version (from the license status).
 - **Envoy Builds** — the count of supported Envoy versions this control plane can manage.
 
-A **Supported Envoy Versions** card below lists each build as a tag. This is the set the control plane can compile and validate config against — see [Supported Envoy Versions](/reference/envoy-versions) for the versioning model.
+A **Supported Envoy Versions** card below lists each build as a tag. This is the set the control plane can compile and validate config against — see [Versions & Upgrades](/envoy-configuration/versions-and-upgrades) for the versioning model.
 
 ### Storage usage
 
@@ -75,4 +75,4 @@ A Light / Dark / System theme toggle, applied immediately and remembered per bro
 
 - [Authentication & Access](/administration/auth-and-access) — the roles, projects, tokens, LDAP, and 2FA behind most tabs.
 - [Security Model](/administration/security-overview) — where each secret configured here is stored and trusted.
-- [Supported Envoy Versions](/reference/envoy-versions) — the build set shown in the version hero.
+- [Versions & Upgrades](/envoy-configuration/versions-and-upgrades) — the versioning model behind the build set shown in the version hero.

@@ -7,6 +7,9 @@ tags: [api-discovery]
 
 Clicking a listener on the [dashboards](/api-discovery/dashboards) home opens its **endpoints view** — the working surface of API Discovery. This is where you browse the actual operations the listener serves, filter them down, read their two-axis risk, and drill into any one of them.
 
+![A listener's endpoint catalog with calls, errors, latency and risk](/img/docs/api-endpoints-light.webp#gh-light-mode-only)
+![A listener's endpoint catalog with calls, errors, latency and risk](/img/docs/api-endpoints-dark.webp#gh-dark-mode-only)
+
 An **operation** is a unique `(method, host, normalized_path)` on a listener — the OpenAPI notion of an operation — refined by protocol: a gRPC method or a GraphQL operation is its own operation. Each is one `api_inventory` document.
 
 ## GraphQL operations

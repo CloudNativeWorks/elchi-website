@@ -1,10 +1,11 @@
 ---
 title: Background Jobs
 description: Track asynchronous work — snapshots, WAF propagation, ACME verification, and resource upgrades — with live logs and retry.
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-![The background jobs view](/img/docs/jobs.png)
+![The background jobs view](/img/docs/jobs-light.webp#gh-light-mode-only)
+![The background jobs view](/img/docs/jobs-dark.webp#gh-dark-mode-only)
 
 Long-running work runs asynchronously so the UI stays responsive. Track everything under **Jobs**, where each job carries a human-friendly ID (e.g. `EC-1`), a phase, and a live log.
 

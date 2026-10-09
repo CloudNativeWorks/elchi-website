@@ -5,7 +5,8 @@ sidebar_position: 6
 tags: [dashboard, overview, health, projects]
 ---
 
-![The Elchi dashboard: resource counts, health, and error summary](/img/docs/main.png)
+![The Elchi dashboard: resource counts, health, and error summary](/img/docs/dashboard-light.webp#gh-light-mode-only)
+![The Elchi dashboard: resource counts, health, and error summary](/img/docs/dashboard-dark.webp#gh-dark-mode-only)
 
 The Dashboard is the landing page after you log in — Elchi's index route renders it, and it is also the catch-all fallback for any unknown path. It gives you a single, scannable view of how the currently selected project is doing: how many resources it holds, which services are throwing errors, and how the traffic and security subsystems are behaving.
 

@@ -40,7 +40,7 @@ Each connection in the stack is authenticated differently. The [Architecture wir
 - **Discovery agent → Controller** — the per-project discovery token.
 
 :::danger[Shield is never off-box]
-`elchi-shield` inspects raw request/response bodies. It binds ext_proc to a Unix domain socket and its management HTTP to loopback, and refuses non-loopback binds without an explicit `--allow-non-loopback` override. Never expose it. See the [Port Reference](/reference/ports).
+`elchi-shield` inspects raw request/response bodies. It binds ext_proc to a Unix domain socket and its management HTTP to loopback, and refuses non-loopback binds without an explicit `--allow-non-loopback` override. Never expose it. See the [Architecture](/getting-started/architecture) connection table.
 :::
 
 ## Controls: RBAC and audit
@@ -78,4 +78,4 @@ Resources are isolated by **project** (the tenancy boundary); scoping and cleanu
 - [Authentication & Access](/administration/auth-and-access) — RBAC, projects, tokens, LDAP, 2FA in depth.
 - [Audit & Syslog Forwarding](/observability/audit-and-syslog) · [Shield Observability](/shield/observability) — the two audit trails.
 - [Production hardening](/installation/bare-metal/hardening) · [Platform Security](/installation/helm-platform/security) — the OS and K8s baselines.
-- [Network & External Access](/getting-started/network-access) · [Port Reference](/reference/ports) — exposure and egress/ingress.
+- [Network & External Access](/getting-started/network-access) · [Architecture](/getting-started/architecture) — exposure and egress/ingress.

@@ -7,6 +7,9 @@ tags: [api-discovery]
 
 API Discovery turns the traffic already flowing through your Envoy edges into a **living inventory of every API operation your platform serves** — without touching request bodies and without forwarding a single byte off-box. It answers the questions a security team actually has: *What endpoints do we expose? Which are unauthenticated? Which carry PII? Which are being scanned right now? Which have we forgotten about?*
 
+![API Discovery — listeners with collected API traffic](/img/docs/api-discovery-light.webp#gh-light-mode-only)
+![API Discovery — listeners with collected API traffic](/img/docs/api-discovery-dark.webp#gh-dark-mode-only)
+
 It is a **passive, metadata-only** system. Envoy ships access-log records; the `elchi-collector` normalizes and scores them; the Elchi UI presents the catalog. Nothing in this pipeline sits in the request path, so it can never block, slow, or break live traffic.
 
 ## What it is (and is not)

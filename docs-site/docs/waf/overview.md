@@ -7,6 +7,9 @@ tags: [waf, security]
 
 Elchi ships an integrated **Web Application Firewall** built on [Coraza](https://www.coraza.io/) with the **OWASP Core Rule Set (CRS)**. You author a rule configuration in the UI under **WAF** (`/waf`), the control plane stores and versions it, and it is delivered to your edge proxies as an **Envoy WASM filter** — no rule files to ship, no per-node config push.
 
+![A WAF configuration — directive sets on top of the OWASP CRS](/img/docs/waf-light.webp#gh-light-mode-only)
+![A WAF configuration — directive sets on top of the OWASP CRS](/img/docs/waf-dark.webp#gh-dark-mode-only)
+
 This is the platform's *original* WAF: a control-plane-managed ruleset that rides the normal Envoy configuration pipeline. It protects against the common attack classes — SQL injection, XSS, command injection, path traversal, scanners, protocol abuse — with rules you can browse, tune, lint, version, and roll back.
 
 ## What it is

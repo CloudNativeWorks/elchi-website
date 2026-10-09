@@ -5,7 +5,8 @@ sidebar_position: 8
 tags: [envoy, resources]
 ---
 
-![Managing Envoy filters in Elchi](/img/docs/filter.png)
+![Managing Envoy filters in Elchi](/img/docs/filters-light.webp#gh-light-mode-only)
+![Managing Envoy filters in Elchi](/img/docs/filters-dark.webp#gh-dark-mode-only)
 
 **Filters** are the pluggable units of Envoy's data path. A connection or request flows through an ordered chain of filters, each doing one job — inspect TLS, terminate HTTP, authenticate, rate-limit, mutate headers, proxy to an upstream. Envoy groups filters by *where* they run, and Elchi exposes the same four categories:
 

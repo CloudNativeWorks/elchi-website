@@ -5,7 +5,8 @@ sidebar_position: 1
 tags: [scenarios, wizard, quick-start, config-generation]
 ---
 
-![The Scenario wizard](/img/docs/scenario.png)
+![The Scenario wizard](/img/docs/scenarios-light.webp#gh-light-mode-only)
+![The Scenario wizard](/img/docs/scenarios-dark.webp#gh-dark-mode-only)
 
 A **scenario** is a reusable recipe for a multi-resource Envoy configuration. Rather than creating a listener, then a filter, then a route, then a cluster, then endpoints one at a time and wiring them together yourself, a scenario captures the whole set as a single guided flow: you pick the components you need, fill in a small number of guided fields, and Elchi generates and publishes the real resources for you.
 

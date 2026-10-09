@@ -7,6 +7,7 @@ const PRODUCTS = {
     accent: '#2563eb',
     docs: '/docs/getting-started/introduction',
     related: ['api-security', 'api-discovery', 'gslb', 'waf'],
+    shots: ['dashboard', 'services', 'listener', 'metrics', 'dependency', 'clients'],
     en: {
       metaName: 'Elchi Core',
       tag: 'ENVOY MANAGEMENT PLATFORM',
@@ -79,6 +80,7 @@ const PRODUCTS = {
     accent: '#f43f5e',
     docs: '/docs/shield/overview',
     related: ['api-discovery', 'waf'],
+    shots: ['shield-overview', 'shield-events', 'shield-policy'],
     en: {
       metaName: 'Elchi API Security',
       tag: 'POWERED BY SHIELD',
@@ -143,6 +145,7 @@ const PRODUCTS = {
     accent: '#6366f1',
     docs: '/docs/api-discovery/overview',
     related: ['api-security'],
+    shots: ['api-discovery', 'api-endpoints'],
     en: {
       metaName: 'Elchi API Discovery',
       tag: 'API INVENTORY & POSTURE',
@@ -211,6 +214,7 @@ const PRODUCTS = {
     accent: '#f59e0b',
     docs: '/docs/gslb/overview',
     related: ['core'],
+    shots: ['gslb'],
     en: {
       metaName: 'Elchi GSLB',
       tag: 'GLOBAL SERVER LOAD BALANCING',
@@ -273,6 +277,7 @@ const PRODUCTS = {
     accent: '#8b5cf6',
     docs: '/docs/waf/overview',
     related: ['api-security'],
+    shots: ['waf'],
     en: {
       metaName: 'Elchi WAF',
       tag: 'WASM WEB APPLICATION FIREWALL',

@@ -5,7 +5,8 @@ sidebar_position: 2
 tags: [operations]
 ---
 
-![The Services view — deployed Envoy services](/img/docs/service.png)
+![The Services view — deployed Envoy services](/img/docs/services-light.webp#gh-light-mode-only)
+![The Services view — deployed Envoy services](/img/docs/services-dark.webp#gh-dark-mode-only)
 
 A **service** is a named Envoy deployment: an Envoy [bootstrap](/envoy-configuration/resources/bootstrap) plus the xDS resources that configure it, together with the set of edge [clients](./clients.md) it is deployed to. The Services console is where you see the deployment status of every service across the fleet and drill into any single running Envoy.
 

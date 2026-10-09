@@ -4,7 +4,8 @@ description: How Elchi models every Envoy configuration object as a typed, valid
 sidebar_position: 1
 ---
 
-![The Elchi xDS configuration editor](/img/docs/configuration.png)
+![The Elchi xDS configuration editor](/img/docs/listener-light.webp#gh-light-mode-only)
+![The Elchi xDS configuration editor](/img/docs/listener-dark.webp#gh-dark-mode-only)
 
 Everything Elchi pushes to Envoy is modeled as a **resource**. The UI generates a typed form for every resource directly from Envoy's protobuf definitions, so new Envoy fields appear in the editor without any manual UI work.
 

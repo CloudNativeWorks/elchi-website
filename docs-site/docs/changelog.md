@@ -102,9 +102,8 @@ Spans **elchi-backend**, **elchi-collector**, the **elchi** UI and
   [Client installation](/installation/client/installation)).
 - **Envoy versions are decoupled.** Supported Envoy versions are discovered
   dynamically from the release archive, not pinned to a platform version — see
-  [Envoy Versions](/reference/envoy-versions) for the model, and
-  [Versions & Upgrades](/envoy-configuration/versions-and-upgrades) for how your
-  resources move between them.
+  [Versions & Upgrades](/envoy-configuration/versions-and-upgrades) for the model
+  and how your resources move between them.
 - **Backend release tags encode the trio.** Backend tags carry the platform,
   control-plane, and Envoy versions together (for example
   `elchi-v1.6.18-v0.14.0-envoy1.39.3`), so a tag tells you exactly which

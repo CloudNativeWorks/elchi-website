@@ -85,3 +85,10 @@
   font-weight: 600;
 }
 .navbar-demo-btn:hover { background: var(--ifm-color-primary-dark); }
+
+/* Themed screenshots: each comes as a -light and a -dark pair in the markdown
+   (GitHub's fragments), the one for the other theme is hidden. */
+[data-theme='light'] img[src$='#gh-dark-mode-only'],
+[data-theme='dark'] img[src$='#gh-light-mode-only'] {
+  display: none;
+}

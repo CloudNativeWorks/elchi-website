@@ -5,7 +5,8 @@ sidebar_position: 7
 tags: [envoy]
 ---
 
-![A route map for a listener](/img/docs/routemap.png)
+![A route map for a listener](/img/docs/routemap-light.webp#gh-light-mode-only)
+![A route map for a listener](/img/docs/routemap-dark.webp#gh-dark-mode-only)
 
 The **Route Map** answers a single, practical question: *given this listener (or
 route configuration), where does a request actually go?* It renders the routing
