@@ -49,8 +49,8 @@ The Elchi-specific images live on Docker Hub under `jhonbrownn/*`. Third-party s
 
 | Component | Image | Default tag | Override flag |
 |---|---|---|---|
-| Backend (registry / controller / control-plane) | `jhonbrownn/elchi-backend` | `v1.6.18-v0.14.0-envoy1.39.3` | `--backend-version=<csv>` |
-| UI (nginx SPA) | `jhonbrownn/elchi` | `v1.5.25` | `--ui-version` |
+| Backend (registry / controller / control-plane) | `jhonbrownn/elchi-backend` | `v1.6.19-v0.14.0-envoy1.39.3` | `--backend-version=<csv>` |
+| UI (nginx SPA) | `jhonbrownn/elchi` | `v1.5.26` | `--ui-version` |
 | CoreDNS (GSLB plugin) | `jhonbrownn/elchi-coredns` | `v0.1.4` | `--coredns-version` |
 | Collector (Envoy ALS ingest) | `jhonbrownn/elchi-collector` | `v0.1.14` | `--collector-version` |
 | Envoy (edge) | `envoyproxy/envoy` | `v1.39.3` | — |

@@ -15,7 +15,7 @@ Run on M1. Computes the diff against the running cluster (`added` / `kept` / `re
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh \
   | sudo bash -s -- --upgrade \
-      --add-backend-version=elchi-v1.6.18-v0.14.0-envoy1.39.3
+      --add-backend-version=elchi-v1.6.19-v0.14.0-envoy1.39.3
 ```
 
 One-liner shortcut: appends a new envoy version to the current variant set without re-listing what's already deployed. Cluster-wide effect — control-plane systemd unit + binary land on every node, port allocations are deterministic, UI's `config.js` `AVAILABLE_VERSIONS` regenerates so the new envoy version shows up in the version dropdown.
@@ -23,7 +23,7 @@ One-liner shortcut: appends a new envoy version to the current variant set witho
 ## Bump just the UI
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh | sudo bash -s -- --upgrade --ui-version=v1.5.25
+curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh | sudo bash -s -- --upgrade --ui-version=v1.5.26
 ```
 
 Backend / envoy / coredns / mongo / VM stay on their current versions — install.sh's hash-based reconcile marks each as `noop`. Only nginx may restart if the UI config block changed.
@@ -39,7 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh \
   | sudo bash -s -- --upgrade \
-      --backend-version=elchi-v1.6.18-v0.14.0-envoy1.39.1,elchi-v1.6.18-v0.14.0-envoy1.39.3
+      --backend-version=elchi-v1.6.19-v0.14.0-envoy1.39.1,elchi-v1.6.19-v0.14.0-envoy1.39.3
 ```
 
 Declarative — supplies the FULL desired variant set. Anything currently deployed but not in this list is auto-pruned by install.sh's stale-variants pass (no `--prune-missing` needed; the flag remains for operators who prefer the intent visible in the plan banner).
@@ -49,7 +49,7 @@ Declarative — supplies the FULL desired variant set. Anything currently deploy
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh \
   | sudo bash -s -- --upgrade \
-      --backend-version=elchi-v1.6.18-v0.14.0-envoy1.39.3 \
+      --backend-version=elchi-v1.6.19-v0.14.0-envoy1.39.3 \
       --prune-missing
 ```
 
@@ -58,7 +58,7 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/standalone/get.sh \
   | sudo bash -s -- --upgrade \
-      --ui-version=v1.5.25 \
+      --ui-version=v1.5.26 \
       --envoy-version=v1.39.3
 ```
 

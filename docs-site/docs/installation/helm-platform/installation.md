@@ -31,7 +31,7 @@ global:
   mainAddress: "elchi.example.com"
   tlsEnabled: true
   versions:
-    - tag: v1.6.18-v0.14.0-envoy1.39.3
+    - tag: v1.6.19-v0.14.0-envoy1.39.3
 ```
 
 Only `global.mainAddress` is required. Credentials — the JWT secret, the MongoDB and ClickHouse

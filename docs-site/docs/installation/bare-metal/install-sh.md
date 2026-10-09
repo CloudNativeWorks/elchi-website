@@ -23,8 +23,8 @@ Every variant tag in `--backend-version` is a full release-asset name (`elchi-vX
 
 | Flag | Description | Default |
 |---|---|---|
-| `--backend-version=<csv>` | One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: `--backend-variants=`. | elchi-v1.6.18-v0.14.0-envoy1.39.3 |
-| `--ui-version=<vX.Y.Z>` | UI bundle version (`elchi-dist-vX.Y.Z.tar.gz`). Mirrored to the public elchi-archive releases by the build-elchi-ui workflow. | v1.5.25 |
+| `--backend-version=<csv>` | One or more variant tags (release-asset basenames). Each variant runs side-by-side. Alias: `--backend-variants=`. | elchi-v1.6.19-v0.14.0-envoy1.39.3 |
+| `--ui-version=<vX.Y.Z>` | UI bundle version (`elchi-dist-vX.Y.Z.tar.gz`). Mirrored to the public elchi-archive releases by the build-elchi-ui workflow. | v1.5.26 |
 | `--envoy-version=<vX.Y.Z>` | Front-door Envoy proxy binary version. | v1.39.3 |
 | `--coredns-version=<vX.Y.Z>` | Custom CoreDNS-with-elchi-plugin version (used only when GSLB is enabled). | v0.1.4 |
 | `--collector-version=<vX.Y.Z>` | elchi-collector binary version (ALS gRPC sink → ClickHouse / Mongo). Mirrored to the public elchi-archive releases by the build-elchi-collector workflow. | v0.1.14 |

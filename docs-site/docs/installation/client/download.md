@@ -6,10 +6,10 @@ sidebar_position: 2
 
 ## Linux AMD64
 
-Current release — **v1.7.2**:
+Current release — **v1.7.3**:
 
-- [elchi-client-linux-amd64](https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.7.2/elchi-client-linux-amd64)
-- [elchi-client-linux-amd64.sha256](https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.7.2/elchi-client-linux-amd64.sha256)
+- [elchi-client-linux-amd64](https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.7.3/elchi-client-linux-amd64)
+- [elchi-client-linux-amd64.sha256](https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.7.3/elchi-client-linux-amd64.sha256)
 
 :::tip[Always current]
 These links are pinned and this page is only as fresh as its last edit. The
