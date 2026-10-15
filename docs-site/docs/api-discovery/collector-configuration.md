@@ -75,6 +75,7 @@ Validation runs on every reload. Invalid documents — negative thresholds, an u
 | `consumers_cap` | int | `10` | Max consumer hashes kept per inventory row (1–100). |
 | `query_params_cap` | int | `50` | Max query-parameter **names** kept per inventory row (1–200). |
 | `risk_active_days` | int | `7` | Active window for findings (1–90). Stored only — the backend applies it to split active from historical. |
+| `confirm_on_auth_reject` | bool | `false` | Whether a route-matched `401`/`403` confirms an inventory endpoint. Off: like `404`/`405` it is no signal (backends that authenticate before routing refuse scanned paths too). On: for backends that route first. |
 
 :::warning[Sensitive headers are always dropped]
 A fixed set of **14** sensitive headers is stripped before persistence no matter what `header_allowlist` says: `authorization`, `proxy-authorization`, `x-forwarded-authorization`, `x-original-authorization`, `x-forwarded-user`, `cookie`, `set-cookie`, `set-cookie2`, `x-api-key`, `x-auth-token`, `x-csrf-token`, `x-xsrf-token`, `traceparent`, `tracestate`. Their **presence** (for the auth-bearing subset) still sets `auth_observed=true` — the value itself is never stored.

@@ -7,7 +7,7 @@ const PRODUCTS = {
     accent: '#2563eb',
     docs: '/docs/getting-started/introduction',
     related: ['api-security', 'api-discovery', 'gslb', 'waf'],
-    shots: ['dashboard', 'services', 'listener', 'metrics', 'dependency', 'clients'],
+    shots: ['dashboard', 'live-traffic', 'services', 'listener', 'metrics', 'reports-problems', 'dependency', 'clients'],
     en: {
       metaName: 'Elchi Core',
       tag: 'ENVOY MANAGEMENT PLATFORM',
@@ -26,6 +26,9 @@ const PRODUCTS = {
         { t: 'Scenarios, templates & snippets', d: 'Guided multi-resource wizards and a reusable config library for API gateways, load balancers, and mesh setups.' },
         { t: 'Multi-project & RBAC', d: 'Project-based isolation with 4-tier roles (Owner, Admin, Editor, Viewer), LDAP/Active Directory, 2FA, and a complete audit trail.' },
         { t: 'Observability built in', d: 'Metrics dashboards, live service logs, Grafana integration, and an async job engine with full visibility into long-running operations.' },
+        { t: 'Live traffic view', d: 'Watch a listener as it runs: sampled requests from the access log flow through connection managers, domains, routes, clusters and endpoints, with rates, p99 and 5xx origin from metrics every 5 seconds.' },
+        { t: 'Problems at a glance', d: 'One report of everything that needs a look, worst first: configuration a proxy rejected, failed or stuck jobs, offline clients, ACME and GSLB trouble, broken references and expiring certificates.' },
+        { t: 'Configuration reports', d: 'Traffic map, domains, certificates, security per filter chain, unused resources, fleet and changes — every name links to its resource, every report exports to CSV or JSON.' },
       ],
       also: {
         title: 'Also included in Core',
@@ -59,6 +62,9 @@ const PRODUCTS = {
         { t: 'Senaryolar, şablonlar & snippet\'ler', d: 'API gateway, load balancer ve mesh kurulumları için rehberli sihirbazlar ve yeniden kullanılabilir yapılandırma kütüphanesi.' },
         { t: 'Çoklu proje & RBAC', d: '4 katmanlı roller (Owner, Admin, Editor, Viewer), LDAP/Active Directory, 2FA ve eksiksiz denetim iziyle proje bazlı izolasyon.' },
         { t: 'Yerleşik gözlemlenebilirlik', d: 'Metrik panoları, canlı servis logları, Grafana entegrasyonu ve uzun süren işlemleri tam görünürlükle izleyen asenkron iş motoru.' },
+        { t: 'Canlı trafik görünümü', d: 'Bir listener\'ı çalışırken izleyin: access log\'dan örneklenen istekler connection manager, domain, route, cluster ve endpoint\'ler üzerinden akar; oranlar, p99 ve 5xx kaynağı 5 saniyede bir metriklerden gelir.' },
+        { t: 'Sorunlar tek bakışta', d: 'Bakılması gereken her şey tek raporda, en kötüsü önce: proxy\'nin reddettiği yapılandırma, başarısız ya da takılan işler, çevrimdışı client\'lar, ACME ve GSLB sorunları, kırık referanslar ve süresi dolan sertifikalar.' },
+        { t: 'Yapılandırma raporları', d: 'Trafik haritası, domain\'ler, sertifikalar, filter chain bazında güvenlik, kullanılmayan kaynaklar, filo ve değişiklikler — her isim kaynağına bağlanır, her rapor CSV ya da JSON olarak dışa aktarılır.' },
       ],
       also: {
         title: 'Core\'a dahil diğer yetenekler',

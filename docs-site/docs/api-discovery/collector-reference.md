@@ -288,7 +288,7 @@ Key document fields:
 
 | Field | Notes |
 | --- | --- |
-| `confirmed` | Sticky boolean — `true` once a real route-matched hit is seen; scanner/probe/static-asset hits force `false`. Drives the confirmed-vs-attack-surface split. |
+| `confirmed` | Sticky boolean — `true` once a real route-matched hit is seen (a backend 404/405 does not count, nor a 401/403 unless `policy.confirm_on_auth_reject` is on); scanner/probe/static-asset hits force `false`. Drives the confirmed-vs-attack-surface split. |
 | `seen_count` | `$inc` per event; the exact request count (unaffected by raw sampling). |
 | `first_seen` / `last_seen` | Timestamps. |
 | `risk_flags` | `$addToSet` union of every stored flag ever seen (derived flags are never stored), with `flag_last_seen.<flag>` per flag — the basis of active vs historical. |

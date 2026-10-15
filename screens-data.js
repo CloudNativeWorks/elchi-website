@@ -4,8 +4,8 @@
 // Used by the home gallery and the product pages (products-data.js `shots`).
 
 export const SHOT_CATS = {
-  en: { all: 'All', overview: 'Overview', config: 'Configuration', observe: 'Observability', security: 'Security', discovery: 'API Discovery', fleet: 'Fleet & Operations', viz: 'Visualization', lb: 'Load Balancing', ai: 'AI' },
-  tr: { all: 'Tümü', overview: 'Genel Bakış', config: 'Yapılandırma', observe: 'Gözlemlenebilirlik', security: 'Güvenlik', discovery: 'API Keşfi', fleet: 'Filo & Operasyon', viz: 'Görselleştirme', lb: 'Yük Dengeleme', ai: 'AI' },
+  en: { all: 'All', overview: 'Overview', config: 'Configuration', observe: 'Observability', security: 'Security', discovery: 'API Discovery', fleet: 'Fleet & Operations', viz: 'Visualization', lb: 'Load Balancing', reports: 'Reports', ai: 'AI' },
+  tr: { all: 'Tümü', overview: 'Genel Bakış', config: 'Yapılandırma', observe: 'Gözlemlenebilirlik', security: 'Güvenlik', discovery: 'API Keşfi', fleet: 'Filo & Operasyon', viz: 'Görselleştirme', lb: 'Yük Dengeleme', reports: 'Raporlar', ai: 'AI' },
 };
 
 export const SHOTS = [
@@ -36,6 +36,12 @@ export const SHOTS = [
   { id: 'logs', cat: 'observe',
     en: ['Service Logs', 'Envoy access and error logs from every client, searchable, with a request detail view.'],
     tr: ['Servis Logları', 'Her client’tan Envoy access ve error logları; aranabilir, istek detay görünümüyle.'] },
+  { id: 'live-traffic', cat: 'observe',
+    en: ['Live Traffic', 'A listener as it runs: sampled requests flow from the clients through connection managers, routes and clusters to the endpoints, every 5 s.'],
+    tr: ['Canlı Trafik', 'Bir listener çalışırken: örneklenen istekler client’lardan connection manager, route ve cluster’lar üzerinden endpoint’lere akar, 5 sn’de bir.'] },
+  { id: 'live-traffic-node', cat: 'observe',
+    en: ['Live Traffic — Node Detail', 'Click any node for its rate, latency percentiles, response classes, healthy hosts and the latest requests through it.'],
+    tr: ['Canlı Trafik — Düğüm Detayı', 'Herhangi bir düğüme tıklayın: oran, gecikme yüzdelikleri, yanıt sınıfları, sağlıklı host’lar ve içinden geçen son istekler.'] },
   { id: 'shield-overview', cat: 'security',
     en: ['Shield Overview', 'Inspected and blocked requests per second, the blocked share and Shield’s own latency per phase.'],
     tr: ['Shield Genel Bakış', 'Saniyede incelenen ve engellenen istekler, engellenen pay ve Shield’ın faz bazında kendi gecikmesi.'] },
@@ -57,6 +63,18 @@ export const SHOTS = [
   { id: 'routemap', cat: 'viz',
     en: ['Route Map', 'Virtual hosts, routes and the clusters they send traffic to, as one map.'],
     tr: ['Route Haritası', 'Virtual host’lar, route’lar ve trafiği gönderdikleri cluster’lar tek haritada.'] },
+  { id: 'reports-problems', cat: 'reports',
+    en: ['Problems Report', 'Everything that needs a look, worst first: rejected config, stuck jobs, offline clients, ACME and GSLB trouble, broken references, hygiene.'],
+    tr: ['Sorunlar Raporu', 'Bakılması gereken her şey, en kötüsü önce: reddedilen config, takılan işler, çevrimdışı client’lar, ACME ve GSLB sorunları, kırık referanslar, hijyen.'] },
+  { id: 'reports-traffic', cat: 'reports',
+    en: ['Traffic Map Report', 'Which listener serves which domain and where each route sends it — clusters, endpoints and ports — as a tree or a table.'],
+    tr: ['Trafik Haritası Raporu', 'Hangi listener hangi domain’e hizmet veriyor, her route nereye gönderiyor — cluster, endpoint ve port’lar — ağaç ya da tablo olarak.'] },
+  { id: 'reports-security', cat: 'reports',
+    en: ['Security Report', 'Per HTTP filter chain: TLS, WAF, local rate limit and authentication filters, and the certificates to renew.'],
+    tr: ['Güvenlik Raporu', 'Her HTTP filter chain için TLS, WAF, local rate limit ve kimlik doğrulama filtreleri, yenilenecek sertifikalar.'] },
+  { id: 'reports-fleet', cat: 'reports',
+    en: ['Fleet Report', 'Every service of the project: where it runs, how many proxies are connected, its version and active configuration errors.'],
+    tr: ['Filo Raporu', 'Projenin her servisi: nerede çalıştığı, kaç proxy bağlı, sürümü ve aktif yapılandırma hataları.'] },
   { id: 'clients', cat: 'fleet',
     en: ['Edge Clients', 'The agents running Envoy on your hosts: CPU, memory, connections, storage and network per host.'],
     tr: ['Edge Client’lar', 'Envoy’u host’larınızda çalıştıran agent’lar: host başına CPU, bellek, bağlantı, disk ve ağ.'] },
