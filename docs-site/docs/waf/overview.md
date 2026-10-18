@@ -14,7 +14,7 @@ This is the platform's *original* WAF: a control-plane-managed ruleset that ride
 
 ## What it is
 
-- **Engine:** Coraza, a Go implementation of the ModSecurity SecLang rule language, compiled to WebAssembly as `coraza-proxy-wasm` **v0.6.0** (TinyGo 0.34) and loaded by Envoy as a Proxy-Wasm HTTP filter.
+- **Engine:** Coraza, which speaks the ModSecurity SecLang rule language, packaged as the WebAssembly module `coraza-proxy-wasm` **v0.6.0** and loaded by Envoy as a Proxy-Wasm HTTP filter.
 - **Rules:** OWASP **CRS 4.14.0** is bundled inside the WASM plugin, alongside the CRS setup file and a demo body-parsing config. You add rules by referencing them (`Include @owasp_crs/*.conf`) or write your own `SecRule` / `SecAction` directives.
 - **Authoring:** a two-pane editor in the Elchi UI — a directive editor, a browsable CRS rule library, a live `.conf` preview, and full version history.
 - **Storage:** each config is a MongoDB document scoped to a project, with a rolling snapshot history.
@@ -50,7 +50,7 @@ The Elchi platform delivers Coraza/OWASP CRS **two different ways**. They share 
 |---|---|---|
 | Delivery | Envoy **WASM filter**, injected into `typed_config` and shipped via xDS | Shield **`ext_proc` sidecar** engine, configured by a Shield policy file |
 | Authored in | The Elchi UI (`/waf`), stored + versioned by the backend | Shield policy YAML in the watched config directory |
-| Runtime | Runs *inside* Envoy (Proxy-Wasm sandbox, TinyGo) | Runs *beside* Envoy as a local Go process |
+| Runtime | Runs *inside* Envoy (Proxy-Wasm sandbox) | Runs *beside* Envoy as a local process |
 | Rules | CRS 4.14.0 embedded in the WASM plugin | OWASP CRS embedded in the Shield binary (`include_owasp: true`) |
 | Response inspection | Partial (WASM sandbox limits) | Full — the only Shield engine that inspects responses |
 | Constraints | No persistent collections, no `exec`/Lua, no filesystem (see [WASM limits](/waf/waf-studio)) | Native Go — fewer runtime limits, per-policy fail posture |

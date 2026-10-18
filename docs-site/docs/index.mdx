@@ -28,6 +28,7 @@ Pick the deployment substrate that fits — all bring up the same control plane:
 - **[Single-Host (kind)](/installation/kind-quickstart)** — the whole stack on one VM for evaluation.
 - **[Bare-Metal](/installation/bare-metal/overview)** — plain VMs with systemd, no containers.
 - **[Elchi Client](/installation/client/overview)** — then install the edge agent (+ [bundled Shield](/installation/client/shield-sidecar)) next to Envoy.
+- **[Elchi OS Appliance](/elchi-os/overview)** — or run the edge as a ready-made appliance image with the agent and Shield built in.
 
 ## Configure & operate
 
@@ -37,10 +38,11 @@ Pick the deployment substrate that fits — all bring up the same control plane:
 - **[GSLB](/gslb)**, **[Certificates (ACME)](/traffic-and-certificates/acme)**, **[WAF](/waf)** — traffic and protection.
 - **[API Discovery](/api-discovery/overview)** — a live, risk-scored inventory of every API your gateways serve.
 - **[Fleet Operations](/operations/overview)** — manage running Envoy services and connected edge clients.
+- **[Edge HA Pairs](/ha-pairs/overview)** — two Elchi OS appliances sharing VIPs active/passive, with automatic failover.
 - **[Observability](/observability/metrics-and-logs)** — metrics, logs, audit, and jobs.
 
 ## Administer
 
 - **[Authentication & Access](/administration/auth-and-access)** — projects, RBAC, tokens, LDAP, 2FA.
-- **[Registry & High Availability](/administration/registry-and-ha)** — scaling the control plane.
+- **[Registry & High Availability](/administration/registry-and-ha)** — scaling the control plane (for the edge, see [Edge HA Pairs](/ha-pairs/overview)).
 - **[Troubleshooting](/troubleshooting/common-issues)** — when something doesn't work.

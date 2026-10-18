@@ -34,6 +34,8 @@ Status reflects how many of the service's target clients are currently connected
 | **Offline** | The service is deployed but none of its clients are connected. |
 | **Not Deployed** | The service has no client targets yet. |
 
+A service served by an [HA pair](/ha-pairs/overview) shows a second badge with the pair's status, such as **HA: Live** or **HA: Degraded**. Its detail page groups the clients per pair (*HA pair · name · VIP · status*) and marks which member serves the VIP. Deploying to a pair always targets every member of the pair at one VIP — see [Deploying services to a pair](/ha-pairs/deploying-services).
+
 ### Filtering
 
 The filter bar narrows the list by **name**, **version**, **status**, or **IP address**. Enter your terms and click **Search** (or press Enter); **Clear** resets them. Filtering resets you to the first page.
@@ -51,7 +53,34 @@ Clicking a service opens `/services/:id`, which loads the service document toget
 
 ### Overview
 
-The default tab shows the service summary and its deployment controls: **deploy** the service to clients, run lifecycle actions (reload / status / start / stop / restart) against the running Envoys, and refresh live status. Deploying opens a dialog to choose the target clients. All of these are commands on the [command stream](./overview.md#1-the-command-stream-lifecycle) — the same dispatch mechanism described under [Clients](./clients.md).
+The default tab shows the service summary and its deployment controls: **Manage service** (deploy to or remove from clients), the lifecycle actions **Start**, **Stop**, **Restart** and **Reload** on every client (Stop and Restart ask for confirmation), and **Refresh status**, which asks every client for the service's status now. **Manage service** opens a drawer with a **Deploy** / **Remove** mode switch and the client list. All of these are commands on the [command stream](./overview.md#1-the-command-stream-lifecycle) — the same dispatch mechanism described under [Clients](./clients.md).
+
+#### On each client: the VIP health gate
+
+The **On each client** panel shows one card per client running the service: its state and uptime, memory and CPU, and — while the proxy is active — the listener's **VIP state** as the agent's health gate reports it. This applies to single clients as well as HA pair members.
+
+The agent probes every listener (by default every 5 s: the unit is active, Envoy is LIVE, `/ready` answers 200 and a listener is bound). After 3 failed probes it withdraws the listener's VIP; it announces it again only after 2 good probes and a 20 s hold-down, so one bad sample never flaps a route. A unit that restarts 3 times within 5 minutes is **held** for 15 minutes. These are the `client.vip_health` defaults in the agent config.
+
+| Tag | Meaning |
+| --- | --- |
+| **VIP announced** | The VIP is on the interface (with BGP, peers see the route). |
+| **VIP withdrawn** | The VIP was removed: the listener is unhealthy, draining or not yet back. |
+| **VIP held** | Crash loop: no automatic announcement until the hold ends or you resume it. |
+| **… (reported only, no BGP)** | The host has no BGP, so the state is reported but nothing is withheld from peers. |
+
+On an HA pair member an announced VIP reads **VIP served here** (active) or **VIP ready (peer serves it)** (standby), because `elchi-ha` owns the address there. Hover the tag for the **reason**, since when, **held until**, and the **last probe** with its detail.
+
+Each card also offers:
+
+- **Drain** — after confirmation, sends `POST /healthcheck/fail` to that client's Envoy admin: `/ready` answers 503 and HTTP responses tell clients to reconnect (`connection: close`). Within about 15 s the VIP is withdrawn and new connections go elsewhere; connections still open then are cut.
+- **Undrain** — `POST /healthcheck/ok`: the listener reports ready again and the VIP is announced after the hold-down. When the last probe shows the listener draining only **Undrain** is offered (and vice versa); with no probe yet (gate off or not probed) both are shown so a drain can always be undone.
+- **Resume VIP** — shown only on a **held** listener. After confirmation it releases the hold on that client (a `SERVICE` command, sub-type `SUB_VIP_RESUME`); the VIP is announced again after healthy probes. On the host itself the same is `elchi-client vip resume <admin-port>`, and `elchi-client vip status` lists every listener's state.
+
+#### Removing a service from an offline client
+
+In **Manage service**, switch to **Remove**: deployed clients that are offline can still be selected, marked **Offline — detach only**. Clicking **Remove service** detaches the service record without contacting the agent, and a **Forced Removal** notice confirms it. If the host is still alive, the Envoy unit keeps running until it is removed there (`system listener remove <name>` on Elchi OS, otherwise `sudo elchi-client undeploy-local <name>-<port> --yes`); the client's page then flags it as an [orphan listener unit](./clients.md#orphan-listener-units).
+
+An offline **HA pair member** is not detached: the removal is recorded as pending and completes when the member reconnects.
 
 ### Clusters
 

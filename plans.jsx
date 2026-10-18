@@ -30,9 +30,9 @@ const STR = {
       title: 'Sized to your fleet, shaped by your modules.',
       items: [
         { t: 'Client count', d: 'Licenses scale with the number of managed clients (edge nodes) connected to the platform.' },
-        { t: 'Product modules', d: 'Enable only the products you need — API Security, API Discovery, GSLB, and WAF are licensed individually on top of Core.' },
+        { t: 'Product modules', d: 'Buy only the products you need: API Security, API Discovery, GSLB, and WAF are licensed individually on top of Core. Per-product enforcement is being rolled out; current releases enforce the client count.' },
         { t: 'Resilient validation', d: 'Licenses activate online; a transient network outage never downgrades a validly licensed deployment.' },
-        { t: 'Free to start', d: 'Without a license, Elchi runs the free tier — Elchi Core with a single managed client. Perfect for evaluation.' },
+        { t: 'Free to start', d: 'Without a license, Elchi runs the free tier with a single managed client. Perfect for evaluation.' },
       ],
     },
     cta: {
@@ -64,9 +64,9 @@ const STR = {
       title: 'Filonuza göre boyutlanır, modüllerinize göre şekillenir.',
       items: [
         { t: 'Client sayısı', d: 'Lisanslar, platforma bağlı yönetilen client (edge node) sayısıyla ölçeklenir.' },
-        { t: 'Ürün modülleri', d: 'Yalnızca ihtiyacınız olan ürünleri açın — API Security, API Discovery, GSLB ve WAF, Core üzerine tek tek lisanslanır.' },
+        { t: 'Ürün modülleri', d: 'Yalnızca ihtiyacınız olan ürünleri satın alın: API Security, API Discovery, GSLB ve WAF, Core üzerine tek tek lisanslanır. Ürün bazlı denetim kademeli olarak devreye alınıyor; mevcut sürümler client sayısını denetler.' },
         { t: 'Dayanıklı doğrulama', d: 'Lisanslar online etkinleşir; geçici bir ağ kesintisi, geçerli lisanslı bir kurulumu asla alt seviyeye düşürmez.' },
-        { t: 'Ücretsiz başlangıç', d: 'Lisanssız Elchi ücretsiz seviyede çalışır — tek yönetilen client ile Elchi Core. Değerlendirme için idealdir.' },
+        { t: 'Ücretsiz başlangıç', d: 'Lisanssız Elchi, tek yönetilen client ile ücretsiz seviyede çalışır. Değerlendirme için idealdir.' },
       ],
     },
     cta: {
@@ -185,4 +185,5 @@ function PlansApp() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<PlansApp/>);
+export const Page = PlansApp;
+if (typeof document !== 'undefined') ReactDOM.createRoot(document.getElementById('root')).render(<PlansApp/>);

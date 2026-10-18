@@ -11,7 +11,7 @@ Splitting endpoints out of the cluster is what lets Envoy update the host list w
 
 ## In Elchi
 
-Endpoints live under **Resources → Endpoint** (`/resource/endpoint`). Create one with **Add New**, choosing an Envoy version first — the form is generated from that version's `ClusterLoadAssignment` protobuf.
+Endpoints live under **Traffic path → Endpoint** in the sidebar (`/resource/endpoint`). Create one with **New Endpoint**, choosing an Envoy version first — the form is generated from that version's `ClusterLoadAssignment` protobuf.
 
 The key link is the **`cluster_name`**: it must match the name of the EDS cluster this assignment feeds. Elchi uses that name to pair the two resources when it assembles the snapshot. The editor lets you switch on the `endpoints` section (the localities and their hosts) and an optional `policy` section for load-balancing weights and overprovisioning.
 

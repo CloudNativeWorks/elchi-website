@@ -11,7 +11,7 @@ Because the bootstrap defines the proxy's identity and its link home, it's the f
 
 ## In Elchi
 
-Bootstrap lives under **Resources → Bootstrap** (`/resource/bootstrap`). Unlike other resources it isn't something you routinely hand-create — Elchi **generates** the bootstrap for each proxy so it points at the right control-plane with the correct identity. The editor exists to inspect and, where needed, customize the generated config (node, admin, stats sinks, overload/memory managers, DNS resolver), while the identity and xDS wiring stay locked to keep the proxy reachable.
+Bootstrap lives under **Administration → Bootstrap** in the sidebar (`/resource/bootstrap`); the list has no **New** button. Unlike other resources it isn't something you routinely hand-create — Elchi **generates** the bootstrap for each proxy so it points at the right control-plane with the correct identity. The editor exists to inspect and, where needed, customize the generated config (node, admin, stats sinks, overload/memory managers, DNS resolver), while the identity and xDS wiring stay locked to keep the proxy reachable.
 
 As with all resources, a bootstrap is scoped to an Envoy version, so the generated document matches the Envoy build the client will run.
 
@@ -89,4 +89,4 @@ dynamic_resources:
 - **Don't hand-edit identity or the ADS wiring.** The node id and control-plane connection are what make the proxy reachable — change them and it stops receiving config.
 - **The admin interface stays on loopback.** It's bound to `127.0.0.1`; never expose it externally.
 - **Customize the safe parts.** Stats sinks, overload manager, memory allocator, and DNS resolver are fair game for tuning.
-- **Everything else is dynamic.** If a listener or cluster isn't showing up, the problem is almost never the bootstrap — check the published snapshot (**Snapshot dump**) and the dependency graph, not the boot config.
+- **Everything else is dynamic.** If a listener or cluster isn't showing up, the problem is almost never the bootstrap — check the published [snapshot](/envoy-configuration/snapshot-dump) (**Registry → Control Planes → Details**) and the dependency graph, not the boot config.

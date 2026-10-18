@@ -21,7 +21,7 @@ flowchart LR
   E -->|stats-sink OTLP| OT["OTel Collector"]
   SH -->|metrics OTLP / scrape| OT
   OT -->|remote-write| VM[("VictoriaMetrics")]
-  VM --> G["Grafana + UI ECharts"]
+  VM --> G["Grafana + UI dashboards"]
   E -->|ALS v3 logs| COL["elchi-collector"]
   COL --> CH[("ClickHouse<br/>api_events_raw")]
   COL --> MG[("MongoDB<br/>api_inventory")]
@@ -31,7 +31,7 @@ flowchart LR
 ```
 
 
-- **Envoy stats** → an **OTel Collector** → **VictoriaMetrics** → **Grafana** (and the in-UI ECharts dashboards). The metrics backbone.
+- **Envoy stats** → an **OTel Collector** → **VictoriaMetrics** → **Grafana** (and the in-UI dashboards). The metrics backbone.
 - **Envoy access logs (ALS v3)** → **elchi-collector** → **ClickHouse** (`api_events_raw`, forensic) + **MongoDB** (`api_inventory`, the endpoint catalog). This is [API Discovery](/api-discovery/overview) — a traffic-derived inventory, not a metrics stream.
 - **Shield metrics** → scraped at `/metrics` (`elchi_shield_*`), and **also** pushed over **OTLP** when `--metrics-otlp-endpoint` is set. Shield **security events + audit** → **ClickHouse**. See [Shield Observability](/shield/observability).
 - **Service logs** → the in-UI log viewer, and optionally forwarded by the client agent to **Syslog / Elastic-Logstash**.
@@ -40,7 +40,7 @@ flowchart LR
 
 | Signal | Source | Transport | Lands in | Surfaced by |
 |---|---|---|---|---|
-| Envoy proxy stats | Edge Envoy | stats-sink → OTLP (`4317`/`4318`) | VictoriaMetrics (`8428`) | UI Metrics (ECharts) + Grafana (`3000`) |
+| Envoy proxy stats | Edge Envoy | stats-sink → OTLP (`4317`/`4318`) | VictoriaMetrics (`8428`) | UI Metrics + Grafana (`3000`) |
 | Envoy access logs | Edge Envoy | ALS v3 gRPC (`18090`) | ClickHouse `api_events_raw` + MongoDB `api_inventory` | [API Discovery](/api-discovery/overview) |
 | Shield metrics | elchi-shield | `/metrics` scrape (`9001`) + optional OTLP push | Prometheus/VictoriaMetrics | [Shield Observability](/shield/observability) |
 | Shield security events / audit | elchi-shield | direct write | ClickHouse (audit table, TTL'd) | Shield UI / [Audit](/observability/audit-and-syslog) |
@@ -57,7 +57,7 @@ integrates Grafana against the same VictoriaMetrics data.
 
 | Area | What it does |
 |---|---|
-| **Summary** | Always on top for the selected range: request rate, 5xx and 4xx share, latency at the chosen percentile, open connections, healthy / total upstream hosts and — when the listener runs Shield (or another ext_proc filter) — the share of requests it blocked (links to Shield → Events). Each stat has a sparkline; the 5xx and 4xx stats open those requests in [Logs](/observability/service-logs). With a comparison on, each stat also shows its change against the earlier period. |
+| **Summary** | Always on top for the selected range: request rate, 5xx and 4xx share, latency at the chosen percentile, open connections, healthy / total upstream hosts, **Certificate expiry** when the listener serves TLS (days until the first of its certificates expires; it turns to a warning under 14 days, when an ACME renewal is late, and to an alert under 7; it links to **Certificates**) and — when the listener runs Shield (or another ext_proc filter) — the share of requests it blocked (links to Shield → Events). Most stats have a sparkline (not Certificate expiry or the healthy-hosts stat); the 5xx and 4xx stats open those requests in [Logs](/observability/service-logs). With a comparison on, the stats also show their change against the earlier period (again except Certificate expiry and healthy hosts). |
 | **Upstream clusters** | One row per upstream cluster over the range, worst first: request rate, 5xx share, latency at the chosen percentile, healthy / total hosts, open connections, retries. Click a row to filter the page by that cluster. A cluster that only carries a long-lived gRPC stream (such as Shield's ext_proc) has no request latency. |
 | **Changes** | Deploys and other agent commands on the service, and published config changes of the resources the listener uses (from the audit trail), are drawn as vertical markers on every chart — purple for the service, orange for config — with what changed and who on hover. **Changes** lists them; clicking one zooms to the 15 minutes around it. Saved-only edits are not shown: they do not reach Envoy. |
 | **Distributions** | *Downstream Request Duration Distribution* and *Upstream Response Time Distribution* are heatmaps: every request of a step placed in its duration bucket. Two bands mean two populations (blocked vs proxied requests, cache hits vs misses, one slow backend) that a single percentile line hides. |

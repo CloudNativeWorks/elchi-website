@@ -14,7 +14,7 @@ const STR = {
       eyebrow: 'ARCHITECTURE',
       titleLine1: 'Three processes,',
       titleGrad: 'built to scale.',
-      subtitle: 'A modern technology stack with distributed processing, intelligent routing, and enterprise-grade components — designed from day one for high availability.',
+      subtitle: 'A distributed platform with intelligent routing and enterprise-grade components — designed from day one for high availability.',
     },
     threeProcess: {
       eyebrow: '3-PROCESS DISTRIBUTED ARCHITECTURE',
@@ -22,15 +22,15 @@ const STR = {
       headingLine2: 'working in harmony.',
       intro: 'Enterprise-grade scalability through three specialized processes — each with a clear role and lifecycle.',
       procs: [
-        { name: 'Registry', port: ':9090', accent: '#06b6d4', desc: 'Service discovery and routing hub',
-          items: ['Controller registration & address sharing', 'Client location tracking', 'Version-based control-plane routing', 'External processing integration', 'In-memory data with auto-cleanup'] },
-        { name: 'Controller', port: 'REST', accent: '#8b5cf6', desc: 'REST API and management layer',
-          items: ['Client management & command dispatch', 'xDS resource management (CDS, LDS, RDS, EDS)', 'User & authorization (JWT + RBAC)', 'MongoDB integration', 'AI-powered config analysis', 'K8s Discovery system'] },
-        { name: 'Control-Plane', port: ':18000', accent: '#3b82f6', desc: 'gRPC-based xDS control plane',
-          items: ['Envoy ADS (Aggregated Discovery Service)', 'VHDS (Virtual Host Discovery Service)', 'Snapshot management & cache system', 'Bridge services (snapshot, resource, poke)', 'Auto-registration with registry', 'Health monitoring & keepalive'] },
+        { name: 'Registry', port: 'routing', accent: '#06b6d4', desc: 'Service discovery and routing hub',
+          items: ['Controller registration', 'Client location tracking', 'Version-based control-plane routing', 'Automatic cleanup of stale instances'] },
+        { name: 'Controller', port: 'API', accent: '#8b5cf6', desc: 'REST API and management layer',
+          items: ['Client management & command dispatch', 'xDS resource management (CDS, LDS, RDS, EDS)', 'User & authorization (RBAC)', 'Persistent configuration store', 'AI-powered config analysis', 'K8s Discovery system'] },
+        { name: 'Control-Plane', port: 'xDS', accent: '#3b82f6', desc: 'xDS control plane',
+          items: ['Envoy ADS (Aggregated Discovery Service)', 'VHDS (Virtual Host Discovery Service)', 'Snapshot management per Envoy', 'Live updates on every change', 'Auto-registration with registry', 'Health monitoring & keepalive'] },
       ],
       ha: [
-        ['High Availability', 'Multiple control-plane instances with automatic failover and health monitoring.'],
+        ['High Availability', 'Multiple control-plane instances with automatic failover and health monitoring — and at the edge, active/passive Elchi OS pairs that share VIPs and fail over in about two seconds.'],
         ['Scalability', 'Load balancing across controllers and control-planes for enterprise workloads.'],
         ['Version Routing', 'Intelligent routing to appropriate control-plane versions based on client requirements.'],
       ],
@@ -44,11 +44,11 @@ const STR = {
         { name: 'Envoy', port: 'data plane', accent: '#3b82f6', desc: 'The L7 proxy that carries your traffic',
           items: ['Receives config over xDS from the control-plane', 'Calls Shield over ext_proc for security decisions', 'Ships access logs (ALS) to the collector', 'No restarts — config applied live'] },
         { name: 'elchi-client', port: 'edge agent', accent: '#8b5cf6', desc: 'The agent that operates each edge host',
-          items: ['Registers the node & runs controller commands (gRPC CommandStream)', 'Deploys / upgrades Envoy and bootstrap', 'Bundles & manages the Shield sidecar + Coraza WASM', 'Ships logs, manages BGP/FRR & networking'] },
+          items: ['Registers the node & runs controller commands', 'Deploys / upgrades Envoy and bootstrap', 'Bundles & manages Shield and the WAF module', 'Ships logs, manages BGP/FRR & networking', 'Runs elchi-ha on Elchi OS: active/passive VIP pairs'] },
         { name: 'Shield', port: 'ext_proc', accent: '#f43f5e', desc: 'API security enforced in the request path',
-          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 engines + built-in DLP', 'Runs as a local sidecar over a UDS socket', 'Policies pushed as files, hot-reloaded', 'block / detect / shadow decisions, fail-open safe'] },
-        { name: 'Collector', port: ':18090', accent: '#10b981', desc: 'Turns traffic into an API inventory',
-          items: ['Ingests Envoy ALS access logs (gRPC)', 'Normalizes paths, scores risk & PII', 'Writes the endpoint catalog (MongoDB) + events (ClickHouse)', 'Powers API Discovery — metadata only, no bodies'] },
+          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 engines + built-in DLP', 'Runs locally next to Envoy on each edge host', 'Policies pushed as files, hot-reloaded', 'block / detect / shadow decisions, fail-open safe'] },
+        { name: 'Collector', port: 'analytics', accent: '#10b981', desc: 'Turns traffic into an API inventory',
+          items: ['Ingests Envoy access logs', 'Normalizes paths, scores risk & PII', 'Builds the endpoint catalog and the event history', 'Powers API Discovery — metadata only, no bodies'] },
       ],
       docPre: 'Want the full wire map — every port, protocol, and data flow between the control plane and the edge? See the ',
       docLink: 'Architecture reference',
@@ -56,24 +56,24 @@ const STR = {
     },
     layered: {
       eyebrow: 'LAYERED ARCHITECTURE',
-      headingLine1: 'From frontend to proxy.',
+      headingLine1: 'From console to proxy.',
       headingLine2: 'Each layer, intentional.',
-      intro: 'Modern technology stack with distributed processing and enterprise-grade components.',
+      intro: 'A layered platform with distributed processing and enterprise-grade components.',
       layers: [
-        { title: 'Frontend Layer', color: '#3b82f6', items: [
-          { name: 'React', desc: 'Modern UI Framework' },
-          { name: 'TypeScript', desc: 'Type Safety' },
-          { name: 'React Flow', desc: 'Graph Visualization' },
+        { title: 'Management Console', color: '#3b82f6', items: [
+          { name: 'Visual editors', desc: 'Every Envoy resource' },
+          { name: 'Dependency graphs', desc: 'Resource relationships' },
+          { name: 'Live views', desc: 'Traffic, metrics & logs' },
         ] },
         { title: 'Backend Layer — 3-Process Architecture', color: '#8b5cf6', wide: true, items: [
-          { name: 'Controller', desc: 'REST API · client mgmt, xDS, auth', port: 'Custom' },
-          { name: 'Control-Plane', desc: 'gRPC xDS · ADS, VHDS, snapshot cache', port: ':18000' },
-          { name: 'Registry', desc: 'Discovery · service routing, versioning', port: ':9090' },
+          { name: 'Controller', desc: 'API · client management, xDS, auth' },
+          { name: 'Control-Plane', desc: 'xDS · ADS, VHDS, snapshots' },
+          { name: 'Registry', desc: 'Discovery · service routing, versioning' },
         ] },
-        { title: 'Data & Storage Layer', color: '#06b6d4', items: [
-          { name: 'MongoDB', desc: 'Config Storage' },
-          { name: 'VictoriaMetrics', desc: 'Time-Series DB' },
-          { name: 'OpenRouter', desc: 'AI Model Integration' },
+        { title: 'Data Layer', color: '#06b6d4', items: [
+          { name: 'Configuration store', desc: 'Resources, projects & audit' },
+          { name: 'Metrics store', desc: 'Long-term time series' },
+          { name: 'Event store', desc: 'API events & security audit' },
         ] },
         { title: 'Proxy Layer', color: '#10b981', items: [
           { name: 'Envoy Proxy', desc: 'Multi-Version Support' },
@@ -89,15 +89,15 @@ const STR = {
       intro: 'How a request travels through the platform — from initial registration to applied configuration.',
       steps: [
         { label: 'Client', sub: 'Agent on host', accent: '#64748b' },
-        { label: 'Registry', sub: 'Register & discover', accent: '#06b6d4', arrow: 'register' },
-        { label: 'Controller', sub: 'Route to version', accent: '#8b5cf6', arrow: 'route' },
-        { label: 'Control-Plane', sub: 'Serve xDS config', accent: '#3b82f6', arrow: 'xDS' },
-        { label: 'Envoy', sub: 'Apply config', accent: '#10b981', arrow: 'config' },
+        { label: 'Registry', sub: 'Locate the controller', accent: '#06b6d4', arrow: 'connect' },
+        { label: 'Controller', sub: 'Commands & resources', accent: '#8b5cf6', arrow: 'route' },
+        { label: 'Control-Plane', sub: 'Snapshot per version', accent: '#3b82f6', arrow: 'snapshot' },
+        { label: 'Envoy', sub: 'Apply config', accent: '#10b981', arrow: 'xDS' },
       ],
       explain: [
-        ['Registration', 'Clients register with Registry for service discovery on startup.'],
-        ['Routing', 'Registry routes clients to the appropriate Controller version.'],
-        ['xDS Protocol', 'Control-Plane serves Envoy configurations via gRPC streams.'],
+        ['Connection', 'Agents and Envoys connect through the front-door Envoy; the Registry, an ext_proc service, tells it which controller holds each client.'],
+        ['Routing', 'Each Envoy\'s xDS stream is sent to the control plane of its own Envoy version.'],
+        ['xDS Protocol', 'When a resource changes, the controller rebuilds the snapshot and the control plane streams it to Envoy.'],
         ['Configuration', 'Envoy receives and applies dynamic configurations live.'],
       ],
     },
@@ -121,7 +121,7 @@ const STR = {
       eyebrow: 'MİMARİ',
       titleLine1: 'Üç süreç,',
       titleGrad: 'ölçeklenmek üzere kuruldu.',
-      subtitle: 'Dağıtık işleme, akıllı yönlendirme ve kurumsal seviye bileşenlerle modern bir teknoloji yığını — yüksek erişilebilirlik için ilk günden tasarlandı.',
+      subtitle: 'Akıllı yönlendirme ve kurumsal seviye bileşenlerle dağıtık bir platform — yüksek erişilebilirlik için ilk günden tasarlandı.',
     },
     threeProcess: {
       eyebrow: '3 SÜREÇLİ DAĞITIK MİMARİ',
@@ -129,15 +129,15 @@ const STR = {
       headingLine2: 'uyum içinde çalışıyor.',
       intro: 'Üç uzmanlaşmış süreçle kurumsal seviye ölçeklenebilirlik — her biri net bir role ve yaşam döngüsüne sahip.',
       procs: [
-        { name: 'Registry', port: ':9090', accent: '#06b6d4', desc: 'Servis keşfi ve yönlendirme merkezi',
-          items: ['Controller kaydı ve adres paylaşımı', 'İstemci konum takibi', 'Sürüm tabanlı control-plane yönlendirmesi', 'External processing entegrasyonu', 'Otomatik temizlemeli bellek içi veri'] },
-        { name: 'Controller', port: 'REST', accent: '#8b5cf6', desc: 'REST API ve yönetim katmanı',
-          items: ['İstemci yönetimi ve komut dağıtımı', 'xDS kaynak yönetimi (CDS, LDS, RDS, EDS)', 'Kullanıcı ve yetkilendirme (JWT + RBAC)', 'MongoDB entegrasyonu', 'AI destekli yapılandırma analizi', 'K8s Discovery sistemi'] },
-        { name: 'Control-Plane', port: ':18000', accent: '#3b82f6', desc: 'gRPC tabanlı xDS control plane',
-          items: ['Envoy ADS (Aggregated Discovery Service)', 'VHDS (Virtual Host Discovery Service)', 'Snapshot yönetimi ve önbellek sistemi', 'Köprü servisleri (snapshot, resource, poke)', 'Registry ile otomatik kayıt', 'Sağlık izleme ve keepalive'] },
+        { name: 'Registry', port: 'routing', accent: '#06b6d4', desc: 'Servis keşfi ve yönlendirme merkezi',
+          items: ['Controller kaydı', 'İstemci konum takibi', 'Sürüm tabanlı control-plane yönlendirmesi', 'Eski instance’ların otomatik temizliği'] },
+        { name: 'Controller', port: 'API', accent: '#8b5cf6', desc: 'REST API ve yönetim katmanı',
+          items: ['İstemci yönetimi ve komut dağıtımı', 'xDS kaynak yönetimi (CDS, LDS, RDS, EDS)', 'Kullanıcı ve yetkilendirme (RBAC)', 'Kalıcı yapılandırma deposu', 'AI destekli yapılandırma analizi', 'K8s Discovery sistemi'] },
+        { name: 'Control-Plane', port: 'xDS', accent: '#3b82f6', desc: 'xDS control plane',
+          items: ['Envoy ADS (Aggregated Discovery Service)', 'VHDS (Virtual Host Discovery Service)', 'Envoy başına snapshot yönetimi', 'Her değişiklikte canlı güncelleme', 'Registry ile otomatik kayıt', 'Sağlık izleme ve keepalive'] },
       ],
       ha: [
-        ['Yüksek Erişilebilirlik', 'Otomatik yük devretme ve sağlık izlemeyle birden fazla control-plane örneği.'],
+        ['Yüksek Erişilebilirlik', "Otomatik yük devretme ve sağlık izlemeyle birden fazla control-plane örneği — edge'de ise VIP paylaşan ve yaklaşık iki saniyede devreden aktif/pasif Elchi OS çiftleri."],
         ['Ölçeklenebilirlik', "Kurumsal iş yükleri için Controller ve control-plane'ler arasında yük dengeleme."],
         ['Sürüm Yönlendirme', 'İstemci gereksinimlerine göre uygun control-plane sürümlerine akıllı yönlendirme.'],
       ],
@@ -151,11 +151,11 @@ const STR = {
         { name: 'Envoy', port: 'data plane', accent: '#3b82f6', desc: 'Trafiğinizi taşıyan L7 proxy',
           items: ["Yapılandırmayı control-plane'den xDS üzerinden alır", "Güvenlik kararları için Shield'ı ext_proc üzerinden çağırır", "Erişim loglarını (ALS) Collector'a gönderir", 'Yeniden başlatma yok — yapılandırma canlı uygulanır'] },
         { name: 'elchi-client', port: 'edge agent', accent: '#8b5cf6', desc: "Her edge host'u işleten ajan",
-          items: ["Node'u kaydeder ve Controller komutlarını çalıştırır (gRPC CommandStream)", "Envoy ve bootstrap'i dağıtır / yükseltir", "Shield sidecar'ını + Coraza WASM'ı paketler ve yönetir", 'Logları gönderir, BGP/FRR ve ağ yönetimini üstlenir'] },
+          items: ["Node'u kaydeder ve Controller komutlarını çalıştırır", "Envoy ve bootstrap'i dağıtır / yükseltir", "Shield'ı ve WAF modülünü paketler ve yönetir", 'Logları gönderir, BGP/FRR ve ağ yönetimini üstlenir', "Elchi OS'ta elchi-ha'yı çalıştırır: aktif/pasif VIP çiftleri"] },
         { name: 'Shield', port: 'ext_proc', accent: '#f43f5e', desc: 'İstek yolunda uygulanan API güvenliği',
-          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 motor + yerleşik DLP', 'UDS socket üzerinden yerel bir sidecar olarak çalışır', 'Politikalar dosya olarak iletilir, anlık yeniden yüklenir', 'block / detect / shadow kararları, fail-open güvenli'] },
-        { name: 'Collector', port: ':18090', accent: '#10b981', desc: 'Trafiği bir API envanterine dönüştürür',
-          items: ['Envoy ALS erişim loglarını alır (gRPC)', 'Yolları normalleştirir, risk ve PII puanlar', 'Endpoint kataloğunu (MongoDB) + olayları (ClickHouse) yazar', "API Discovery'yi besler — yalnızca meta veri, gövde yok"] },
+          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 motor + yerleşik DLP', 'Her edge host’ta Envoy’un yanında yerel olarak çalışır', 'Politikalar dosya olarak iletilir, anlık yeniden yüklenir', 'block / detect / shadow kararları, fail-open güvenli'] },
+        { name: 'Collector', port: 'analytics', accent: '#10b981', desc: 'Trafiği bir API envanterine dönüştürür',
+          items: ['Envoy erişim loglarını alır', 'Yolları normalleştirir, risk ve PII puanlar', 'Endpoint kataloğunu ve olay geçmişini oluşturur', "API Discovery'yi besler — yalnızca meta veri, gövde yok"] },
       ],
       docPre: 'Tam bağlantı haritasını mı istiyorsunuz — control plane ile edge arasındaki her port, protokol ve veri akışını? Dokümanlardaki ',
       docLink: 'Mimari referansına',
@@ -163,24 +163,24 @@ const STR = {
     },
     layered: {
       eyebrow: 'KATMANLI MİMARİ',
-      headingLine1: "Frontend'den proxy'ye.",
+      headingLine1: "Konsoldan proxy'ye.",
       headingLine2: 'Her katman, özenle tasarlandı.',
-      intro: 'Dağıtık işleme ve kurumsal seviye bileşenlerle modern teknoloji yığını.',
+      intro: 'Dağıtık işleme ve kurumsal seviye bileşenlerle katmanlı bir platform.',
       layers: [
-        { title: 'Frontend Katmanı', color: '#3b82f6', items: [
-          { name: 'React', desc: 'Modern UI Çerçevesi' },
-          { name: 'TypeScript', desc: 'Tip Güvenliği' },
-          { name: 'React Flow', desc: 'Graf Görselleştirme' },
+        { title: 'Yönetim Konsolu', color: '#3b82f6', items: [
+          { name: 'Görsel editörler', desc: 'Her Envoy kaynağı' },
+          { name: 'Bağımlılık grafikleri', desc: 'Kaynak ilişkileri' },
+          { name: 'Canlı görünümler', desc: 'Trafik, metrik ve log' },
         ] },
         { title: 'Backend Katmanı — 3 Süreçli Mimari', color: '#8b5cf6', wide: true, items: [
-          { name: 'Controller', desc: 'REST API · istemci yönetimi, xDS, yetkilendirme', port: 'Custom' },
-          { name: 'Control-Plane', desc: 'gRPC xDS · ADS, VHDS, snapshot önbelleği', port: ':18000' },
-          { name: 'Registry', desc: 'Discovery · servis yönlendirme, sürümleme', port: ':9090' },
+          { name: 'Controller', desc: 'API · istemci yönetimi, xDS, yetkilendirme' },
+          { name: 'Control-Plane', desc: 'xDS · ADS, VHDS, snapshot' },
+          { name: 'Registry', desc: 'Discovery · servis yönlendirme, sürümleme' },
         ] },
-        { title: 'Veri ve Depolama Katmanı', color: '#06b6d4', items: [
-          { name: 'MongoDB', desc: 'Yapılandırma Deposu' },
-          { name: 'VictoriaMetrics', desc: 'Zaman Serisi Veritabanı' },
-          { name: 'OpenRouter', desc: 'AI Model Entegrasyonu' },
+        { title: 'Veri Katmanı', color: '#06b6d4', items: [
+          { name: 'Yapılandırma deposu', desc: 'Kaynaklar, projeler ve denetim' },
+          { name: 'Metrik deposu', desc: 'Uzun vadeli zaman serileri' },
+          { name: 'Olay deposu', desc: 'API olayları ve güvenlik denetimi' },
         ] },
         { title: 'Proxy Katmanı', color: '#10b981', items: [
           { name: 'Envoy Proxy', desc: 'Çoklu Sürüm Desteği' },
@@ -196,15 +196,15 @@ const STR = {
       intro: 'Bir isteğin platform boyunca izlediği yol — ilk kayıttan uygulanan yapılandırmaya.',
       steps: [
         { label: 'Client', sub: 'Host üzerindeki ajan', accent: '#64748b' },
-        { label: 'Registry', sub: 'Kaydet ve keşfet', accent: '#06b6d4', arrow: 'kayıt' },
-        { label: 'Controller', sub: 'Sürüme yönlendir', accent: '#8b5cf6', arrow: 'yönlendir' },
-        { label: 'Control-Plane', sub: 'xDS yapılandırması sun', accent: '#3b82f6', arrow: 'xDS' },
-        { label: 'Envoy', sub: 'Yapılandırmayı uygula', accent: '#10b981', arrow: 'yapılandır' },
+        { label: 'Registry', sub: "Controller'ı bul", accent: '#06b6d4', arrow: 'bağlan' },
+        { label: 'Controller', sub: 'Komutlar ve kaynaklar', accent: '#8b5cf6', arrow: 'yönlendir' },
+        { label: 'Control-Plane', sub: 'Sürüm başına snapshot', accent: '#3b82f6', arrow: 'snapshot' },
+        { label: 'Envoy', sub: 'Yapılandırmayı uygula', accent: '#10b981', arrow: 'xDS' },
       ],
       explain: [
-        ['Kayıt', "İstemciler başlangıçta servis keşfi için Registry'ye kaydolur."],
-        ['Yönlendirme', 'Registry, istemcileri uygun Controller sürümüne yönlendirir.'],
-        ['xDS Protokolü', 'Control-Plane, Envoy yapılandırmalarını gRPC akışları üzerinden sunar.'],
+        ['Bağlantı', "Ajanlar ve Envoy'lar ön kapı Envoy'u üzerinden bağlanır; bir ext_proc servisi olan Registry, her client'ı hangi controller'ın tuttuğunu bildirir."],
+        ['Yönlendirme', "Her Envoy'un xDS akışı, kendi Envoy sürümünün control plane'ine gider."],
+        ['xDS Protokolü', "Bir kaynak değişince controller snapshot'ı yeniden oluşturur, control plane onu Envoy'a akıtır."],
         ['Yapılandırma', 'Envoy, dinamik yapılandırmaları canlı olarak alır ve uygular.'],
       ],
     },
@@ -460,7 +460,7 @@ function RequestFlow() {
 
 function Integrations() {
   const t = STR[getLocale()].integrations;
-  const ints = ['Kubernetes', 'Docker', 'gRPC', 'VictoriaMetrics', 'MongoDB', 'Grafana', 'Envoy', 'OpenRouter', 'LDAP', 'Syslog', 'ELK Stack', 'Let\'s Encrypt'];
+  const ints = ['Kubernetes', 'Docker', 'Envoy', 'Grafana', 'Prometheus', 'OpenStack', 'OpenRouter', 'LDAP / AD', 'Syslog', 'ELK Stack', 'Let\'s Encrypt', 'Google Trust Services'];
   return (
     <section className="section">
       <div className="container">
@@ -511,4 +511,5 @@ function ArchCTA() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<ArchApp/>);
+export const Page = ArchApp;
+if (typeof document !== 'undefined') ReactDOM.createRoot(document.getElementById('root')).render(<ArchApp/>);

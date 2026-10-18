@@ -60,7 +60,7 @@ When the standalone installer runs with 2+ nodes, these ports are additionally o
 Docker Swarm deployments use the same logical ports and additionally require the standard Swarm mesh ports between nodes: **2377/tcp, 7946/tcp+udp, 4789/udp**.
 
 :::note[Bare-metal ports differ from Helm/Kubernetes ports]
-The Go processes have different built-in defaults, used as-is by the Helm charts inside the cluster network: controller REST `:8099`, controller gRPC `:50051`, control-plane xDS `:18000`, registry gRPC `:9090`, registry Prometheus metrics `:9091` (hardcoded). The bare-metal installer remaps these to the 18xx/19xx range shown above. In both cases they are internal — the front Envoy on `:443` is the only public entry point.
+The processes have different built-in defaults, used as-is by the Helm charts inside the cluster network: controller REST `:8099`, controller gRPC `:50051`, control-plane xDS `:18000`, registry gRPC `:9090`, registry Prometheus metrics `:9091` (hardcoded). The bare-metal installer remaps these to the 18xx/19xx range shown above. In both cases they are internal — the front Envoy on `:443` is the only public entry point.
 :::
 
 ### Internal-only ports (never open these)
@@ -73,6 +73,7 @@ Edge hosts need almost nothing opened:
 
 - **Your Envoy data-plane listeners** — whatever ports the services you publish through Envoy use (e.g. 80/443 for an edge proxy). These are defined by your listener configs, not by Elchi.
 - **`:179` TCP (BGP)** — only when the client is installed with `--enable-bgp` (FRR). Allow from/to your BGP peers.
+- **`:8650` UDP (HA heartbeat)** — only on the two members of an [HA pair](/ha-pairs/overview), between their data **and** management addresses, both directions. The Elchi OS firewall opens it for the peer's addresses automatically. The standby also opens TCP connections to the active member's VIP listener ports to probe them — see [Network requirements](/ha-pairs/setup#network-requirements).
 
 Everything else is local-only and needs **no firewall rule**:
 
@@ -165,6 +166,7 @@ download.db-ip.com:443                          # GeoIP database download (or up
 # Ingress
 <your data-plane listener ports>                # defined by your Envoy listeners
 179/tcp    from BGP peers                       # only with --enable-bgp
+8650/udp   from the HA peer (data + mgmt)       # only on HA pair members
 
 # Egress
 <elchi-platform-address>:443                    # client gRPC + Envoy xDS/ALS (the one that matters)

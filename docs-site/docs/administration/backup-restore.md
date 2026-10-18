@@ -5,7 +5,7 @@ sidebar_position: 6
 tags: [administration, backup, maintenance]
 ---
 
-Elchi's **Maintenance** tools let you snapshot a project's configuration to a portable JSON file, move it between projects or environments, and clean up resources left behind by retired Envoy versions. Find them under **Settings → Maintenance**, which has two sub-tabs: **Backup & Restore** and **Cleanup**. Every operation here is restricted to **Owner/Admin** roles.
+Elchi's **Maintenance** tools let you snapshot a project's configuration to a portable JSON file, move it between projects or environments, and clean up resources left behind by retired Envoy versions. Find them under **Settings → Maintenance**, which has two sub-tabs: **Cleanup** (shown first) and **Backup & restore**. Every operation here is restricted to **Owner/Admin** roles.
 
 ## What a backup contains
 
@@ -31,11 +31,11 @@ A backup file carries sensitive material — cloud credentials, LDAP bind passwo
 
 ## Exporting a backup
 
-**UI — Settings → Maintenance → Backup & Restore → Export Backup:**
+**UI — Settings → Maintenance → Backup & restore → Export backup:**
 
-1. Toggle **Include Default Resources** if you want the platform's default resources in the file (off by default).
-2. Optionally add a **description** (up to 200 characters).
-3. Click **Create & Download Backup**. The browser downloads `backup-project-<backup_id>.json`, and a summary modal reports the backup ID, project, total resource count, and size.
+1. Toggle **Include system/default resources in the backup** if you want the platform's default resources in the file (off by default).
+2. Optionally add a **Description** (up to 200 characters).
+3. Click **Create & download backup** and confirm with **Create Backup**. The browser downloads `backup-project-<backup_id>.json`, and a summary modal reports the backup ID, project, total resource count, and size.
 
 **API:**
 
@@ -78,11 +78,11 @@ Key behaviors and safeguards:
 - **Default/system resources are skipped**, and every project reference is remapped to the target project.
 - **Name conflicts are non-fatal.** A resource that collides on name/version but has a different ID is left as-is and reported as a warning.
 
-**UI flow — Import Backup:**
+**UI flow — Import backup** (imports into the current project):
 
-1. Upload the `.json` file. Elchi auto-validates its structure and runs a **dry-run**, then shows an **Import Preview** modal (Will Create / Update / Skip / Fail counts, plus any errors).
-2. The **Import Backup** button appears only when the dry-run reports **zero failures**.
-3. Click it, confirm the "this will overwrite existing data" prompt, and the real import runs. The result modal breaks down created/updated/skipped/failed per resource type.
+1. Click **Select backup file** and pick the `.json` file. Elchi auto-validates its structure and runs a **dry-run**, then shows an **Import Preview (Dry Run)** modal (**Total Resources**, **Will Create** / **Will Update** / **Will Skip** / **Will Fail** counts, plus any errors).
+2. The **Import backup** button appears only when the dry-run reports **zero failures**.
+3. Click it, confirm with **Yes, Import Now**, and the real import runs. The result modal breaks down created/updated/skipped/failed per resource type.
 
 **API:**
 
@@ -110,9 +110,9 @@ A fully successful import returns `200`; a partial import (some collection faile
 
 When you retire an Envoy version, its xDS resources can linger. **Settings → Maintenance → Cleanup** removes resources tied to a specific version within a project.
 
-1. **Select Version** — the version whose resources you want to remove.
-2. **Cleanup Mode** — `All Resources`, `Default Resources Only`, or `User Resources Only (non-default)`.
-3. Click **Clean Up Resources** and confirm.
+1. **Version** — the version whose resources you want to remove. The list shows the versions that have documents in the project, each with its resource count; a version that still has listeners (or ACME certificates that exist only on it) is disabled.
+2. **Cleanup mode** — **All resources**, **Default resources only**, or **User resources only** (keep defaults).
+3. Click **Clean up resources** and confirm.
 
 Safeguards:
 

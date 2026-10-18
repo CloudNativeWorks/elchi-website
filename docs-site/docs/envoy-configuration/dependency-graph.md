@@ -19,8 +19,7 @@ All three read the same [resource model](/envoy-configuration/config-model): eve
 object is addressed by `name`, `gtype` (its Envoy proto type, e.g.
 `envoy.config.route.v3.RouteConfiguration`), `collection` (the store it lives in,
 e.g. `listeners`, `clusters`, `routes`), `project`, and `version` (the Envoy
-release). The graph tools render with [React Flow](https://reactflow.dev)
-(`@xyflow/react`), with search, category filtering, and node detail popovers.
+release). The graph tools offer search, category filtering, and node detail popovers.
 
 ## Dependency Graph
 
@@ -112,12 +111,12 @@ actually serves that node.
 | --- | --- |
 | Endpoint | `GET /api/v3/bridge/nodes/:nodeID/snapshot` |
 | Query param | `version` (Envoy version, used for control-plane routing) |
-| Node id | Composed as `<listenerName>:<project>` in the UI |
+| Node id | `<listener>::<project>[::<downstream address>]`; the Registry's snapshot drawer splits it into Listener Name, Project ID and Downstream IP |
 | Response | `{ node_id, resources: [{ type, data }], num_watches, last_watch }` |
 | Resource types | `LDS`, `CDS`, `RDS`, `EDS` (and other xDS types) |
 | Also | `DELETE /api/v3/bridge/nodes/:nodeID/snapshot` clears the node's cached snapshot |
 
-The response is rendered as a collapsible JSON tree in the UI, grouped by xDS type,
+In the UI it opens from **Registry → Control Planes** (**Details** in a node's **Snapshot** column) as the **Snapshot Details** drawer, with one tab per xDS type,
 with `num_watches` and `last_watch` telling you whether Envoy is actively subscribed
 and when it last pulled. A `DELETE` on the same path clears that node's cached
 snapshot, forcing a clean re-push.

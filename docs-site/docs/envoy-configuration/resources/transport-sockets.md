@@ -14,7 +14,7 @@ The actual key material lives in [Secrets](/envoy-configuration/resources/secret
 
 ## In Elchi
 
-Transport sockets live under **Resources → Transport Socket** (`/resource/transport-socket`). Create one with **Add New**, choosing an Envoy version first. Elchi models several transport types and renders the matching form by type URL:
+Transport sockets live under **Building blocks → Transport Socket** in the sidebar (`/resource/transport-socket`). Create one with **New Transport Socket**, choosing an Envoy version first. Elchi models several transport types and renders the matching form by type URL:
 
 | Type | Direction | Envoy type URL |
 | --- | --- | --- |

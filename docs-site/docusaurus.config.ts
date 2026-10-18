@@ -52,6 +52,10 @@ export default async function createConfig(): Promise<Config> {
     onBrokenLinks: 'throw',
     onBrokenAnchors: 'throw',
     favicon: 'img/favicon.ico',
+    headTags: [
+      {tagName: 'link', attributes: {rel: 'icon', type: 'image/svg+xml', href: '/docs/img/favicon.svg'}},
+      {tagName: 'link', attributes: {rel: 'apple-touch-icon', sizes: '180x180', href: '/docs/img/apple-touch-icon.png'}},
+    ],
 
     future: {
       v4: true,
@@ -117,6 +121,8 @@ export default async function createConfig(): Promise<Config> {
     ],
 
     themeConfig: {
+      // Social card for every docs page (og:image / twitter:image), 1200×630.
+      image: 'img/og-docs.png',
       colorMode: {defaultMode: 'light', respectPrefersColorScheme: true},
       navbar: {
         logo: {alt: 'Elchi', src: 'img/logo.png', href: 'https://www.elchi.io/', target: '_self'},

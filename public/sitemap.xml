@@ -10,7 +10,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/"/>
-        <lastmod>2026-07-05</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
@@ -20,7 +20,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/features.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/features.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/features.html"/>
-        <lastmod>2026-07-05</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -30,7 +30,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/architecture.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/architecture.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/architecture.html"/>
-        <lastmod>2026-07-05</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -40,9 +40,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/contact.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/contact.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/contact.html"/>
-        <lastmod>2026-07-08</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.6</priority>
+        <lastmod>2026-10-18</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
     </url>
 
     <url>
@@ -50,7 +50,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/"/>
-        <lastmod>2026-07-05</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
@@ -60,7 +60,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/features.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/features.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/features.html"/>
-        <lastmod>2026-07-05</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -70,7 +70,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/architecture.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/architecture.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/architecture.html"/>
-        <lastmod>2026-07-05</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -80,9 +80,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/contact.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/contact.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/contact.html"/>
-        <lastmod>2026-07-08</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.5</priority>
+        <lastmod>2026-10-18</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>
 
 
@@ -91,9 +91,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/core.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/core.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/core.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
+        <priority>1.0</priority>
     </url>
 
     <url>
@@ -101,9 +101,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-security.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-security.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-security.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
+        <priority>1.0</priority>
     </url>
 
     <url>
@@ -111,9 +111,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-discovery.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-discovery.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-discovery.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
+        <priority>1.0</priority>
     </url>
 
     <url>
@@ -121,9 +121,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/gslb.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/gslb.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/gslb.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
+        <priority>1.0</priority>
     </url>
 
     <url>
@@ -131,29 +131,20 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/waf.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/waf.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/waf.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
+        <priority>1.0</priority>
     </url>
 
-    <url>
-        <loc>https://www.elchi.io/plans.html</loc>
-        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/plans.html"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/plans.html"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/plans.html"/>
-        <lastmod>2026-08-26</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
 
     <url>
         <loc>https://www.elchi.io/tr/products/core.html</loc>
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/core.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/core.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/core.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
 
     <url>
@@ -161,9 +152,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-security.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-security.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-security.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
 
     <url>
@@ -171,9 +162,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/api-discovery.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/api-discovery.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/api-discovery.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
 
     <url>
@@ -181,9 +172,9 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/gslb.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/gslb.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/gslb.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
 
     <url>
@@ -191,19 +182,10 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/products/waf.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/waf.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/products/waf.html"/>
-        <lastmod>2026-08-26</lastmod>
+        <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
 
-    <url>
-        <loc>https://www.elchi.io/tr/plans.html</loc>
-        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/plans.html"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/plans.html"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/plans.html"/>
-        <lastmod>2026-08-26</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
 
 </urlset>

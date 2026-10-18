@@ -21,7 +21,9 @@ The single most important network filter is the **HTTP Connection Manager (HCM)*
 
 ## In Elchi
 
-Filters live under **Filters** in the UI, grouped by the four categories above (`/filters/listener/...`, `/filters/network/...`, `/filters/http/...`, `/filters/udp/...`). Each filter type has its own list and create flow; as with every resource you choose an Envoy version first and get a form generated from that version's protobuf.
+Filters live under **Building blocks → Filter** in the sidebar (`/filters`). The catalogue page lays the categories out as the stages traffic meets them: **1** listener filters, **2** network filters, **3** HTTP filters, with UDP listener filters shown as a separate path. Each stage lists its filter types and how many are in use; each tile shows how many resources of that type exist, and its info icon explains the filter. Use **Find a filter** to filter by name or canonical name (for example `ext_proc`) and **In use only** to hide types with no resources.
+
+Opening a tile leads to that filter type's own list and create flow (`/filters/listener/...`, `/filters/network/...`, `/filters/http/...`, `/filters/udp/...`); as with every resource you choose an Envoy version first and get a form generated from that version's protobuf.
 
 You author a filter as a reusable, named resource, then **attach it by reference** where it belongs — listener filters and network filters onto a listener/filter chain, HTTP filters into an HCM's `http_filters` list. HTTP filters can also be overridden per route or per virtual host via `typed_per_filter_config`.
 

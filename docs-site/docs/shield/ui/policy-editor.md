@@ -4,7 +4,7 @@ description: Build, test, and deploy Shield policies from the Elchi UI — the B
 sidebar_position: 1
 ---
 
-Shield policies are authored in the Elchi UI under **Shield → Policies**. Clicking a policy (or **Add New Shield Policy**) opens the policy editor: a structured **policy builder** where you compose domains, routes, and protections with forms, while the YAML config file — its name, path, and content hash — is generated automatically. Editing is gated to **Admin** and **Owner** roles; everyone else gets a read-only view.
+Shield policies are authored in the Elchi UI under **Shield → Policies**. Clicking a policy (or **New Shield Policy**) opens the policy editor: a structured **policy builder** where you compose domains, routes, and protections with forms, while the YAML config file — its name, path, and content hash — is generated automatically. Editing is gated to **Admin** and **Owner** roles; everyone else gets a read-only view.
 
 The top bar shows the policy name, the generated config file it becomes on every edge (the name is slugified, e.g. `Api Public` → `api-public.yaml`), the stored version tag, and an **unsaved** marker while you have pending edits. Next to it sit **Undo**/**Redo**, **Templates**, **Import from Discovery**, **Delete**, and the save button — **Create & Deploy** for a new policy, **Save & Deploy** for an existing one.
 

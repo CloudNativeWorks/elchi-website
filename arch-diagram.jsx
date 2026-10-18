@@ -175,7 +175,7 @@ function ArchDiagram() {
           <rect x="750" y="240" width="130" height="22" rx="14" fill="#cffafe"/>
           <rect x="750" y="254" width="130" height="8" fill="#cffafe"/>
           <text x="762" y="256" fontSize="10" fontFamily="Geist Mono, monospace" fill="#0e7490" fontWeight="600">REGISTRY</text>
-          <text x="869" y="256" fontSize="8" fontFamily="Geist Mono, monospace" fill="#0e7490" textAnchor="end">:9090</text>
+          <text x="869" y="256" fontSize="8" fontFamily="Geist Mono, monospace" fill="#0e7490" textAnchor="end">routing</text>
           <g transform="translate(762, 274)">
             <circle cx="5" cy="5" r="2.5" fill="#06b6d4" className="blink"/>
             <text x="13" y="8" fontSize="10" fontFamily="Geist, sans-serif" fill="#334155">client → ctrl map</text>
@@ -196,7 +196,7 @@ function ArchDiagram() {
           <rect x="80" y="380" width="240" height="22" rx="14" fill="#ede9fe"/>
           <rect x="80" y="394" width="240" height="8" fill="#ede9fe"/>
           <text x="96" y="396" fontSize="10" fontFamily="Geist Mono, monospace" fill="#6d28d9" fontWeight="600">CONTROLLER</text>
-          <text x="304" y="396" fontSize="9" fontFamily="Geist Mono, monospace" fill="#6d28d9" textAnchor="end">REST · gRPC</text>
+          <text x="304" y="396" fontSize="9" fontFamily="Geist Mono, monospace" fill="#6d28d9" textAnchor="end">API</text>
           <g transform="translate(96, 416)">
             <circle cx="5" cy="5" r="2.5" fill="#8b5cf6" className="blink"/>
             <text x="14" y="8" fontSize="11" fontFamily="Geist, sans-serif" fill="#334155">UI · client commands</text>
@@ -217,17 +217,17 @@ function ArchDiagram() {
           <text x="664" y="396" fontSize="9" fontFamily="Geist Mono, monospace" fill="#1d4ed8" textAnchor="end">xDS · ADS · VHDS</text>
           <g transform="translate(356, 414)">
             <rect width="148" height="56" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
-            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.39.1</text>
+            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.39.3</text>
             <circle cx="136" cy="16" r="3" fill="#3b82f6" className="blink"/>
             <text x="12" y="38" fontSize="9" fontFamily="Geist, sans-serif" fill="#475569">snapshot cache</text>
-            <text x="12" y="50" fontSize="8" fontFamily="Geist Mono, monospace" fill="#94a3b8">:18000</text>
+            <text x="12" y="50" fontSize="8" fontFamily="Geist Mono, monospace" fill="#94a3b8">xDS</text>
           </g>
           <g transform="translate(516, 414)">
             <rect width="148" height="56" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
-            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.39.3</text>
+            <text x="12" y="20" fontSize="11" fontFamily="Geist Mono, monospace" fill="#1d4ed8" fontWeight="600">v1.39.4</text>
             <circle cx="136" cy="16" r="3" fill="#3b82f6" className="blink" style={{animationDelay:'.5s'}}/>
             <text x="12" y="38" fontSize="9" fontFamily="Geist, sans-serif" fill="#475569">snapshot cache</text>
-            <text x="12" y="50" fontSize="8" fontFamily="Geist Mono, monospace" fill="#94a3b8">:18000</text>
+            <text x="12" y="50" fontSize="8" fontFamily="Geist Mono, monospace" fill="#94a3b8">xDS</text>
           </g>
         </g>
 
@@ -236,7 +236,7 @@ function ArchDiagram() {
           <rect x="720" y="395" width="160" height="74" rx="12" fill="white" stroke="#cbd5e1"/>
           <rect x="720" y="395" width="160" height="22" rx="12" fill="#f1f5f9"/>
           <rect x="720" y="409" width="160" height="8" fill="#f1f5f9"/>
-          <text x="736" y="411" fontSize="10" fontFamily="Geist Mono, monospace" fill="#475569" fontWeight="600">MongoDB</text>
+          <text x="736" y="411" fontSize="10" fontFamily="Geist Mono, monospace" fill="#475569" fontWeight="600">Config store</text>
           <text x="864" y="411" fontSize="9" fontFamily="Geist Mono, monospace" fill="#94a3b8" textAnchor="end">store</text>
           <text x="736" y="436" fontSize="10" fontFamily="Geist, sans-serif" fill="#64748b">configs · users</text>
           <text x="736" y="452" fontSize="10" fontFamily="Geist, sans-serif" fill="#64748b">projects · audit</text>
@@ -244,7 +244,7 @@ function ArchDiagram() {
 
         {/* ─── Edge labels ─── */}
         <text x="86" y="220" fontSize="9" fontFamily="Geist Mono, monospace" fill="#f59e0b" fontWeight="500">HTTPS</text>
-        <text x="568" y="225" fontSize="9" fontFamily="Geist Mono, monospace" fill="#10b981" fontWeight="500">xDS / gRPC</text>
+        <text x="568" y="225" fontSize="9" fontFamily="Geist Mono, monospace" fill="#10b981" fontWeight="500">xDS</text>
         <text x="712" y="296" fontSize="9" fontFamily="Geist Mono, monospace" fill="#0e7490" fontWeight="600" textAnchor="middle">ext_proc</text>
         <text x="210" y="350" fontSize="9" fontFamily="Geist Mono, monospace" fill="#8b5cf6" fontWeight="500">REST</text>
         <text x="520" y="350" fontSize="9" fontFamily="Geist Mono, monospace" fill="#3b82f6" fontWeight="500">xDS</text>
@@ -397,7 +397,7 @@ function ArchTerminal() {
           Client connected
         </span>
         <span className="mono" style={{fontSize:11,color:'#94a3b8'}}>
-          xDS / gRPC · ADS · VHDS
+          xDS · ADS · VHDS
         </span>
       </div>
     </div>

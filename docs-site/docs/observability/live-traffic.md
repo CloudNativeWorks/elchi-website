@@ -36,7 +36,7 @@ requests or status codes.
 |---|---|
 | **Summary row** | Requests a second (with a trend), errors (4xx + 5xx), requests **answered by Shield** (blocks and rate limits), p99 latency with p50 / p90, open connections, and how many proxies answered. |
 | **Per proxy** | The same numbers for each client that runs the listener. **Show only this proxy** narrows the map to it. |
-| **Nodes** | Each node shows its rate and, for clusters, p99 and healthy hosts. A bar under the node splits it by response class. |
+| **Nodes** | Each node shows its rate and, for clusters, p99 and healthy hosts. A bar under the node splits it by response class. A cluster in trouble also lists its upstream pressure in a few words, worst first (hosts ejected, timeouts, upstream resets, connect fails, overflow, retries) and is tinted lightly when hosts are ejected or timeouts, resets, connect fails and overflow together reach 1 % of its requests. |
 | **Colours** | Requests are coloured by class: 2xx, 3xx, 4xx, 5xx, and Shield blocks. A node is tinted where the 5xx came from — the upstream, or the stage that answered — from 2 % and stronger from 10 %. |
 | **Folded nodes** | Quiet nodes fold into **+N more**; expand them to see them (up to 60). |
 | **Shield** | When Shield inspects the listener, its blocks are matched to requests by request id and marked on the map (owners and admins). |
@@ -45,7 +45,20 @@ requests or status codes.
 
 Click a node — a domain, route, cluster or endpoint — for a side panel with its rate, latency
 percentiles, bytes, response classes, healthy hosts and the **recent sampled requests** that went
-through it. Each request links to **Logs**; **Follow this request on the map** highlights its path.
+through it. For a cluster it also lists the upstream pressure counters, per second (hover a name for
+its meaning):
+
+| Counter | Meaning (Envoy stat) |
+|---|---|
+| **Timeouts** | The route timeout passed before the upstream answered; Envoy answered 504 (`upstream_rq_timeout`). |
+| **Upstream resets** | The upstream reset the request stream — a backend crash, restart or protocol error (`upstream_rq_rx_reset`). |
+| **Cancelled** | Envoy dropped the request to the upstream, mostly because the client went away; not a fault of the backend (`upstream_rq_tx_reset`). |
+| **Connect fails** | Connections to the upstream that failed or timed out (`upstream_cx_connect_fail` / `_timeout`, the larger of the two). |
+| **Overflow** | Requests refused by the circuit breaker — pending queue or retry budget full (`upstream_rq_pending_overflow` + `upstream_rq_retry_overflow`). |
+| **Retries** | Requests sent again by the retry policy (`upstream_rq_retry`). |
+
+Ejected hosts are shown next to **Hosts** (*N healthy of M, K ejected*). A listener node that serves
+TLS lists each **Certificate** with its days left and the **Handshake errors** rate. Each request links to **Logs**; **Follow this request on the map** highlights its path.
 A selected source stays drawn while its panel is open.
 
 ![Live traffic — the detail panel of a cluster with the latest requests through it](/img/docs/live-traffic-node-light.webp#gh-light-mode-only)

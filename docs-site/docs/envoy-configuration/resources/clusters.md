@@ -11,7 +11,7 @@ Clusters are the target of routing: a [Route](/envoy-configuration/resources/rou
 
 ## In Elchi
 
-Clusters live under **Resources → Cluster** (`/resource/cluster`). Create one with **Add New**, choosing an Envoy version first — the form is generated from that version's cluster protobuf.
+Clusters live under **Traffic path → Cluster** in the sidebar (`/resource/cluster`). Create one with **New Cluster**, choosing an Envoy version first — the form is generated from that version's cluster protobuf.
 
 The editor is organized around the `Cluster` message with a left-hand anchor that switches on the sections you need. The two required foundations are the **name** and the **discovery type**; everything else — load-balancing policy, health checks, circuit breakers, outlier detection, connection options, transport socket — is optional and toggled on as needed.
 
@@ -80,4 +80,4 @@ outlier_detection:
 - **Combine active + passive health.** `health_checks` proactively probes; `outlier_detection` reacts to live errors. Together they eject bad hosts quickly.
 - **Set circuit breakers.** Unbounded clusters let one slow upstream exhaust resources — cap connections and pending requests per priority.
 - **Upstream HTTP/2 needs protocol options.** For gRPC or HTTP/2 upstreams, configure `typed_extension_protocol_options`.
-- **Publish resolves the tree.** Publishing a cluster re-snapshots every listener that transitively routes to it; check the dependency graph for broken references and use **Snapshot dump** to confirm CDS/EDS landed.
+- **Publish resolves the tree.** Publishing a cluster re-snapshots every listener that transitively routes to it; check the dependency graph for broken references and use the node's [snapshot](/envoy-configuration/snapshot-dump) (**Registry → Control Planes → Details**) to confirm CDS/EDS landed.

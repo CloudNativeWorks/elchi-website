@@ -9,7 +9,7 @@ Elchi splits responsibilities across three cooperating processes. Understanding 
 - **Registry** (`:9090`) — Service discovery hub. Tracks controllers and control-planes, routes requests to the right control-plane version.
 - **Controller** (REST) — Management plane. Owns xDS resources, users, RBAC, MongoDB persistence, and AI analysis.
 - **Control-Plane** (`:18000`) — gRPC xDS server. Streams ADS / VHDS configurations to Envoy with snapshot caching.
-- **Client Agent** (Go) — Lightweight host agent. Registers Envoy proxies, exports logs to Syslog/ELK, manages BGP.
+- **Client Agent** — Lightweight host agent. Registers Envoy proxies, exports logs to Syslog/ELK, manages BGP. On Elchi OS appliances it also runs `elchi-ha`, which lets two boxes share VIPs as an [HA pair](/ha-pairs/overview).
 
 Day-to-day, the configuration loop looks like this:
 

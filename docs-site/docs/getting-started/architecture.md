@@ -34,7 +34,7 @@ The connection table below gives the exposure classification (loopback / interna
 Every data-plane host runs the same local stack:
 
 - **Envoy** — the data-plane proxy. Public TLS listener(s) on `443` (or `--port`); admin on `9901` (always loopback).
-- **elchi-client** — the lightweight Go agent. It has **no inbound listener**; it dials **out** to the Controller's `CommandStream` (`50051`), registers the node, ships logs (Syslog / Elastic), manages BGP/FRR + networking, and runs the lifecycle commands the Controller pushes.
+- **elchi-client** — the lightweight edge agent. It has **no inbound listener**; it dials **out** to the Controller's `CommandStream` (`50051`), registers the node, ships logs (Syslog / Elastic), manages BGP/FRR + networking, and runs the lifecycle commands the Controller pushes.
 - **elchi-shield** — the local `ext_proc` WAF sidecar. Envoy reaches it over a **Unix domain socket** (loopback by construction); its management surface (`/healthz`, `/metrics`, `/configz`, …) is on `9001`, loopback-only unless `--allow-non-loopback`. See [Wiring Shield into Envoy](/shield/envoy-wiring).
 - **Envoy → collector (ALS)** — Envoy also streams access logs to the central collector's `18090` for API discovery.
 

@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: collector
-          image: jhonbrownn/elchi-collector:v0.1.14
+          image: jhonbrownn/elchi-collector:v0.1.15
           ports:
             - { name: grpc, containerPort: 18090 }
             - { name: http, containerPort: 18091 }
@@ -144,9 +144,9 @@ that CA.
 ## Container image
 
 The collector ships as a static, distroless non-root image
-(`gcr.io/distroless/static-debian12:nonroot`, UID/GID `65532`), built with Go 1.26.4, exposing
+(`gcr.io/distroless/static-debian12:nonroot`, UID/GID `65532`), exposing
 `18090` (gRPC ALS) and `18091` (metrics/health). It is published to Docker Hub as
-`jhonbrownn/elchi-collector:vX.Y.Z` (and `latest`); the version this page pins, `v0.1.14`, is
+`jhonbrownn/elchi-collector:vX.Y.Z` (and `latest`); the version this page pins, `v0.1.15`, is
 the current release.
 
 ## When to run it standalone

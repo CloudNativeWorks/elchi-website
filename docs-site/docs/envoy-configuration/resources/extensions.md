@@ -11,16 +11,24 @@ Some extensions are also delivered dynamically over the **Extension Config Disco
 
 ## In Elchi
 
-Extensions live under **Extensions** in the UI (`/extensions/...`). Each extension type has its own list and create flow; you pick an Envoy version first and edit a form generated from that version's protobuf for the extension's message. Types Elchi surfaces here include:
+Extensions live under **Building blocks → Extension** in the sidebar (`/extensions`). The catalogue page groups every extension type by what it is for — **Observability**, **Requests**, **Upstreams** and **Proxy** — and each tile shows how many resources of that type exist. Use **Find an extension** to filter by name or Envoy category and **In use only** to hide the types with no resources; the info icon on a tile explains the type. Opening a tile leads to that type's own list and create flow, where you pick an Envoy version first and edit a form generated from that version's protobuf for the extension's message.
 
-| Extension | Envoy category | Used by |
-| --- | --- | --- |
-| Access Log | `envoy.access_loggers` | Listeners / HCM access logging |
-| Compressor Library | `envoy.compression.compressor` | The Compressor HTTP filter |
-| DNS Resolver | `envoy.network.dns_resolver` | Clusters / dynamic forward proxy |
-| HealthCheck Event File Sink | `envoy.health_check.event_sinks` | Cluster health-check event logging |
-| HTTP Protocol Options | `envoy.upstreams.http.http_protocol_options` | Upstream codec selection on clusters |
-| Cluster Dynamic Forward Proxy | `envoy.clusters` | On-demand DNS resolution clusters |
+| Group | Extension | Envoy category | Used by |
+| --- | --- | --- | --- |
+| Observability | Access Log | `envoy.access_loggers` | Listeners / HCM access logging |
+| Observability | Tracers | `envoy.tracers` | HCM request tracing |
+| Observability | Stat Sinks | `envoy.stats_sinks` | Bootstrap stats export |
+| Observability | HealthCheck Event File Sink | `envoy.health_check.event_sinks` | Cluster health-check event logging |
+| Requests | Original IP Detection | `envoy.http.original_ip_detection` | HCM client-IP detection |
+| Requests | Path Rewrite Policy | `envoy.path.rewrite` | Route path rewriting |
+| Requests | Uri Template Match | `envoy.path.match.uri_template.uri_template_matcher` | Route path matching |
+| Requests | Internal Redirect Predicates | `envoy.internal_redirect_predicates` | Route internal redirects |
+| Requests | Stateful Session State | `envoy.http.stateful_session.header` | The Stateful Session HTTP filter |
+| Requests | Compressor Library | `envoy.compression.compressor` | The Compressor HTTP filter |
+| Upstreams | Cluster Dynamic Forward Proxy | `envoy.clusters` | On-demand DNS resolution clusters |
+| Upstreams | DNS Resolver | `envoy.network.dns_resolver` | Clusters / dynamic forward proxy |
+| Upstreams | Http Protocol Options | `envoy.upstreams.http.http_protocol_options` | Upstream codec selection on clusters |
+| Proxy | Resource Monitor | `envoy.resource_monitors` | The bootstrap overload manager |
 
 You author an extension as a named, reusable resource, then **reference it** from the resource that consumes it — an access-logger extension from a listener's `access_log`, a compressor library from the Compressor filter, HTTP protocol options from a cluster's `typed_extension_protocol_options`, and so on.
 

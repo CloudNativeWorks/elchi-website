@@ -32,6 +32,7 @@ Each entry below is a **symptom**, its likely **cause**, and the **fix**. Work t
 **Fix.**
 
 - Check the control-plane pod logs for snapshot errors.
+- Open the node's snapshot (**Registry → Control Planes → Details**, see [Snapshot Dump](/envoy-configuration/snapshot-dump)) to see what the control plane is actually serving it.
 - Confirm the Envoy version matches one of the deployed version tags — see [Envoy versions & upgrades](/envoy-configuration/versions-and-upgrades).
 - Use the dependency graph in the UI to spot orphaned references.
 
@@ -134,6 +135,16 @@ See the source-IP section in [Wiring Shield into Envoy](/shield/envoy-wiring).
 **Fix.** Under **GSLB** (`/gslb`), open the node's drawer, check its health, and **push a notify** so it pulls the latest snapshot/change feed. Confirm the record's IPs are marked healthy on **GSLB → Statistics** and that the zone defaults under **Settings → GSLB** cover the queried name. See [GSLB](/gslb).
 
 ## Access & login
+
+### Login page says "Can't reach &lt;host&gt;"
+
+**Cause.** Above the sign-in fields, the login page checks whether this browser can reach the control plane's API (the UI's configured `API_URL`, or the page's own origin when none is set). It reads *Reaching &lt;host&gt;…* while checking, *Control plane &lt;host&gt;* when the API answers, and *Can't reach &lt;host&gt;. Sign-in will fail until it answers.* when the request fails or gets no answer within 6 seconds. Any HTTP answer counts as reachable, so this line flags network, DNS, TLS or proxy problems — not wrong credentials.
+
+**Fix.**
+
+- Confirm the host shown is the address you expect; a wrong `API_URL` in the UI's `config.js` points every request elsewhere.
+- Check that the front-door Envoy/ingress is up and that the host resolves and is reachable from this browser (VPN, firewall, certificate).
+- Click **Retry** to check again once it is fixed.
 
 ### Login or 2FA problems (locked out, lost authenticator)
 

@@ -77,7 +77,7 @@ Rather than build all four by hand, [Scenario Workflows](/envoy-configuration/sc
 
 ## Step 4 — Create the cluster and endpoint
 
-Go to **Resources → Endpoint** → **Add New**. Pick your Envoy version. Set `cluster_name` (this is the join key — it must match the cluster you create next) and add your backend's address:
+Go to **Traffic path → Endpoint** in the sidebar → **New Endpoint**. Pick your Envoy version. Set `cluster_name` (this is the join key — it must match the cluster you create next) and add your backend's address:
 
 ```yaml
 cluster_name: hello_backend
@@ -88,7 +88,7 @@ endpoints:
             socket_address: { address: 10.0.1.20, port_value: 8080 }
 ```
 
-Then **Resources → Cluster** → **Add New**. Name it `hello_backend`, discovery type `EDS`, and point it at the assignment you just made — see [Clusters](/envoy-configuration/resources/clusters):
+Then **Traffic path → Cluster** → **New Cluster**. Name it `hello_backend`, discovery type `EDS`, and point it at the assignment you just made — see [Clusters](/envoy-configuration/resources/clusters):
 
 ```yaml
 name: hello_backend
@@ -105,7 +105,7 @@ For a single fixed backend you can skip the separate endpoint resource entirely:
 
 ## Step 5 — Create the route
 
-**Resources → Route** → **Add New**. Build one virtual host that matches your host and forwards everything to the cluster — see [Routes](/envoy-configuration/resources/routes):
+**Traffic path → Route** → **New Route**. Build one virtual host that matches your host and forwards everything to the cluster — see [Routes](/envoy-configuration/resources/routes):
 
 ```yaml
 name: hello_routes
@@ -123,7 +123,7 @@ Routes are evaluated top-to-bottom, first match wins — put specific prefixes a
 
 ## Step 6 — Create the listener
 
-**Resources → Listener** → **Add New**. A listener binds an address and runs the **HTTP Connection Manager**, which selects your route config and holds the HTTP filter chain (here, just the router) — see [Listeners](/envoy-configuration/resources/listeners):
+**Traffic path → Listener** → **New Listener**. A listener binds an address and runs the **HTTP Connection Manager**, which selects your route config and holds the HTTP filter chain (here, just the router) — see [Listeners](/envoy-configuration/resources/listeners):
 
 ```yaml
 name: hello_ingress
@@ -152,9 +152,9 @@ Listeners default to **Managed by Service** — the bind address is filled from 
 
 ## Step 7 — Publish and deploy to the edge
 
-Elchi keeps edits as **drafts** so you can stage the whole tree, then publish it together. Publishing validates the bundle (frontend proto types, then `protoc-gen-validate` on the controller), persists it, and pushes a new snapshot to the control plane. Assign the listener to your `edge-01` node and deploy — Envoy applies it **without a restart**.
+Elchi keeps edits as **drafts** so you can stage the whole tree, then publish it together. Publishing validates the bundle (in the editor, then on the server), persists it, and pushes a new snapshot to the control plane. Assign the listener to your `edge-01` node and deploy — Envoy applies it **without a restart**.
 
-Before publishing, check the **dependency graph** in the UI for orphaned references (a route pointing at an unpublished cluster is flagged). After publishing, open **Snapshot dump** on the listener to confirm the exact xDS payload that reached the proxy — the fastest way to prove a publish landed.
+Before publishing, check the **dependency graph** in the UI for orphaned references (a route pointing at an unpublished cluster is flagged). After publishing, open **Registry → Control Planes**, expand the control plane serving the listener and click **Details** in the node's **Snapshot** column to see the exact xDS payload that reached the proxy — the fastest way to prove a publish landed (see [Snapshot Dump](/envoy-configuration/snapshot-dump)).
 
 ## Step 8 — Verify traffic flows
 
@@ -165,7 +165,7 @@ curl -i http://<edge-01-host>:8000/ -H "Host: hello.example.com"
 # HTTP/1.1 200 OK   ← served by your upstream backend
 ```
 
-If it hangs or 503s, walk the chain back: **Snapshot dump** to confirm LDS/RDS/CDS/EDS all landed, then the dependency graph for a broken reference, then the cluster's health — a cluster with no reachable endpoints returns `503 no healthy upstream`.
+If it hangs or 503s, walk the chain back: the node's snapshot (**Registry → Control Planes → Details**) to confirm LDS/RDS/CDS/EDS all landed, then the dependency graph for a broken reference, then the cluster's health — a cluster with no reachable endpoints returns `503 no healthy upstream`.
 
 ## Next steps
 

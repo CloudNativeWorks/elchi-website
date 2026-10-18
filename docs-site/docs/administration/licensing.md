@@ -20,6 +20,8 @@ Elchi licensing has two dimensions:
 
 Without a license the platform runs the **free tier: Elchi Core with a single managed client** — ideal for evaluation. When a client connects beyond the licensed cap, the connection is rejected with a `license limit reached` error; removing a license (or an expired/invalid one) reverts the platform to the free tier.
 
+Each member of an [HA pair](/ha-pairs/overview) is a client, so a full pair uses **two** client slots (a pair in HA mode, with one member, uses one). A pair member that is temporarily away (rebooting or disconnected) keeps its slot, and it is let back in when it returns even if the cap is reached.
+
 :::note
 Per-product entitlements are being rolled out; on current releases the enforced limit is the concurrent client count.
 :::

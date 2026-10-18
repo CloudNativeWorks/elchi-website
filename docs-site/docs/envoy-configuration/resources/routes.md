@@ -11,7 +11,7 @@ Route configs are the middle layer of the request path: a listener's HCM selects
 
 ## In Elchi
 
-Route configurations live under **Resources → Route** (`/resource/route`). Create one with **Add New**, choosing an Envoy version first — the form is generated from that version's route protobuf, so available fields track the target Envoy build.
+Route configurations live under **Traffic path → Route** in the sidebar (`/resource/route`). Create one with **New Route**, choosing an Envoy version first — the form is generated from that version's route protobuf, so available fields track the target Envoy build.
 
 The editor is organized around the `RouteConfiguration` message. A tag bar lets you switch on the parts you need; the headline element is **`virtual_hosts`**, which opens a dedicated drawer (**HTTP Route Components**) where you build and reorder virtual hosts. The other route-config-level sections — request/response header manipulation, request mirror policies, and per-filter config — are edited inline.
 
@@ -73,4 +73,4 @@ virtual_hosts:
 - **Order matters.** Envoy evaluates routes top-to-bottom and takes the first match — put specific prefixes before catch-alls. Elchi lets you drag to reorder virtual hosts and routes.
 - **Name is the RDS key.** Renaming a route config breaks the listener that references it; create-and-retire instead.
 - **Header manipulation composes across scopes.** Route-config, virtual-host, and route-level header rules all apply — keep them from fighting each other.
-- **Publish together.** A route that references a not-yet-published cluster will be flagged as a broken reference; check the dependency graph before publishing and use **Snapshot dump** to confirm the RDS payload reached Envoy.
+- **Publish together.** A route that references a not-yet-published cluster will be flagged as a broken reference; check the dependency graph before publishing and use the node's [snapshot](/envoy-configuration/snapshot-dump) (**Registry → Control Planes → Details**) to confirm the RDS payload reached Envoy.

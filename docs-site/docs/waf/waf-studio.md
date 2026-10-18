@@ -136,7 +136,7 @@ SecRequestBodyLimitAction Reject
 
 ## WASM runtime limits — read before you build
 
-The runtime is `coraza-proxy-wasm` **v0.6.0**, a Proxy-Wasm filter compiled with TinyGo 0.34. The WebAssembly sandbox has **no filesystem writes, no shell, no outbound network beyond the proxy, and no shared memory between requests**. Coraza features that depend on those are silent no-ops or rejected — build a rule on them and the security control you intended quietly won't exist.
+The runtime is `coraza-proxy-wasm` **v0.6.0**, a Proxy-Wasm filter. The WebAssembly sandbox has **no filesystem writes, no shell, no outbound network beyond the proxy, and no shared memory between requests**. Coraza features that depend on those are silent no-ops or rejected — build a rule on them and the security control you intended quietly won't exist.
 
 **Works well** — per-request content inspection: CRS 4.14.0, multiphase evaluation, `@rx`/`@pm`/`@detectSQLi`/`@detectXSS` (via `coraza-wasilibs`), `@contains`/`@beginsWith`/`@streq`/`@within`/`@eq`/`@ipMatch`/`@validateByteRange`, Prometheus metrics with phase + rule-id labels, and audit logs to Envoy stdout.
 

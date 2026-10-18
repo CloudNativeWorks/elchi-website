@@ -25,7 +25,7 @@ Both share a rule engine (Coraza) and rule set (OWASP CRS). They differ entirely
 |---|---|---|
 | Delivery | Envoy **WASM filter**, shipped via xDS | Shield **`ext_proc` sidecar** engine |
 | Authored in | The UI (`/waf`), backend-versioned | Shield policy YAML in the watched dir |
-| Runtime | *Inside* Envoy (Proxy-Wasm sandbox, TinyGo) | *Beside* Envoy as a native Go process |
+| Runtime | *Inside* Envoy (Proxy-Wasm sandbox) | *Beside* Envoy as a native process |
 | Response inspection | Partial (WASM sandbox limits) | Full — the only Shield engine that inspects responses |
 | Runtime limits | No persistent state, no `exec`/Lua, no filesystem | Native Go — fewer limits, per-policy fail posture |
 

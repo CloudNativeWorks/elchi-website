@@ -39,6 +39,23 @@ disagree:
 The dump is served per node and per Envoy version, so multi-node or
 multi-version fleets can be inspected one node at a time.
 
+## Opening the dump
+
+The snapshot is opened from the **Registry** page (sidebar **Administration → Registry**, Admin/Owner only):
+
+1. Stay on the **Control Planes** tab and expand the control plane that serves the node (each panel lists its connected nodes; the **Search control planes and nodes...** box filters by name).
+2. In the node's row, click **Details** in the **Snapshot** column.
+
+This opens the **Snapshot Details** drawer:
+
+- A header with **Total Resources**, **Active Watches**, **Active Types** and **Last Watch**, and the node id split into **Listener Name**, **Project ID** and **Downstream IP**.
+- One tab per xDS resource type in the snapshot, plus a **Full JSON** tab (**Complete Snapshot Data**) with the raw payload.
+- A **Clear Snapshot** button (see [below](#clearing-a-snapshot-to-force-a-resync)); its confirmation warns that the action cannot be undone and the service needs a reload/restart.
+
+:::note[No link from the listener list]
+The listener list and listener editor have no snapshot entry. The UI also registers a `/snapshot_dump/<listener>?version=<version>` route, but no page links to it — use the Registry drawer above.
+:::
+
 ## The backend contract
 
 The Snapshot Dump is backed by two endpoints on the controller's **bridge** API,
@@ -75,9 +92,9 @@ edits ship through the standard publish flow without touching snapshots.
 
 ## Reading the dump
 
-The snapshot renders as a collapsible JSON tree. Expand into the resource type you
-care about (listeners, clusters, route configurations, secrets) and read the
-served values directly. Because this is the raw xDS payload, field names and shape
+Pick the tab for the resource type you care about (listeners, clusters, route
+configurations, secrets) and read the served values directly, or use **Full JSON**
+for the whole snapshot as one collapsible tree. Because this is the raw xDS payload, field names and shape
 match Envoy's own resource protos rather than the friendlier editor form — it is
 meant for verification and debugging, not authoring.
 

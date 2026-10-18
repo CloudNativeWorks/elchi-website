@@ -2,7 +2,8 @@
    Elchi — bright enterprise, technical precision
    ========================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700;800&display=swap');
+/* Fonts (Geist, Geist Mono) are loaded from each page's <head> with preconnect,
+   not with @import, so they download in parallel with this stylesheet. */
 
 :root {
   /* Brand */

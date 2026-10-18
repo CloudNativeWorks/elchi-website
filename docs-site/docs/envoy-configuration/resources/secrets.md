@@ -11,7 +11,7 @@ Secrets are referenced by [Transport Sockets](/envoy-configuration/resources/tra
 
 ## In Elchi
 
-Secrets live under **Resources → Secret** (`/resource/secret`). Create one with **Add New**, choosing an Envoy version first. Elchi models four SDS secret shapes, and the editor renders the right form based on the type you pick:
+Secrets live under **Building blocks → Secret** in the sidebar (`/resource/secret`). Create one with **New Secret**, choosing an Envoy version first. Elchi models four SDS secret shapes, and the editor renders the right form based on the type you pick:
 
 | Type | Envoy type URL | Holds |
 | --- | --- | --- |
@@ -19,6 +19,8 @@ Secrets live under **Resources → Secret** (`/resource/secret`). Create one wit
 | Certificate Validation Context | `...tls.v3.CertificateValidationContext` | Trusted CA(s) + SAN match rules for verifying peers. |
 | Generic Secret | `...tls.v3.GenericSecret` | An opaque named secret (e.g. an HMAC/OAuth key). |
 | TLS Session Ticket Keys | `...tls.v3.TlsSessionTicketKeys` | Keys for TLS session resumption. |
+
+The editor has helpers for these types: **Inspect certificate** on TLS Certificate and Certificate Validation Context checks a pasted chain and key, **Generate secret** on Generic Secret creates a random value, and **Generate session ticket key** creates an 80-byte key. See [In-Form Tools](/envoy-configuration/form-tools).
 
 Secret material is redacted in logs and handled as sensitive config throughout — it is delivered to proxies over SDS, not written into listener/cluster documents.
 
@@ -76,4 +78,4 @@ validation_context:
 - **Reference by name, don't inline.** Attach secrets to transport sockets via SDS so certs rotate without editing listeners/clusters.
 - **Prefer ACME for public certs.** Automated issuance and renewal avoids expiry outages; reserve manual upload for private-PKI or pinned certs.
 - **mTLS needs two halves.** A validation context alone verifies peers; add the matching identity certificate on the other side of the connection.
-- **Secrets ride their own snapshot channel.** Publishing a secret used by a listener re-snapshots that proxy; use **Snapshot dump** to confirm the SDS resource landed (values stay redacted).
+- **Secrets ride their own snapshot channel.** Publishing a secret used by a listener re-snapshots that proxy; use the node's [snapshot](/envoy-configuration/snapshot-dump) (**Registry → Control Planes → Details**) to confirm the SDS resource landed (values stay redacted).

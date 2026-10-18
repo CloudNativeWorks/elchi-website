@@ -13,7 +13,7 @@ Virtual hosts are the domain-routing layer between a [Route Configuration](/envo
 
 Virtual hosts are authored **inside a route configuration**, not as standalone published resources. When editing a route config you switch on the `virtual_hosts` element, which opens the **HTTP Route Components** drawer. There you add virtual hosts to a table, drag to reorder them, and expand each to edit its fields.
 
-Elchi does surface a top-level **Virtual Host** entry in the resource list (`/resource/virtual_host`) for browsing and for the version-scoped model, but in practice the editing you do lives within the parent route config's drawer. As with every resource, the form is generated from the selected Envoy version's protobuf, so the available fields match the target build.
+Elchi does surface a top-level **Virtual Host** entry in the sidebar under **Traffic path → Virtual Host** (`/resource/virtual_host`, with a **New Virtual Host** button) for browsing and for the version-scoped model, but in practice the editing you do lives within the parent route config's drawer. As with every resource, the form is generated from the selected Envoy version's protobuf, so the available fields match the target build.
 
 Each virtual host row shows its **name** and its **domains**. Expanding a row reveals the field editor, where an anchor lets you toggle on domains, the route table, header manipulation, retry/hedge policies, and per-filter overrides.
 

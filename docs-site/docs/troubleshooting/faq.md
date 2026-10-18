@@ -79,6 +79,10 @@ Elchi automates the full lifecycle via **ACME with DNS-01 validation**, storing 
 
 Elchi actively health-probes each endpoint and serves only healthy IPs through a **CoreDNS** plugin, steering clients to live targets and failing over automatically. See [GSLB](/gslb).
 
+### Can two edge boxes back each other up without BGP?
+
+Yes. Pair two Elchi OS appliances as an **HA pair**: both run the same services, only the active one holds the VIPs, and the standby takes them over by gratuitous ARP in about two seconds if the active fails (milliseconds for a planned failover). BGP is optional. See [Edge HA Pairs](/ha-pairs/overview).
+
 ### Where do I see metrics and logs?
 
 Shield and the collector expose Prometheus metrics and structured logs; Shield can also push metrics over OTLP. The UI's Overview and Security Events views are scoped per project via the Envoy `node.id`. See [Metrics & Logs](/observability/metrics-and-logs).

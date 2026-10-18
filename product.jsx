@@ -202,6 +202,9 @@ function ProductPage({ slug }) {
   );
 }
 
-const rootEl = document.getElementById('root');
-ReactDOM.createRoot(rootEl).render(<ProductPage slug={rootEl.dataset.product}/>);
+export const Page = ProductPage;
+if (typeof document !== 'undefined') {
+  const rootEl = document.getElementById('root');
+  ReactDOM.createRoot(rootEl).render(<ProductPage slug={rootEl.dataset.product}/>);
+}
 

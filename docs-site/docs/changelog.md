@@ -18,7 +18,7 @@ scripts) are re-published for unauthenticated download.
 
 | Component | What it is | Releases |
 |---|---|---|
-| **elchi** (UI) | The React management console | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
+| **elchi** (UI) | The management console | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
 | **elchi-backend** | Controller + Control-Plane + Registry | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
 | **elchi-client** | The edge agent (bundles Shield) | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
 | **elchi-shield** | The ext_proc API-security sidecar | [elchi-archive/releases](https://github.com/CloudNativeWorks/elchi-archive/releases) |
@@ -38,6 +38,36 @@ the appliance pull their artifacts from.
 Short summaries of notable feature releases, with links into the docs. The
 component release notes above remain the authoritative list of versions,
 fixes and upgrade steps.
+
+### Edge HA Pairs — October 2026
+
+Spans **elchi-backend**, **elchi-client**, the **elchi** UI, **elchi-proto** and
+**Elchi OS**; check each component's release notes for the exact versions.
+
+- **Active/passive VIP pairs.** Two Elchi OS appliances serve the same services
+  on the same VIPs; the `elchi-ha` daemon on the boxes elects the active member,
+  which holds the VIPs, and the standby takes over in about two seconds — see
+  [Edge HA Pairs](/ha-pairs/overview).
+- **HA mode.** A single appliance can start as a pair of one and gets its
+  services mirrored to a second box when that one is added — see
+  [Setting up a pair](/ha-pairs/setup).
+- **Pair-aware deploys.** One deploy to both members at one VIP; on-link VIPs,
+  routed VIPs through floating next-hops or BGP; standby-first restarts,
+  bootstrap updates and listener upgrades — see
+  [Deploying services](/ha-pairs/deploying-services).
+- **Operations.** Planned and forced failover, maintenance mode, heartbeat key
+  rotation, member replacement, flap suspension, standby-first OS upgrades —
+  see [Failover & Maintenance](/ha-pairs/failover-and-maintenance).
+- **Visibility.** HA Pairs page, pair status and roles on clients, services and
+  the dashboard, `HA_ROLE_CHANGE` audit entries and `elchi_ha_*` metrics — see
+  [Monitoring a pair](/ha-pairs/monitoring); `show ha` and `system ha` on the
+  appliance console — see [Appliance commands](/ha-pairs/appliance-commands).
+- **BFD for BGP neighbours.** A per-neighbour BFD switch lets a router drop a
+  dead member's routes in about a second.
+- **Shared-address fixes.** Clients serving the same address (HA pairs and BGP
+  ECMP) are now tracked per client: removing one no longer clears the others'
+  snapshot, and the controller keeps the shared GSLB row and OpenStack port
+  while another client still uses them.
 
 ### API Discovery — October 2026
 
@@ -107,7 +137,7 @@ Spans **elchi-backend**, **elchi-collector**, the **elchi** UI and
 - **Backend release tags encode the trio.** Backend tags carry the platform,
   control-plane, and Envoy versions together (for example
   `elchi-v1.6.18-v0.14.0-envoy1.39.3`), so a tag tells you exactly which
-  go-control-plane and Envoy baseline it targets.
+  control-plane and Envoy baseline it targets.
 
 ## Upgrading
 

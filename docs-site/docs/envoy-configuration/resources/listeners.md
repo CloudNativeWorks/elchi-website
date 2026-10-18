@@ -11,7 +11,7 @@ Listeners sit at the top of the Envoy dependency tree: a listener references fil
 
 ## In Elchi
 
-Listeners live under **Resources → Listener** (`/resource/listener`). The list shows each listener's name, protocol, address, and port, and lets you filter by name or Envoy version. Use **Add New** to open the create flow.
+Listeners live under **Traffic path → Listener** in the sidebar (`/resource/listener`). The list shows each listener's name, type, whether it is managed, its Envoy version and its created/updated times, and lets you filter by name (**Find by name**) or Envoy version (**Any version**). Use **New Listener** to open the create flow.
 
 Every resource in Elchi is created against a specific **Envoy version** — you pick the version first, and Elchi loads the form generated from that version's protobuf schema. This is why a listener authored for `1.36` and one for `1.38` are distinct resources; the fields available match the Envoy build that will run them.
 
@@ -81,5 +81,5 @@ listener_filters:
 - **Name is immutable.** It is the LDS key; renaming means creating a new listener and retiring the old one.
 - **Add a TLS Inspector listener filter** when you terminate TLS or match filter chains on SNI/ALPN — without it, SNI-based chain selection won't work.
 - **Managed listeners keep addresses portable.** Leave management on unless you truly need a fixed bind address on a specific host.
-- **Publishing is atomic.** Saving a listener validates it (frontend proto types, then `protoc-gen-validate` on the controller) and republishes the snapshot; connected proxies pick up the new listener without a restart. Use **Snapshot dump** to confirm what Envoy received.
+- **Publishing is atomic.** Saving a listener validates it (in the editor, then on the server) and republishes the snapshot; connected proxies pick up the new listener without a restart. Use the node's [snapshot](/envoy-configuration/snapshot-dump) (**Registry → Control Planes → Details**) to confirm what Envoy received.
 - **Mind the dependency chain.** A listener that references a route config or secret that isn't published yet will be flagged — check the dependency graph in the UI for orphaned references before publishing.

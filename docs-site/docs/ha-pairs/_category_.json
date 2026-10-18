@@ -1,0 +1,9 @@
+{
+  "label": "Edge HA Pairs",
+  "position": 9.5,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Active/passive pairs of Elchi OS edge appliances that share VIPs: how they elect, fail over, and serve services without a single point of failure."
+  }
+}

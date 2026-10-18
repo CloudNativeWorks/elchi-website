@@ -54,6 +54,7 @@ Rule of thumb: if it changes **what Envoy is configured to do**, it rides the xD
 
 ## Where to go next
 
+- **[Edge HA Pairs](/ha-pairs/overview)** — two Elchi OS appliances sharing VIPs active/passive, with automatic failover.
 - **[Services](./services.md)** — the deployed Envoy view: status, envoy details, and GSLB recovery.
 - **[Clients](./clients.md)** — the edge-node view: remote commands and cloud interface/IP lookups.
 - **[Registry & HA](/administration/registry-and-ha)** — how command routing survives multiple controllers.

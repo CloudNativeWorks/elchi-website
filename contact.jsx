@@ -123,4 +123,5 @@ function ContactApp() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<ContactApp/>);
+export const Page = ContactApp;
+if (typeof document !== 'undefined') ReactDOM.createRoot(document.getElementById('root')).render(<ContactApp/>);

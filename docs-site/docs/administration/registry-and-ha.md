@@ -14,3 +14,7 @@ The registry is the discovery hub that tracks controllers, control-planes, and c
 - **Cleanup** — remove a stale controller or control-plane that no longer reports in.
 
 Multiple controllers share one MongoDB, elect a leader for singleton tasks, and standby nodes hydrate from registry snapshots — so the management plane keeps running through instance failures.
+
+:::tip[High availability at the edge]
+This page covers the **management plane**. To keep the **data plane** up when an edge box fails, pair two Elchi OS appliances so they share VIPs active/passive — see [Edge HA Pairs](/ha-pairs/overview). The edge pair keeps serving and failing over even while the control plane is down.
+:::

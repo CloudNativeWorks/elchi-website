@@ -1,0 +1,9 @@
+{
+  "label": "Elchi OS Appliance",
+  "position": 2.5,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Elchi OS: the edge appliance image that bundles the Elchi agent and WAF with a management console, in-place A/B upgrades and a host firewall."
+  }
+}

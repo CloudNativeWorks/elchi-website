@@ -44,15 +44,15 @@ HTTP, network, listener, and UDP filters are managed under **Filters**, and reus
 
 Every change is checked twice before it can ship:
 
-1. **Frontend** — TypeScript types generated from the proto catch shape and type errors as you edit.
-2. **Backend** — `protoc-gen-validate` rules run on the controller before the resource is persisted.
+1. **In the editor** — types generated from the Envoy API catch shape and type errors as you edit.
+2. **On the server** — the Envoy API's validation rules run on the controller before the resource is persisted.
 
 ## Save & Publish
 
 Edits are kept as drafts so you can stage several changes safely, then publish them together. The controller validates the bundle, persists it to MongoDB, and pushes a new snapshot to the control-plane — Envoy applies it without a restart.
 
 :::info[Inspect what Envoy actually received]
-Open **Snapshot dump** for any listener to see the exact xDS payload streamed to connected proxies — the fastest way to confirm a publish landed.
+The [Snapshot Dump](/envoy-configuration/snapshot-dump) shows the exact xDS payload streamed to a connected proxy — the fastest way to confirm a publish landed. To open it, open **Registry → Control Planes**, expand the control plane serving the listener and click **Details** in the node's **Snapshot** column (Registry is Admin/Owner only).
 :::
 
 ## Understanding relationships
