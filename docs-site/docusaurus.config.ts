@@ -74,7 +74,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5G5WC537');`,
       },
-      // Banner + Tawk.to live chat. Served by the marketing site at the origin
+      // Banner + Crisp live chat. Served by the marketing site at the origin
       // root (public/consent.js), so it is absent under `npm start` here.
       {tagName: 'script', attributes: {src: '/consent.js', defer: 'true'}},
     ],

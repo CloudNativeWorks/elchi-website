@@ -6,21 +6,21 @@
 //   - Google tags run in Consent Mode with every storage type "denied" (the
 //     default is set by an inline snippet ahead of GTM — vite.config.js and
 //     docs-site/docusaurus.config.ts), so they set no cookies;
-//   - the Tawk.to live chat is not loaded at all.
+//   - the Crisp live chat is not loaded at all.
 // Any link to "#cookie-preferences" (site and docs footers) reopens the banner.
 (function () {
   var KEY = 'elchi-consent';
-  var TAWK_SRC = 'https://embed.tawk.to/6ad9ee18aaa3a33459814448/1k5hkk3r2';
+  var CRISP_WEBSITE_ID = '266053e3-c2f1-4923-9b9c-3d9eb8d2d995';
 
   var TEXT = {
     en: {
-      body: 'We use cookies for analytics (Google Tag Manager) and for the live chat (Tawk.to). They are only set if you accept. You can change your choice at any time via “Cookie preferences” in the footer.',
+      body: 'We use cookies for analytics (Google Tag Manager) and for the live chat (Crisp). They are only set if you accept. You can change your choice at any time via “Cookie preferences” in the footer.',
       accept: 'Accept',
       reject: 'Reject',
       label: 'Cookie consent',
     },
     tr: {
-      body: 'Analiz (Google Tag Manager) ve canlı destek (Tawk.to) için çerez kullanıyoruz. Bu çerezler yalnızca onay vermeniz halinde kullanılır. Tercihinizi sayfa altındaki “Çerez tercihleri” bağlantısından istediğiniz zaman değiştirebilirsiniz.',
+      body: 'Analiz (Google Tag Manager) ve canlı destek (Crisp) için çerez kullanıyoruz. Bu çerezler yalnızca onay vermeniz halinde kullanılır. Tercihinizi sayfa altındaki “Çerez tercihleri” bağlantısından istediğiniz zaman değiştirebilirsiniz.',
       accept: 'Kabul et',
       reject: 'Reddet',
       label: 'Çerez onayı',
@@ -50,15 +50,13 @@
     (window.dataLayer = window.dataLayer || []).push(arguments);
   }
 
-  function loadTawk() {
-    if (window.Tawk_LoadStart) return;
-    window.Tawk_API = window.Tawk_API || {};
-    window.Tawk_LoadStart = new Date();
+  function loadChat() {
+    if (window.$crisp) return;
+    window.$crisp = [];
+    window.CRISP_WEBSITE_ID = CRISP_WEBSITE_ID;
     var s = document.createElement('script');
+    s.src = 'https://client.crisp.chat/l.js';
     s.async = true;
-    s.src = TAWK_SRC;
-    s.charset = 'UTF-8';
-    s.setAttribute('crossorigin', '*');
     document.head.appendChild(s);
   }
 
@@ -90,8 +88,8 @@
     hide();
     setConsent(state);
     if (state === 'granted') {
-      loadTawk();
-    } else if (wasGranted && window.Tawk_LoadStart) {
+      loadChat();
+    } else if (wasGranted && window.$crisp) {
       // A loaded chat widget cannot be torn down; reload so it is gone.
       location.reload();
     }
@@ -143,7 +141,7 @@
 
   function init() {
     var state = read();
-    if (state === 'granted') loadTawk();
+    if (state === 'granted') loadChat();
     else if (state !== 'denied') show();
   }
 

@@ -37,7 +37,7 @@ async function fetchArchiveVersions() {
 // Cookie consent (KVKK / GDPR). The default below must run before Google Tag
 // Manager: every storage type starts "denied" unless the visitor accepted on an
 // earlier visit. public/consent.js shows the banner, updates the consent state
-// and loads the Tawk.to live chat only after the visitor accepts. The docs site
+// and loads the Crisp live chat only after the visitor accepts. The docs site
 // injects the same pair (docs-site/docusaurus.config.ts).
 const CONSENT_DEFAULT = `<script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
