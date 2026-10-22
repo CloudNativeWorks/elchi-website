@@ -25,6 +25,7 @@ sidebar_position: 9
 | CoreDNS | `:53/tcp+udp` | Every node when GSLB enabled |
 | CoreDNS webhook | `0.0.0.0:8053` | M1 → M2/M3 push notifications (X-Elchi-Secret auth) |
 | ClickHouse native | `:9000` | CH server TCP wire protocol — collector + backend connect here (`clickhouse://…:9000`). Runs on the **first 3 nodes only** (M1 standalone for 1–2 VMs; 3-member cluster for 3+). Binds `127.0.0.1` on a true single-VM install, `0.0.0.0` with 2+ VMs |
+| Envoy ClickHouse proxy | `0.0.0.0:19000` | Every node when ClickHouse is local — a plain TCP proxy to the ClickHouse native port (127.0.0.1 on one VM; the three replicas, round-robin with TCP health checks, on 2+ VMs). The endpoint edge hosts give `elchi-shield`'s audit DSN (`clickhouse://elchi:<password>@<any-node>:19000/elchi`); the installer opens it on firewalld/ufw. Not TLS — keep it on a trusted network. Absent with `--no-collector` / `--clickhouse=external` |
 | ClickHouse HTTP | `:8123` | CH HTTP interface; used only for the readiness `/ping` probe — collector + backend queries go over native `:9000`. First 3 nodes only |
 | ClickHouse interserver | `0.0.0.0:9009` | Inter-replica replication (3+ node clusters only) |
 | ClickHouse Keeper | `0.0.0.0:9181` | Embedded Raft coordination client port (3+ node clusters only) |

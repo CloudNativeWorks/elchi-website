@@ -55,6 +55,28 @@ export default async function createConfig(): Promise<Config> {
     headTags: [
       {tagName: 'link', attributes: {rel: 'icon', type: 'image/svg+xml', href: '/docs/img/favicon.svg'}},
       {tagName: 'link', attributes: {rel: 'apple-touch-icon', sizes: '180x180', href: '/docs/img/apple-touch-icon.png'}},
+      // Cookie consent (KVKK / GDPR): same default as the marketing site
+      // (vite.config.js), and it must precede GTM — which is why GTM is injected
+      // here rather than via the preset's googleTagManager option.
+      {
+        tagName: 'script',
+        attributes: {},
+        innerHTML: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+var c;try{c=localStorage.getItem('elchi-consent');}catch(e){}var g=c==='granted'?'granted':'denied';
+gtag('consent','default',{ad_storage:g,ad_user_data:g,ad_personalization:g,analytics_storage:g,functionality_storage:g,personalization_storage:g,security_storage:'granted'});`,
+      },
+      {
+        tagName: 'script',
+        attributes: {},
+        innerHTML: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5G5WC537');`,
+      },
+      // Banner + Tawk.to live chat. Served by the marketing site at the origin
+      // root (public/consent.js), so it is absent under `npm start` here.
+      {tagName: 'script', attributes: {src: '/consent.js', defer: 'true'}},
     ],
 
     future: {
@@ -86,7 +108,6 @@ export default async function createConfig(): Promise<Config> {
           pages: false,
           theme: {customCss: './src/css/custom.css'},
           sitemap: {changefreq: 'weekly'},
-          googleTagManager: {containerId: 'GTM-5G5WC537'},
         } satisfies Preset.Options,
       ],
     ],
@@ -162,6 +183,7 @@ export default async function createConfig(): Promise<Config> {
             items: [
               {label: 'GitHub', href: 'https://github.com/orgs/CloudNativeWorks/repositories'},
               {label: 'Releases', href: 'https://github.com/CloudNativeWorks/elchi-archive/releases'},
+              {html: '<a class="footer__link-item" href="#cookie-preferences">Cookie preferences</a>'},
             ],
           },
         ],

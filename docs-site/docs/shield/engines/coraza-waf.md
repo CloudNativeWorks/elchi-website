@@ -32,6 +32,8 @@ The CRS version is **compiled into the Shield binary** (the `coraza-coreruleset`
 | `directives_file` | string | one-of | — | Path to a SecLang file (concatenated into `directives`). |
 | `include_owasp` | bool | one-of | `false` | Load the embedded OWASP Core Rule Set. |
 | `exclude_rule_ids` | string[] | no | — | CRS/custom rule IDs to disable (`SecRuleRemoveById`, applied last). Each entry must be a bare numeric rule id or id range (e.g. `"942100"` or `"942100-942999"`); anything else is rejected at load. |
+| `crs_files` | string[] | no | — | **Enforce only these CRS rule files** (e.g. `REQUEST-942-APPLICATION-ATTACK-SQLI.conf`); the engine adds the frame the CRS needs (901 setup, 949/959 evaluation, 980 reporting). A file keeps the CRS's own scoring and thresholds. Frame files and `REQUEST-999-…` cannot be listed. A non-empty selection loads the CRS even without `include_owasp`. (shield ≥ 1.1.0) |
+| `crs_rule_ids` | int[] | no | — | **Enforce only these CRS rules** (their files are loaded with every other rule of the file removed, except the paranoia-level gates). With a rule selection, an unset `inbound_anomaly_threshold` becomes **1** and an unset `paranoia_level` the highest level among the selected rules — *a selected rule that matches blocks*. Must not overlap `exclude_rule_ids`. (shield ≥ 1.1.0) |
 | `paranoia_level` | int | no | `0` → CRS default (1) | CRS **blocking** paranoia level `1`–`4` (higher = stricter, more false positives). |
 | `detection_paranoia_level` | int | no | `0` → = `paranoia_level` | Run rules up to this PL in **detection** but only block at `paranoia_level`. Must be `≥ paranoia_level`. |
 | `inbound_anomaly_threshold` | int | no | `0` → CRS default (5) | Request-side collaborative score that triggers a block (lower = stricter). |
@@ -39,7 +41,9 @@ The CRS version is **compiled into the Shield binary** (the `coraza-coreruleset`
 
 Rules:
 
-- At least one of `directives` / `directives_file` / `include_owasp` is required.
+- At least one of `directives` / `directives_file` / `include_owasp` / `crs_files` / `crs_rule_ids` is required.
+- An id or file the loaded rule set does not have is a **hard error, by name** (`crs_rule_ids: 999999 is not in the embedded ruleset` / `… bundle v4.30.0`), so the edge keeps its last good policy — and the installer's upgrade gate and `elchi-shield validate` refuse it before it is pushed.
+- A raw `Include @owasp_crs/…` (or `@crs-setup*`, `@coraza*`) inside `directives` / `directives_file` is **refused**: without the CRS there is no rule file system to read it from, with the CRS the ids would be duplicated. Load the CRS with `include_owasp`, `crs_files` or `crs_rule_ids` instead; in the WAF Studio, the library's **Select file** / **Select rule** actions write exactly these fields.
 - The CRS tuning fields (`paranoia_level`, `detection_paranoia_level`, `inbound_anomaly_threshold`, `outbound_anomaly_threshold`) **require `include_owasp: true`** — they tune the CRS and are rejected at load otherwise. PL values are `1`–`4` (`0` = use the CRS default); thresholds are `≥ 0`.
 
 :::info
@@ -118,7 +122,9 @@ spec:
 
 ## How it decides
 
-With `include_owasp: true`, the directive bundle is assembled in this order: `@coraza.conf-recommended` → **`SecRuleEngine On`** → `@crs-setup.conf.example` → your tuning SecAction → `@owasp_crs/*.conf` → your `directives` / `directives_file` → `exclude_rule_ids` removals. The WAF is compiled once into an atomic pointer, so a config reload can never race in-flight inspection.
+With `include_owasp: true`, the directive bundle is assembled in this order: `@coraza.conf-recommended` → **`SecRuleEngine On`** → `@crs-setup.conf.example` → your tuning SecAction → `@owasp_crs/*.conf` → your `directives` / `directives_file` → `exclude_rule_ids` removals. With `crs_files` / `crs_rule_ids` the `@owasp_crs/*.conf` step becomes the frame plus the selected files (and `SecRuleRemoveById` for the unselected ids of a file loaded for one rule). The WAF is compiled once into an atomic pointer, so a config reload can never race in-flight inspection.
+
+Two details of CRS scoring that show up in [Security Events](/shield/ui/security-events): the CRS adds a rule's score **once per matched variable** (the same payload in two query arguments counts twice — the event's trail shows `+10 (×2)`), and the rules of `@coraza.conf-recommended` that `deny` on their own (such as `200002`, "Failed to parse request body", on a body the declared `Content-Type` cannot parse) block **without** adding to the anomaly score; disable them with `exclude_rule_ids` or turn off body access if they fire on legitimate clients.
 
 At request time the CRS uses **collaborative anomaly scoring**: each matching rule adds to a per-transaction anomaly score, and the blocking-evaluation rule (949110) raises an interruption when the score crosses the threshold:
 

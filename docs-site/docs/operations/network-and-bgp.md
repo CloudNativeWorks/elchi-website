@@ -49,12 +49,14 @@ The editor's **Safety mode** switch is **On** by default. The agent saves the cu
 
 | Safety mode | What happens after `netplan apply` |
 | --- | --- |
-| **On** | The agent checks that it can still reach the controller. It waits a 3-second grace period, then checks every 500 ms (gRPC ping to the controller, with TCP/ICMP fallbacks). Two successful checks in a row confirm the change. Five failed checks in a row, or the end of the 10-second window without a successful check, trigger a **rollback**. |
+| **On** | The agent checks that it can still reach the controller. Before the apply it looks once at the connection; after it, it waits a 3-second grace period, then looks every 500 ms. Each look takes two checks at once: a gRPC ping over the agent's session, and a **new** TCP connection to the controller's address and port — the path a reconnect would take. What worked before the apply must still work. Two good looks in a row confirm the change; three bad looks in a row, or the end of the window (10 seconds by default), trigger a **rollback**. |
 | **Off** | No connectivity check — "Changes will be applied directly without rollback protection." |
 
 In both modes, a `netplan apply` that fails (netplan rejects the file) is rolled back at once. A rollback writes back the previous file, or an empty `network: version: 2` file if there was none, and applies it again. If the rollback itself fails, the error says so and the file needs manual repair.
 
 There is no separate confirm step: the agent's connectivity check is the confirmation (`netplan try` is not used). The UI has no rollback button either.
+
+**Routes, routing policies and table deletes get the same check** (elchi-client after v2.1.0). Every route or policy operation, and every table delete (it removes the table's routes and the rules that point at it), is verified after it is applied: the agent's session and a new connection to the controller must still work if they worked before. A change that breaks either is rolled back and the operation fails with *rolled back: after the route change … could not be made (the agent would not reconnect)* or *… its session to the control plane stopped answering*. The rollback undoes exactly what the operation changed — another program's policy rules (a VPN's, for example) and routes it did not touch are left alone — and the agent's route/policy files are written only once the check has passed, so a reboot during the check starts with the previous files. A healthy change costs well under a second; an operation that changed nothing returns at once. A connection that was already broken before the change does not block it (the change may be the repair), and the reply says when a new connection to the controller still fails. On Elchi OS, `network routes reset` on the console removes the UI's routes and rules when nothing else can ([console reference](/elchi-os/console#when-a-ui-route-cuts-the-appliance-off)).
 
 :::warning[Network interruption]
 Applying netplan changes the host's networking system-wide and can briefly interrupt SSH sessions and running services. Keep Safety mode on unless you know the controller stays reachable.
@@ -68,7 +70,7 @@ On an [Elchi OS appliance](/elchi-os/overview) the console owns the interfaces (
 
 The **Route** sub-tab lists the host's routes: static routes first, then a **System routes** group. Columns are **Interface**, **Destination**, **Gateway** (`direct` when empty), **Scope**, **Protocol**, **Table** (`Main` when empty), **Metric** and **Source IP**.
 
-Routes installed by a protocol or the system are locked and cannot be selected: `bgp`, `ospf`, `isis`, `zebra`, `bird`, `kernel`, `redirect`, `dhcp`, and `ra`. On an Elchi OS client, routes configured on the console are locked as well (**Elchi OS**). Select other routes and use **Remove selected** to delete them.
+Routes installed by a protocol or the system are locked and cannot be selected: the kernel's own (`kernel`, `redirect`), `dhcp`, `ra`, and every routing daemon's — FRR's `zebra`, `bgp`, `ospf`, `isis`, `rip`, `ripng`, `nhrp`, `eigrp`, `ldp`, `sharp`, `pbr`, `zstatic` (FRR's static routes, which `ip route` shows as `proto static`), `openfabric`, `srte`, and `bird`, `babel`, `openr`, `keepalived`, `gated`, `mrt`, `dnrouted`, `xorp`, `ntk`, `mrouted`. The agent refuses to delete or replace them as well. On an Elchi OS client, routes configured on the console are locked as well (**Elchi OS**). Select other routes and use **Remove selected** to delete them.
 
 **Add route** opens a form; switch on **Multiple routes** to add several at once.
 
@@ -81,7 +83,7 @@ Routes installed by a protocol or the system are locked and cannot be selected: 
 | **Metric (optional)** | Lowest metric wins; empty = kernel default. |
 | **Source IP (optional)** | Preferred source address, which must be an address on this host. It is applied to the kernel and saved to netplan (`from:`). |
 | **Scope (optional)** | **Global**, **Link** or **Host**. |
-| **Protocol (optional)** | **Static**, **Kernel**, **DHCP**, **Boot** (empty = boot). Netplan cannot store it, so after a reboot the route comes back as static. Routes tagged kernel or dhcp cannot be deleted from here until then. |
+| **Protocol (optional)** | **Static** or **Boot** (empty = boot). Netplan cannot store it, so after a reboot the route comes back as static. The kernel's, DHCP's and the routing daemons' protocols are refused by the agent. |
 | **On-link gateway** | Treat the gateway as directly reachable even if it is outside the interface's subnets. |
 
 The agent applies routes to the kernel and persists them per interface in `/etc/netplan/99-elchi-route-<interface>.yaml`, so they survive a reboot.
@@ -221,6 +223,7 @@ In an [HA pair](/ha-pairs/overview) where both members run BGP, this filter mean
 
 ## Related
 
+- **[Edge Network Topologies](./network-topologies.md)** — what to put in these sub-tabs for one-, two- and three-NIC edges: moving the default route to a data NIC, the management rule, the downstream policy rule, the internet-facing BGP layout.
 - **[Clients](./clients.md)** — the client list, detail page and the command dispatch behind every network operation.
 - **[Client installation](/installation/client/installation)** — installer flags, including `--enable-bgp`.
 - **[Deploying services to a pair](/ha-pairs/deploying-services)** — VIP placement and BGP announcement on HA pairs.

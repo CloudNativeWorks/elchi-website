@@ -45,6 +45,7 @@ const SHARED = {
       clientInstall: 'Client Install', platformInstall: 'Platform Install',
       about: 'About', contact: 'Contact',
       rights: 'All rights reserved.',
+      cookies: 'Cookie preferences',
     },
   },
   tr: {
@@ -57,6 +58,7 @@ const SHARED = {
       clientInstall: 'Client Kurulumu', platformInstall: 'Platform Kurulumu',
       about: 'Hakkında', contact: 'İletişim',
       rights: 'Tüm hakları saklıdır.',
+      cookies: 'Çerez tercihleri',
     },
   },
 };
@@ -269,7 +271,7 @@ function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Elchi. {t.rights}</span>
+          <span>© {new Date().getFullYear()} Elchi. {t.rights} · <a href="#cookie-preferences">{t.cookies}</a></span>
           <a href="https://profelis.com.tr" target="_blank" rel="noopener" className="powered-by">
             <span>Powered by</span>
             <span className="powered-by-logo">

@@ -96,6 +96,15 @@ Referencing a file with `Include @owasp_crs/<file>` keeps you aligned with the b
 
 ## Reuse across the platform
 
-The library is callback-driven so the same browser powers both this WASM-WAF editor and Shield's WAF authoring. On the WASM-WAF page it writes into your directive sets; hosted elsewhere it can toggle CRS rule IDs into an **exclude** list instead of copying them (the per-rule Disable/Enable affordance). In this editor, disabling a CRS rule is done with a `SecRuleRemoveById` directive — see [WAF Studio](/waf/waf-studio) for CRS tuning and exclusions.
+The library is callback-driven so the same browser powers both this WASM-WAF editor and Shield's WAF authoring. On the WASM-WAF page it writes into your directive sets (**Include** adds `Include @owasp_crs/<file>`, **+** copies a rule's SecLang). In this editor, disabling a CRS rule is done with a `SecRuleRemoveById` directive — see [WAF Studio](/waf/waf-studio) for CRS tuning and exclusions.
+
+Hosted in **Shield's WAF Studio** the same actions mean something else, because there the CRS is loaded by the engine, not by directives:
+
+- **Select file** / **Select rule** write `crs_files` / `crs_rule_ids` on the policy's Coraza engine — the edge enforces *only* that selection inside the frame it needs (see [Coraza WAF](/shield/engines/coraza-waf#configuration)); a selected rule that matches blocks (threshold 1, paranoia level raised to the rule's). The frame files (901/949/959/980) show **always loaded** and `REQUEST-999-…` **automatic**; a paranoia-level gate rule shows **paranoia gate · kept by shield** and cannot be selected.
+- **Copy as template** copies the SecLang into custom rules as a starting point for your own rule — a copy alone does not block (the CRS's `tx.*` scoring needs the frame).
+- **Disable / Enable** toggles the id in `exclude_rule_ids` when the full CRS (or a file) is loaded.
+- A raw `Include @owasp_crs/…` is refused by Shield and is not offered.
+
+The selection needs every edge of the project on shield ≥ 1.1.0; the Studio gates the buttons otherwise and names the older edges. When the project's pinned CRS bundle version changes, the Activate pre-scan lists selected rules whose text differs in the new version and refuses — by name — ids the new version does not have.
 
 The two hosts differ in **which CRS store they browse**: this WASM-WAF editor lists the backend-managed CRS versions (default `4.14.0`), while Shield's WAF Studio browses the CRS version **compiled into your edge binaries** and auto-pins to whatever your project's fleet actually runs — see [Shield's Coraza engine](/shield/engines/coraza-waf). The component is shared; the rule source and version are not.

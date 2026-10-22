@@ -54,6 +54,10 @@ Each entry below is a **symptom**, its likely **cause**, and the **fix**. Work t
 
 **Fix.** The installer creates `/run/elchi-shield` group-owned by `elchi` and adds Envoy's user to that group. **Restart Envoy** after installing Shield so it picks up the new group membership. Confirm with `id envoy` (or your Envoy user) that `elchi` is listed, and that the socket exists and is group-readable/writable. See [Wiring Shield into Envoy](/shield/envoy-wiring).
 
+### Client upgrade fails: "elchi-shield v1.2.0 rejects the policies … stat .: permission denied"
+
+`elchi-install.sh --upgrade` validates the policy set with the **new** shield binary before replacing the running one, as the service user and from the directory you started it in. Shield 1.2.0's `validate` compiles the WAF, and Coraza's parser reads the working directory for every directive — from a `0700` directory (`/root`, `/home/<you>`) that read fails for the `elchi` user, so the gate refuses a perfectly valid policy set and the client is upgraded while the shield binary stays. **Run the installer from `/`** (`cd / && sudo bash elchi-install.sh --upgrade …`). Shield 1.2.1 makes `validate` independent of the caller's directory.
+
 ### Shield blocks all legitimate traffic (403 on everything)
 
 **Cause.** The most common false positive is OWASP CRS rule **920280 "Missing Host Header" (CRITICAL)**. Behind Envoy over HTTP/2, requests carry `:authority` but no classic `Host` header, so a naive Coraza setup 403s every request.

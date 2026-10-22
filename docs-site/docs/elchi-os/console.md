@@ -35,6 +35,8 @@ runs one read-only `show …` line and exits with the worst severity it found: *
 | `show system`, `show network`, `show version`, `show upgrade`, `show listeners` | Each also accepts `json` |
 | `show controller`, `show client` | The control-plane connection and the agent |
 | `show interfaces [json]` | Every NIC: label, owner (`management` / `os` / `ui-legacy` / `service`), mode, link, MAC, addresses |
+| `show routes [all\|<table>] [json]` | The kernel's routes — the main and `elchi-mgmt` tables, every table with `all` — and who owns each: `os` (the console or the OS's own files, with the file named), `ui` (the Elchi UI), `kernel` (a connected subnet), `dhcp`, `bgp`, `unpersisted` (a static route in no file, gone at reboot) |
+| `show rules [json]` | The policy rules in the order the kernel tries them, with the same owners (`system` for the kernel's own) |
 | `show listeners` | Every proxy: state, restarts, CPU%, memory, tasks, open TCP/UDP, nearest certificate expiry |
 | `show connections [<listener>\|<port>]` | Who is connected now, per listener port, and the outbound side; one listener in full (bytes, idle, RTT); `show connections json` |
 | `show vip` | Each listener's VIP as the agent's health gate sees it: announced, withdrawn or held, since when and why |
@@ -97,7 +99,7 @@ These apply at once, without `apply`:
 
 ### Interfaces and bonds
 
-Every NIC other than the management one is configured on the console. Routes, routing tables, policy rules and BGP for these interfaces come from the Elchi UI; a data interface carries no gateway. Data interfaces need a static management address.
+Every NIC other than the management one is configured on the console. Routing tables, policy rules and BGP for these interfaces come from the Elchi UI, and so do most routes; a data interface carries no gateway — a route that needs one is added with `set route` ([Routes](#routes)) or from the UI. Data interfaces need a static management address.
 
 | Command | Effect |
 | --- | --- |
@@ -113,7 +115,35 @@ A VLAN can also sit on the management bond or NIC (`set interface mgmt-bond.200 
 
 **Bond options** (management and data bonds): `up-delay <ms>` and `down-delay <ms>` (steps of 100); for `active-backup`, `reselect always|better|failure` and `fail-over-mac none|active|follow`; for `lacp`, `hash layer2|layer2+3|layer3+4` and `min-links <n>`. Example: `set bond bond0 ens21,ens22 lacp min-links 2`.
 
-Once a data interface exists, the appliance keeps management on its own gateway with a source rule (`from <mgmt-ip> lookup elchi-mgmt`, table 1000), so the UI may move the main table's default route to a data NIC without cutting SSH or the agent's session. The rule is IPv4 only. If the controller, the archive, NTP or DNS are beyond the management gateway, add a route to them via the management gateway from the UI before moving the default route.
+Once a data interface exists, the appliance keeps management on its own gateway with a source rule (`from <mgmt-ip> lookup elchi-mgmt`, table 1000), so the UI may move the main table's default route to a data NIC without cutting SSH or the agent's session. The rule is IPv4 only. If the controller, the archive, NTP or DNS are beyond the management gateway, add a route to them via the management gateway from the UI before moving the default route. The two- and three-NIC recipes are in [Edge Network Topologies](/operations/network-topologies).
+
+### Routes
+
+The console can add routes of the OS's own (Elchi OS 0.7.3), on the management device or a data interface. They are what an appliance needs **before** it can reach the Elchi UI — a control plane beyond a data NIC's router — and what keeps working whatever the UI does.
+
+| Command | Effect |
+| --- | --- |
+| `set route <cidr\|default> via <gateway> [dev <iface>] [table main\|elchi-mgmt] [metric <n>] [on-link]` | A route through a gateway. `dev` defaults to the interface whose subnet holds the gateway; `on-link` accepts a gateway outside it (a provider's `/32`). |
+| `set route <cidr> dev <iface> [table …] [metric <n>]` | A route on the link, without a gateway |
+| `set route <cidr> remove [table …] [metric <n>]` \| `set route none` | Remove one console route, or all of them |
+
+Routes are a network change: `apply`, then `network confirm` within the window below. They are written to `/etc/netplan/52-elchi-routes.yaml` — the UI's routes stay in their own files and `show routes` tells them apart. The console refuses:
+
+- the UI's tables **100–999** (a console route goes in `main` or `elchi-mgmt`, table 1000; no rule points at any other table);
+- a route the UI's files already define (same destination, table and metric) — netplan would merge both into the device;
+- a second **main default** while the management gateway is the default — give it a `metric` to make it a backup, or move the default from the UI;
+- a gateway outside every subnet of the device (unless `on-link`), a device that is neither the management device nor an addressed data interface, mixed IP families.
+
+**Registering through a data NIC.** When the controller is reachable only through a data NIC's router: address the NIC (`set interface …`), then `set route <controller-ip>/32 via <data-gateway>`, `apply`, `network confirm`. The agent's connection to the controller is a new outbound connection, so it takes this route and the data address as its source; `set controller` / `set token` and `apply` register over it. `diagnose route <controller-ip>` shows the path before you try.
+
+### When a UI route cuts the appliance off
+
+A route or policy rule from the UI can take the agent's own path to the controller away — and the UI then cannot undo it. Two things now answer that:
+
+- **The agent checks its own path** (an agent released after elchi-client v2.1.0). Every route and policy rule from the UI, and every table delete, is applied, then the agent looks at its controller connection twice at once: a gRPC ping over its own session and a new TCP connection to the controller, the way a reconnect makes it. What worked before the change must still work — two good looks confirm, three bad ones or 12 seconds without a pass roll back. The new connection matters here: with the main default moved to a data NIC and no route to the controller, the management rule keeps the session alive, but the next reconnect would leave through the data side. On failure exactly what the change did is undone (routes and rules of other programs are left alone), the agent's route/policy files keep their previous content, and the UI shows *rolled back: …*. A route or rule that repairs an already broken path is not refused.
+- **`network routes reset`** on the console is the way back when nothing else is left (an older agent, a rule added by hand): it removes every route and policy rule the UI set — from its `99-elchi-route-*` / `99-elchi-policy-*` files and from the kernel — re-applies the appliance's own network configuration (a management default the UI replaced comes back), and restarts the agent if it is not connected. The files are kept under `/var/lib/elchi/ui-routes-reset/<time>/`; the console's own routes stay. The control plane stores no network state of its own, so nothing puts the UI's routes back.
+
+`diagnose route <ip> [from <source>]` explains a path: the NIC and source address a packet leaves with, the policy rule that chose the table, the route that matched and who owns it — and, for an address used as a VIP, the NIC whose subnet answers ARP for it.
 
 ### Network changes and the confirm window
 
@@ -128,8 +158,9 @@ Changing the management network or the data interfaces is **commit-confirmed**:
 | `network confirm` | Keep the change |
 | `network rollback` | Restore the previous configuration now (asks to confirm; may drop the session) |
 | `network status` | What is pending and what was last reverted |
+| `network routes reset` | Remove the Elchi UI's routes and policy rules (files and kernel) and re-apply the OS's own network — [the way back](#when-a-ui-route-cuts-the-appliance-off) |
 
-`config import` applies through the same window. Changes applied without a console — OVF, cloud-init, the ISO answer file — do not arm a timer, since nobody is there to confirm. Only the OS's own network files are backed up or restored; the files the agent writes for routes, policy rules and listener VIPs are not touched. On an [HA pair](/ha-pairs/overview) member the console warns before a network change, because it can affect the heartbeat paths and the VIP subnets.
+`config import` applies through the same window. Changes applied without a console — OVF, cloud-init, the ISO answer file — do not arm a timer, since nobody is there to confirm. Only the OS's own network files are backed up or restored — the management, data-interface and console-route files (`50-`, `51-`, `52-elchi-*.yaml`); the files the agent writes for the UI's routes, policy rules and listener VIPs are not touched (`network routes reset` is for those). On an [HA pair](/ha-pairs/overview) member the console warns before a network change, because it can affect the heartbeat paths and the VIP subnets.
 
 ## Firewall
 
@@ -220,6 +251,8 @@ For sites without egress. Copy the file to `/home/admin/` (or `/tmp/`, a 512 MB 
 | `diagnose all` | Run the checks in sequence, starting with the control plane |
 | `diagnose upstream <host:port> [tls]` | DNS, TCP and TLS from this appliance to a backend |
 | `diagnose vip <ip> [via <iface>]` | Who answers ARP for a VIP (duplicate detection) |
+| `diagnose route <ip> [from <source>]` | The NIC, source and next hop a packet to `<ip>` leaves with, the policy rule and the route that decided it (with owners), and the NIC a VIP at `<ip>` would be answered on. Then it looks for a **missing route**: no route at all, a next hop that does not answer ARP, and every address of the appliance (data addresses, listener VIPs) whose replies to `<ip>` leave a different NIC than the one it lives on — the asymmetric path a stateful firewall drops — with the route or rule to add. |
+| `diagnose http <url> [count <n>] [interval <ms>] [from <ip>] [insecure] [host <name>] [verbose]` | Up to 100 `GET`s, each on a new connection, the way the proxy's upstream connections leave the appliance (the egress proxy is not used): per request the status, DNS, connect, TLS, first-byte and total time, the bytes and the source address and NIC; then the status codes and min/avg/p95/max. `from` leaves with a given local address (a VIP takes that VIP's routes and rules), `host` sends another Host header and TLS name (a backend tried by its address). `verbose` (or `-v`) prints each exchange as `curl -v` does: DNS answers, the connect, TLS version, cipher and ALPN, the server certificate and whether it verifies, every request and response header. A bare number is the count (`diagnose http example.com 4`). `diagnose http ?` shows examples. |
 | `diagnose dns <name>` | Resolve with the system resolver and each configured server |
 | `diagnose controller` | DNS, TCP, TLS and agent state towards the control plane |
 | `diagnose gateway [via <iface>]` | Listen 10 s for routers on the link and print the `set network static` line |

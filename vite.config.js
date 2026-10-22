@@ -34,12 +34,32 @@ async function fetchArchiveVersions() {
   }
 }
 
+// Cookie consent (KVKK / GDPR). The default below must run before Google Tag
+// Manager: every storage type starts "denied" unless the visitor accepted on an
+// earlier visit. public/consent.js shows the banner, updates the consent state
+// and loads the Tawk.to live chat only after the visitor accepts. The docs site
+// injects the same pair (docs-site/docusaurus.config.ts).
+const CONSENT_DEFAULT = `<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+var c;try{c=localStorage.getItem('elchi-consent');}catch(e){}var g=c==='granted'?'granted':'denied';
+gtag('consent','default',{ad_storage:g,ad_user_data:g,ad_personalization:g,analytics_storage:g,functionality_storage:g,personalization_storage:g,security_storage:'granted'});
+</script>`;
+
+const cookieConsent = () => ({
+  name: 'elchi-cookie-consent',
+  transformIndexHtml(html) {
+    return html
+      .replace('<meta charset="UTF-8">', `<meta charset="UTF-8">\n  ${CONSENT_DEFAULT}`)
+      .replace('</body>', '<script src="/consent.js" defer></script>\n</body>');
+  },
+});
+
 export default defineConfig(async () => {
   const { ui: uiVersion, backend: backendVersion } = await fetchArchiveVersions();
   console.log(`[vite] elchi UI: ${uiVersion} · elchi backend: ${backendVersion}`);
 
   return {
-    plugins: [react()],
+    plugins: [react(), cookieConsent()],
     base: '/',
     define: {
       __ELCHI_UI_VERSION__: JSON.stringify(uiVersion),

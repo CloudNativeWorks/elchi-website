@@ -73,6 +73,9 @@ audit:
   # exporter: none | clickhouse | otel  (auto = clickhouse when a dsn is set)
   exporter: clickhouse
   # ClickHouse audit sink. e.g. clickhouse://user:pass@CH-HOST:9000/elchi
+  # Against the standalone (elchi-stack) install: the front door's ClickHouse proxy on
+  # port 19000 of any node — clickhouse://elchi:<password>@<node>:19000/elchi
+  # (`elchi-stack show-secret clickhouse` prints the password; ClickHouse itself is on loopback).
   clickhouse_dsn: "clickhouse://user:pass@ch.internal:9000/elchi"
   clickhouse_ttl_days: 7
 metrics:
@@ -84,6 +87,8 @@ metrics:
 You can also edit this file by hand after install and `systemctl restart elchi-shield`. If the
 file already exists on a re-run, the installer **preserves** it (re-asserting `0600`) rather
 than overwriting your edits.
+
+Metrics can go through the platform's front door instead of a separate collector port: the standalone install routes `/opentelemetry` on `:443` to its OTel Collector over HTTP/2, so `otlp_endpoint: "<node>:443"` with `otlp_insecure: false` works — provided the edge trusts the front door's certificate (the installer's self-signed one must be added to the host's CA store; there is no skip-verify option). Shield writes its own `elchi_shield_audit` table on first connect, so the DSN's user needs `CREATE TABLE` and `INSERT` (the installer's `elchi` user has them).
 
 :::note[Legacy `audit.env` → `config.yaml` migration]
 Installs predating `config.yaml` stored the audit DSN in `/etc/elchi/elchi-shield/audit.env`.

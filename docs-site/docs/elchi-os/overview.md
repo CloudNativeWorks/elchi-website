@@ -21,7 +21,7 @@ The image is a hardened Debian 13 (trixie) base with two root slots for [in-plac
 | Filebeat, rsyslog | Log shipping. |
 | `elchi-ha.service` | The HA pair daemon, run as `elchi-client ha` (see [HA Pairs](/ha-pairs/overview)). |
 
-The component versions are fixed per release. Elchi OS 0.6.1 ships `elchi-client` v1.7.7 and `elchi-shield` v0.5.0. You can move one of them on its own with [`system component`](./upgrades.md#moving-the-agent-or-the-waf-on-its-own).
+The component versions are fixed per release. Elchi OS 0.7.3 ships `elchi-client` v2.1.0 and `elchi-shield` v1.2.1 (0.6.1 shipped v1.7.7 / v0.5.0). You can move one of them on its own with [`system component`](./upgrades.md#moving-the-agent-or-the-waf-on-its-own).
 
 :::note[The proxy is not in the image]
 The image ships no Envoy binary (`/var/lib/elchi/envoys/` is empty). Before the first deploy, install the Envoy version the listener uses from the client's **Apps** tab in the Elchi UI. The appliance downloads it over HTTPS from `archive.elchi.io`, which redirects to `github.com` release assets, and checks the sha256 the archive index publishes. Air-gapped sites load the binary with [`import proxy-binary`](./console.md#importing-files) instead.

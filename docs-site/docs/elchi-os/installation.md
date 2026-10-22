@@ -145,6 +145,16 @@ The full wizard first asks `Register with an Elchi control plane now?`; `setup c
 
 Before asking for the token, the wizard probes the controller address, so a closed port shows up early (and, with TLS on, a proxy without HTTP/2). After `apply` the agent (re)starts and registers; the appliance then appears in the Elchi UI's clients list with an [Appliance tab](./appliance-tab.md). `system diagnose controller` checks DNS and TCP towards the controller and, with TLS on, the handshake, HTTP/2 (ALPN) and a gRPC call, step by step.
 
+Then, in the same section (and even when the registration is put off), the wizard asks where the WAF reports. `setup waf` asks these questions on their own:
+
+| Prompt | Answer |
+| --- | --- |
+| `Send the WAF's audit trail or metrics to ClickHouse / an OpenTelemetry collector?` | Default no: nothing is changed |
+| `Audit trail to: clickhouse, otel or none` | Default `clickhouse` |
+| `ClickHouse host:port`, `Database`, `User`, `Password`, `TLS to ClickHouse?` | The native protocol's port (9000, 9440 with TLS); the password is hidden and escaped into the DSN, e.g. `clickhouse://elchi:<password>@10.0.0.5:9000/elchi` |
+| `OTLP/HTTP log endpoint host:port`, `Plaintext (no TLS)?` | With `otel`: usually port 4318 |
+| `Metrics: OTLP/gRPC collector host:port` | Usually port 4317; empty = no push (the WAF's metrics stay scrapeable on loopback) |
+
 :::warning[The token is a fleet credential]
 The agent writes systemd units and network configuration and runs commands as root by design, so a leaked client token is effectively a root credential for every appliance in the project. On the appliance, `/etc/elchi/config.yaml` is readable only by the agent and `admin`.
 :::

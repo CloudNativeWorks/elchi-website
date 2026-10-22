@@ -124,12 +124,19 @@ CREATE TABLE IF NOT EXISTS elchi_shield_audit (
     path           String CODEC(ZSTD),
     method         LowCardinality(String),
     status_code    UInt16 CODEC(ZSTD),
-    config_version LowCardinality(String)
+    config_version LowCardinality(String),
+    -- shield >= 1.2.0: the scoring trail (added to an older table with ALTER … ADD COLUMN IF NOT EXISTS)
+    matched_rules     String CODEC(ZSTD),   -- JSON: [{"id","msg","severity","score","matches","disruptive","pl","file"}, …]
+    matched_rule_ids  Array(String),        -- the ids alone, for has() filters and per-rule rollups
+    anomaly_score     UInt16,               -- the CRS score of the request/response as 949/959 computed it
+    anomaly_threshold UInt16                -- the threshold in force (0 when no CRS ran)
 ) ENGINE = MergeTree
 PARTITION BY toYYYYMMDD(ts)
 ORDER BY (project_id, ts)
 TTL toDateTime(ts) + INTERVAL 7 DAY
 ```
+
+The four trail columns arrived with shield 1.2.0: on start, shield widens an existing table with them and writes with a **named** column list, so a 1.2.0+ edge keeps writing to a table a later release widens further. The reverse is not tolerated — a shield older than 1.2.0 inserts positionally and cannot write to the widened table until it is upgraded — so **upgrade every edge that shares one sink together**. A row an older edge wrote into a widened table reads as "not recorded" (`matched_rules = ''`, `anomaly_threshold = 0`), as opposed to `[]` with a threshold ("nothing scored").
 
 Key properties: dictionary-encoded (`LowCardinality`) and ZSTD-compressed columns keep it small; **daily partitions** with a **row TTL (default 7 days**, `--audit-clickhouse-ttl-days`) bound it in time — old partitions are dropped whole. Shield also maintains a per-minute rollup (`elchi_shield_audit_1m` + a materialized view) that the backend's event summaries can aggregate instead of scanning raw rows. And by design, the table stores **no header or body values** — the path is query-stripped and reason strings carry no request content (see [Security Events](/shield/ui/security-events) for the full redaction model).
 

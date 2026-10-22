@@ -136,7 +136,9 @@ printf 'ELCHI_SHIELD_AUDIT_CLICKHOUSE_DSN=clickhouse://user:pass@ch.internal:900
 ```
 
 Then uncomment the `EnvironmentFile=` line and add `--audit-exporter clickhouse`. See
-[Shield observability](/shield/observability).
+[Shield observability](/shield/observability). Against the standalone (elchi-stack) platform the
+DSN points at the front door's ClickHouse proxy, `clickhouse://elchi:<password>@<node>:19000/elchi`
+(`elchi-stack show-secret clickhouse` prints the password); ClickHouse itself listens on loopback there.
 :::
 
 :::tip[Bundled installs do all of this for you]

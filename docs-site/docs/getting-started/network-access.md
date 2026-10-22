@@ -40,6 +40,7 @@ The bare-metal standalone installer opens exactly one port in the host firewall 
 
 - **`:443` TCP** — Front Envoy TLS listener. Carries the browser UI, REST API, `elchi-client` gRPC command stream, Envoy xDS/ADS subscriptions, and Envoy access-log (ALS) streams. Allow from operator networks **and** every edge-host subnet.
 - **`:53` TCP + UDP** — CoreDNS GSLB authoritative DNS. Only opened when the platform is installed with `--gslb`. Allow from your DNS resolvers.
+- **`:19000` TCP** — Front Envoy's plain TCP proxy to ClickHouse, for `elchi-shield`'s audit sink on the edge hosts (ClickHouse itself stays on loopback). Opened by the installer whenever ClickHouse is local; allow it from the edge-host subnets only if you use shield audit. Not TLS.
 
 Everything else (controller, control-plane, registry, MongoDB, Grafana, VictoriaMetrics, ClickHouse, OTel, collector) binds loopback or stays firewall-blocked on a single node.
 
@@ -128,8 +129,8 @@ What every machine running `elchi-client` must be able to reach:
 
 Optional, only when configured at shield install:
 
-- **ClickHouse** (native TCP 9000) — `elchi-shield` audit-event sink (`--shield-audit-dsn`), batched and best-effort. Points at the platform's ClickHouse (or your own).
-- **OTel Collector** (OTLP gRPC 4317 / OTLP HTTP 4318) — `elchi-shield` metrics push and/or audit-event alternative.
+- **ClickHouse** (native TCP) — `elchi-shield` audit-event sink (`--shield-audit-dsn`), batched and best-effort. Against the standalone install this is the platform's **`:19000`** proxy on any node (`clickhouse://elchi:<password>@<node>:19000/elchi`); against your own ClickHouse, its native port (9000 by default).
+- **OTel Collector** (OTLP gRPC 4317 / OTLP HTTP 4318) — `elchi-shield` metrics push and/or audit-event alternative. On the standalone install the collector is also reachable through the front door: `<node>:443` (the `/opentelemetry` route, TLS — the edge must trust the platform certificate).
 - **JWKS endpoints** (HTTPS) — Only if a shield JWT policy uses a remote `url:` instead of a local key file; fetched at config load and refreshed in the background.
 
 ## Quick reference — firewall snippets
@@ -174,8 +175,9 @@ archive.elchi.io:443                            # Envoy binaries + WAF rules
 github.com:443, api.github.com:443              # install-time binaries
 
 # Egress — only if shield telemetry is configured
-<clickhouse-host>:9000                          # shield audit events
-<otel-collector>:4317                           # shield metrics (OTLP/gRPC)
+<elchi-platform-address>:19000                  # shield audit events (standalone install's ClickHouse proxy)
+<clickhouse-host>:9000                          # … or your own ClickHouse
+<otel-collector>:4317                           # shield metrics (OTLP/gRPC); or <elchi-platform-address>:443
 ```
 
 :::note[ACME uses DNS-01 — no inbound 80 or 443 needed for cert issuance]
