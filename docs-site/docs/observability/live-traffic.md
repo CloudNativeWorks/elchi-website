@@ -35,7 +35,7 @@ requests or status codes.
 | Element | Meaning |
 |---|---|
 | **Summary row** | Requests a second (with a trend), errors (4xx + 5xx), requests **answered by Shield** (blocks and rate limits), p99 latency with p50 / p90, open connections, and how many proxies answered. |
-| **Per proxy** | The same numbers for each client that runs the listener. **Show only this proxy** narrows the map to it. |
+| **Per client** | The same numbers for each client that runs the listener. **Show only this client** narrows the map to it. |
 | **Nodes** | Each node shows its rate and, for clusters, p99 and healthy hosts. A bar under the node splits it by response class. A cluster in trouble also lists its upstream pressure in a few words, worst first (hosts ejected, timeouts, upstream resets, connect fails, overflow, retries) and is tinted lightly when hosts are ejected or timeouts, resets, connect fails and overflow together reach 1 % of its requests. |
 | **Colours** | Requests are coloured by class: 2xx, 3xx, 4xx, 5xx, and Shield blocks. A node is tinted where the 5xx came from — the upstream, or the stage that answered — from 2 % and stronger from 10 %. |
 | **Folded nodes** | Quiet nodes fold into **+N more**; expand them to see them (up to 60). |

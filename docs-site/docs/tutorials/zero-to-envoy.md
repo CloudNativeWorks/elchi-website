@@ -36,7 +36,7 @@ helm install my-elchi elchi/elchi-stack \
   --create-namespace
 ```
 
-Sign in with the bootstrap credentials `admin` / `admin` and change them on first login.
+Sign in with the bootstrap credentials `admin` / `admin`. Elchi asks you to choose your own password (12+ characters, upper, lower, number, symbol) before anything else, then you sign in again with it.
 
 :::warning[Don't ship the defaults]
 Before production, set `global.tlsEnabled: true`, replace `global.jwt.secret` with a 32+ character random value, point at a managed MongoDB, and run ≥3 replicas of the controller and control-plane. See the [production checklist](/installation/helm-platform/production).

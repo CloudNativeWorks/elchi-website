@@ -94,6 +94,25 @@ Two test buttons validate the setup before rollout:
 
 **How LDAP users map to roles/projects.** On first login, an unknown username is authenticated against the first LDAP-enabled project and **just-in-time provisioned**: the new user gets auth type `ldap`, the **Viewer** role by default (read-only), the LDAP-enabled project as its base project, and is added to that project's members. No password is stored locally; the username is escaped before the directory search to prevent injection. Existing LDAP users re-authenticate against the directory on every login, and can't change email/password through the profile page. Promote an LDAP user or move them between projects the same way as any user — via an Owner/Admin user update.
 
+## Passwords
+
+Every local password needs **at least 12 characters** with an **uppercase letter**, a **lowercase letter**, a **number** and a **symbol** (any printable character that is not a letter, a digit or a space, such as `! # $ % & * ? ~`). Very common passwords are refused. The rule applies wherever a password is set: creating a user, resetting one, and changing your own under **Profile**. The new password must differ from the current one.
+
+**Temporary passwords.** These must be replaced at the next sign-in:
+
+- the built-in `admin / admin` of a new installation;
+- any password an Owner or Admin sets for **another** user, when creating the user or resetting the password.
+
+Signing in with a temporary password opens only the **Choose your password** page. Until the user sets their own, every other page and API call is refused (`403`, `error_type: PASSWORD_CHANGE_REQUIRED`). After the change, the user signs in again with the new password, and two-factor authentication applies if it is enabled.
+
+- Resetting someone's password also ends their open sessions.
+- Changing your own password under **Profile** is not temporary.
+- LDAP users have no local password, so none of this applies to them.
+
+The change is recorded in the audit log as `PASSWORD_CHANGE`.
+
+Installations upgraded from an earlier version keep their current passwords: nothing is marked temporary retroactively.
+
 ## Two-factor authentication (2FA / OTP)
 
 Elchi supports **TOTP** two-factor auth (6-digit codes, 30-second period, compatible with standard authenticator apps), managed from your **Profile → Two-Factor Authentication**.

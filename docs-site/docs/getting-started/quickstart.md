@@ -47,6 +47,8 @@ Username: admin
 Password: admin
 ```
 
-:::danger[Change the default password immediately]
-The default `admin / admin` credentials exist only to bootstrap the first session. Rotate them right after signing in, and change the JWT signing secret before exposing Elchi to any untrusted network.
+Elchi then asks you to choose your own password before anything else opens: `admin / admin` is temporary and works only for that change. The new password needs at least 12 characters with an uppercase letter, a lowercase letter, a number and a symbol. Sign in again with it. See [Passwords](/administration/auth-and-access#passwords).
+
+:::danger[Change the JWT signing secret too]
+Change the JWT signing secret before exposing Elchi to any untrusted network.
 :::

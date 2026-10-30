@@ -1,0 +1,9 @@
+{
+  "label": "Automation API",
+  "position": 12,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "The public REST API for scripts and pipelines: project API tokens, the conventions every endpoint follows, the error codes, and the endpoint (server) disable API."
+  }
+}

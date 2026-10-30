@@ -44,7 +44,7 @@ helm install my-elchi elchi/elchi-stack -f values.yaml
 
 ## Sign in
 
-Default bootstrap credentials are `admin` / `admin`. Change them on first login.
+Default bootstrap credentials are `admin` / `admin`. They are temporary: the first sign-in asks for a new password (12+ characters, upper, lower, number, symbol) before anything else opens.
 
 :::warning[Production checklist]
 

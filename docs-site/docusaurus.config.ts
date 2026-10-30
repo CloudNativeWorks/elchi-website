@@ -146,7 +146,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       image: 'img/og-docs.png',
       colorMode: {defaultMode: 'light', respectPrefersColorScheme: true},
       navbar: {
-        logo: {alt: 'Elchi', src: 'img/logo.png', href: 'https://www.elchi.io/', target: '_self'},
+        logo: {alt: 'Elchi', src: 'img/logo.svg', srcDark: 'img/logo-dark.svg', href: 'https://www.elchi.io/', target: '_self'},
         items: [
           {href: 'https://www.elchi.io/', label: 'Home', position: 'left', target: '_self'},
           {href: 'https://www.elchi.io/features.html', label: 'Features', position: 'left', target: '_self'},

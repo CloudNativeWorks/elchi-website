@@ -11,7 +11,7 @@ The `admin` user's login shell is the Elchi console, on the local console (tty1)
 
 - **`help`** prints a one-screen overview; `help show`, `help set`, `help system`, `help config` and `help logs` print one topic in full; `help all` prints everything. `<command> ?` shows how to use one command (`set network vlan ?`).
 - **Prefixes:** any prefix that names exactly one command is that command (`sh he` is `show health`); an exact word always wins, and an ambiguous prefix lists the candidates instead of guessing.
-- **Tab** completes listener names, keymaps, time zones and NICs from the appliance itself.
+- **Tab** completes commands and their keywords — also after an address or a name (`set route 10.9.0.0/16 ` offers `via`, `dev`, `table`, …) — and listener names, keymaps, time zones and NICs from the appliance itself.
 - Long output pages on a terminal (space or Enter for the next screen, `q` to stop).
 - **`^C` or `^D`** at any confirmation cancels the command; nothing is applied.
 - Destructive commands (`system upgrade apply`, `system upgrade rollback`, `system factory-reset`) ask you to type the hostname to confirm.
@@ -35,7 +35,7 @@ runs one read-only `show …` line and exits with the worst severity it found: *
 | `show system`, `show network`, `show version`, `show upgrade`, `show listeners` | Each also accepts `json` |
 | `show controller`, `show client` | The control-plane connection and the agent |
 | `show interfaces [json]` | Every NIC: label, owner (`management` / `os` / `ui-legacy` / `service`), mode, link, MAC, addresses |
-| `show routes [all\|<table>] [json]` | The kernel's routes — the main and `elchi-mgmt` tables, every table with `all` — and who owns each: `os` (the console or the OS's own files, with the file named), `ui` (the Elchi UI), `kernel` (a connected subnet), `dhcp`, `bgp`, `unpersisted` (a static route in no file, gone at reboot) |
+| `show routes [all\|<table>] [json]` | The kernel's routes — the main and `elchi-mgmt` tables, every table with `all` — and who owns each: `os` (the console or the OS's own files, with the file named), `ui` (the Elchi UI), `kernel` (a connected subnet), `dhcp`, `ra` (an IPv6 router advertisement), `bgp`, `unpersisted` (a static route in no file, gone at reboot), `other` |
 | `show rules [json]` | The policy rules in the order the kernel tries them, with the same owners (`system` for the kernel's own) |
 | `show listeners` | Every proxy: state, restarts, CPU%, memory, tasks, open TCP/UDP, nearest certificate expiry |
 | `show connections [<listener>\|<port>]` | Who is connected now, per listener port, and the outbound side; one listener in full (bytes, idle, RTT); `show connections json` |
@@ -64,7 +64,7 @@ Most settings are recorded with `set …` and take effect with `apply`. `set` re
 
 | Command | Effect |
 | --- | --- |
-| `setup [system\|network\|controller\|password]` | The [guided wizard](./installation.md#the-setup-wizard), or one section of it |
+| `setup [system\|network\|controller\|waf\|password]` | The [guided wizard](./installation.md#the-setup-wizard), or one section of it |
 | `set hostname <name>` | Hostname |
 | `set timezone <Area/City>` | Time zone (`set timezone ?` lists them) |
 | `set keyboard <layout>` | Local console keyboard: `tr`, `trf`, `us`, `de`, … (`set keyboard ?` lists them) |
@@ -140,7 +140,7 @@ Routes are a network change: `apply`, then `network confirm` within the window b
 
 A route or policy rule from the UI can take the agent's own path to the controller away — and the UI then cannot undo it. Two things now answer that:
 
-- **The agent checks its own path** (an agent released after elchi-client v2.1.0). Every route and policy rule from the UI, and every table delete, is applied, then the agent looks at its controller connection twice at once: a gRPC ping over its own session and a new TCP connection to the controller, the way a reconnect makes it. What worked before the change must still work — two good looks confirm, three bad ones or 12 seconds without a pass roll back. The new connection matters here: with the main default moved to a data NIC and no route to the controller, the management rule keeps the session alive, but the next reconnect would leave through the data side. On failure exactly what the change did is undone (routes and rules of other programs are left alone), the agent's route/policy files keep their previous content, and the UI shows *rolled back: …*. A route or rule that repairs an already broken path is not refused.
+- **The agent checks its own path** (elchi-client v2.1.1 and later; Elchi OS 0.7.3 ships it). Every route and policy rule from the UI, and every table delete, is applied, then the agent looks at its controller connection twice at once: a gRPC ping over its own session and a new TCP connection to the controller, the way a reconnect makes it. What worked before the change must still work — two good looks confirm, three bad ones or 12 seconds without a pass roll back. The new connection matters here: with the main default moved to a data NIC and no route to the controller, the management rule keeps the session alive, but the next reconnect would leave through the data side. On failure exactly what the change did is undone (routes and rules of other programs are left alone), the agent's route/policy files keep their previous content, and the UI shows *rolled back: …*. A route or rule that repairs an already broken path is not refused.
 - **`network routes reset`** on the console is the way back when nothing else is left (an older agent, a rule added by hand): it removes every route and policy rule the UI set — from its `99-elchi-route-*` / `99-elchi-policy-*` files and from the kernel — re-applies the appliance's own network configuration (a management default the UI replaced comes back), and restarts the agent if it is not connected. The files are kept under `/var/lib/elchi/ui-routes-reset/<time>/`; the console's own routes stay. The control plane stores no network state of its own, so nothing puts the UI's routes back.
 
 `diagnose route <ip> [from <source>]` explains a path: the NIC and source address a packet leaves with, the policy rule that chose the table, the route that matched and who owns it — and, for an address used as a VIP, the NIC whose subnet answers ARP for it.

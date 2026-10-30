@@ -98,7 +98,7 @@ If no setup source was found at first boot, the appliance configures DHCP on the
 
 ## The setup wizard
 
-`setup` asks every question in order; `setup system`, `setup network` and `setup controller` ask one section, and `setup password` changes the admin password. Press Enter to keep the value in `[brackets]` — the current value, including the address the appliance is reached on. At the end the wizard prints a summary and asks `Apply now?`. `^C` or `^D` at any prompt cancels; nothing is applied.
+`setup` asks every question in order; `setup system`, `setup network`, `setup controller` and `setup waf` ask one section, and `setup password` changes the admin password. Press Enter to keep the value in `[brackets]` — the current value, including the address the appliance is reached on. At the end the wizard prints a summary and asks `Apply now?`. `^C` or `^D` at any prompt cancels; nothing is applied.
 
 ### System
 
