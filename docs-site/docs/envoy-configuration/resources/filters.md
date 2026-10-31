@@ -1,6 +1,6 @@
 ---
 title: Filters
-description: How Elchi models Envoy filters — the listener, network, HTTP, and UDP filter categories the UI exposes, and where WAF and ext_proc fit.
+description: How Elchi models Envoy filters — the listener, network, HTTP, and UDP filter categories the UI exposes, and where Shield's ext_proc filter fits.
 sidebar_position: 8
 tags: [envoy, resources]
 ---
@@ -28,17 +28,14 @@ Opening a tile leads to that filter type's own list and create flow (`/filters/l
 You author a filter as a reusable, named resource, then **attach it by reference** where it belongs — listener filters and network filters onto a listener/filter chain, HTTP filters into an HCM's `http_filters` list. HTTP filters can also be overridden per route or per virtual host via `typed_per_filter_config`.
 
 :::info[Ordering is behavior]
-Within the HCM, HTTP filters run **in the order listed**, and the Router must be last. Put authentication and security filters (JWT, ext_authz, WAF, ext_proc) ahead of the Router so they can reject a request before it reaches an upstream.
+Within the HCM, HTTP filters run **in the order listed**, and the Router must be last. Put authentication and security filters (JWT, ext_authz, ext_proc) ahead of the Router so they can reject a request before it reaches an upstream.
 :::
 
-## Where WAF and Shield fit
+## Where Shield fits
 
-Two Elchi security features are delivered as HTTP filters in the HCM chain:
+**Elchi Shield (API security, including the WAF)** is a local ext_proc sidecar reached through an Envoy **External Processor (ext_proc)** HTTP filter. Toggling API Security on an HCM prepends the `elchi-shield` ext_proc filter so it runs first in the chain, ahead of routing. The WAF is Shield's [Coraza engine](/shield/engines/coraza-waf), so it needs no filter of its own. See [Shield: Envoy wiring](/shield/envoy-wiring).
 
-- **WAF (Coraza / OWASP CRS)** — delivered as an HTTP **WASM** filter. On an HCM you set the WAF config by name, and Elchi injects the corresponding WASM filter into the chain. See [WAF](/waf).
-- **Elchi Shield (API security)** — a local ext_proc sidecar reached through an Envoy **External Processor (ext_proc)** HTTP filter. Toggling API Security on an HCM prepends the `elchi-shield` ext_proc filter so it runs first in the chain, ahead of routing. See [Shield: Envoy wiring](/shield/envoy-wiring).
-
-Both are ordinary HTTP filters from Envoy's perspective — the difference is that Elchi manages their injection and keeps the filter list consistent for you.
+It is an ordinary HTTP filter from Envoy's perspective — the difference is that Elchi manages its injection and keeps the filter list consistent for you.
 
 ## Key fields
 
@@ -73,7 +70,7 @@ http_filters:
 ## Tips
 
 - **The Router is always last.** Anything after it never runs.
-- **Order security before routing.** JWT/ext_authz/WAF/ext_proc must precede the Router to gate requests.
+- **Order security before routing.** JWT/ext_authz/ext_proc must precede the Router to gate requests.
 - **Attach the right listener filters.** SNI-based chain matching needs the TLS Inspector; protocol detection needs the HTTP Inspector.
 - **Use per-route overrides sparingly but deliberately** to exempt health checks or internal paths from auth/rate-limiting.
-- **Let Elchi manage WAF/Shield injection** rather than hand-editing the filter list — the toggles keep positions and references consistent.
+- **Let Elchi manage Shield injection** rather than hand-editing the filter list — the toggles keep positions and references consistent.

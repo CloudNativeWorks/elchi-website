@@ -1,6 +1,6 @@
 ---
 title: Background Jobs
-description: Track asynchronous work — snapshots, WAF propagation, ACME verification, and resource upgrades — with live logs and retry.
+description: Track asynchronous work — snapshots, Shield policy deploys, ACME verification, and resource upgrades — with live logs and retry.
 sidebar_position: 4
 ---
 
@@ -12,7 +12,7 @@ Long-running work runs asynchronously so the UI stays responsive. Track everythi
 | Job type | Triggered by |
 | --- | --- |
 | SNAPSHOT_UPDATE | Publishing resource changes to the control-plane. |
-| WAF_PROPAGATION | Pushing a saved WAF configuration to proxies. |
+| SHIELD_DEPLOY | Pushing a saved Shield policy to the project's edges. |
 | ACME_VERIFICATION | Certificate issuance / DNS-01 validation. |
 | RESOURCE_UPGRADE | Migrating resources to a new Envoy version. |
 

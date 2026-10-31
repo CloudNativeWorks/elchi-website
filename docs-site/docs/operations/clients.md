@@ -65,7 +65,7 @@ The header shows a live **Live/Offline** badge. The tabs are:
 - **Network** — sub-tabs **Interfaces**, **Route**, **Routing policy**, **Routing tables** and **BGP**. On Elchi OS appliances the console owns the interfaces, so **Interfaces** is view-only there while the rest stays editable. See [Network & BGP](/operations/network-and-bgp).
 - **Statistics** — host resource metrics.
 - **Logs** — agent and service logs pulled from the node.
-- **Apps** — the versioned components installed on the node.
+- **Apps** — the Envoy versions downloaded on the node, and the releases you can install on it.
 - **Settings** — per-client agent settings.
 - **Shield** — the node's [elchi-shield](/shield/deployment) status and on-disk policy files.
 - **Appliance** — only on Elchi OS clients (see [below](#the-appliance-tab)).
@@ -142,7 +142,6 @@ Each command `type` maps to a registered processor on the controller. The verifi
 | `FILEBEAT` | Manage Filebeat config/status on the node. |
 | `RSYSLOG` | Manage rsyslog config/status on the node. |
 | `SHIELD` | Get/update the client's [elchi-shield](/shield/deployment) config and read its status. |
-| `WAF_VERSION` | Manage the WAF/CRS version on the node. |
 | `HA` | [HA pair](/ha-pairs/overview) commands on a pair member — configure/unconfigure, failover, maintenance, resend GARP, clear a suspension, start alone, status. Pairs themselves are managed through the [HA Pairs API](/ha-pairs/api). |
 
 Many commands carry a **sub-type** to select the exact operation — for example the network command uses sub-types such as netplan apply/get/rollback and route/policy/table management, and the service command uses start/stop/restart/status. BGP operations are a large family of FRR sub-types.

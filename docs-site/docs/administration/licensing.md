@@ -16,7 +16,7 @@ License status is shown as a badge in the header and managed under **Settings �
 Elchi licensing has two dimensions:
 
 - **Managed clients** — the number of clients (edge nodes) that may be concurrently connected to the controller.
-- **Products** — [Elchi Core](https://www.elchi.io/products/core.html) is the base of every deployment; the add-on products ([API Security](/shield/overview), [API Discovery](/api-discovery/overview), [GSLB](/gslb), [WAF](/waf)) are licensed individually on top of it.
+- **Products** — [Elchi Core](https://www.elchi.io/products/core.html) is the base of every deployment; the add-on products ([API Security](/shield/overview) with its built-in WAF, [API Discovery](/api-discovery/overview), [GSLB](/gslb)) are licensed individually on top of it.
 
 Without a license the platform runs the **free tier: Elchi Core with a single managed client** — ideal for evaluation. When a client connects beyond the licensed cap, the connection is rejected with a `license limit reached` error; removing a license (or an expired/invalid one) reverts the platform to the free tier.
 

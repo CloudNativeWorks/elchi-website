@@ -19,7 +19,6 @@ The built-in widgets are:
 | Widget | What it shows | Where it points |
 | --- | --- | --- |
 | **Traffic Overview** | Live downstream/upstream connections and request rates | Observability |
-| **WAF Security** | WAF metrics and blocked requests | WAF |
 | **Shield Security** | elchi-shield blocked vs. detected requests | Shield |
 | **Service Health** | A health matrix across services | Services |
 | **Client Resources** | Connected edge clients | Clients |
@@ -89,6 +88,6 @@ Taken together, the widgets give you a fast triage loop:
 1. **Service Health** tells you *whether* anything is wrong and *where* — jump straight to the affected service.
 2. **Resources Overview** confirms the project holds what you expect after a deploy.
 3. **Traffic Overview**, **Request Rate Timeline**, and **Response Time Trends** show whether traffic and latency look normal — dig deeper in [Metrics and logs](/observability/metrics-and-logs).
-4. **WAF Security** and **Shield Security** show whether the security layers are blocking or merely detecting.
+4. **Shield Security** shows whether Shield (WAF included) is blocking or merely detecting.
 
 From here, most day-to-day work starts either in the [resource model](/envoy-configuration/config-model) or, for a guided build, in the [Scenario wizard](/envoy-configuration/scenario-workflows).

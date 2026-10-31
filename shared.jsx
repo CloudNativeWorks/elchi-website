@@ -64,10 +64,10 @@ const SHARED = {
 };
 
 // Order of products in the nav dropdown and footer.
-const PRODUCT_SLUGS = ['core', 'api-security', 'api-discovery', 'gslb', 'waf'];
+const PRODUCT_SLUGS = ['core', 'api-security', 'api-discovery', 'gslb'];
 
 // Per-product icons (Lucide, MIT — lucide.dev): layers / shield-check /
-// scan-search / globe / brick-wall. Stroke inherits the product accent color.
+// scan-search / globe. Stroke inherits the product accent color.
 const PRODUCT_ICONS = {
   core: (
     <>
@@ -97,18 +97,6 @@ const PRODUCT_ICONS = {
       <circle cx="12" cy="12" r="10"/>
       <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
       <path d="M2 12h20"/>
-    </>
-  ),
-  waf: (
-    <>
-      <rect width="18" height="18" x="3" y="3" rx="2"/>
-      <path d="M12 9v6"/>
-      <path d="M16 15v6"/>
-      <path d="M16 3v6"/>
-      <path d="M3 9h18"/>
-      <path d="M3 15h18"/>
-      <path d="M8 15v6"/>
-      <path d="M8 3v6"/>
     </>
   ),
 };

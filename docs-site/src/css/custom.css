@@ -1,7 +1,8 @@
 /**
  * Elchi docs theming — bounded to matching the marketing site's light aesthetic
  * (white surfaces, blue-600 primary, Geist / Geist Mono). Dark mode keeps stock
- * Infima values apart from the primary scale. No swizzling.
+ * Infima values apart from the primary scale. One swizzle: the doc card icon
+ * (src/theme/DocCard/Heading/Icon), line icons instead of emoji.
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700;800&display=swap');

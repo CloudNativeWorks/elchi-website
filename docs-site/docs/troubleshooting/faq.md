@@ -1,6 +1,6 @@
 ---
 title: FAQ
-description: Frequently asked questions about Elchi — what it is, how config reaches edges, Shield vs the WASM WAF, API Discovery privacy, deployment options, and data locality.
+description: Frequently asked questions about Elchi — what it is, how config reaches edges, where the WAF lives, API Discovery privacy, deployment options, and data locality.
 sidebar_position: 2
 tags: [troubleshooting, faq]
 ---
@@ -9,7 +9,7 @@ Short answers to the questions that come up most. Follow the links for depth.
 
 ### What is Elchi?
 
-Elchi is an enterprise **Envoy management platform**. A central control plane authors and distributes Envoy configuration to a fleet of edge nodes over xDS, and adds certificate automation (ACME), DNS load balancing (GSLB), a WAF, API Discovery, and a per-edge security sidecar (Shield). See [Introduction](/getting-started/introduction) and [Concepts](/getting-started/concepts).
+Elchi is an enterprise **Envoy management platform**. A central control plane authors and distributes Envoy configuration to a fleet of edge nodes over xDS, and adds certificate automation (ACME), DNS load balancing (GSLB), API Discovery, and a per-edge security sidecar (Shield) that includes the WAF. See [Introduction](/getting-started/introduction) and [Concepts](/getting-started/concepts).
 
 ### What runs centrally versus at the edge?
 
@@ -31,13 +31,13 @@ Elchi supports a set of Envoy versions you deploy and can run several in paralle
 
 Add the version to the platform's deployed set so its resources and bootstrap become available, then move nodes onto it. See [Envoy versions & upgrades](/envoy-configuration/versions-and-upgrades).
 
-### What's the difference between Shield and the WAF?
+### Where is the WAF?
 
-They're **complementary WAF deliveries**. The platform WAF is **Coraza/OWASP-CRS delivered as an Envoy WASM filter**, configured under [WAF](/waf) and injected into the xDS snapshot. **Shield** is a separate **ext_proc sidecar** next to Envoy with a broader engine set (JWT/JWKS, rate limiting, IP reputation, bot detection, API keys, HMAC/HTTP signatures, GraphQL/OpenAPI guards, DLP, and its own embedded Coraza CRS). Shield is not a replacement wired into the WASM path — it's a parallel, security-focused processor. See [Shield overview](/shield/overview).
+In Shield. Elchi's WAF is Shield's [Coraza engine](/shield/engines/coraza-waf) — the OWASP Core Rule Set embedded in the Shield binary — enabled per host and route in a Shield policy, next to its other engines (JWT/JWKS, rate limiting, IP reputation, bot detection, API keys, HMAC/HTTP signatures, GraphQL/OpenAPI guards, DLP). There is no separate WAF to install. See [Shield overview](/shield/overview).
 
 ### Do I have to run Shield to use Elchi?
 
-No. Shield is an optional edge sidecar. You can run Elchi purely for Envoy config management, certificates, GSLB, the WASM WAF, and API Discovery, and add Shield where you want inline enforcement. See [Shield deployment](/shield/deployment).
+No. Shield is an optional edge sidecar. You can run Elchi purely for Envoy config management, certificates, GSLB and API Discovery, and add Shield — and with it the WAF — where you want inline enforcement. See [Shield deployment](/shield/deployment).
 
 ### How does Shield connect to Envoy?
 

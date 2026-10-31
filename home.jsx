@@ -94,11 +94,10 @@ const STR = {
       { f: 'Envoy Version Upgrade', e: true, m: false, s: 'varies', sub: 'Move a listener to a new Envoy version' },
       { f: 'LDAP / AD Authentication', e: true, m: false, s: 'varies', sub: 'Central login against your directory' },
       { f: 'Log Export (Syslog / ELK)', e: true, m: false, s: 'varies', sub: 'External observability stack' },
-      { f: 'Web Application Firewall (WAF)', e: true, m: false, s: 'via add-ons', sub: 'Integrated OWASP CRS' },
       { f: 'ACME Certificate Management', e: true, m: false, s: 'via add-ons', sub: 'Let\'s Encrypt + Google Trust' },
       { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'DNS-based with health probing' },
       { f: 'API Discovery & Inventory', e: true, m: false, s: false, sub: 'Auto-discovered surface, risk & PII scoring' },
-      { f: 'Shield — Edge API Security', e: true, m: false, s: false, sub: 'ext_proc WAF/auth/rate-limit, 12 engines + built-in DLP' },
+      { f: 'Shield — Edge API Security', e: true, m: false, s: false, sub: 'OWASP CRS WAF, auth, rate limit — 12 engines + built-in DLP' },
     ],
     cmpUnique: [
       ['AI-Assisted Analysis', 'On-demand AI review of configuration and logs, with your own OpenRouter key.'],
@@ -227,11 +226,10 @@ const STR = {
       { f: 'Envoy Sürüm Yükseltme', e: true, m: false, s: 'değişken', sub: 'Bir listener’ı yeni Envoy sürümüne taşıyın' },
       { f: 'LDAP / AD Kimlik Doğrulama', e: true, m: false, s: 'değişken', sub: 'Dizininize karşı merkezi giriş' },
       { f: 'Log Aktarımı (Syslog / ELK)', e: true, m: false, s: 'değişken', sub: 'Harici observability yığını' },
-      { f: 'Web Application Firewall (WAF)', e: true, m: false, s: 'eklentiyle', sub: 'Entegre OWASP CRS' },
       { f: 'ACME Sertifika Yönetimi', e: true, m: false, s: 'eklentiyle', sub: 'Let\'s Encrypt + Google Trust' },
       { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'Sağlık kontrollü, DNS tabanlı' },
       { f: 'API Keşfi ve Envanteri', e: true, m: false, s: false, sub: 'Otomatik keşfedilen yüzey, risk ve PII puanlaması' },
-      { f: 'Shield — Edge API Güvenliği', e: true, m: false, s: false, sub: 'ext_proc WAF/auth/rate-limit, 12 motor + yerleşik DLP' },
+      { f: 'Shield — Edge API Güvenliği', e: true, m: false, s: false, sub: 'OWASP CRS WAF, auth, rate limit — 12 motor + yerleşik DLP' },
     ],
     cmpUnique: [
       ['AI Destekli Analiz', 'Kendi OpenRouter anahtarınızla yapılandırma ve logların istek üzerine AI incelemesi.'],
@@ -417,7 +415,7 @@ const PF_STR = {
 function ProductFamily() {
   const locale = getLocale();
   const t = PF_STR[locale];
-  const slugs = ['core', 'api-security', 'api-discovery', 'gslb', 'waf'];
+  const slugs = ['core', 'api-security', 'api-discovery', 'gslb'];
   return (
     <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
       <div className="container">

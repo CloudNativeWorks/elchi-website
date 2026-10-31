@@ -123,7 +123,7 @@ The installer downloads artifacts over HTTPS 443; after installation these are o
 What every machine running `elchi-client` must be able to reach:
 
 - **Elchi platform `:443`** (gRPC over TLS) — The one rule that matters. A single long-lived gRPC stream carries commands, heartbeat, stats, and bootstrap/config pushes; the managed Envoy instances open their xDS/ADS and access-log streams to the same address and port.
-- **archive.elchi.io** (HTTPS 443) — Downloads of Envoy binaries and WAF (Coraza WASM) rule modules, SHA256-verified. Needed at install time and whenever a new Envoy/WAF version is deployed to the host.
+- **archive.elchi.io** (HTTPS 443) — Downloads of Envoy binaries, SHA256-verified. Needed at install time and whenever a new Envoy version is deployed to the host.
 - **github.com / api.github.com** (HTTPS 443) — Install-time only: `elchi-client` and `elchi-shield` binaries from `CloudNativeWorks/elchi-archive` releases (FRR packages too, if `--enable-bgp`).
 - **Cloud metadata endpoints** (HTTP 80, link-local) — `169.254.169.254` and `metadata.google.internal` for cloud auto-detection. Local to the hypervisor; no firewall rule normally needed.
 
@@ -171,7 +171,7 @@ download.db-ip.com:443                          # GeoIP database download (or up
 
 # Egress
 <elchi-platform-address>:443                    # client gRPC + Envoy xDS/ALS (the one that matters)
-archive.elchi.io:443                            # Envoy binaries + WAF rules
+archive.elchi.io:443                            # Envoy binaries
 github.com:443, api.github.com:443              # install-time binaries
 
 # Egress — only if shield telemetry is configured

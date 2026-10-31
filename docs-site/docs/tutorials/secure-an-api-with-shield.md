@@ -162,5 +162,5 @@ Keep Security Events open for the first hours of enforcement — every block is 
 ## Next steps
 
 - [Export an OpenAPI contract](/api-discovery/openapi-export) from the confirmed catalog and enforce it with Shield's [OpenAPI validation](/shield/engines/openapi-validation) engine for positive security.
-- [WAF and Shield Together](/tutorials/waf-plus-shield) — layer the edge WASM WAF under Shield's API-specific engines.
+- [Coraza WAF](/shield/engines/coraza-waf) — tune the OWASP CRS inside Shield: paranoia levels, anomaly thresholds, rule exclusions.
 - [Modes & Fail Postures](/shield/policies/modes-and-postures) — the full semantics behind `fail_open` vs `fail_close`.

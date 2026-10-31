@@ -10,7 +10,7 @@ tags: [gslb, traffic]
 
 Global Server Load Balancing (GSLB) is Elchi's DNS-based traffic-steering layer. Instead of routing packets, GSLB decides **which IP addresses a hostname resolves to** and continuously prunes unhealthy endpoints from the answer. Elchi actively probes every IP behind a record, tracks its health, and serves only live targets — so clients are always steered to a reachable backend, across regions and data centers.
 
-GSLB complements the in-path proxying done by Envoy and the [WAF](/waf). It operates one level up, at name resolution: a client asks for `api.global.example.com`, and Elchi answers with the set of healthy IPs for that name.
+GSLB complements the in-path proxying done by Envoy and [Shield](/shield/overview). It operates one level up, at name resolution: a client asks for `api.global.example.com`, and Elchi answers with the set of healthy IPs for that name.
 
 ## How it fits together
 

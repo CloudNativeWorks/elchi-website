@@ -119,30 +119,6 @@ function ProductPage({ slug }) {
 
       {p.shots && <ProductShots ids={p.shots} eyebrow={pg.shotsEyebrow} title={pg.shotsTitle}/>}
 
-      {/* WAF comparison (only when defined) */}
-      {t.versus && (
-        <section className="section">
-          <div className="container" style={{ maxWidth: 900 }}>
-            <div className="section-head">
-              <h2>{t.versus.title}</h2>
-              <p>{t.versus.subtitle}</p>
-            </div>
-            <div className="versus-table card">
-              <div className="versus-row versus-head">
-                <div style={{ color: p.accent }}>{t.versus.colA}</div>
-                <div>{t.versus.colB}</div>
-              </div>
-              {t.versus.rows.map((r, i) => (
-                <div key={i} className="versus-row">
-                  <div>{r[0]}</div>
-                  <div>{r[1]}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Flow */}
       <section className="section" style={t.versus ? { background: 'var(--bg-tint)', borderTop: '1px solid var(--border)' } : {}}>
         <div className="container">

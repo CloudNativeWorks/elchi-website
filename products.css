@@ -64,32 +64,6 @@
   margin: 0 auto;
 }
 
-/* ---------- Versus table (WAF page) ---------- */
-.versus-table { padding: 0; overflow: hidden; }
-.versus-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid var(--border);
-}
-.versus-row:last-child { border-bottom: none; }
-.versus-row > div {
-  padding: 14px 20px;
-  font-size: 14.5px;
-  color: var(--slate-700);
-  line-height: 1.5;
-}
-.versus-row > div:first-child { border-right: 1px solid var(--border); }
-.versus-head > div {
-  font-weight: 600;
-  font-size: 14px;
-  background: var(--bg-tint);
-  color: var(--slate-900);
-}
-@media (max-width: 640px) {
-  .versus-row { grid-template-columns: 1fr; }
-  .versus-row > div:first-child { border-right: none; border-bottom: 1px dashed var(--border); }
-}
-
 /* ---------- Flow steps ---------- */
 .product-flow {
   display: grid;
@@ -165,9 +139,9 @@
 
 .plans-addons {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
-  max-width: 940px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 .plans-addon-card {
@@ -201,7 +175,7 @@
   border-radius: 999px;
   padding: 3px 10px;
 }
-@media (max-width: 720px) { .plans-addons { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .plans-addons { grid-template-columns: 1fr; } }
 
 .plans-how {
   display: grid;

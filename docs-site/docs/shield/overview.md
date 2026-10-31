@@ -21,19 +21,13 @@ Shield is strictly a **data-plane sidecar** — it never runs in the central man
 - **Hot-reloaded, atomically.** Shield watches the directory, debounces changes, and swaps in a fully validated, precompiled config snapshot with a single atomic pointer swap. **Invalid config never affects live traffic** — the last valid snapshot stays active, and the failure is logged with the offending file and field.
 - **Restart-safe.** On boot, Shield reloads the last valid config from disk, and it starts safely even with no config at all (empty snapshot, default posture) rather than blackholing traffic.
 
-## Shield and the WAF (WASM) feature
+## The WAF is part of Shield
 
-Elchi already ships an integrated [WAF](/waf): Coraza with the OWASP Core Rule Set, delivered as an **Envoy WASM filter** through the normal xDS configuration path. Shield is a **parallel, complementary delivery** — a separate `ext_proc` sidecar process with its own file-driven policy model — not a replacement wired into that path.
+Elchi's web application firewall is Shield's [Coraza engine](/shield/engines/coraza-waf): Coraza with the **OWASP Core Rule Set embedded in the Shield binary**. There is no separate WAF to install or configure — you turn it on in a Shield policy (`coraza: {include_owasp: true}`), next to the other engines that policy runs, and roll it out like any other engine:
 
-| | WAF (WASM filter) | Shield (ext_proc sidecar) |
-|---|---|---|
-| Runs | Inside the Envoy process | As a separate local sidecar |
-| Delivery | xDS snapshot (WASM extension config) | Policy files written by elchi-client, hot-reloaded |
-| Scope | Coraza / OWASP CRS rules | 12 engines (including the same embedded OWASP CRS), plus built-in checks, DLP, anomaly scoring |
-| Policy granularity | Rule scoping | Per-host / per-route policies with modes, fail postures, orderable pipelines |
-| Rollout modes | Rule-level tuning | `block` / `detect` / `shadow` / `off` per policy scope |
-
-**When to use which:** use the WASM WAF when CRS-style rule filtering managed inline with your Envoy configuration is all you need. Use Shield when you need richer API security — authentication engines, rate limiting, bot detection, IP reputation, GraphQL/OpenAPI guards, DLP — or safe staged rollout with detect/shadow modes and per-route policies. Both can coexist on the same edge.
+- **Per host and per route** — a strict paranoia level on a payments API, the default elsewhere, nothing at all on a health check.
+- **Detect → shadow → block** — watch what the CRS would block in [Security Events](/shield/ui/security-events) before it enforces, and collect noisy rule ids into `exclude_rule_ids`.
+- **One pipeline** — the CRS runs together with authentication, rate limiting, bot detection, DLP and [anomaly scoring](/shield/anomaly-scoring), so one decision covers the whole request.
 
 ## The engine catalog
 

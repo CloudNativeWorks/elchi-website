@@ -123,7 +123,7 @@ Because Shield's metrics/audit and the collector's inventory both key off the *s
 The `CommandStream` and all edge agent communication share a single protobuf contract, published in **`elchi-proto`** (`github.com/CloudNativeWorks/elchi-proto`). It is consumed as a Go module (or a git submodule) so the Controller server and the `elchi-client` agent are generated from the same definitions. The `client/` package holds the service and message definitions — `client.proto` (the main service), `commands.proto` / `subcommands.proto` (command types), plus the per-subsystem messages (`register`, `identity`, `network`, `frr`, `stats`, `rsyslog`, `filebeat`, `shield`, …). Keeping the wire contract in one repo is what lets the control plane and the edge agents evolve in lockstep.
 
 :::note
-`elchi-proto` is the transport contract only. The **policy content** an edge receives (Envoy bootstrap, WAF version, and Shield policy files) rides these messages; the message shapes live in `elchi-proto`, the semantics in the Controller and the agents.
+`elchi-proto` is the transport contract only. The **policy content** an edge receives (Envoy bootstrap, Envoy version, and Shield policy files) rides these messages; the message shapes live in `elchi-proto`, the semantics in the Controller and the agents.
 :::
 
 ## End-to-end flows

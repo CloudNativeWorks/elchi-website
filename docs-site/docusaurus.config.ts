@@ -116,14 +116,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       [
         '@docusaurus/plugin-client-redirects',
         {
-          // GSLB and WAF were promoted from "Traffic & Certificates" to
-          // top-level product categories; keep the old URLs working.
+          // GSLB was promoted from "Traffic & Certificates" to a top-level
+          // product category; keep the old URLs working.
           createRedirects(existingPath: string) {
-            if (existingPath.startsWith('/gslb') || existingPath.startsWith('/waf')) {
+            if (existingPath.startsWith('/gslb')) {
               return [`/traffic-and-certificates${existingPath}`];
             }
             return undefined;
           },
+          // The separate (WASM) WAF is gone: the WAF is Shield's Coraza engine.
+          redirects: [
+            {
+              to: '/shield/engines/coraza-waf',
+              from: [
+                ...['', '/overview', '/waf-studio', '/crs-library', '/building-config', '/versioning-restore']
+                  .flatMap((p) => [`/waf${p}`, `/traffic-and-certificates/waf${p}`]),
+                '/tutorials/waf-plus-shield',
+                '/installation/client/waf-versions',
+              ],
+            },
+          ],
         },
       ],
     ],

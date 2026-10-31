@@ -6,7 +6,7 @@ const PRODUCTS = {
   core: {
     accent: '#2563eb',
     docs: '/docs/getting-started/introduction',
-    related: ['api-security', 'api-discovery', 'gslb', 'waf'],
+    related: ['api-security', 'api-discovery', 'gslb'],
     shots: ['dashboard', 'live-traffic', 'services', 'listener', 'metrics', 'reports-problems', 'dependency', 'clients'],
     en: {
       metaName: 'Elchi Core',
@@ -87,7 +87,7 @@ const PRODUCTS = {
   'api-security': {
     accent: '#f43f5e',
     docs: '/docs/shield/overview',
-    related: ['api-discovery', 'waf'],
+    related: ['api-discovery'],
     shots: ['shield-overview', 'shield-events', 'shield-policy'],
     en: {
       metaName: 'Elchi API Security',
@@ -276,89 +276,6 @@ const PRODUCTS = {
           { t: 'Probla', d: 'Dağıtık işçiler her IP\'yi sürekli sağlık kontrolünden geçirir.' },
           { t: 'Yanıtla', d: 'CoreDNS yalnızca sağlıklı, bölgeye uygun IP\'lerle yanıt verir.' },
           { t: 'Devret', d: 'Boş havuzlar otomatik olarak yedek bölgelere düşer.' },
-        ],
-      },
-    },
-  },
-
-  waf: {
-    accent: '#8b5cf6',
-    docs: '/docs/waf/overview',
-    related: ['api-security'],
-    shots: ['waf'],
-    en: {
-      metaName: 'Elchi WAF',
-      tag: 'WASM WEB APPLICATION FIREWALL',
-      title1: 'OWASP CRS,',
-      title2: 'inside your Envoy.',
-      subtitle: 'A WAF that runs inside Envoy as an in-process WASM filter: versioned rule configs, a full CRS browser, per-domain directives — managed centrally, delivered to the edge, no sidecar required.',
-      badges: ['OWASP CRS', 'In-Process WASM', 'Versioned Configs', 'SHA-256 Verified'],
-      positioning: 'Add-on to Elchi Core. The lightest way to put OWASP CRS in front of your services — one filter in the Envoy chain, zero extra processes.',
-      caps: [
-        { t: 'In-process WASM filter', d: 'The WAF module loads directly into the Envoy filter chain — no sidecar, no extra process, no additional hop on the host.' },
-        { t: 'OWASP Core Rule Set', d: 'Browse CRS rules by version, severity, phase, and paranoia level; pick rule sets and import exactly what you need.' },
-        { t: 'Custom directives', d: 'Per-domain and per-authority directive sets on top of CRS — tune the WAF to each application it protects.' },
-        { t: 'Config versioning & restore', d: 'Every WAF config change is versioned with full history and one-click restore.' },
-        { t: 'Central management, edge delivery', d: 'Configs are built in the UI, injected into the Envoy WASM extension, and delivered by the edge agent with SHA-256-verified module downloads.' },
-        { t: 'Module version control', d: 'Multiple WAF module versions are retained per host; switch the active version per deployment, with rollback.' },
-      ],
-      versus: {
-        title: 'WAF, two ways',
-        subtitle: 'Elchi ships the WAF in two deployment models. Pick per workload — or run both.',
-        colA: 'Elchi WAF (this product)',
-        colB: 'WAF inside Elchi API Security',
-        rows: [
-          ['Runs as an in-process Envoy WASM filter', 'Runs inside the Shield ext_proc engine'],
-          ['Lightest footprint — no extra process', 'One pipeline with auth, DLP, bot defense & rate limiting'],
-          ['CRS + custom directives, versioned configs', 'CRS embedded in the Shield binary, tuned per policy'],
-          ['Best for: standalone L7 protection', 'Best for: full API-security enforcement per route'],
-        ],
-      },
-      flow: {
-        title: 'How it works',
-        steps: [
-          { t: 'Compose', d: 'Pick CRS rules and directives in the WAF studio.' },
-          { t: 'Version', d: 'Every change is recorded; restore any prior config.' },
-          { t: 'Deliver', d: 'The agent ships the verified WASM module to each host.' },
-          { t: 'Enforce', d: 'Envoy filters traffic in-process — no detours.' },
-        ],
-      },
-    },
-    tr: {
-      metaName: 'Elchi WAF',
-      tag: 'WASM WEB APPLICATION FIREWALL',
-      title1: 'OWASP CRS,',
-      title2: 'Envoy\'unuzun içinde.',
-      subtitle: 'Envoy içinde in-process WASM filtresi olarak çalışan WAF: sürümlü kural yapılandırmaları, tam CRS tarayıcısı, domain başına direktifler — merkezden yönetilir, edge\'e dağıtılır, sidecar gerekmez.',
-      badges: ['OWASP CRS', 'In-Process WASM', 'Sürümlü Yapılandırma', 'SHA-256 Doğrulamalı'],
-      positioning: 'Elchi Core eklentisidir. Servislerinizin önüne OWASP CRS koymanın en hafif yolu — Envoy zincirinde tek filtre, sıfır ek süreç.',
-      caps: [
-        { t: 'In-process WASM filtresi', d: 'WAF modülü doğrudan Envoy filtre zincirine yüklenir — sidecar yok, ek süreç yok, sunucuda ek atlama yok.' },
-        { t: 'OWASP Core Rule Set', d: 'CRS kurallarını sürüme, önem derecesine, faza ve paranoya seviyesine göre inceleyin; kural setlerini seçin, tam ihtiyacınızı içe aktarın.' },
-        { t: 'Özel direktifler', d: 'CRS\'in üzerine domain ve authority başına direktif setleri — WAF\'ı koruduğu her uygulamaya göre ayarlayın.' },
-        { t: 'Yapılandırma sürümleme & geri yükleme', d: 'Her WAF yapılandırma değişikliği tam geçmişle sürümlenir; tek tıkla geri yükleyin.' },
-        { t: 'Merkezi yönetim, edge\'e dağıtım', d: 'Yapılandırmalar arayüzde kurulur, Envoy WASM extension\'ına enjekte edilir ve SHA-256 doğrulamalı modül indirmeleriyle edge agent tarafından dağıtılır.' },
-        { t: 'Modül sürüm kontrolü', d: 'Sunucu başına birden fazla WAF modülü sürümü saklanır; aktif sürümü dağıtım başına değiştirin, geri alın.' },
-      ],
-      versus: {
-        title: 'İki farklı WAF modeli',
-        subtitle: 'Elchi, WAF\'ı iki dağıtım modeliyle sunar. İş yüküne göre seçin — ya da ikisini birlikte çalıştırın.',
-        colA: 'Elchi WAF (bu ürün)',
-        colB: 'Elchi API Security içindeki WAF',
-        rows: [
-          ['In-process Envoy WASM filtresi olarak çalışır', 'Shield ext_proc motorunun içinde çalışır'],
-          ['En hafif ayak izi — ek süreç yok', 'Auth, DLP, bot savunması ve rate limiting ile tek pipeline'],
-          ['CRS + özel direktifler, sürümlü yapılandırmalar', 'CRS Shield binary\'sine gömülü, policy başına ayarlanır'],
-          ['En uygun: bağımsız L7 koruması', 'En uygun: route başına eksiksiz API güvenliği'],
-        ],
-      },
-      flow: {
-        title: 'Nasıl çalışır',
-        steps: [
-          { t: 'Kur', d: 'WAF studio\'da CRS kurallarını ve direktifleri seçin.' },
-          { t: 'Sürümle', d: 'Her değişiklik kaydedilir; önceki yapılandırmaya dönün.' },
-          { t: 'Dağıt', d: 'Agent, doğrulanmış WASM modülünü her sunucuya taşır.' },
-          { t: 'Uygula', d: 'Envoy trafiği in-process filtreler — dolambaç yok.' },
         ],
       },
     },

@@ -10,8 +10,8 @@ hide_table_of_contents: true
 
 Elchi is an enterprise **Envoy management platform**: a central control plane with a
 visual editor for every Envoy resource, plus edge agents that deploy and operate
-Envoy on your hosts — with GSLB, ACME certificates, WAF, API discovery, and API
-security built in.
+Envoy on your hosts — with GSLB, ACME certificates, API discovery, and API
+security (WAF included) built in.
 
 ## Start here
 
@@ -34,8 +34,8 @@ Pick the deployment substrate that fits — all bring up the same control plane:
 
 - **[The Dashboard](/getting-started/dashboard)** — the landing screen: resource counts, error summary, health at a glance.
 - **[Configuring](/envoy-configuration/config-model)** — the resource model: build, validate, publish. Or generate config with the **[Scenario wizard](/envoy-configuration/scenario-workflows)**.
-- **[API Security (Shield)](/shield/overview)** — API-security enforcement at the edge (WAF, auth, rate-limit, DLP).
-- **[GSLB](/gslb)**, **[Certificates (ACME)](/traffic-and-certificates/acme)**, **[WAF](/waf)** — traffic and protection.
+- **[API Security (Shield)](/shield/overview)** — API-security enforcement at the edge: the [WAF](/shield/engines/coraza-waf), auth, rate limiting, DLP.
+- **[GSLB](/gslb)**, **[Certificates (ACME)](/traffic-and-certificates/acme)** — traffic and certificates.
 - **[API Discovery](/api-discovery/overview)** — a live, risk-scored inventory of every API your gateways serve.
 - **[Fleet Operations](/operations/overview)** — manage running Envoy services and connected edge clients.
 - **[Edge HA Pairs](/ha-pairs/overview)** — two Elchi OS appliances sharing VIPs active/passive, with automatic failover.
