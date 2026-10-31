@@ -21,10 +21,10 @@ const dist = join(root, 'dist');
 const PAGES = [
   'index.html', 'features.html', 'architecture.html', 'contact.html', 'plans.html',
   'products/core.html', 'products/api-security.html', 'products/api-discovery.html',
-  'products/gslb.html', 'products/waf.html',
+  'products/gslb.html',
   'tr/index.html', 'tr/features.html', 'tr/architecture.html', 'tr/contact.html', 'tr/plans.html',
   'tr/products/core.html', 'tr/products/api-security.html', 'tr/products/api-discovery.html',
-  'tr/products/gslb.html', 'tr/products/waf.html',
+  'tr/products/gslb.html',
 ];
 
 const ROOT_RE = /<div id="root"([^>]*)><\/div>/;
