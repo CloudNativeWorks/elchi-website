@@ -90,7 +90,7 @@ The platform will not boot or stay healthy without these.
 
 - **MongoDB** (27017 / SRV) — Primary state store, used by controller, control-plane, and registry (leader election). `mongodb+srv://<cluster>` for Atlas (TLS) or your self-hosted host:port. On a standalone install MongoDB is local, so no egress rule is needed.
 - **archive.elchi.io** (HTTPS 443) — Envoy version metadata index (`/index.json`) used to surface available versions in the UI and validate upgrade paths.
-- **license-api.cloudnativeworks.com** (HTTPS 443) — CNW License Server. Controllers validate / refresh the license fingerprint on startup and on a periodic check loop. Without it the platform falls back to the free tier.
+- **license-api.cloudnativeworks.com** (HTTPS 443) — CNW License Server. Needed for activation; controllers also validate the license once at startup. Without it an activated license stays in force until its expiry date (the controller keeps the server's signed answer).
 
 ### Internal (standalone install pulls these in locally)
 

@@ -53,7 +53,7 @@ Clicking a service opens `/services/:id`, which loads the service document toget
 
 ### Overview
 
-The default tab shows the service summary and its deployment controls: **Manage service** (deploy to or remove from clients), the lifecycle actions **Start**, **Stop**, **Restart** and **Reload** on every client (Stop and Restart ask for confirmation), and **Refresh status**, which asks every client for the service's status now. **Manage service** opens a drawer with a **Deploy** / **Remove** mode switch and the client list. All of these are commands on the [command stream](./overview.md#1-the-command-stream-lifecycle) — the same dispatch mechanism described under [Clients](./clients.md).
+The default tab shows the service summary and its deployment controls: **Manage service** (deploy to or remove from clients), the lifecycle actions **Start**, **Stop**, **Restart** and **Reload** on every client (Stop and Restart ask for confirmation), and **Refresh status**, which asks every client for the service's status now. **Manage service** opens a drawer with a **Deploy** / **Remove** mode switch and the client list. In **Deploy**, the downstream address field offers the free addresses of the project's [IP blocks](./ip-addresses.md); any other address can still be typed. All of these are commands on the [command stream](./overview.md#1-the-command-stream-lifecycle) — the same dispatch mechanism described under [Clients](./clients.md).
 
 #### On each client: the VIP health gate
 

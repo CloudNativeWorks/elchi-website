@@ -14,6 +14,10 @@ Each row carries the event metadata only: timestamp, action, severity, engine, r
 
 Edges running **elchi-shield 1.2.0 or newer** add the **scoring trail** of the Coraza WAF: for a CRS decision the `rule_id` is only the blocking-evaluation rule (`949110` inbound, `959100` outbound — "anomaly score exceeded"), so the event also lists **which rules filled the score** — each with its id, message template, severity, the points it added, how many variables it matched, its paranoia level and rule file — plus the request's **anomaly score** and the **threshold** in force. The trail is rule metadata only; the matched data (the payload) is never exported. Allowed requests carry it too: a request that scored 3 against a threshold of 5 is recorded as `allow` with its rule and `3/5`.
 
+Edges running **elchi-shield 1.3 or newer** also name **what each rule matched** — the variable, never its value: `ARGS:id`, `ARGS:json.user.password`, `REQUEST_HEADERS:user-agent`. A name that could itself carry data is cut back: a `*_NAMES` collection keeps only the collection (there the "key" is the matched content, e.g. a payload sent as a parameter name), and a key that is not name-shaped (letters, digits, `_ . - [ ]`, at most 64 characters, at least one letter) or that looks like an email, a card number or a token becomes `*` (`ARGS:*`). At most 8 names per rule.
+
+**Add exception…** on a matched rule turns a false positive into a fix: pick what the rule should skip (one of the variables it matched, or the whole rule) and where (paths starting with the event's path, exactly that path, or everywhere). The policy whose WAF decided the event opens with the [rule exception](/shield/engines/coraza-waf#rule-exceptions) added to that WAF — the route's, the domain's or the project defaults' — unsaved, for you to review and save. If the policy changed since the event (the route or the WAF is gone), the dialog says so instead.
+
 :::info[The redaction model]
 Audit events **never contain header or body values** — no tokens, cookies, payloads, or query strings. The **path is stored query-stripped**, and engine reason strings are structured descriptions, never request content. What lands in ClickHouse is safe to retain and share: enough to attribute and investigate a finding, nothing that leaks the request itself.
 :::
@@ -35,6 +39,7 @@ The filter bar drives both the feed and the summary, server-side:
 - **Edge (node)** — a specific edge's node id.
 - **Findings only** — on by default: keeps blocks, detections and shadow findings and — on edges that record the scoring trail — the **allowed requests that scored under the threshold** (they are findings too); the clean, sampled allow stream is hidden. Switch it off to see that stream.
 - **Rule** — set by clicking a rule in the **Top rules** card (or the `rule=` query parameter): events *involving* that rule, i.e. rows whose `rule_id` it is **or** whose scoring trail contains it — so `942100` finds the CRS blocks it scored in, whose `rule_id` is `949110`.
+- **Domain** — set by a rule count in the WAF Studio (or the `pol=` query parameter, the domain's hosts joined by `,` followed by `|`): the events the domain's policies decided, its routes included. Remove it with its chip.
 - **Quick search** — a client-side filter on host / path / request id, applied to the currently loaded page only (paging is collapsed while a search is active).
 
 Draft filter edits are applied with **Apply** (the button lights up when the draft differs from what's active); **Clear** returns to the defaults.

@@ -41,6 +41,23 @@ Data files land on every edge inside Shield's watched config tree (under a `file
 
 A **dry-run** of the policy — no deploy needed. Enter a sample request (method, host, path, optional content type) and the tab shows what the edge would do: the normalized host/path, whether the path hits an **excluded path** (bypasses all inspection), which **domain** matched and via which host entry, which **route** was selected (or the domain default), the effective **mode** and **fail posture**, whether request/response bodies are inspected, and the ordered list of **engines that run**, each tagged `header` or `body` phase. Caveats (e.g. predicates that can't be evaluated without live headers) are listed under the result. The simulation mirrors the edge resolver, so it is the fastest way to prove a policy does what you intend before shipping it.
 
+### Domains and routes inherit protections
+
+A domain's protections apply to its routes; the policy defaults apply to domains and routes without their own. Shield **replaces** the inherited protections whole wherever a scope sets its own — they are never merged. So when a route (or a domain) that inherits protections gets its first one of its own, the editor asks:
+
+- **Start from inherited** (recommended) copies what it inherits — say the WAF and JWT — and adds the new protection. Later changes above no longer reach this route. A copied rate limit counts the route's requests on its own; a copied WAF is compiled once more on the edge.
+- **Start empty** adds only the new protection; the inherited ones stop running here.
+
+The texts name the real source of what is inherited: the domain, this policy's defaults, or the defaults of another policy of the project (Shield merges every policy's defaults, the later file winning). Selecting a domain on the left shows its own **Domain policy** (mode, fail posture) and **Domain protections**.
+
+### Rule traffic
+
+Opened from a domain or route, the WAF Studio's rule library shows each CRS rule's real traffic in that domain — requests matched and blocked in the last hour, day or week — and opens them in Security Events on a click. See [Rule traffic in the WAF Studio](/shield/engines/coraza-waf#rule-traffic-in-the-waf-studio) for what the counts mean.
+
+### History
+
+**History** lists the policy's saved versions (the 50 newest) with who saved them and when. Pick one to see its files side by side with the current ones; **Restore** saves that version as a new one and deploys it like any save. Each save also carries the version the editor loaded: if someone else saved in between, the save is refused with *"changed since it was loaded; reload it"* instead of overwriting their change.
+
 ## Templates and Import from Discovery
 
 - **Templates** opens a drawer of ready-made example policies; picking one loads it into the Builder (or into YAML mode if it uses fields the builder can't represent).

@@ -7,8 +7,8 @@ sidebar_position: 5
 License status is shown as a badge in the header and managed under **Settings → License**. From there you can:
 
 - **View status** — current entitlement and validity (available to any signed-in user).
-- **Activate** a license key (Admin/Owner).
-- **Force a check** to re-validate immediately (Admin/Owner).
+- **Activate** a license online with a license key, or offline with a license file (Admin/Owner).
+- **Force a check** to re-validate an online license immediately (Admin/Owner).
 - **Remove** the active license (Admin/Owner).
 
 ## How Elchi is licensed
@@ -28,8 +28,21 @@ Per-product entitlements are being rolled out; on current releases the enforced 
 
 ## Activation
 
-Activation requires **both** a `license_key` and an `api_key`, entered together under **Settings → License**. Activation and the periodic re-validation checks are **online** — the controller must reach the license API. A transient network failure during a periodic check does not downgrade the platform; only an explicit invalid/expired result does.
+Activation requires **both** a `license_key` and an `api_key`, entered together under **Settings → License**. Activation is **online**: the controller must reach the license API. The license server signs its answer and the controller stores it with the license.
+
+After that the license API is asked only when a controller starts (and when you press re-check). If it cannot be reached, the stored signed answer keeps the license in force until its expiry date, however long the outage lasts. When the expiry date passes the platform falls back to the free tier; if the license was renewed, the controller picks that up with one check at that moment. Only a signed invalid answer (for example a suspended license) downgrades the platform earlier. Editing the stored license in the database does not change the plan: the plan comes from the signed answer.
 
 :::info[Required egress]
-License activation and periodic checks need outbound access to the Elchi license API — see the egress allow-list in [Network & Access](/getting-started/network-access).
+License activation and the check at controller start need outbound access to the Elchi license API — see the egress allow-list in [Network & Access](/getting-started/network-access). An offline license needs no outbound access.
 :::
+
+## Offline license
+
+For installations without internet access, CloudNativeWorks issues a **license file** (a signed JSON document). Under **Settings → License → Activate license**, choose **Offline (license file)** and select the file or paste its content.
+
+- The controller verifies the file's signature with the license server key built into Elchi; an edited file is refused.
+- The file must be an Elchi license; a license file of another CloudNativeWorks product is refused.
+- The license API is never contacted. The plan is in force until the expiry date in the file, then the platform falls back to the free tier. To renew, upload the new file.
+- Activating an offline license replaces an online one, and the other way round.
+- The file is stored encrypted, like the license and API keys.
+
