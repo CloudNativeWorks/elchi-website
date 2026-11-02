@@ -39,6 +39,7 @@ The CRS version is **compiled into the Shield binary** (the `coraza-coreruleset`
 | `inbound_anomaly_threshold` | int | no | `0` → CRS default (5) | Request-side collaborative score that triggers a block (lower = stricter). |
 | `outbound_anomaly_threshold` | int | no | `0` → CRS default (4) | Response-side score that triggers a block. |
 | `crs_settings` | object | no | — | What the CRS accepts as normal traffic: methods, content types, charsets, restricted extensions and headers, argument and upload limits. See [CRS policy settings](#crs-policy-settings). |
+| `record_matched_values` | bool | no | `false` | Store, on each event, what every scoring rule matched: up to 64 bytes around the matched part (2 KiB per event), as the rule saw it after decoding. **Not masked** — request values (query arguments, headers, body fields) and, for the CRS response rules, excerpts of the **response body**. Kept in ClickHouse only, never sent to OpenTelemetry or the logs. (shield ≥ 1.3.1; an older edge refuses a policy that sets it, even to `false`.) |
 
 Rules:
 
@@ -131,7 +132,7 @@ Two details of CRS scoring that show up in [Security Events](/shield/ui/security
 At request time the CRS uses **collaborative anomaly scoring**: each matching rule adds to a per-transaction anomaly score, and the blocking-evaluation rule (949110) raises an interruption when the score crosses the threshold:
 
 - `paranoia_level` (default 1) controls which rules run in blocking mode; higher levels enable more aggressive rules and more false positives.
-- `detection_paranoia_level` runs the higher-PL rules in detection only — they log but do not add to the blocking decision.
+- `detection_paranoia_level` runs the higher-PL rules in detection only — they log but do not add to the blocking decision. Security Events marks such a rule **detection only** (shield ≥ 1.3.1): its score is shown but not counted toward the block, so the rules that are not marked add up to the event's score.
 - `inbound_anomaly_threshold` (default 5) / `outbound_anomaly_threshold` (default 4) — lower is stricter.
 - `crs_settings` — the CRS policy variables, written into the same SecAction. The method list is always written: the CRS on its own only allows `GET HEAD POST OPTIONS`, and rule 911100 is CRITICAL (+5), enough to block at the default threshold, so every PUT, PATCH and DELETE would get a 403. Shield's default is `GET HEAD POST OPTIONS PUT PATCH DELETE`. The CRS rules themselves are untouched — the CRS reads each variable and only sets its default when it is still unset.
 
@@ -165,7 +166,7 @@ Passing at every level: curl, python-requests, Go/Java/okhttp clients, Kubernete
 
 Versions differ — for example PATCH with `application/merge-patch+json` passes by default in 4.25.2 and 4.30.0 but not in 4.26–4.29, and the form-error false positive is gone from 4.29 — which is why the list is measured per version and never borrowed from another one.
 
-**Where the measurement comes from.** The archive measures every CRS release when it publishes it, with the newest shield, and publishes the report next to the bundle (`crs_impact_<version>.json`, covered by the release's signed checksums). The control plane fetches it, checks its sha256 against the archive index, caches it and serves it to WAF Studio; a new CRS release is therefore measured without a UI update. When a newer shield measures something else, the archive re-publishes the report and the control plane picks it up within its CRS refresh interval (15 minutes by default, for the CRS versions your edges' shield can run). The reports for the CRS releases known when the control plane was built are also built into it, for installs that cannot reach the archive. A version with no report yet shows *Not measured for CRS … yet* — another version's list is never shown.
+**Where the measurement comes from.** The archive measures every CRS release when it publishes it, with the newest shield, and publishes the report next to the bundle (`crs_impact_<version>.json`, covered by the release's signed checksums). The control plane fetches it, checks its sha256 against the archive index, caches it and serves it to WAF Studio; a new CRS release is therefore measured without a UI update. When a newer shield measures something else, the archive re-publishes the report and the control plane picks it up within its CRS refresh interval (15 minutes by default, for the CRS versions your edges' shield can run). An install that cannot reach the archive shows the report only for versions it fetched while it could. A version with no report yet shows *Not measured for CRS … yet* — another version's list is never shown.
 
 ## CRS policy settings
 

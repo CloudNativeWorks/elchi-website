@@ -49,20 +49,31 @@ spec:
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `defaults` | `PolicySpec` | built-in `DefaultPolicy` | File-level policy defaults applied beneath every domain/route in this file. |
+| `defaults` | `PolicySpec` | built-in `DefaultPolicy` | Policy defaults applied beneath every domain/route. They are merged across **every file (policy) of the project** in file-name order — the later file wins per field — so a policy's defaults also reach the domains of the others. |
 | `domains` | `Domain[]` | empty | Host-scoped route sets. |
-| `exclude` | string[] | empty | Request paths that bypass **all** inspection. |
+| `exclude` | string[] | empty | Request paths that bypass **all** inspection on **every host of the project** (see below). |
 
 A file with no `domains` is valid — for example, a file that only contributes
-`exclude` paths and is merged with other files. Hosts not matched by any domain
-fall through to the request being **allowed** (no policy means pass-through; the
-inspection posture only applies to matched hosts).
+`exclude` paths and is merged with other files.
+
+:::warning A host no domain lists is not inspected
+A request whose host matches no domain gets **no policy at all** and is passed
+through (unless the sidecar runs with `--default-allow=false`). `spec.defaults`
+does **not** apply to it: defaults are the base of the domains' policies, not a
+policy for unlisted hosts. To inspect every other host, add a domain with
+`hosts: ["*"]`.
+:::
 
 ## `spec.exclude` — paths that bypass everything
 
 A list of request **paths** that bypass *all* inspection, checked **before**
 policy resolution as a cheap, shared pass-through. Use it for health checks,
 metrics scrapes, or static assets that never need a WAF decision.
+
+The lists of all files are unioned and checked **before the host picks a
+domain**: an entry bypasses that path on **every host of the project**, the
+domains of the other policies included. To bypass a path on one domain only,
+use the domain's own [`exclude`](#domain) (shield 1.3.1).
 
 | Property | Behavior |
 |---|---|
@@ -97,6 +108,7 @@ A domain scopes a set of routes to one or more hosts.
 | `hosts` | string[] | **required** (≥1) | The request authorities this domain matches. |
 | `policy` | `PolicySpec` | inherits file defaults | Domain-level override applied above file defaults, below each route. |
 | `routes` | `Route[]` | empty | Routes evaluated by match precedence. |
+| `exclude` | string[] | empty | Paths of **this domain's hosts** that bypass all inspection — the same rules as `spec.exclude` (exact, normalized, query ignored, case-sensitive), but no other domain is affected. Shield 1.3.1. |
 
 ### `hosts` entries and precedence
 
@@ -138,23 +150,51 @@ A route binds a **match predicate** to a **policy override**.
 | `match` | `Match` | empty (matches everything) | Predicate selecting requests. An **empty match matches every request** to the domain — the domain default route. |
 | `policy` | `PolicySpec` | — | Policy override for matched requests. |
 
-Within a domain, routes are selected by **path-match precedence**:
-`path_exact` > `path_regex` > `path_prefix`. Two routes with identical predicates
-in one domain is a validation error (duplicate route).
+Within a domain, its own `exclude` is checked first, then routes are selected by
+**path-match precedence** — not by their order in the file:
+
+1. `path_exact`
+2. `path_regex` — a regex outranks **every** prefix, however long
+3. prefixes — the **longer** one first; at the same length a
+   `path_segment_prefix` before a `path_prefix`
+4. a route with no path
+
+`methods`, `content_type` and `headers` do **not** change this order: between two
+routes of the same rank the one listed first is tried first, so an unconditioned
+`/admin` listed before a `POST`-only `/admin` takes every request and the second
+one is never reached. If no route matches, the domain's default policy applies —
+never another domain's. Two routes with identical predicates in one domain is a
+validation error (duplicate route).
+
+:::tip Check a request
+**Which policy handles a request?** on the Shield policies page (and a policy's
+**Test** tab) shows which policy, domain and route a request gets. It is tested
+against shield's own resolver on a shared set of cases, so it answers the way
+the edge decides.
+:::
 
 ### `Match` fields
 
 | Option | Type | Default | Description |
 |---|---|---|---|
 | `path_exact` | string | — | Match the exact normalized path. |
-| `path_prefix` | string | — | Match paths under this prefix. |
-| `path_regex` | string (RE2) | — | Match paths by regex (must compile at load). |
+| `path_prefix` | string | — | A **string** prefix: `/pub` also matches `/publicadmin` and `/pub-internal`. End it with `/`, or use `path_segment_prefix`, to stop at a segment. |
+| `path_segment_prefix` | string | — | The path itself and everything below it at a `/` boundary: `/pub` matches `/pub`, `/pub/` and `/pub/x`, never `/publicadmin`. No trailing `/`; for the whole domain use `path_prefix: /`. Best to **relax** a path; on a route **stricter** than its domain, `/admin;jsessionid=…` and `/admin.json` do not take it and stay on the domain's policy — a plain `path_prefix: /admin` also takes them. Shield 1.3.1. |
+| `path_regex` | string (RE2) | — | Match paths by regex (must compile at load). RE2 has no lookahead/lookbehind, backreferences, possessive quantifiers or repeat counts above 1000 — a pattern with them makes shield refuse the whole policy set, so the policy editor blocks Save with the reason. |
+| `ignore_case` | bool | `false` | Compare the path case-insensitively — ASCII letters for exact and prefix paths (the pattern must be ASCII), `(?i)` for a regex. Paths are **case-sensitive** otherwise: `/Admin` does not take an `/admin` route. Turn it on for a stricter route when your application treats paths case-insensitively. Shield 1.3.1. |
 | `methods` | string[] | any | `GET HEAD POST PUT PATCH DELETE CONNECT OPTIONS TRACE` (case-insensitive). Empty = any. |
 | `content_type` | string[] | any | Restrict to these `Content-Type` media types. Empty = any. |
 | `headers` | `HeaderMatch[]` | — | Additional header predicates (**all** must match). |
 
 :::note
-Set **at most one** of `path_exact` / `path_prefix` / `path_regex`. Paths are
+Route patterns are compared **as written** against the normalized request path:
+a pattern containing `//`, `/./`, `/../`, `?` or `#` never matches, and one with
+`%2F` matches only a request that encoded it twice. The Builder warns about each.
+:::
+
+:::note
+Set **at most one** of `path_exact` / `path_prefix` / `path_segment_prefix` /
+`path_regex`. Paths are
 matched on the normalized form (percent-decoded, dot-segments collapsed), so
 `/admin/%2e%2e/secret` cannot slip past a `/admin` prefix rule.
 :::
@@ -232,7 +272,7 @@ flowchart TB
   Req([request]) --> Match
   subgraph Match["Policy selection — most-specific wins"]
     direction TB
-    H["Host match<br/>exact &gt; *.x &gt; *"] --> Rt["Route match<br/>path_exact &gt; path_regex &gt; path_prefix"]
+    H["Host match<br/>exact &gt; *.x &gt; *"] --> Rt["Route match<br/>domain exclude, then<br/>path_exact &gt; path_regex &gt; longest prefix"]
   end
   Rt --> Fold
   subgraph Fold["Fold policy — least-specific first"]
@@ -247,9 +287,9 @@ flowchart TB
 | Field class | Merge behavior |
 |---|---|
 | Scalar fields (`mode`, `timeout`, `fail_mode`, size caps, …) | The **most-specific set value wins**. |
-| `skip_checks` | **Union** across all scopes — a broad scope can exempt, a narrow scope can add more. |
+| `skip_checks` | **Union** across all scopes — a broad scope can exempt, a narrow scope can add more, but never re-enable a check a broader scope skips. |
 | `pipeline.request` / `pipeline.response` | **Replace wholesale** per direction when set. |
-| `checks.headers` / `checks.body` | Each sub-block **replaces** when set. |
+| `checks.headers` / `checks.body` | Each sub-block **replaces** when set — a route that sets only `checks.body.require_json` drops the domain's `checks.body.dlp`. The policy editor's Builder names what a block drops. |
 | `engines` | **Replaces wholesale** when set — a narrower scope's `engines` block fully supersedes the inherited one; it is **not** deep-merged. |
 
 :::warning
