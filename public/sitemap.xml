@@ -26,6 +26,16 @@
     </url>
 
     <url>
+        <loc>https://www.elchi.io/videos.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/videos.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/videos.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/videos.html"/>
+        <lastmod>2026-11-05</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
         <loc>https://www.elchi.io/architecture.html</loc>
         <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/architecture.html"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/architecture.html"/>
@@ -62,6 +72,16 @@
         <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/features.html"/>
         <lastmod>2026-10-18</lastmod>
         <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://www.elchi.io/tr/videos.html</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.elchi.io/videos.html"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/videos.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://www.elchi.io/videos.html"/>
+        <lastmod>2026-11-05</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
 

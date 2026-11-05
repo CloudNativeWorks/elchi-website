@@ -22,12 +22,14 @@ resource you're editing.
 
 A **Template** is a saved default configuration for an entire resource type. There is
 one template per `{ gtype, project, version }` — so a project can define, for
-example, its standard Cluster shape or its standard Listener bootstrap, and every new
-resource of that type starts from it instead of from a blank form.
+example, its standard Cluster shape or its standard Listener bootstrap. A template is
+never applied automatically: a new resource still opens as a blank form, and the
+template is loaded into the editor only when you choose **Use Template** and confirm.
 
 Templates are managed inline from the resource editor through a Monaco-based modal:
 you can check whether a template exists for the current type, view it, save the
-current resource as the template, apply the template to a new resource, or delete it.
+current resource as the template, load it into the resource with **Use Template**, or
+delete it.
 
 | Aspect | Detail |
 | --- | --- |
@@ -47,9 +49,9 @@ node's identity. Every create, update, and delete emits an audit event.
 
 :::tip[Standardize new resources]
 Save a fully-configured, reviewed resource as the template for its type. From then
-on, anyone creating that resource type in the project starts from the approved
-baseline — the same timeouts, health checks, and TLS settings — instead of
-rebuilding it and drifting.
+on, anyone creating that resource type in the project can load the approved baseline
+with **Use Template** — the same timeouts, health checks, and TLS settings — instead
+of rebuilding it and drifting.
 :::
 
 ## Snippets
@@ -110,8 +112,8 @@ standardize the parts.
 
 ## Consistency and auditability
 
-Both mechanisms enforce consistency by construction — everyone builds from the same
-approved shapes — and both are governed. Writes are role-gated (templates:
+Both mechanisms make consistency easy: everyone can build from the same approved
+shapes. Both are also governed. Writes are role-gated (templates:
 admin/owner; snippets: editor and above), and every create, update, and delete emits
 an audit event, so the shared building blocks a project relies on have a clear change
 history. Combined with the [config model's](/envoy-configuration/config-model)

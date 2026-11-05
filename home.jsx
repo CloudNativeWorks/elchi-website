@@ -393,7 +393,7 @@ const PF_STR = {
   en: {
     eyebrow: 'THE ELCHI PRODUCT FAMILY',
     h2a: 'One platform.',
-    h2b: 'Five products.',
+    h2b: 'Four products.',
     intro: 'Start with Elchi Core — the complete Envoy management platform — and license security, discovery, and traffic products as you need them.',
     base: 'Base platform',
     addon: 'Add-on',
@@ -403,7 +403,7 @@ const PF_STR = {
   tr: {
     eyebrow: 'ELCHI ÜRÜN AİLESİ',
     h2a: 'Tek platform.',
-    h2b: 'Beş ürün.',
+    h2b: 'Dört ürün.',
     intro: 'Eksiksiz Envoy yönetim platformu Elchi Core ile başlayın; güvenlik, keşif ve trafik ürünlerini ihtiyacınız oldukça lisanslayın.',
     base: 'Temel platform',
     addon: 'Eklenti',

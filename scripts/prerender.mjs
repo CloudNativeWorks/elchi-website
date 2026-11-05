@@ -19,10 +19,10 @@ const dist = join(root, 'dist');
 
 // Every HTML entry except docs.html (a redirect to /docs/).
 const PAGES = [
-  'index.html', 'features.html', 'architecture.html', 'contact.html', 'plans.html',
+  'index.html', 'features.html', 'architecture.html', 'contact.html', 'plans.html', 'videos.html',
   'products/core.html', 'products/api-security.html', 'products/api-discovery.html',
   'products/gslb.html',
-  'tr/index.html', 'tr/features.html', 'tr/architecture.html', 'tr/contact.html', 'tr/plans.html',
+  'tr/index.html', 'tr/features.html', 'tr/architecture.html', 'tr/contact.html', 'tr/plans.html', 'tr/videos.html',
   'tr/products/core.html', 'tr/products/api-security.html', 'tr/products/api-discovery.html',
   'tr/products/gslb.html',
 ];

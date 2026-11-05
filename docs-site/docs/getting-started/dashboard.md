@@ -20,7 +20,7 @@ The built-in widgets are:
 | --- | --- | --- |
 | **Traffic Overview** | Live downstream/upstream connections and request rates | Observability |
 | **Shield Security** | elchi-shield blocked vs. detected requests | Shield |
-| **Service Health** | A health matrix across services | Services |
+| **Service Health** | Per-service request rate, 4xx/5xx rate and p95 latency from Envoy's Prometheus metrics | Observability metrics |
 | **Client Resources** | Connected edge clients | Clients |
 | **GSLB Statistics** | GSLB health-check statistics | GSLB |
 | **Request Rate Timeline** | Request rate over time | Observability |
@@ -36,7 +36,7 @@ The exact widgets you see depend on which platform features are enabled and on y
 
 ## Everything is scoped to a project
 
-The Dashboard reads the **active project** from the project selector at the top of the left sidebar. Every widget query carries that project and only runs once a project is selected — the resource counts, the error summary, and the security widgets all filter to that project on the backend. Switching projects in the selector re-scopes the whole board at once.
+The Dashboard reads the **active project** from the project selector at the top of the left sidebar. Every widget query carries that project and only runs once a project is selected — the resource counts, the metrics widgets, and the security widgets all filter to that project on the backend. Switching projects in the selector re-scopes the whole board at once.
 
 For how projects gate what you can see and do, see [Auth and access](/administration/auth-and-access).
 
@@ -49,9 +49,13 @@ The **Resources Overview** widget answers "what is in this project right now?" I
 
 Each count links through to the corresponding resource list, so the widget doubles as a jump-off point. To understand what these resources are and how they relate, see the [configuration model](/envoy-configuration/config-model) and the [dependency graph](/envoy-configuration/dependency-graph).
 
+## Service Health
+
+The **Service Health** widget is built from Prometheus queries, not from configuration errors. For the active project it reads each HTTP connection manager's `http_downstream_rq_total` (request rate), `http_downstream_rq_xx_total` with response classes 4 and 5 (error rate) and `http_downstream_rq_time_bucket` (p95 latency), and links each service to its metrics in Observability. A service shows up only once it is serving requests, so a newly deployed, idle service does not appear yet.
+
 ## The error summary and clearing errors
 
-The **Service Health** view is driven by the error summary, which surfaces services that currently have active problems.
+Configuration errors (resources an Envoy rejected) are tracked separately. The **error badge in the top header** shows the active count and lists the affected services. You can clear or resolve the errors on the service's page under Operations → Services.
 
 ### Reading the summary
 
@@ -68,7 +72,7 @@ Only services that actually have active errors appear, so an empty list means a 
 
 ### Clearing or resolving errors
 
-Once you have fixed the underlying cause, you can clear the stale entries from the Dashboard. This calls:
+Once you have fixed the underlying cause, you can clear the stale entries on the service's page. This calls:
 
 ```bash
 GET /custom/clear_errors?error_ids=<id1>,<id2>&mode=<clear|resolve>
@@ -85,7 +89,7 @@ Clearing and resolving errors is restricted to the **admin** and **owner** roles
 
 Taken together, the widgets give you a fast triage loop:
 
-1. **Service Health** tells you *whether* anything is wrong and *where* — jump straight to the affected service.
+1. **Service Health** shows which services are seeing errors or slow responses; the header's error badge shows which have rejected configuration.
 2. **Resources Overview** confirms the project holds what you expect after a deploy.
 3. **Traffic Overview**, **Request Rate Timeline**, and **Response Time Trends** show whether traffic and latency look normal — dig deeper in [Metrics and logs](/observability/metrics-and-logs).
 4. **Shield Security** shows whether Shield (WAF included) is blocking or merely detecting.

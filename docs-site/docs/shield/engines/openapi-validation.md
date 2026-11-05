@@ -19,7 +19,7 @@ The `openapi` engine is Shield's **positive-security** engine: instead of denyin
 |---|---|---|---|---|
 | `spec_file` | string | **yes** | — | Path to the OpenAPI 3.x document. |
 | `validate_request_body` | bool | no | `false` | Validate the request body against the schema (implies body inspection). |
-| `reject_undeclared_path` | bool | no | `false` | **Currently a no-op** — the flag is loaded into the engine but never consulted in any decision path. An undeclared path is *always* blocked regardless of its value (see below). Leave it unset. |
+| `reject_undeclared_path` | bool | no | `false` | **No effect** — accepted for compatibility and ignored: an undeclared path is *always* blocked (see below). Leave it unset; the policy editor no longer offers it, and says so when a loaded policy sets it. |
 
 ## Example
 

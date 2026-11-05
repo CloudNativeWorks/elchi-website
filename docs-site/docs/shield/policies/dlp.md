@@ -80,6 +80,13 @@ full (cards, SSNs, emails) → `redact`.
 Both lists follow the policy `mode` (see [Modes & Fail Postures](/shield/policies/modes-and-postures)):
 
 - In `block` mode a `block` match blocks and a `redact` match rewrites the body.
+  Each kind it masked is recorded as one security event — action **`redact`**,
+  rule `body.dlp_redact:<kind>`, engine `dlp`, the kind only and never the value —
+  while the request itself is allowed (elchi-shield v1.3.2 and later; older
+  edges rewrite the body without an event). These events are not sampled but
+  capped per edge (`--audit-max-redact-per-sec`, default 50/s) so a busy
+  redacting route cannot crowd blocks out of the audit queue;
+  `findings_total{engine="dlp",action="redact"}` still counts every one.
 - In `detect`/`shadow` **nothing is modified** — a `block` match is recorded as a
   would-block and a `redact` match is recorded as a would-redaction (rule
   `body.dlp_redact_would`, counted under `detections_total`/`shadow_detections_total`),
@@ -128,7 +135,10 @@ the same direction, mind the pipeline-stage order (see
   (see [Body Inspection & Limits](/shield/policies/body-inspection)).
 - Findings carry the `dlp` engine label in `findings_total{engine="dlp"}` and in
   [Security Events](/shield/ui/security-events), so DLP activity is separable
-  from WAF/engine findings.
+  from WAF/engine findings: blocks as `body.dlp_block:<kind>`, enforced
+  redactions as action `redact` / `body.dlp_redact:<kind>` (counted in
+  `findings_total{engine="dlp",action="redact"}`, shield v1.3.2+), and
+  would-redactions in detect/shadow as `body.dlp_redact_would`.
 
 ## Example: block secrets on requests, redact PII on responses
 
@@ -176,6 +186,7 @@ Roll a `block` list out via `mode: detect` → `shadow` → `block` and watch
 kind in particular can match legitimate payload fields). A `redact` list rides
 the same ramp — in `detect`/`shadow` each match is only recorded as a
 would-redaction and the body is untouched; redaction actually rewrites the body
-in `block` mode, which is when `body_mutations_total` starts moving. See
+in `block` mode, which is when `body_mutations_total` starts moving and each
+masked kind shows up as a `redact` event. See
 [Modes & Fail Postures](/shield/policies/modes-and-postures).
 :::

@@ -4,7 +4,7 @@ description: The per-event forensic feed of what Shield is blocking and detectin
 sidebar_position: 3
 ---
 
-**Shield → Security Events** is a project-scoped, filterable feed of the individual audit events Shield's edges emit — every block, detect-mode and shadow-mode finding, plus a sample of allowed traffic. Events flow from each edge sidecar to the **central ClickHouse** table (`elchi_shield_audit`) and are served to the UI through the backend (`/api/v3/shield/events`). The tab is gated to **Admin** and **Owner** roles.
+**Shield → Security Events** is a project-scoped, filterable feed of the individual audit events Shield's edges emit — every block, detect-mode and shadow-mode finding, every enforced DLP redaction, plus a sample of allowed traffic. Events flow from each edge sidecar to the **central ClickHouse** table (`elchi_shield_audit`) and are served to the UI through the backend (`/api/v3/shield/events`). The tab is gated to **Admin** and **Owner** roles.
 
 Where the [Overview dashboard](/shield/ui/overview-dashboard) shows rates and trends, this feed answers the forensic question: *which request, on which edge, was blocked by which engine and rule, and why*.
 
@@ -24,7 +24,7 @@ Audit events **never contain header or body values** — no tokens, cookies, pay
 
 Two things to remember when reading counts:
 
-- **Findings are always audited** — every block, detect, and shadow event is recorded.
+- **Findings are always audited** — every block, detect and shadow event is recorded; redact events (enforced DLP redactions) are capped per edge at 50/s by default, as a redacting route rewrites every matching response.
 - **Allowed traffic is sampled** (per-policy `sampling_rate`, 5% by default, plus an optional global cap), so `allow` rows are a sample, not a total. Use the [Overview dashboard](/shield/ui/overview-dashboard) or Prometheus metrics for exact request tallies.
 - Rows expire from ClickHouse by TTL (7 days by default) — see [Metrics, Audit & Health](/shield/observability) for the schema and retention.
 
@@ -34,7 +34,7 @@ The filter bar drives both the feed and the summary, server-side:
 
 - **Time range** — quick relative ranges from *Last 15 minutes* to *Last 30 days*, or a custom range with times. A relative range is **live**: Refresh (and the Live auto-refresh) slides the window forward to "now". Manually editing the range pins it, and refreshes re-query the same fixed window.
 - **Engine** — one of the engines that produced findings (the dropdown is built from real data in the window; e.g. `coraza`, `jwt`, `bot`, `ratelimit`, `ipreputation`, `dlp`, `body_size`, `body_decode`, `anomaly`, …).
-- **Action** — `block`, `detect`, `shadow`, or `allow`.
+- **Action** — `block`, `detect`, `shadow`, `redact` (a [DLP](/shield/policies/dlp) redaction in block mode: the request was allowed with the named kind masked; shield v1.3.2+), or `allow`.
 - **Severity** — `critical`, `high`, `medium`, `low`, `info`.
 - **Edge (node)** — a specific edge's node id.
 - **Findings only** — on by default: keeps blocks, detections and shadow findings and — on edges that record the scoring trail — the **allowed requests that scored under the threshold** (they are findings too); the clean, sampled allow stream is hidden. Switch it off to see that stream.
@@ -48,7 +48,7 @@ Draft filter edits are applied with **Apply** (the button lights up when the dra
 
 Above the feed:
 
-- **Summary cards** — Total, Blocked, Detected, and Shadow counts for the filtered window, computed server-side from `engine × action × severity` groups over the same filter as the feed (so the total is exact, not an estimate).
+- **Summary cards** — Total, Blocked, Detected, Shadow and Redacted counts for the filtered window, computed server-side from `engine × action × severity` groups over the same filter as the feed (so the total is exact, not an estimate).
 - **Activity over time** — a stacked area chart with one series per action, bucketed over the window.
 - **Top engines** — the engines producing the most events in the window.
 - **Top rules** — the rules behind the window's decisions, ranked by the events they took part in: for the WAF the CRS rules that filled the anomaly score (from the scoring trail), for the other engines their rule id. Click a rule to filter the feed on it. Empty until the edges run shield 1.2.0+.

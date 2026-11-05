@@ -3,6 +3,7 @@ import { Nav, Footer } from './shared.jsx';
 import { getLocale, locHref } from './i18n.js';
 import { PRODUCTS } from './products-data.js';
 import { ProductShots } from './screens.jsx';
+import { VideoStrip } from './video-player.jsx';
 
 // Product pages share one component; the HTML shell selects the product via
 // <div id="root" data-product="core">. Copy lives here as STR-style {en,tr}
@@ -28,6 +29,8 @@ const PAGE = {
     ctaContact: 'Contact us',
     shotsEyebrow: 'IN THE PRODUCT',
     shotsTitle: 'See it in action.',
+    videosEyebrow: 'VIDEO TUTORIALS',
+    videosTitle: 'Watch it work.',
   },
   tr: {
     addon: 'Eklenti · Elchi Core gerektirir',
@@ -45,7 +48,17 @@ const PAGE = {
     ctaContact: 'Bize ulaşın',
     shotsEyebrow: 'ÜRÜNDEN',
     shotsTitle: 'İş başında görün.',
+    videosEyebrow: 'VİDEO EĞİTİMLERİ',
+    videosTitle: 'Çalışırken izleyin.',
   },
+};
+
+// Video tutorials per product page, in viewing order (slugs of videos-data.js).
+const VIDEOS_BY_PRODUCT = {
+  core: ['explainer', 'http-service-step-by-step', 'canary-weighted', 'blue-green-switch', 'health-checks', 'https-lets-encrypt'],
+  'api-security': ['shield-waf', 'shield-api-keys', 'shield-jwt', 'shield-traffic', 'shield-positive', 'shield-dlp', 'shield-signed', 'shield-mtls-identity', 'shield-advanced'],
+  'api-discovery': ['api-discovery', 'api-discovery-deep', 'access-logs', 'ai-analyzer', 'metrics', 'reports'],
+  gslb: ['gslb', 'ha-pair', 'bgp-vip'],
 };
 
 function ProductPage({ slug }) {
@@ -118,6 +131,9 @@ function ProductPage({ slug }) {
       </section>
 
       {p.shots && <ProductShots ids={p.shots} eyebrow={pg.shotsEyebrow} title={pg.shotsTitle}/>}
+
+      {/* Video tutorials (only the public ones show; nothing renders if none is) */}
+      {VIDEOS_BY_PRODUCT[slug] && <VideoStrip slugs={VIDEOS_BY_PRODUCT[slug]} eyebrow={pg.videosEyebrow} title={pg.videosTitle}/>}
 
       {/* Flow */}
       <section className="section" style={t.versus ? { background: 'var(--bg-tint)', borderTop: '1px solid var(--border)' } : {}}>

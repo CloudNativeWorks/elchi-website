@@ -36,11 +36,11 @@ function useArchiveVersions() {
 // are intentionally kept in English in both locales.
 const SHARED = {
   en: {
-    nav: { home: 'Home', products: 'Products', features: 'Features', architecture: 'Architecture', plans: 'Plans', docs: 'Docs', contact: 'Contact', getStarted: 'Get Started →', allPlans: 'Plans & Licensing' },
+    nav: { home: 'Home', products: 'Products', features: 'Features', architecture: 'Architecture', videos: 'Videos', plans: 'Plans', docs: 'Docs', contact: 'Contact', getStarted: 'Get Started →', allPlans: 'Plans & Licensing' },
     footer: {
       tagline: 'Enterprise proxy management platform. 3-process distributed architecture with full xDS protocol support.',
       products: 'Products', platform: 'Platform', resources: 'Resources', company: 'Company',
-      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', plans: 'Plans & Licensing',
+      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', videos: 'Video tutorials', plans: 'Plans & Licensing',
       documentation: 'Documentation', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Install', platformInstall: 'Platform Install',
       about: 'About', contact: 'Contact',
@@ -49,11 +49,11 @@ const SHARED = {
     },
   },
   tr: {
-    nav: { home: 'Ana Sayfa', products: 'Ürünler', features: 'Özellikler', architecture: 'Mimari', plans: 'Paketler', docs: 'Dokümanlar', contact: 'İletişim', getStarted: 'Başlayın →', allPlans: 'Paketler & Lisanslama' },
+    nav: { home: 'Ana Sayfa', products: 'Ürünler', features: 'Özellikler', architecture: 'Mimari', videos: 'Videolar', plans: 'Paketler', docs: 'Dokümanlar', contact: 'İletişim', getStarted: 'Başlayın →', allPlans: 'Paketler & Lisanslama' },
     footer: {
       tagline: 'Kurumsal proxy yönetim platformu. Tam xDS protokol desteğiyle 3 süreçli dağıtık mimari.',
       products: 'Ürünler', platform: 'Platform', resources: 'Kaynaklar', company: 'Şirket',
-      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', plans: 'Paketler & Lisanslama',
+      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', videos: 'Video eğitimleri', plans: 'Paketler & Lisanslama',
       documentation: 'Dokümantasyon', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Kurulumu', platformInstall: 'Platform Kurulumu',
       about: 'Hakkında', contact: 'İletişim',
@@ -162,6 +162,7 @@ function Nav({ active }) {
           </div>
           <a href={locHref('features')} className={active === 'features' ? 'active' : ''}>{t.features}</a>
           <a href={locHref('architecture')} className={active === 'architecture' ? 'active' : ''}>{t.architecture}</a>
+          <a href={locHref('videos')} className={active === 'videos' ? 'active' : ''}>{t.videos}</a>
           <a href={locHref('plans')} className={active === 'plans' ? 'active' : ''}>{t.plans}</a>
           <a href={docsHref} className={active === 'docs' ? 'active' : ''}>{t.docs}</a>
           <a href={locHref('contact')} className={active === 'contact' ? 'active' : ''}>{t.contact}</a>
@@ -237,6 +238,7 @@ function Footer() {
               <li><a href={locHref('features')}>{t.features}</a></li>
               <li><a href={locHref('architecture')}>{t.architecture}</a></li>
               <li><a href={locHref('home#screenshots')}>{t.screenshots}</a></li>
+              <li><a href={locHref('videos')}>{t.videos}</a></li>
             </ul>
           </div>
           <div>
