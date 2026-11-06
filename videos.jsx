@@ -33,6 +33,7 @@ const STR = {
     more: 'More tutorials on the channel',
     moreText: 'New videos are added as Elchi grows. Subscribe to get them first.',
     captions: 'English audio · English and Turkish subtitles',
+    playAll: 'Play all on YouTube',
   },
   tr: {
     eyebrow: 'VİDEO EĞİTİMLERİ',
@@ -55,6 +56,7 @@ const STR = {
     more: 'Kanalda daha fazla eğitim',
     moreText: 'Elchi büyüdükçe yeni videolar ekleniyor. İlk siz görmek için abone olun.',
     captions: 'İngilizce ses · İngilizce ve Türkçe altyazı',
+    playAll: 'Tümünü YouTube\'da oynat',
   },
 };
 
@@ -175,7 +177,10 @@ function VideosApp() {
               {groups.length === 0 && <p className="vid-empty">{t.none}</p>}
               {groups.map((g) => (
                 <div key={g.id} className="vid-group">
-                  <h2 className="vid-group-title">{g[locale]} <span className="mono">{g.items.length}</span></h2>
+                  <div className="vid-group-head">
+                    <h2 className="vid-group-title">{g[locale]} <span className="mono">{g.items.length}</span></h2>
+                    {g.playlist && <a className="vid-playall" href={`https://www.youtube.com/playlist?list=${g.playlist}`} target="_blank" rel="noopener">{t.playAll} ↗</a>}
+                  </div>
                   <div className="vid-grid">
                     {g.items.map((v) => <VideoCard key={v.slug} v={v} onPlay={play}/>)}
                   </div>

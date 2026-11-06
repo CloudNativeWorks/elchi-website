@@ -1,0 +1,398 @@
+[
+  {
+    "slug": "explainer",
+    "yt": "-HT-WSd2hJg",
+    "title": "Elchi: Traffic Management & API Security",
+    "duration": "2:43"
+  },
+  {
+    "slug": "what-is-elchi",
+    "yt": "QtYllehRVLs",
+    "title": "What Is Elchi? Traffic Management & API Security in Two Minutes",
+    "duration": "1:38"
+  },
+  {
+    "slug": "http-service-step-by-step",
+    "yt": "bRHczTQG9hc",
+    "title": "Build a Load-Balanced HTTP Service Step by Step",
+    "duration": "2:49"
+  },
+  {
+    "slug": "create-http-endpoint",
+    "yt": "n147J24-12s",
+    "title": "Basic HTTP Service with Scenarios",
+    "duration": "2:06"
+  },
+  {
+    "slug": "custom-scenario",
+    "yt": "vPjdhLfPFn8",
+    "title": "Build Your Own Scenario",
+    "duration": "2:40"
+  },
+  {
+    "slug": "store-api",
+    "yt": "5iIrektfbmE",
+    "title": "Build a Production-Ready Service End to End",
+    "duration": "6:04"
+  },
+  {
+    "slug": "dashboard",
+    "yt": "GxF3bxd1a_o",
+    "title": "The Dashboard — Your Command Center",
+    "duration": "1:44"
+  },
+  {
+    "slug": "command-palette",
+    "yt": "CBBEgHET02k",
+    "title": "The Command Palette — Go Anywhere with ⌘K",
+    "duration": "1:32"
+  },
+  {
+    "slug": "templates-snippets",
+    "yt": "21lTQpBSfOM",
+    "title": "Templates and Snippets — Reuse Configuration",
+    "duration": "1:41"
+  },
+  {
+    "slug": "path-routing",
+    "yt": "ByDLi2_GuQk",
+    "title": "Path-Based Routing — One Listener, Several Services",
+    "duration": "2:26"
+  },
+  {
+    "slug": "header-routing",
+    "yt": "id5vtORtAQA",
+    "title": "Route by Header, Redirect and Rewrite Paths",
+    "duration": "2:19"
+  },
+  {
+    "slug": "route-live-change",
+    "yt": "kcxOh48TUCk",
+    "title": "Change a Route Live, Without Restarts",
+    "duration": "1:14"
+  },
+  {
+    "slug": "canary-weighted",
+    "yt": "Wcj98f5pl30",
+    "title": "Canary Release with Weighted Routing (90/10)",
+    "duration": "2:07"
+  },
+  {
+    "slug": "blue-green-switch",
+    "yt": "rIQGsHndVuE",
+    "title": "Blue/Green Release with Cluster Endpoints",
+    "duration": "1:11"
+  },
+  {
+    "slug": "request-mirroring",
+    "yt": "-AaujhB59X8",
+    "title": "Mirror Live Traffic to a New Version",
+    "duration": "1:17"
+  },
+  {
+    "slug": "sticky-sessions",
+    "yt": "LdUOd-OisoU",
+    "title": "Sticky Sessions with a Cookie",
+    "duration": "1:30"
+  },
+  {
+    "slug": "grpc-websocket",
+    "yt": "Vvvp6g518tE",
+    "title": "gRPC and WebSocket Services",
+    "duration": "4:23"
+  },
+  {
+    "slug": "tcp-udp-services",
+    "yt": "HJVSQDgrA1E",
+    "title": "Run TCP and UDP Services",
+    "duration": "4:04"
+  },
+  {
+    "slug": "dynamic-forward-proxy",
+    "yt": "_vvim4L-VBU",
+    "title": "Reach Any Host with a Dynamic Forward Proxy",
+    "duration": "2:30"
+  },
+  {
+    "slug": "sni-forward-proxy",
+    "yt": "stHmTm4BnOk",
+    "title": "Forward TLS Traffic by SNI",
+    "duration": "2:31"
+  },
+  {
+    "slug": "dns-filter",
+    "yt": "mrAWKCYbpZg",
+    "title": "Answer DNS Queries with Static Records",
+    "duration": "1:55"
+  },
+  {
+    "slug": "https-lets-encrypt",
+    "yt": "sPUwznEl2fk",
+    "title": "Serve HTTPS with a Let's Encrypt Certificate",
+    "duration": "1:49"
+  },
+  {
+    "slug": "http-to-https",
+    "yt": "x23qc3v2vLE",
+    "title": "Redirect HTTP to HTTPS",
+    "duration": "1:59"
+  },
+  {
+    "slug": "http3",
+    "yt": "2mj3aAXSLZI",
+    "title": "HTTP/3 with a QUIC Listener",
+    "duration": "3:16"
+  },
+  {
+    "slug": "mtls",
+    "yt": "p_4v2yWQatM",
+    "title": "Mutual TLS — Only Clients with a Certificate",
+    "duration": "1:54"
+  },
+  {
+    "slug": "pq-tls",
+    "yt": "U9nwuBhllE8",
+    "title": "Post-Quantum TLS — What to Do Today",
+    "duration": "1:27"
+  },
+  {
+    "slug": "health-checks",
+    "yt": "uEXpZiVejR0",
+    "title": "Health Checks and Outlier Detection",
+    "duration": "2:33"
+  },
+  {
+    "slug": "retries-timeouts",
+    "yt": "0XLjgWpukEc",
+    "title": "Retries and Timeouts",
+    "duration": "1:43"
+  },
+  {
+    "slug": "circuit-breakers",
+    "yt": "Qyf2YxxOJ94",
+    "title": "Circuit Breakers — Fail Fast Instead of Piling Up",
+    "duration": "1:17"
+  },
+  {
+    "slug": "adaptive-concurrency",
+    "yt": "Gqo1N7sRO-M",
+    "title": "Adaptive Concurrency — Protect a Slow Backend",
+    "duration": "1:45"
+  },
+  {
+    "slug": "admission-control",
+    "yt": "-V1rWg7oAAA",
+    "title": "Admission Control — Shed Load When the Backend Fails",
+    "duration": "1:49"
+  },
+  {
+    "slug": "rate-limit-http",
+    "yt": "LU2S5jMg8H0",
+    "title": "Rate Limiting with a Token Bucket",
+    "duration": "1:32"
+  },
+  {
+    "slug": "connection-limit",
+    "yt": "xy8Pav6o06Y",
+    "title": "Cap Concurrent Connections",
+    "duration": "1:44"
+  },
+  {
+    "slug": "connection-rate-limit",
+    "yt": "ynFl2yVLpLs",
+    "title": "Rate Limit New Connections",
+    "duration": "1:50"
+  },
+  {
+    "slug": "endpoint-drain",
+    "yt": "Gs2poXlKSC4",
+    "title": "Drain an Upstream with Endpoint Control",
+    "duration": "1:47"
+  },
+  {
+    "slug": "basic-auth",
+    "yt": "U82nhblLjoY",
+    "title": "Protect a Service with Basic Auth",
+    "duration": "1:25"
+  },
+  {
+    "slug": "jwt-auth",
+    "yt": "gZGErYdW-KA",
+    "title": "Require a Valid JWT",
+    "duration": "1:44"
+  },
+  {
+    "slug": "rbac-header",
+    "yt": "bkV-rhPa9Fk",
+    "title": "Allow Requests by Header with RBAC",
+    "duration": "1:39"
+  },
+  {
+    "slug": "cors",
+    "yt": "AiaGhGMgjqU",
+    "title": "Allow Cross-Origin Calls with CORS",
+    "duration": "2:04"
+  },
+  {
+    "slug": "compressor",
+    "yt": "afQOZnuLBJY",
+    "title": "Compress Responses with Gzip",
+    "duration": "1:22"
+  },
+  {
+    "slug": "lua-filter",
+    "yt": "6GxQkTH08Ko",
+    "title": "Custom Logic with a Lua Filter",
+    "duration": "1:11"
+  },
+  {
+    "slug": "shield-waf",
+    "yt": "LQddKNoVBFU",
+    "title": "Block Attacks with Elchi Shield (WAF)",
+    "duration": "1:58"
+  },
+  {
+    "slug": "shield-advanced",
+    "yt": "giGpcxueyLQ",
+    "title": "Shield in Depth — Detect Mode, Custom Rules and Exceptions",
+    "duration": "3:12"
+  },
+  {
+    "slug": "shield-api-keys",
+    "yt": "IFLeVQR-cQ0",
+    "title": "Shield API Keys with Scopes",
+    "duration": "2:13"
+  },
+  {
+    "slug": "shield-jwt",
+    "yt": "-JNaNc7LgP8",
+    "title": "Shield JWT and JWKS — Only Your Own Data",
+    "duration": "2:46"
+  },
+  {
+    "slug": "shield-signed",
+    "yt": "8QOkRIfWIAo",
+    "title": "Shield Signed Requests — HMAC and HTTP Message Signatures",
+    "duration": "2:23"
+  },
+  {
+    "slug": "shield-mtls-identity",
+    "yt": "tuFdHvm8KEk",
+    "title": "Shield mTLS Identity — Allow Only Known Client Certificates",
+    "duration": "1:44"
+  },
+  {
+    "slug": "shield-traffic",
+    "yt": "L5j88tXDOHI",
+    "title": "Shield Rate Limits, IP Blocklists and Bot Detection",
+    "duration": "3:42"
+  },
+  {
+    "slug": "shield-positive",
+    "yt": "ga1z_ZD9IPU",
+    "title": "Positive Security with OpenAPI Validation and GraphQL Guard",
+    "duration": "2:32"
+  },
+  {
+    "slug": "api-discovery",
+    "yt": "tvd1SoPnUW4",
+    "title": "Discover Your APIs Automatically",
+    "duration": "1:11"
+  },
+  {
+    "slug": "api-discovery-deep",
+    "yt": "uHXTI5q_VdY",
+    "title": "API Discovery in Depth — Findings, Risks and Coverage",
+    "duration": "1:38"
+  },
+  {
+    "slug": "access-logs",
+    "yt": "G1zoCk8U1oA",
+    "title": "Access Logs — See Every Request",
+    "duration": "1:01"
+  },
+  {
+    "slug": "access-log-custom",
+    "yt": "bLo-tBQ9VWg",
+    "title": "Build Your Own Access Log — Headers and Key Operators",
+    "duration": "1:55"
+  },
+  {
+    "slug": "metrics",
+    "yt": "YhOSeZ_6q60",
+    "title": "Metrics — Traffic, Errors and Latency at a Glance",
+    "duration": "0:58"
+  },
+  {
+    "slug": "reports",
+    "yt": "wPAgpSwI2JE",
+    "title": "Reports — Your Configuration at a Glance",
+    "duration": "1:18"
+  },
+  {
+    "slug": "traffic-tour",
+    "yt": "7UI3_m_5P9Y",
+    "title": "Live Traffic, Dependencies and the Route Map",
+    "duration": "1:18"
+  },
+  {
+    "slug": "ai-analyzer",
+    "yt": "z4CRk1hoVbA",
+    "title": "AI Analyzer — Ask Questions About Your Configuration",
+    "duration": "1:22"
+  },
+  {
+    "slug": "register-client",
+    "yt": "lV1ZHUjCKJo",
+    "title": "Register a New Elchi OS Appliance",
+    "duration": "1:45"
+  },
+  {
+    "slug": "elchi-os-console",
+    "yt": "pB-1PFXY2JA",
+    "title": "The Elchi OS Console — Everything from One Prompt",
+    "duration": "1:57"
+  },
+  {
+    "slug": "ha-pair",
+    "yt": "ucRqmTMIeww",
+    "title": "High Availability — HA Pair, VIP and Failover",
+    "duration": "1:38"
+  },
+  {
+    "slug": "bgp-vip",
+    "yt": "d0uijGRY0UM",
+    "title": "Advertise Service Addresses with BGP",
+    "duration": "1:40"
+  },
+  {
+    "slug": "gslb",
+    "yt": "D1WgPGP_EjM",
+    "title": "GSLB — DNS That Follows Healthy Services",
+    "duration": "2:32"
+  },
+  {
+    "slug": "k8s-discovery",
+    "yt": "l5m1WAjQTIY",
+    "title": "K8s Discovery — Endpoints That Follow Your Cluster",
+    "duration": "3:03"
+  },
+  {
+    "slug": "proxy-upgrade",
+    "yt": "Vo9_nvMsTTI",
+    "title": "Upgrade the Proxy Version with Zero Downtime",
+    "duration": "1:43"
+  },
+  {
+    "slug": "public-api",
+    "yt": "hoba6O_EGA8",
+    "title": "Automate Elchi with the Public API",
+    "duration": "2:33"
+  },
+  {
+    "slug": "users-audit",
+    "yt": "0TiY6otwdD0",
+    "title": "Users, Roles and the Audit Log",
+    "duration": "1:43"
+  }
+]

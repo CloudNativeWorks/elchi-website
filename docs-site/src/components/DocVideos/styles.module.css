@@ -1,0 +1,60 @@
+.link {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-bottom: 14px; padding: 4px 11px; border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+  color: var(--ifm-color-primary); background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+}
+.link:hover { text-decoration: none; background: rgba(37, 99, 235, 0.14); }
+
+.section {
+  margin-top: 48px; padding-top: 28px;
+  border-top: 1px solid var(--ifm-toc-border-color);
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 16px);
+}
+.section h2 { margin-bottom: 6px; }
+.note { color: var(--ifm-color-emphasis-700); font-size: 14.5px; margin-bottom: 20px; }
+
+.one { max-width: 760px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 20px; }
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+.video { margin: 0; scroll-margin-top: calc(var(--ifm-navbar-height) + 16px); }
+.frame {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+  border-radius: 10px; background: #0f172a;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+}
+.frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.thumb {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  padding: 0; border: 0; cursor: pointer; background: none;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+.thumb:hover img { transform: scale(1.03); }
+.thumb:focus-visible { outline: 3px solid var(--ifm-color-primary-light); outline-offset: 3px; }
+.play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 58px; height: 58px; border-radius: 50%;
+  display: grid; place-items: center; padding-left: 3px;
+  background: rgba(15, 23, 42, 0.78); color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: background 0.2s;
+}
+.thumb:hover .play { background: #2563eb; }
+.dur {
+  position: absolute; right: 10px; bottom: 10px; padding: 2px 7px; border-radius: 5px;
+  background: rgba(10, 14, 26, 0.82); color: #fff;
+  font: 500 12px var(--ifm-font-family-monospace);
+}
+
+.caption {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  margin-top: 10px; font-size: 14.5px; font-weight: 600; line-height: 1.4;
+}
+.caption a { flex: none; font-size: 13px; font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb img, .play { transition: none; }
+}

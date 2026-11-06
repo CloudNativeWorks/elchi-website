@@ -65,7 +65,10 @@
 
 /* ----- groups + grid ----- */
 .vid-group { margin-top: 40px; }
-.vid-group-title { font-size: 22px; margin: 0 0 18px; display: flex; align-items: baseline; gap: 10px; }
+.vid-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 18px; }
+.vid-playall { font-size: 14px; font-weight: 500; color: var(--blue-600); white-space: nowrap; }
+.vid-playall:hover { color: var(--blue-700); }
+.vid-group-title { font-size: 22px; margin: 0; display: flex; align-items: baseline; gap: 10px; }
 .vid-group-title span { font-size: 13px; color: var(--slate-400); font-weight: 500; }
 .vid-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 26px; }
 .vid-card { scroll-margin-top: 140px; }
