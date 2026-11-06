@@ -73,7 +73,8 @@ function JsonLd({ locale }) {
         name: v.title,
         description: v[locale],
         thumbnailUrl: `https://www.elchi.io${thumb(v)}`,
-        uploadDate: v.date,
+        // Google wants a full ISO 8601 date-time with a time zone; the data holds a day
+        uploadDate: /T/.test(v.date) ? v.date : `${v.date}T12:00:00+03:00`,
         duration: `PT${Math.floor(v.seconds / 60)}M${v.seconds % 60}S`,
         embedUrl: `https://www.youtube.com/embed/${v.yt}`,
         url: `https://www.elchi.io${locale === 'tr' ? '/tr' : ''}/videos.html#${v.slug}`,
