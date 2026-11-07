@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Billboard, ContactShadows, Environment, Lightformer, MeshReflectorMaterial, PerformanceMonitor, RoundedBox, Sparkles, SpotLight, useTexture } from '@react-three/drei';
@@ -152,20 +152,40 @@ const startLow = () => {
   return window.innerWidth < 760 || mem <= 4 || cores <= 4;
 };
 
+/* heavy CPU prep (canvas textures, merged cabinet geometry, curve length tables),
+   called by the stage in an idle slot before the canvas mounts */
+export function prepare() {
+  textures();
+  rackGeometry();
+  PACKET_CURVES.forEach((c) => c.getLengths());
+  ATTACK_CURVES.forEach((c) => c.getLengths());
+}
+
 export default function Hero3D({ timeRef, active = true, reduce = false, onReady }) {
   const [low] = useState(startLow); // decided once, never flips mid-session (no visual pop)
   const [dpr, setDpr] = useState(1.25);
+  const [warm, setWarm] = useState(false); // shaders compiled
+  const born = useRef(typeof performance !== 'undefined' ? performance.now() : 0);
   return (
     <Canvas
       className="hx3-canvas"
       dpr={low ? 1 : dpr}
       shadows={low ? false : 'soft'}
-      frameloop={reduce ? 'demand' : active ? 'always' : 'never'}
+      frameloop={!warm ? 'never' : reduce ? 'demand' : active ? 'always' : 'never'}
       gl={{ antialias: false, powerPreference: 'high-performance', stencil: false }}
       camera={{ position: [-3.6, 1.75, 12.4], fov: 33, near: 0.1, far: 90 }}
     >
       {/* scale the render resolution smoothly with the measured frame rate */}
-      <PerformanceMonitor onChange={({ factor }) => setDpr(Math.round((0.85 + 0.65 * factor) * 20) / 20)} />
+      <PerformanceMonitor
+        ms={400}
+        iterations={8}
+        onChange={({ factor }) => {
+          if (performance.now() - born.current < 6000) return; // let the first seconds settle
+          setDpr(Math.round((1 + 0.5 * factor) * 4) / 4); // 1, 1.25 or 1.5 — coarse steps only
+        }}
+      />
+      <Warmup onDone={() => setWarm(true)} />
+      <DrawOnce when={warm} />
       <color attach="background" args={['#04050b']} />
       <fog attach="fog" args={['#04050b', 13, 42]} />
       <Clock timeRef={timeRef} reduce={reduce} onReady={onReady} />
@@ -282,6 +302,47 @@ function Shadowed({ children }) {
   return <group ref={ref}>{children}</group>;
 }
 
+/* frameloop 'demand' (reduced motion) only draws when asked: ask once when ready */
+function DrawOnce({ when }) {
+  const { invalidate } = useThree();
+  useEffect(() => { if (when) invalidate(); }, [when, invalidate]);
+  return null;
+}
+
+/* compile every material before the first frame: compileAsync uses
+   KHR_parallel_shader_compile where available, so the page doesn't freeze */
+function Warmup({ onDone }) {
+  const { gl, scene, camera } = useThree();
+  const done = useRef(onDone);
+  done.current = onDone;
+  useEffect(() => {
+    let alive = true;
+    const go = gl.compileAsync ? gl.compileAsync(scene, camera) : Promise.resolve();
+    // then upload every texture to the GPU one per idle slot, so the first frame doesn't do it all at once
+    const uploadTextures = () => new Promise((resolve) => {
+      const texs = new Set();
+      scene.traverse((o) => {
+        const mats = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
+        mats.forEach((m) => Object.values(m).forEach((v) => v && v.isTexture && texs.add(v)));
+      });
+      if (scene.environment) texs.add(scene.environment);
+      const list = [...texs];
+      const idle = (fn) => (window.requestIdleCallback ? window.requestIdleCallback(fn, { timeout: 200 }) : setTimeout(fn, 16));
+      const step = () => {
+        if (!alive) return resolve();
+        const t = list.shift();
+        if (!t) return resolve();
+        try { gl.initTexture(t); } catch { /* not all textures can be pre-uploaded */ }
+        idle(step);
+      };
+      idle(step);
+    });
+    go.catch(() => {}).then(uploadTextures).then(() => alive && done.current());
+    return () => { alive = false; };
+  }, [gl, scene, camera]); // once — not on every parent render
+  return null;
+}
+
 /* volumetric key light over the gate (+ its target) */
 function KeyLight() {
   const light = useRef();
@@ -368,7 +429,7 @@ function Clock({ timeRef, reduce, onReady }) {
     if (reduce) { timeRef.current = 7.2; invalidate(); }
   }, [reduce, timeRef, invalidate]);
   useFrame((_, dt) => {
-    if (!told.current) { told.current = true; requestAnimationFrame(() => onReady?.()); } // after the first frame is on screen
+    if (!told.current) { told.current = true; requestAnimationFrame(() => onReady?.()); } // after the first frame is on screen // after the first frame is on screen
     if (reduce) return;
     timeRef.current = (timeRef.current + Math.min(dt, 0.05)) % LOOP;
   }, -10);
