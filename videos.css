@@ -91,7 +91,8 @@
 .vid-modal {
   position: fixed; inset: 0; z-index: 1000;
   display: grid; place-items: center; padding: 24px;
-  background: rgba(10, 14, 26, .82); backdrop-filter: blur(6px);
+  /* no backdrop-filter: blurring a live page (the hero's WebGL scene) every frame stalls the video */
+  background: rgba(8, 11, 22, .92);
   animation: vid-fade .18s ease;
 }
 @keyframes vid-fade { from { opacity: 0; } to { opacity: 1; } }

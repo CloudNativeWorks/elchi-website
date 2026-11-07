@@ -2,12 +2,13 @@ import ReactDOM from 'react-dom/client';
 import { getLocale, locHref } from './i18n.js';
 import { Nav, Footer } from './shared.jsx';
 import { PRODUCTS } from './products-data.js';
-import { Fragment, lazy, Suspense, useCallback, useState } from 'react';
+import { Fragment, lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FILM } from './film-data.js';
 
 // The film player (and videos.css) loads only when the visitor presses "Watch the film".
-const FilmPlayer = lazy(() => import('./video-player.jsx').then((m) => ({ default: m.Player })));
+const loadPlayer = () => import('./video-player.jsx');
+const FilmPlayer = lazy(() => loadPlayer().then((m) => ({ default: m.Player })));
 import { motion } from 'motion/react';
 import { HeroStage } from './hero-stage.jsx';
 import { ScreenGallery } from './screens.jsx';
@@ -341,9 +342,14 @@ function Hero() {
   const n1 = t.heroH1a.split(' ').length;
   const [filmOpen, setFilmOpen] = useState(false);
   const closeFilm = useCallback(() => setFilmOpen(false), []);
+  // fetch the player while the visitor reads, so the click opens it at once
+  useEffect(() => {
+    const id = window.requestIdleCallback ? window.requestIdleCallback(() => loadPlayer(), { timeout: 4000 }) : setTimeout(loadPlayer, 3000);
+    return () => (window.cancelIdleCallback ? window.cancelIdleCallback(id) : clearTimeout(id));
+  }, []);
   return (
     <section className="hx">
-      <HeroStage locale={locale} />
+      <HeroStage locale={locale} paused={filmOpen} />
       <div className="hx-shade" aria-hidden="true" />
       <div className="container hx-inner">
         <div className="hx-copy">
@@ -365,7 +371,7 @@ function Hero() {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
             <a href={locHref('architecture')} className="hx-btn hx-btn-glass">{t.heroBtnArch}</a>
-            <button type="button" className="hx-btn hx-btn-film" onClick={() => setFilmOpen(true)}>
+            <button type="button" className="hx-btn hx-btn-film" onClick={() => setFilmOpen(true)} onPointerEnter={loadPlayer} onFocus={loadPlayer}>
               <span className="hx-film-play"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg></span>
               {t.heroBtnFilm}<span className="hx-film-dur">{FILM.duration}</span>
             </button>

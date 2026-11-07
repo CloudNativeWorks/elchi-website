@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 const Hero3D = lazy(() => import('./hero-3d.jsx'));
 
 const LOOP = 24;
+const LOADING = { en: 'Loading the live scene', tr: 'Canlı sahne yükleniyor' };
 const CHAPTERS = [0, 5, 10, 15, 20]; // keep in sync with the beats in hero-3d.jsx
 const STR = {
   en: [
@@ -31,7 +32,9 @@ function webglOk() {
   } catch { return false; }
 }
 
-export function HeroStage({ locale = 'en' }) {
+// `paused` (the film player is open over the hero): the scene stops drawing, and if it has not
+// mounted yet it waits until the player closes, so the video never competes with WebGL.
+export function HeroStage({ locale = 'en', paused = false }) {
   const t = STR[locale] || STR.en;
   const hostRef = useRef(null);
   const barRef = useRef(null);
@@ -41,6 +44,20 @@ export function HeroStage({ locale = 'en' }) {
   const [reduce, setReduce] = useState(false);
   const [chapter, setChapter] = useState(0);
   const [ready, setReady] = useState(false); // first 3D frame drawn
+  const [webgl, setWebgl] = useState(true);
+  const [progress, setProgress] = useState(0.06); // real stages: code → prepared → mounted → first frame
+  // the last stage (shaders compiling before the first frame) has no milestones: creep on slowly so it never looks stuck
+  useEffect(() => {
+    if (progress !== 0.88 || ready) return;
+    const id = setTimeout(() => setProgress(0.97), 700);
+    return () => clearTimeout(id);
+  }, [progress, ready]);
+  const pausedRef = useRef(paused);
+  const [pendingMount, setPendingMount] = useState(false);
+  useEffect(() => {
+    pausedRef.current = paused;
+    if (!paused && pendingMount) { setPendingMount(false); setMounted(true); setProgress(0.88); }
+  }, [paused, pendingMount]);
 
   useEffect(() => {
     setReduce(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -52,14 +69,18 @@ export function HeroStage({ locale = 'en' }) {
     const whenIdle = (fn) => {
       idle = window.requestIdleCallback ? window.requestIdleCallback(fn, { timeout: 1000 }) : setTimeout(fn, 50);
     };
+    if (!webglOk()) setWebgl(false); // no 3D: the still stays, no loader
+    else setProgress(0.18);
     const timer = setTimeout(() => {
       if (!webglOk()) return;
       whenIdle(() => {
         import('./hero-3d.jsx').then((m) => {
           if (cancelled) return;
+          setProgress(0.45);
           whenIdle(() => {
             m.prepare();
-            whenIdle(() => !cancelled && setMounted(true));
+            setProgress(0.7);
+            whenIdle(() => { if (cancelled) return; if (pausedRef.current) setPendingMount(true); else { setMounted(true); setProgress(0.88); } });
           });
         });
       });
@@ -88,13 +109,35 @@ export function HeroStage({ locale = 'en' }) {
         {mounted && (
           <Suspense fallback={null}>
             <motion.div className="hx3-fade" initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 0.4 }}>
-              <Hero3D timeRef={timeRef} active={active} reduce={reduce} onReady={() => setReady(true)} />
+              <Hero3D timeRef={timeRef} active={active && !paused} reduce={reduce} onReady={() => { setProgress(1); setReady(true); }} />
             </motion.div>
           </Suspense>
         )}
       </div>
 
-      <div className="hx-chapters" aria-hidden="true">
+      <AnimatePresence>
+        {webgl && !ready && (
+          <motion.div
+            key="loader"
+            className="hx-loader"
+            role="status"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6, filter: 'blur(6px)' }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="hx-loader-row">
+              <svg className="hx-loader-hex" width="18" height="20" viewBox="-10 -11 20 22" aria-hidden="true">
+                <path d="M0 -10 L9 -5 L9 5 L0 10 L-9 5 L-9 -5 Z" pathLength="1" />
+              </svg>
+              <span className="hx-loader-text">{LOADING[locale] || LOADING.en}</span>
+            </span>
+            <span className={`hx-loader-bar${progress === 0.97 ? ' is-creep' : ''}`} aria-hidden="true"><span style={{ transform: `scaleX(${progress})` }} /></span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className={`hx-chapters${ready ? ' is-ready' : ''}`} aria-hidden="true">
         <ol className="hx-steps">
           {t.map(([name], i) => (
             <li key={name} className={i === chapter ? 'is-on' : i < chapter ? 'is-done' : ''}>

@@ -433,7 +433,7 @@
   padding: 6px 14px; border-radius: 999px;
   border: 1px solid rgba(255,255,255,.2);
   background: rgba(255,255,255,.04);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  /* no backdrop-filter in the hero: blurring the live WebGL scene every frame costs more than it shows */
   font: 500 12px var(--font-mono); letter-spacing: .06em;
   color: rgba(255,255,255,.8);
 }
@@ -475,7 +475,7 @@
 .hx-btn-solid:hover { transform: translateY(-1px); box-shadow: 0 14px 40px -10px rgba(165,180,252,.8); }
 .hx-btn-solid svg { transition: transform .2s ease; }
 .hx-btn-solid:hover svg { transform: translateX(3px); }
-.hx-btn-glass { padding: 0 30px; color: #fff; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.hx-btn-glass { padding: 0 30px; color: #fff; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.14); }
 .hx-btn-glass:hover { background: rgba(255,255,255,.2); }
 .hx-btn-film { padding: 0 20px 0 8px; color: #fff; background: transparent; border: 0; cursor: pointer; font-family: inherit; }
 .hx-film-play { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); transition: background .2s ease, transform .2s ease; }
@@ -501,8 +501,7 @@
   position: relative; flex: 1; overflow: hidden;
   display: flex; flex-direction: column; gap: 2px;
   padding: 8px 10px 10px; border-radius: 10px;
-  background: rgba(8,10,28,.5); border: 1px solid rgba(255,255,255,.1);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: rgba(8,10,28,.74); border: 1px solid rgba(255,255,255,.1);
   transition: background .4s ease, border-color .4s ease;
 }
 .hx-steps li.is-on { background: rgba(79,70,229,.28); border-color: rgba(165,180,252,.5); }
@@ -513,11 +512,32 @@
 .hx-steps li.is-done .hx-step-name { color: rgba(255,255,255,.7); }
 .hx-step-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255,255,255,.08); }
 .hx-step-bar span { display: block; height: 100%; background: linear-gradient(90deg, #818cf8, #22d3ee); transform-origin: left; transform: scaleX(0); }
-.hx-caption { min-height: 46px; padding: 12px 16px; border-radius: 12px; background: rgba(8,10,28,.62); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.hx-caption { min-height: 46px; padding: 12px 16px; border-radius: 12px; background: rgba(8,10,28,.8); border: 1px solid rgba(255,255,255,.12); }
 .hx-caption p { margin: 0; font-size: 14.5px; line-height: 1.45; color: rgba(255,255,255,.88); }
+
+/* loader — sits where the chapter panel will appear, until the 3D scene draws its first frame */
+.hx-chapters { opacity: 0; transform: translateY(6px); transition: opacity .5s ease .15s, transform .5s cubic-bezier(.22,1,.36,1) .15s; }
+.hx-chapters.is-ready { opacity: 1; transform: none; }
+.hx-loader {
+  position: absolute; z-index: 3; right: max(24px, calc((100vw - 1200px) / 2)); bottom: 40px;
+  width: min(300px, calc(100vw - 48px)); pointer-events: none;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 14px 16px 16px; border-radius: 12px;
+  background: rgba(8,10,28,.8); border: 1px solid rgba(255,255,255,.12);
+}
+.hx-loader-row { display: flex; align-items: center; gap: 10px; }
+.hx-loader-hex path { fill: none; stroke: #a5b4fc; stroke-width: 2; stroke-linejoin: round; stroke-dasharray: .62 .38; animation: hx-hex 1.4s linear infinite; }
+@keyframes hx-hex { to { stroke-dashoffset: -1; } }
+.hx-loader-text { font: 500 12px var(--font-mono); letter-spacing: .04em; color: rgba(255,255,255,.75); }
+.hx-loader-bar { position: relative; height: 2px; border-radius: 1px; background: rgba(255,255,255,.08); overflow: hidden; }
+.hx-loader-bar span { position: absolute; inset: 0; background: linear-gradient(90deg, #818cf8, #22d3ee); transform-origin: left; transition: transform .8s cubic-bezier(.22,1,.36,1); }
+.hx-loader-bar.is-creep span { transition: transform 12s cubic-bezier(.1,.5,.3,1); }
 
 @media (max-width: 760px) {
   .hx-inner { padding-top: 104px; padding-bottom: 64px; }
+  /* phones: no panel, just the bar along the bottom edge of the hero */
+  .hx-loader { left: 0; right: 0; bottom: 0; width: auto; padding: 0; border: 0; border-radius: 0; background: none; }
+  .hx-loader-row { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .hx-shade { background:
     linear-gradient(90deg, rgba(5,6,15,.85) 0%, rgba(5,6,15,.45) 100%),
     linear-gradient(0deg, var(--hx-bg) 0%, rgba(5,6,15,0) 25%); }
@@ -525,4 +545,4 @@
   .hx-fact { padding: 8px 14px 0 0; border-left: 0; }
   .hx-chapters { display: none; } /* not enough room under the copy on phones */
 }
-@media (prefers-reduced-motion: reduce) { .hx-dot { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .hx-dot, .hx-loader-hex path { animation: none; } .hx-loader-hex path { stroke-dasharray: none; } }

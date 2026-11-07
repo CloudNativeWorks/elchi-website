@@ -492,7 +492,8 @@ p { margin: 0; color: var(--slate-600); }
 /* ----- Nav overlay (home): transparent over the dark full-bleed hero ----- */
 .nav-overlay { position: fixed; left: 0; right: 0; transition: background .35s ease, border-color .35s ease; }
 .nav-overlay.is-top { background: transparent; border-bottom-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
-.nav-overlay.is-onhero:not(.is-top) { background: rgba(5, 6, 15, .72); border-bottom-color: rgba(255, 255, 255, .08); }
+/* over the hero: no backdrop blur — re-blurring the live WebGL scene on every scroll frame made scrolling stutter */
+.nav-overlay.is-onhero:not(.is-top) { background: rgba(5, 6, 15, .9); border-bottom-color: rgba(255, 255, 255, .08); backdrop-filter: none; -webkit-backdrop-filter: none; }
 .nav-overlay.is-onhero .brand-mark { background-image: url('/logo-light.svg'); }
 .nav-overlay.is-onhero .nav-links a,
 .nav-overlay.is-onhero .nav-dd-trigger { color: rgba(255, 255, 255, .72); }

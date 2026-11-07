@@ -163,7 +163,10 @@ export function prepare() {
 
 export default function Hero3D({ timeRef, active = true, reduce = false, onReady }) {
   const [low] = useState(startLow); // decided once, never flips mid-session (no visual pop)
-  const [dpr, setDpr] = useState(1.25);
+  // never render above the screen's own pixel ratio (a 1x monitor drew 1.5x = 2.25x the pixels), and cap at 1.25:
+  // the scene sits behind depth of field and the hero shade, so more pixels are not visible, only slower
+  const [maxDpr] = useState(() => Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 1.25));
+  const [dpr, setDpr] = useState(() => Math.min(1, maxDpr));
   const [warm, setWarm] = useState(false); // shaders compiled
   const born = useRef(typeof performance !== 'undefined' ? performance.now() : 0);
   return (
@@ -181,7 +184,8 @@ export default function Hero3D({ timeRef, active = true, reduce = false, onReady
         iterations={8}
         onChange={({ factor }) => {
           if (performance.now() - born.current < 6000) return; // let the first seconds settle
-          setDpr(Math.round((1 + 0.5 * factor) * 4) / 4); // 1, 1.25 or 1.5 — coarse steps only
+          // coarse steps between 0.75 and the cap; a slow machine drops resolution instead of frame rate
+          setDpr(Math.min(maxDpr, Math.max(0.75, Math.round((0.75 + 0.5 * factor) * 4) / 4)));
         }}
       />
       <Warmup onDone={() => setWarm(true)} />
