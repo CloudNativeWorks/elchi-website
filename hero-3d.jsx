@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Billboard, ContactShadows, Environment, Lightformer, MeshReflectorMaterial, PerformanceMonitor, RoundedBox, Sparkles, SpotLight, useTexture } from '@react-three/drei';
 import { Bloom, ChromaticAberration, DepthOfField, EffectComposer, Noise, SMAA, SSAO, Vignette } from '@react-three/postprocessing';
 import { BlendFunction, Effect, EffectAttribute } from 'postprocessing';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { canvasTex, crackTexture, holoTexture, SIGN_COLORS, signTexture, textures } from './hero-3d-textures.js';
 
 /* ============================================================
@@ -267,7 +268,11 @@ function Shadowed({ children }) {
       if (!o.isMesh || o.isInstancedMesh) return;
       const m = o.material;
       const lit = m && (m.isMeshStandardMaterial || m.isMeshPhysicalMaterial) && !m.transparent && !(m.transmission > 0);
-      o.castShadow = !!lit;
+      // only sizeable parts cast: feet, hinges, seams and slots would just add shadow draw calls
+      if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+      const sz = o.geometry.boundingBox.getSize(new THREE.Vector3());
+      const big = Math.max(sz.x * o.scale.x, sz.y * o.scale.y, sz.z * o.scale.z) > 0.35;
+      o.castShadow = !!lit && big;
       o.receiveShadow = !!lit;
     });
     apply();
@@ -379,9 +384,13 @@ const SHOTS = [
   { t: 15, pos: [-2.4, 2.2, 14.6], look: [2.5, 3.55, -0.3], focus: [[2.4, 4.6, 0.6], [4.0, 4.8, 1.5]] }, // Discover — along the API map
   { t: 20, pos: [-1.0, 1.8, 12.1], look: [3.0, 2.0, 0.0], focus: [[1.7, 2.0, -1.0], [4.3, 1.7, 0.3]] }, // Heal — gate, then the failing rack
 ];
-const MOVE = 2.6; // seconds each camera move takes
+const MOVE = 3.0; // seconds each camera move takes
+const DOLLY = 0.025; // how far a held shot creeps in towards its subject
+const shotEnd = (k) => (k + 1 < SHOTS.length ? SHOTS[k + 1].t : LOOP);
 const FOCUS = new THREE.Vector3(1.9, 2, -1.3);
 const easeIO3 = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+// smootherstep: zero velocity *and* acceleration at both ends — no jolt when a move starts or lands
+const easeShot = (x) => x * x * x * (x * (x * 6 - 15) + 10);
 
 function CameraRig({ timeRef, reduce }) {
   const pointer = useRef([0, 0]);
@@ -395,12 +404,14 @@ function CameraRig({ timeRef, reduce }) {
     for (let k = 0; k < SHOTS.length; k++) if (t >= SHOTS[k].t) i = k;
     const from = SHOTS[(i + SHOTS.length - 1) % SHOTS.length];
     const to = SHOTS[i];
-    const k = easeIO3(clamp01((t - to.t) / MOVE));
-    pos.set(...from.pos).lerp(a.set(...to.pos), k);
+    const k = easeShot(clamp01((t - to.t) / MOVE));
+    // a move starts exactly where the previous shot's slow dolly-in ended (fully held), and the
+    // new shot's own dolly-in only begins once it has landed — so there is never a jump
+    a.set(...from.pos).lerp(b.set(...from.look), DOLLY);
+    pos.copy(a).lerp(a.set(...to.pos), k);
     look.set(...from.look).lerp(b.set(...to.look), k);
-    // slow dolly-in while holding a shot
-    const hold = clamp01((t - to.t - MOVE) / (5 - MOVE));
-    pos.lerp(look, 0.025 * hold);
+    const hold = easeShot(clamp01((t - to.t - MOVE) / (shotEnd(i) - to.t - MOVE)));
+    pos.lerp(look, DOLLY * hold);
     // handheld drift
     if (!reduce) {
       pos.x += Math.sin(t * 0.83) * 0.03 + Math.sin(t * 2.1) * 0.008;
@@ -475,7 +486,7 @@ function Floor({ low }) {
         distortionMap={floorDistort}
         distortion={0.12}
         blur={[300, 90]}
-        resolution={1024}
+        resolution={512}
         mixBlur={0.9}
         mixStrength={30}
         mixContrast={1.1}
@@ -1141,7 +1152,82 @@ function AttackImpacts({ timeRef }) {
 }
 
 /* ---------- service racks ---------- */
-function Rack({ id, timeRef }) {
+// real PBR materials for the cabinets (ambientCG, CC0): black powder-coated
+// steel, round-hole perforated door sheet, brushed steel for hardware
+function useRackKit() {
+  const t = useTexture({
+    rc: '/hero3d/rack_color.webp', rn: '/hero3d/rack_normal.webp', rr: '/hero3d/rack_rough.webp',
+    dop: '/hero3d/door_opacity.webp', dn: '/hero3d/door_normal.webp', dr: '/hero3d/door_rough.webp',
+    sc: '/hero3d/steel_color.webp', sr: '/hero3d/steel_rough.webp',
+  });
+  return useMemo(() => {
+    const rep = (tex, x, y, srgb = false) => {
+      const c = tex.clone();
+      c.wrapS = c.wrapT = THREE.RepeatWrapping;
+      c.repeat.set(x, y);
+      c.anisotropy = 8;
+      c.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+      c.needsUpdate = true;
+      return c;
+    };
+    const powder = new THREE.MeshPhysicalMaterial({
+      color: '#4a4f5c', map: rep(t.rc, 2, 4, true), normalMap: rep(t.rn, 2, 4), normalScale: new THREE.Vector2(0.5, 0.5),
+      roughnessMap: rep(t.rr, 2, 4), roughness: 1, metalness: 0.55, clearcoat: 0.2, clearcoatRoughness: 0.5,
+    });
+    const door = new THREE.MeshStandardMaterial({
+      // blended (mipmapped) alpha, not alpha-test: at a distance the holes average out like a
+      // real perforated door instead of aliasing into moiré
+      color: '#262a33', alphaMap: rep(t.dop, 3, 7.5), transparent: true, opacity: 1, normalMap: rep(t.dn, 3, 7.5),
+      normalScale: new THREE.Vector2(0.4, 0.4), roughnessMap: rep(t.dr, 3, 7.5), roughness: 1, metalness: 0.75, side: THREE.DoubleSide,
+    });
+    const steel = new THREE.MeshStandardMaterial({ color: '#c7ccd6', map: rep(t.sc, 1, 1, true), roughnessMap: rep(t.sr, 1, 1), roughness: 1, metalness: 1 });
+    const void_ = new THREE.MeshStandardMaterial({ color: '#030305', roughness: 1, metalness: 0 });
+    const plastic = new THREE.MeshStandardMaterial({ color: '#0b0c10', roughness: 0.45, metalness: 0.1 });
+    return { powder, door, steel, void: void_, plastic };
+  }, [t]);
+}
+
+// the cabinet's static parts, merged per material (4 draw calls instead of ~30 per rack)
+let RACK_GEO = null;
+function rackGeometry() {
+  if (RACK_GEO) return RACK_GEO;
+  const parts = { powder: [], void: [], steel: [], plastic: [] };
+  const add = (mat, g, [x, y, z], rot) => {
+    if (rot) g.applyMatrix4(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(...rot)));
+    g.translate(x, y, z);
+    parts[mat].push(g);
+  };
+  const box = (mat, w, h, d, pos, rot) => add(mat, new THREE.BoxGeometry(w, h, d), pos, rot);
+  const cyl = (mat, r1, r2, h, seg, pos, rot) => add(mat, new THREE.CylinderGeometry(r1, r2, h, seg), pos, rot);
+  // plinth + levelling feet
+  box('powder', 0.98, 0.08, 1.03, [0, 0.09, 0]);
+  [[-0.42, -0.45], [-0.42, 0.45], [0.42, -0.45], [0.42, 0.45]].forEach(([x, z]) => cyl('steel', 0.022, 0.026, 0.05, 12, [x, 0.025, z]));
+  // side panels with a split seam, rear, roof with vent slots and a cable brush
+  [-0.515, 0.515].forEach((z) => {
+    box('powder', 0.98, 2.58, 0.02, [0, 1.42, z]);
+    [0.95, 1.9].forEach((y) => box('void', 0.98, 0.006, 0.021, [0, y, z * 1.002]));
+  });
+  box('powder', 0.02, 2.58, 1.01, [0.48, 1.42, 0]);
+  box('powder', 1.0, 0.05, 1.05, [0, 2.735, 0]);
+  [-0.25, 0, 0.25].forEach((z) => box('void', 0.42, 0.004, 0.05, [0.15, 2.762, z]));
+  box('plastic', 0.12, 0.012, 0.28, [-0.2, 2.765, 0]);
+  // dark interior, 19-inch rails
+  box('void', 0.84, 2.5, 0.98, [0.05, 1.42, 0]);
+  [-0.455, 0.455].forEach((z) => box('steel', 0.02, 2.36, 0.03, [-0.415, 1.33, z]));
+  // front frame, door stiles/rails, handle + lock, hinges
+  box('powder', 0.04, 0.09, 1.05, [-0.49, 2.665, 0]);
+  box('powder', 0.04, 0.07, 1.05, [-0.49, 0.165, 0]);
+  box('powder', 0.016, 0.05, 0.98, [-0.513, 2.555, 0]);
+  box('powder', 0.016, 0.05, 0.98, [-0.513, 0.225, 0]);
+  [-0.475, 0.475].forEach((z) => box('powder', 0.016, 2.36, 0.03, [-0.513, 1.39, z]));
+  box('steel', 0.025, 0.24, 0.028, [-0.535, 1.32, 0.42]);
+  cyl('plastic', 0.011, 0.011, 0.012, 16, [-0.548, 1.47, 0.42], [0, 0, Math.PI / 2]);
+  [0.45, 2.3].forEach((y) => box('steel', 0.02, 0.09, 0.02, [-0.522, y, -0.49]));
+  RACK_GEO = Object.fromEntries(Object.entries(parts).map(([k, arr]) => [k, mergeGeometries(arr, false)]));
+  return RACK_GEO;
+}
+
+function Rack({ id, timeRef, kit }) {
   const group = useRef();
   const face = useRef();
   const strip = useRef();
@@ -1150,7 +1236,8 @@ function Rack({ id, timeRef }) {
   const sign = useRef();
   const base = RACKS[id];
   const signTex = useMemo(() => [signTexture(base.label, SIGN_COLORS[id], false), signTexture(base.label, SIGN_COLORS[id], true)], [id, base.label]);
-  const { rackMap, rackEmit, brushed, perforated } = textures();
+  const { rackMap, rackEmit } = textures();
+  const geo = rackGeometry();
   const tmp = useMemo(() => new THREE.Color(), []);
   const white = useMemo(() => new THREE.Color(1, 1, 1), []);
   useFrame(() => {
@@ -1198,26 +1285,25 @@ function Rack({ id, timeRef }) {
   });
   return (
     <group ref={group} position={base.pos}>
-      {/* cabinet */}
-      <RoundedBox args={[1.0, 2.75, 1.05]} radius={0.035} smoothness={4} position={[0, 1.375, 0]}>
-        <meshPhysicalMaterial color="#0c0d12" metalness={0.9} roughness={0.38} roughnessMap={brushed} clearcoat={0.35} />
-      </RoundedBox>
-      {/* the servers behind a perforated steel door */}
-      <mesh position={[-0.503, 1.24, 0]} rotation-y={-Math.PI / 2}>
-        <planeGeometry args={[0.88, 2.24]} />
-        <meshStandardMaterial ref={face} map={rackMap} emissiveMap={rackEmit} emissive="#ffffff" emissiveIntensity={1.6} metalness={0.4} roughness={0.55} toneMapped={false} />
+      {/* the cabinet: powder-coated body, interior, steel hardware, plastic parts (merged) */}
+      <mesh geometry={geo.powder} material={kit.powder} />
+      <mesh geometry={geo.void} material={kit.void} />
+      <mesh geometry={geo.steel} material={kit.steel} />
+      <mesh geometry={geo.plastic} material={kit.plastic} />
+      {/* the servers, recessed behind the door */}
+      <mesh position={[-0.405, 1.33, 0]} rotation-y={-Math.PI / 2}>
+        <planeGeometry args={[0.88, 2.3]} />
+        <meshStandardMaterial ref={face} map={rackMap} bumpMap={rackMap} bumpScale={3} emissiveMap={rackEmit} emissive="#ffffff" emissiveIntensity={1.6} metalness={0.45} roughness={0.5} toneMapped={false} />
       </mesh>
-      <mesh position={[-0.52, 1.24, 0]} rotation-y={-Math.PI / 2}>
-        <planeGeometry args={[0.92, 2.32]} />
-        <meshStandardMaterial color="#1a1d26" metalness={0.85} roughness={0.42} roughnessMap={brushed} alphaMap={perforated} alphaTest={0.5} side={THREE.DoubleSide} />
-      </mesh>
+      {/* perforated door sheet */}
+      <mesh material={kit.door} position={[-0.51, 1.39, 0]} rotation-y={-Math.PI / 2}><planeGeometry args={[0.94, 2.36]} /></mesh>
       {/* service-coloured light bar on the door edge + roof status */}
-      <mesh position={[-0.525, 1.375, 0.47]}>
-        <boxGeometry args={[0.012, 2.5, 0.018]} />
+      <mesh position={[-0.523, 1.39, -0.457]}>
+        <boxGeometry args={[0.006, 2.2, 0.01]} />
         <meshBasicMaterial ref={strip} toneMapped={false} />
       </mesh>
-      <mesh position={[-0.3, 2.77, 0]}>
-        <boxGeometry args={[0.3, 0.02, 0.9]} />
+      <mesh position={[-0.505, 2.72, 0]}>
+        <boxGeometry args={[0.012, 0.012, 0.9]} />
         <meshBasicMaterial ref={status} toneMapped={false} />
       </mesh>
       <pointLight ref={light} position={[-1.0, 1.4, 0]} distance={3.2} intensity={1} />
@@ -1231,9 +1317,10 @@ function Rack({ id, timeRef }) {
 }
 
 function Racks({ timeRef }) {
+  const kit = useRackKit();
   return (
     <group>
-      {Object.keys(RACKS).map((id) => <Rack key={id} id={id} timeRef={timeRef} />)}
+      {Object.keys(RACKS).map((id) => <Rack key={id} id={id} timeRef={timeRef} kit={kit} />)}
     </group>
   );
 }
