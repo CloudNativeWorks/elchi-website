@@ -1,0 +1,2 @@
+Textures and HDRI from Poly Haven (CC0): concrete_floor_02, industrial_pipe_and_valve_02 — https://polyhaven.com
+Materials from ambientCG (CC0): Metal028 (rack powder coat), SheetMetal002 (perforated door), Metal011 (brushed steel) — https://ambientcg.com

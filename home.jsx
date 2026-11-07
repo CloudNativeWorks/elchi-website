@@ -2,28 +2,10 @@ import ReactDOM from 'react-dom/client';
 import { getLocale, locHref } from './i18n.js';
 import { Nav, Footer } from './shared.jsx';
 import { PRODUCTS } from './products-data.js';
-import { ArchDiagram, ArchOrbit, ArchTerminal } from './arch-diagram.jsx';
+import { Fragment } from 'react';
+import { motion } from 'motion/react';
+import { HeroStage } from './hero-stage.jsx';
 import { ScreenGallery } from './screens.jsx';
-
-const homeStyles = {
-  hero: {
-    position: 'relative',
-    paddingTop: 80,
-    paddingBottom: 80,
-    overflow: 'hidden',
-  },
-  heroGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: 48,
-    alignItems: 'center',
-    position: 'relative',
-    zIndex: 1,
-  },
-  badges: {
-    display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 32,
-  },
-};
 
 // All user-visible strings for the home page. Technical/product terms (Envoy, xDS,
 // GSLB, WAF, Kubernetes, Registry, Controller, Control-Plane, category filter keys…)
@@ -299,8 +281,8 @@ const STR = {
 function App() {
   return (
     <>
-      <Nav active="home" />
-      <Hero variant="flow" />
+      <Nav active="home" overlay />
+      <Hero />
       <Logos />
       <ProductFamily />
       <FeaturesGrid />
@@ -316,49 +298,73 @@ function App() {
 }
 
 /* ====================== HERO ====================== */
-function Hero({ variant }) {
-  const t = STR[getLocale()];
+// Full-bleed dark hero over the real-time 3D story scene (hero-stage.jsx / hero-3d.jsx).
+const EASE = [0.22, 1, 0.36, 1];
+function BlurIn({ delay = 0, children, className, as = 'div' }) {
+  const M = motion[as];
   return (
-    <section className="section hero" style={homeStyles.hero}>
-      {/* aurora */}
-      <div className="aurora" style={{ width: 700, height: 700, top: -200, right: -150, background: 'radial-gradient(closest-side, #c7d2fe, transparent)' }}></div>
-      <div className="aurora" style={{ width: 600, height: 600, top: 100, left: -200, background: 'radial-gradient(closest-side, #bae6fd, transparent)', opacity: .4 }}></div>
-      <div className="grid-bg"></div>
+    <M className={className}
+      initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
+      animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+      transition={{ duration: 0.6, delay, ease: EASE }}>
+      {children}
+    </M>
+  );
+}
+function SplitWords({ text, delay = 0, className }) {
+  const words = text.split(' ');
+  return words.map((w, i) => (
+    <Fragment key={i}>
+      <span className="hx-word-mask">
+        <motion.span className={`hx-word ${className || ''}`}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: delay + i * 0.08, ease: EASE }}>
+          {w}
+        </motion.span>
+      </span>
+      {i < words.length - 1 ? ' ' : null}
+    </Fragment>
+  ));
+}
 
-      <div className="container" style={{ position: 'relative' }}>
-        <div className="hero-grid">
-          <div className="fade-in">
-            <span className="eyebrow">
-              <span className="dot"></span>
-              {t.heroEyebrow}
-            </span>
-            <h1 style={{ marginTop: 24 }}>
-              {t.heroH1a} <br/>
-              <span className="grad-text">{t.heroH1b}</span>
-            </h1>
-            <p style={{ fontSize: 19, lineHeight: 1.55, color: 'var(--slate-600)', marginTop: 24, maxWidth: 560 }}>
-              {t.heroPara1}<strong>{t.heroParaStrong1}</strong>{t.heroPara2}
-              <strong>{t.heroParaStrong2}</strong>{t.heroPara3}
-            </p>
-            <div style={{ display: 'flex', gap: 12, marginTop: 36 }}>
-              <a href="/docs/getting-started/quickstart" className="btn btn-blue">{t.heroBtnDemo}</a>
-              <a href={locHref('architecture')} className="btn btn-ghost">{t.heroBtnArch}</a>
-            </div>
-            <div style={homeStyles.badges}>
-              {t.heroBadges.map(([k, v]) => (
-                <div key={k} className="hero-badge">
-                  <span className="hero-badge-key">{k}</span>
-                  <span className="hero-badge-val">{v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="hero-visual fade-in" style={{ animationDelay: '.1s' }}>
-            {variant === 'flow' && <ArchDiagram />}
-            {variant === 'orbit' && <ArchOrbit />}
-            {variant === 'terminal' && <ArchTerminal />}
-          </div>
+function Hero() {
+  const locale = getLocale();
+  const t = STR[locale];
+  const n1 = t.heroH1a.split(' ').length;
+  return (
+    <section className="hx">
+      <HeroStage locale={locale} />
+      <div className="hx-shade" aria-hidden="true" />
+      <div className="container hx-inner">
+        <div className="hx-copy">
+          <BlurIn className="hx-pill">
+            <svg width="12" height="13" viewBox="-10 -11 20 22" aria-hidden="true"><path d="M0 -10 L9 -5 L9 5 L0 10 L-9 5 L-9 -5 Z" fill="none" stroke="currentColor" strokeWidth="2"/></svg>
+            {t.heroEyebrow}
+          </BlurIn>
+          <h1 className="hx-h1">
+            <span className="hx-line"><SplitWords text={t.heroH1a} delay={0.1} /></span>
+            <span className="hx-line"><SplitWords text={t.heroH1b} delay={0.1 + n1 * 0.08} className="hx-serif" /></span>
+          </h1>
+          <BlurIn as="p" className="hx-sub" delay={0.4}>
+            {t.heroPara1}<strong>{t.heroParaStrong1}</strong>{t.heroPara2}
+            <strong>{t.heroParaStrong2}</strong>{t.heroPara3}
+          </BlurIn>
+          <BlurIn className="hx-ctas" delay={0.6}>
+            <a href="/docs/getting-started/quickstart" className="hx-btn hx-btn-solid">
+              {t.heroBtnDemo.replace(/\s*→$/, '')}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </a>
+            <a href={locHref('architecture')} className="hx-btn hx-btn-glass">{t.heroBtnArch}</a>
+          </BlurIn>
+          <BlurIn className="hx-facts" delay={0.8}>
+            {t.heroBadges.map(([k, v]) => (
+              <div key={k} className="hx-fact">
+                <span className="hx-fact-k">{k}</span>
+                <span className="hx-fact-v">{v}</span>
+              </div>
+            ))}
+          </BlurIn>
         </div>
       </div>
     </section>

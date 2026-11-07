@@ -123,14 +123,28 @@ function ProductIcon({ slug, size = 16 }) {
 const docsHref = '/docs/';
 
 // ============== NAV ==============
-function Nav({ active }) {
+function Nav({ active, overlay = false }) {
   const locale = getLocale();
+  // overlay: transparent over a dark full-bleed hero until the page scrolls
+  // 'top' = transparent, 'hero' = dark glass while over the hero, 'page' = the normal light bar
+  const [mode, setMode] = useState('top');
+  const [menuOpen, setMenuOpen] = useState(false); // phones: the links collapse behind a menu button
+  useEffect(() => {
+    if (!overlay) return undefined;
+    const on = () => {
+      const y = window.scrollY;
+      setMode(y < 12 ? 'top' : y < window.innerHeight * 0.92 ? 'hero' : 'page');
+    };
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    return () => window.removeEventListener('scroll', on);
+  }, [overlay]);
   const t = SHARED[locale].nav;
   const { ui: uiVersion, backend: backendVersion } = useArchiveVersions();
   const [ddOpen, setDdOpen] = useState(false);
   const onProductPage = typeof active === 'string' && active.startsWith('products/');
   return (
-    <nav className="nav">
+    <nav className={`nav${overlay ? ' nav-overlay' : ''}${overlay && mode !== 'page' ? ' is-onhero' : ''}${overlay && mode === 'top' && !menuOpen ? ' is-top' : ''}${menuOpen ? ' nav-open' : ''}`}>
       <div className="container nav-inner">
         <a href={locHref('home')} className="brand">
           <span className="brand-mark"></span>
@@ -196,6 +210,15 @@ function Nav({ active }) {
             </a>
           </div>
           <a href="/docs/getting-started/quickstart" className="btn btn-primary">{t.getStarted}</a>
+          <button
+            type="button"
+            className="nav-burger"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span /><span /><span />
+          </button>
         </div>
       </div>
     </nav>
