@@ -5,7 +5,8 @@ import './videos.css';
 
 // Video card + click-to-play player, shared by the Videos page and the product pages.
 // Thumbnails are self-hosted; the youtube-nocookie.com player loads only after the
-// visitor presses play (no cookies, no request to YouTube before that).
+// visitor presses play (no cookies, no request to YouTube before that). A video with `src`
+// (the self-hosted brand film, film-data.js) plays in a plain <video> instead.
 const STR = {
   en: { close: 'Close', onYoutube: 'Watch on YouTube', privacy: 'Plays from youtube-nocookie.com', play: (t) => `Play: ${t}`, all: 'All video tutorials →' },
   tr: { close: 'Kapat', onYoutube: "YouTube'da izle", privacy: 'youtube-nocookie.com üzerinden oynatılır', play: (t) => `Oynat: ${t}`, all: 'Tüm video eğitimleri →' },
@@ -67,20 +68,26 @@ export function Player({ v, onClose }) {
           </button>
         </div>
         <div className="vid-frame">
-          <iframe
-            src={embed(v, locale)}
-            title={v.title}
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-          ></iframe>
+          {v.src ? (
+            <video src={v.src} poster={thumb(v)} controls autoPlay playsInline preload="metadata"></video>
+          ) : (
+            <iframe
+              src={embed(v, locale)}
+              title={v.title}
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          )}
         </div>
         <div className="vid-modal-foot">
           <p>{v[locale]}</p>
-          <div className="vid-modal-links">
-            <span className="vid-note">{t.privacy}</span>
-            <a href={`https://www.youtube.com/watch?v=${v.yt}`} target="_blank" rel="noopener">{t.onYoutube} ↗</a>
-          </div>
+          {v.yt && !v.src && (
+            <div className="vid-modal-links">
+              <span className="vid-note">{t.privacy}</span>
+              <a href={`https://www.youtube.com/watch?v=${v.yt}`} target="_blank" rel="noopener">{t.onYoutube} ↗</a>
+            </div>
+          )}
         </div>
       </div>
     </div>

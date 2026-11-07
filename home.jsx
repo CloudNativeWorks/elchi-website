@@ -2,7 +2,12 @@ import ReactDOM from 'react-dom/client';
 import { getLocale, locHref } from './i18n.js';
 import { Nav, Footer } from './shared.jsx';
 import { PRODUCTS } from './products-data.js';
-import { Fragment } from 'react';
+import { Fragment, lazy, Suspense, useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { FILM } from './film-data.js';
+
+// The film player (and videos.css) loads only when the visitor presses "Watch the film".
+const FilmPlayer = lazy(() => import('./video-player.jsx').then((m) => ({ default: m.Player })));
 import { motion } from 'motion/react';
 import { HeroStage } from './hero-stage.jsx';
 import { ScreenGallery } from './screens.jsx';
@@ -25,6 +30,7 @@ const STR = {
     heroPara3: ' built in. Scalable, automated, enterprise-ready.',
     heroBtnDemo: 'Get Started →',
     heroBtnArch: 'View architecture',
+    heroBtnFilm: 'Watch the film',
     heroBadges: [
       ['3-Process', 'Distributed Architecture'],
       ['Full xDS', 'Protocol Support'],
@@ -157,6 +163,7 @@ const STR = {
     heroPara3: ' yerleşik olarak. Ölçeklenebilir, otomatik ve kurumsala hazır.',
     heroBtnDemo: 'Başlayın →',
     heroBtnArch: 'Mimariyi görün',
+    heroBtnFilm: 'Filmi izleyin',
     heroBadges: [
       ['3 Süreç', 'Dağıtık Mimari'],
       ['Tam xDS', 'Protokol Desteği'],
@@ -332,6 +339,8 @@ function Hero() {
   const locale = getLocale();
   const t = STR[locale];
   const n1 = t.heroH1a.split(' ').length;
+  const [filmOpen, setFilmOpen] = useState(false);
+  const closeFilm = useCallback(() => setFilmOpen(false), []);
   return (
     <section className="hx">
       <HeroStage locale={locale} />
@@ -356,6 +365,10 @@ function Hero() {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
             <a href={locHref('architecture')} className="hx-btn hx-btn-glass">{t.heroBtnArch}</a>
+            <button type="button" className="hx-btn hx-btn-film" onClick={() => setFilmOpen(true)}>
+              <span className="hx-film-play"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg></span>
+              {t.heroBtnFilm}<span className="hx-film-dur">{FILM.duration}</span>
+            </button>
           </BlurIn>
           <BlurIn className="hx-facts" delay={0.8}>
             {t.heroBadges.map(([k, v]) => (
@@ -367,6 +380,10 @@ function Hero() {
           </BlurIn>
         </div>
       </div>
+      {filmOpen && createPortal(
+        <Suspense fallback={null}><FilmPlayer v={FILM} onClose={closeFilm} /></Suspense>,
+        document.body,
+      )}
     </section>
   );
 }

@@ -477,6 +477,12 @@
 .hx-btn-solid:hover svg { transform: translateX(3px); }
 .hx-btn-glass { padding: 0 30px; color: #fff; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .hx-btn-glass:hover { background: rgba(255,255,255,.2); }
+.hx-btn-film { padding: 0 20px 0 8px; color: #fff; background: transparent; border: 0; cursor: pointer; font-family: inherit; }
+.hx-film-play { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); transition: background .2s ease, transform .2s ease; }
+.hx-film-play svg { margin-left: 2px; }
+.hx-btn-film:hover .hx-film-play { background: rgba(255,255,255,.26); transform: scale(1.06); }
+.hx-film-dur { font: 500 12px var(--font-mono); color: rgba(255,255,255,.55); margin-left: 2px; }
+.hx-btn-film:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
 
 .hx-facts { display: flex; flex-wrap: wrap; gap: 0; margin-top: 24px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; }
 .hx-fact { display: flex; flex-direction: column; gap: 3px; padding: 0 22px; border-left: 1px solid rgba(255,255,255,.1); }
