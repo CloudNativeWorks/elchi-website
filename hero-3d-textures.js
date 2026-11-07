@@ -48,17 +48,6 @@ export function textures() {
     smudges(g, w, h, 'rgba(150,150,150,', 18);
     for (let i = 0; i < 900; i++) { g.fillStyle = `rgba(255,255,255,${Math.random() * 0.5})`; g.fillRect(Math.random() * w, Math.random() * h, 1.5, 1.5); }
   });
-  // perforated steel door: hex hole grid (alpha) — LEDs show through the holes
-  const perforated = canvasTex(256, 768, (g, w, h) => {
-    g.fillStyle = '#fff'; g.fillRect(0, 0, w, h);
-    g.fillStyle = '#000';
-    const r = 4.2, dx = 11, dy = 9.5;
-    for (let row = 0, y = 6; y < h - 4; y += dy, row++) {
-      for (let x = 6 + (row % 2) * dx / 2; x < w - 4; x += dx) { g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }
-    }
-    g.fillRect(0, 0, w, 0); // frame stays solid via the border below
-    g.fillStyle = '#fff'; g.fillRect(0, 0, w, 10); g.fillRect(0, h - 10, w, 10); g.fillRect(0, 0, 10, h); g.fillRect(w - 10, 0, 10, h);
-  });
   // lens dirt: soft blotches, a few hairs and specks
   const lensDirt = canvasTex(1024, 576, (g, w, h) => {
     g.fillStyle = '#000'; g.fillRect(0, 0, w, h);
@@ -72,25 +61,6 @@ export function textures() {
     g.strokeStyle = 'rgba(255,255,255,.25)'; g.lineWidth = 1;
     for (let i = 0; i < 6; i++) { const x = Math.random() * w, y = Math.random() * h; g.beginPath(); g.moveTo(x, y); g.bezierCurveTo(x + 40, y - 30, x + 60, y + 40, x + 110 * Math.random(), y + 20); g.stroke(); }
   }, { srgb: false });
-  // polished concrete floor: 4×4 tiles per texture, seams + smudges
-  const tile = (g, w, h, base, seam, smudge) => {
-    g.fillStyle = base; g.fillRect(0, 0, w, h);
-    for (let i = 0; i < 26000; i++) {
-      const v = Math.random();
-      g.fillStyle = `rgba(${v > 0.5 ? 255 : 0},${v > 0.5 ? 255 : 0},${v > 0.5 ? 255 : 0},${Math.random() * 0.05})`;
-      g.fillRect(Math.random() * w, Math.random() * h, 2, 2);
-    }
-    for (let i = 0; i < 26; i++) {
-      const x = Math.random() * w, y = Math.random() * h, r = 40 + Math.random() * 160;
-      const grd = g.createRadialGradient(x, y, 0, x, y, r);
-      grd.addColorStop(0, smudge); grd.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = grd; g.fillRect(x - r, y - r, r * 2, r * 2);
-    }
-    g.fillStyle = seam;
-    for (let k = 0; k <= 4; k++) { g.fillRect(k * (w / 4) - 2, 0, 4, h); g.fillRect(0, k * (h / 4) - 2, w, 4); }
-  };
-  const floorMap = canvasTex(1024, 1024, (g, w, h) => tile(g, w, h, '#16181f', 'rgba(4,5,8,.9)', 'rgba(255,255,255,.035)'), { repeat: [25, 25], srgb: true });
-  const floorRough = canvasTex(1024, 1024, (g, w, h) => tile(g, w, h, 'rgb(90,90,90)', 'rgba(255,255,255,.95)', 'rgba(255,255,255,.18)'), { repeat: [25, 25] });
   const floorDistort = canvasTex(256, 256, (g, w, h) => {
     g.fillStyle = '#808080'; g.fillRect(0, 0, w, h);
     for (let i = 0; i < 400; i++) {
@@ -146,7 +116,7 @@ export function textures() {
   };
   const rackMap = canvasTex(320, 1024, (g, w, h) => drawRack(g, w, h, false), { srgb: true });
   const rackEmit = canvasTex(320, 1024, (g, w, h) => drawRack(g, w, h, true), { srgb: true });
-  TEX = { brushed, floorMap, floorRough, floorDistort, rackMap, rackEmit, glassRough, perforated, lensDirt };
+  TEX = { brushed, floorDistort, rackMap, rackEmit, glassRough, lensDirt };
   return TEX;
 }
 

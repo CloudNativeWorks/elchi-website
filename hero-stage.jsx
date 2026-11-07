@@ -44,7 +44,26 @@ export function HeroStage({ locale = 'en' }) {
 
   useEffect(() => {
     setReduce(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    setMounted(webglOk());
+    // start the 3D only once the headline animation has finished and the browser is idle,
+    // so loading/compiling never stalls the text (it would freeze mid-blur)
+    // …and spread the work over idle slots: load the code, prepare textures/geometry, then mount
+    let idle = 0;
+    let cancelled = false;
+    const whenIdle = (fn) => {
+      idle = window.requestIdleCallback ? window.requestIdleCallback(fn, { timeout: 1000 }) : setTimeout(fn, 50);
+    };
+    const timer = setTimeout(() => {
+      if (!webglOk()) return;
+      whenIdle(() => {
+        import('./hero-3d.jsx').then((m) => {
+          if (cancelled) return;
+          whenIdle(() => {
+            m.prepare();
+            whenIdle(() => !cancelled && setMounted(true));
+          });
+        });
+      });
+    }, 1500);
     const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { threshold: 0 });
     io.observe(hostRef.current);
     let raf = 0;
@@ -58,7 +77,7 @@ export function HeroStage({ locale = 'en' }) {
       if (barRef.current) barRef.current.style.transform = `scaleX(${(s - CHAPTERS[c]) / (end - CHAPTERS[c])})`;
     };
     raf = requestAnimationFrame(tick);
-    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+    return () => { io.disconnect(); cancelAnimationFrame(raf); cancelled = true; clearTimeout(timer); if (window.cancelIdleCallback) window.cancelIdleCallback(idle); };
   }, []);
 
   return (
