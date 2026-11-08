@@ -415,13 +415,13 @@
   isolation: isolate;
 }
 .hx3 { position: absolute; inset: 0; z-index: 0; background: radial-gradient(60% 70% at 64% 50%, #161a44 0%, #080a1c 55%, var(--hx-bg) 100%); }
-.hx3-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; transition: opacity .4s ease; }
+.hx3-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; transition: opacity .4s ease; }
 .hx3-fade, .hx3-canvas { position: absolute !important; inset: 0; width: 100%; height: 100%; }
 .hx-shade { /* legibility on the left + fade into the page below */
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     linear-gradient(90deg, rgba(5,6,15,.94) 0%, rgba(5,6,15,.82) 30%, rgba(5,6,15,.45) 46%, rgba(5,6,15,0) 62%),
-    linear-gradient(0deg, var(--hx-bg) 0%, rgba(5,6,15,0) 22%),
+    linear-gradient(0deg, var(--hx-bg) 0%, rgba(5,6,15,.75) 12%, rgba(5,6,15,0) 32%),
     linear-gradient(180deg, rgba(5,6,15,.6) 0%, rgba(5,6,15,0) 16%);
 }
 .hx-inner { position: relative; z-index: 2; width: 100%; padding-top: 120px; padding-bottom: 120px; pointer-events: none; }
@@ -481,10 +481,14 @@
 .hx-film-play { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); transition: background .2s ease, transform .2s ease; }
 .hx-film-play svg { margin-left: 2px; }
 .hx-btn-film:hover .hx-film-play { background: rgba(255,255,255,.26); transform: scale(1.06); }
-.hx-film-dur { font: 500 12px var(--font-mono); color: rgba(255,255,255,.55); margin-left: 2px; }
+.hx-film-dur { font: 500 12px var(--font-mono); color: rgba(255,255,255,.8); margin-left: 2px; }
 .hx-btn-film:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
 
-.hx-facts { display: flex; flex-wrap: wrap; gap: 0; margin-top: 24px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; }
+.hx-facts { position: relative; display: flex; flex-wrap: wrap; gap: 0; margin-top: 24px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; }
+.hx-facts::before { /* keeps the row off the floor's reflection */
+  content: ''; position: absolute; z-index: -1; inset: -10px -60px -36px -60px; pointer-events: none;
+  background: radial-gradient(ellipse at 40% 55%, rgba(5,6,15,.82) 0%, rgba(5,6,15,.55) 45%, rgba(5,6,15,0) 72%);
+}
 .hx-fact { display: flex; flex-direction: column; gap: 3px; padding: 0 22px; border-left: 1px solid rgba(255,255,255,.1); }
 .hx-fact:first-child { padding-left: 0; border-left: 0; }
 .hx-fact-k { font: 600 11px var(--font-mono); letter-spacing: .04em; color: #a5b4fc; }
@@ -538,9 +542,12 @@
   /* phones: no panel, just the bar along the bottom edge of the hero */
   .hx-loader { left: 0; right: 0; bottom: 0; width: auto; padding: 0; border: 0; border-radius: 0; background: none; }
   .hx-loader-row { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .hx-shade { background:
-    linear-gradient(90deg, rgba(5,6,15,.85) 0%, rgba(5,6,15,.45) 100%),
-    linear-gradient(0deg, var(--hx-bg) 0%, rgba(5,6,15,0) 25%); }
+  /* phones: the scene gets its own band under the nav, the copy sits below it on the dark ground */
+  .hx { align-items: flex-start; }
+  .hx3 { top: 60px; bottom: auto; height: 42svh; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent); }
+  .hx3-poster { object-position: 62% 50%; }
+  .hx-shade { background: linear-gradient(180deg, rgba(5,6,15,.55) 0%, rgba(5,6,15,0) 14%); }
+  .hx-inner { padding-top: calc(42svh + 36px); }
   .hx-sub { font-size: 16px; }
   .hx-fact { padding: 8px 14px 0 0; border-left: 0; }
   .hx-chapters { display: none; } /* not enough room under the copy on phones */

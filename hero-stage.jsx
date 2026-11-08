@@ -105,7 +105,7 @@ export function HeroStage({ locale = 'en', paused = false }) {
     <>
       <div ref={hostRef} className="hx3" aria-hidden="true">
         {/* a still of the scene: shown while the 3D loads, and as the fallback without WebGL */}
-        <img className="hx3-poster" src="/hero3d/poster.webp" alt="" width="1504" height="812" decoding="async" fetchpriority="high" style={{ opacity: ready ? 0 : 1 }} />
+        <img className="hx3-poster" src="/hero3d/poster.webp" alt="" width="1400" height="769" decoding="async" fetchpriority="high" style={{ opacity: ready ? 0 : 1 }} />
         {mounted && (
           <Suspense fallback={null}>
             <motion.div className="hx3-fade" initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 0.4 }}>

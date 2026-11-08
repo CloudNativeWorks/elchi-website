@@ -93,9 +93,9 @@ const destOf = (p, gateT) => {
   return 'pay';
 };
 
-const ATTACKS = Array.from({ length: 16 }, (_, j) => ({
+const ATTACKS = Array.from({ length: 7 }, (_, j) => ({
   j,
-  s: 4.9 + j * 0.27 + rnd(j, 11) * 0.12,
+  s: 4.9 + j * 0.62 + rnd(j, 11) * 0.12, // one at a time: each is stopped on its own
   origin: [-24 + rnd(j, 12) * 10, 0.4 + rnd(j, 13) * 3.6, -13 + rnd(j, 14) * 20],
   entry: [0.45 + rnd(j, 15) * 2.7, (rnd(j, 16) - 0.5) * 1.4], // where it hits the shield
   bend: [(rnd(j, 17) - 0.5) * 2.5, (rnd(j, 18) - 0.5) * 3],
@@ -508,7 +508,7 @@ function CameraRig({ timeRef, reduce }) {
     const fov = THREE.MathUtils.clamp(33 * Math.pow(1.6 / aspect, aspect > 1.6 ? 0.3 : 0.55), 29, 46);
     // on wide layouts the headline owns the left half: pan the picture right (off-axis, so the shots
     // keep their angles) and let the light trails fade in only past the copy column
-    const wide = clamp01((aspect - 1.05) / 0.3);
+    const wide = W > 760 ? clamp01((aspect - 1.05) / 0.3) : 0; // phones: the copy is below the scene, not beside it
     const shift = Math.round(W * VIEW_SHIFT * wide);
     VIEW.fadeFrom = -1.4 + 1.38 * wide; // NDC x where trails start to show
     const cam = state.camera;
@@ -739,6 +739,8 @@ function useEmblemGeometry(half = 4.5, depth = 5, bevel = 1) {
   }, [half, depth, bevel]);
 }
 
+const CHASE = [0, 1, 3, 2]; // top-left, top-right, bottom-right, bottom-left
+const CUBE_PULSE = [0, 0, 0, 0];
 function Gate({ timeRef }) {
   const coreMat = useRef();
   const cubeMats = useRef([]);
@@ -772,7 +774,19 @@ function Gate({ timeRef }) {
     const gk = S.emblemGreen(t);
     tmp.copy(blue).lerp(green, gk).multiplyScalar(pulse * (1 + gk * 0.2));
     if (coreMat.current) coreMat.current.color.copy(tmp);
-    cubeMats.current.forEach((m, i) => m && (i === 1 || i === 2) && m.color.copy(tmp).multiplyScalar(0.9));
+    // the 2×2 squares of the mark light up in turn (clockwise) as requests cross the gate
+    CUBE_PULSE.fill(0);
+    for (const p of PACKETS) {
+      for (const s of [p.s, p.s - LOOP]) {
+        const d = t - (s + T_IN + T_GATE * 0.5);
+        if (d >= 0 && d < 0.45) { const j = CHASE[p.i % 4]; CUBE_PULSE[j] = Math.max(CUBE_PULSE[j], Math.exp(-d * 8)); }
+      }
+    }
+    cubeMats.current.forEach((m, i) => {
+      if (!m) return;
+      if (i === 1 || i === 2) m.color.copy(tmp).multiplyScalar(0.9 * (1 + 0.55 * CUBE_PULSE[i]));
+      else m.emissive.copy(tmp).multiplyScalar(0.35 * CUBE_PULSE[i]);
+    });
     seamMats.current.forEach((m) => m && m.color.setRGB(0.55, 0.6, 2.8).multiplyScalar(0.8 + 0.2 * Math.sin(t * 3)).lerp(green, gk * 0.6));
     if (scan.current) scan.current.position.y = 0.2 + ((t * 0.9) % 1) * 3.2;
     if (portal.current) portal.current.material.opacity = 0.18 + 0.05 * Math.sin(t * 1.7) + S.shield(t) * 0.05 + GATE_FLASH.value * 0.1;
@@ -844,7 +858,7 @@ function Gate({ timeRef }) {
           <RoundedBox key={i} args={[5, 5, 5]} radius={0.7} smoothness={3} position={[x, y, 0]}>
             {i === 1 || i === 2
               ? <meshBasicMaterial ref={(m) => (cubeMats.current[i] = m)} toneMapped={false} />
-              : <meshPhysicalMaterial color="#c3cbe0" metalness={1} roughness={0.22} clearcoat={1} />}
+              : <meshPhysicalMaterial ref={(m) => (cubeMats.current[i] = m)} color="#c3cbe0" metalness={1} roughness={0.22} clearcoat={1} />}
           </RoundedBox>
         ))}
       </group>
@@ -1147,7 +1161,7 @@ function Attacks({ timeRef }) {
             p.z + Math.cos(th) * h * sp * 0.7,
           );
           o3.rotation.set(th + h * 9, h * 7, k);
-          o3.scale.setScalar(0.035 * (1 - h / 0.9));
+          o3.scale.setScalar(0.018 * (1 - h / 0.9));
         } else {
           o3.scale.setScalar(0);
         }
@@ -1196,7 +1210,7 @@ function AttackImpacts({ timeRef }) {
   const sparks = useRef();
   const light = useRef();
   const tex = useMemo(() => crackTexture(), []);
-  const SP = 22;
+  const SP = 6;
   const col = useMemo(() => new THREE.Color(), []);
   useLayoutEffect(() => {
     for (let i = 0; i < ATTACKS.length * SP; i++) sparks.current.setColorAt(i, col.setRGB(0, 0, 0));
@@ -1230,7 +1244,7 @@ function AttackImpacts({ timeRef }) {
           vB.set(vA.x - vx * 0.03, vA.y - (vy - 9.8 * d) * 0.03, vA.z - vz * 0.03);
           placeAlong(sparks.current, idx, vA, vB, 0.06, 0.012);
           const life = 1 - d / 0.75;
-          sparks.current.setColorAt(idx, col.setRGB(3.2, 2.0 + life, 0.9 + life * 0.8).multiplyScalar(life));
+          sparks.current.setColorAt(idx, col.setRGB(2.6, 0.5 + life * 0.5, 0.6 + life * 0.4).multiplyScalar(life * 0.7)); // red, not a firework
         } else {
           o3.scale.setScalar(0); o3.updateMatrix(); sparks.current.setMatrixAt(idx, o3.matrix);
         }
@@ -1239,7 +1253,7 @@ function AttackImpacts({ timeRef }) {
     sparks.current.instanceMatrix.needsUpdate = true;
     sparks.current.instanceColor.needsUpdate = true;
     if (light.current) {
-      light.current.intensity = flash * 14;
+      light.current.intensity = flash * 9;
       if (at) light.current.position.set(at.x - 0.3, at.y, at.z);
     }
   });
