@@ -37,7 +37,13 @@
     '.elchi-consent button{font:inherit;font-weight:600;cursor:pointer;padding:8px 18px;border-radius:8px;' +
     'border:1px solid #2563eb;background:#2563eb;color:#fff}' +
     '.elchi-consent button:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}' +
-    '[data-theme="dark"] .elchi-consent{background:#1e293b;color:#cbd5e1;border-color:rgba(255,255,255,.12);box-shadow:0 10px 30px rgba(0,0,0,.4)}';
+    '[data-theme="dark"] .elchi-consent{background:#1e293b;color:#cbd5e1;border-color:rgba(255,255,255,.12);box-shadow:0 10px 30px rgba(0,0,0,.4)}' +
+    // the marketing pages (relief design) carry no data-theme; the docs site (Docusaurus) keeps the look above
+    'html:not([data-theme]) .elchi-consent{border:0;border-radius:24px;padding:16px 16px 16px 24px;background:#f4f8f6;color:#2f4a60;' +
+    'box-shadow:0 2px 6px rgba(23,50,74,.08),0 30px 60px -28px rgba(13,27,38,.5);font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:15px}' +
+    'html:not([data-theme]) .elchi-consent button{border:0;border-radius:999px;padding:11px 20px;background:#17324a;color:#fff}' +
+    'html:not([data-theme]) .elchi-consent button:first-child{background:#e3ebe1;color:#17324a}' +
+    'html:not([data-theme]) .elchi-consent button:focus-visible{outline-color:#1f7a99}';
 
   function read() {
     try { return localStorage.getItem(KEY); } catch (e) { return null; }

@@ -11,6 +11,7 @@ import { HOME_FILM } from './film-data.js';
 const loadPlayer = () => Promise.all([import('./video-player.jsx'), import('./video-list.js')]);
 const FilmPlayer = lazy(() => loadPlayer().then(([m, l]) => ({ default: (p) => <m.Player v={l.FEATURED} {...p} /> })));
 import { HeroStage } from './hero-stage.jsx';
+import { Band, BandHead, Tick, Dash, Arrow, Play } from './relief.jsx';
 import { ScreenGallery } from './screens.jsx';
 
 // All user-visible strings for the home page. Technical/product terms (Envoy, xDS,
@@ -322,37 +323,6 @@ function App() {
     </>
   );
 }
-
-/* One elevation band of the relief: tone sets it apart from its neighbours, never a rule. */
-function Band({ tone = 'mist', id, className = '', children }) {
-  return (
-    <section className={`rl-band rl-${tone} ${className}`} id={id}>
-      <div className="rl-wrap">{children}</div>
-    </section>
-  );
-}
-
-function BandHead({ h2, intro }) {
-  return (
-    <header className="rl-head">
-      <h2 className="rl-h2">{h2}</h2>
-      {intro && <p className="rl-lede">{intro}</p>}
-    </header>
-  );
-}
-
-const Tick = () => (
-  <svg className="rl-tick" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor" opacity=".14"/><path d="M6 10.4l2.6 2.6L14 7.6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-);
-const Dash = () => (
-  <svg className="rl-dash" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M6.5 10h7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-);
-const Arrow = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-);
-const Play = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4a.6.6 0 0 0 .9.5l7-4.2a.6.6 0 0 0 0-1L3.9 1.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>
-);
 
 /* ====================== HERO ====================== */
 function Hero() {

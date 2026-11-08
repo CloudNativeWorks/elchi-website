@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { Nav, Footer } from './shared.jsx';
 import { getLocale, locHref } from './i18n.js';
 import { PRODUCTS } from './products-data.js';
+import { Band, BandHead, PageHero, Arrow } from './relief.jsx';
 
 // Plans page: Core is the base of every deployment; the other four products
 // are licensed add-ons. No public prices — licensing is sized by managed
@@ -79,6 +80,9 @@ const STR = {
 };
 
 const ADDONS = ['api-security', 'api-discovery', 'gslb'];
+// One colour, one meaning (see product.jsx): Shield = coral, Discovery = flow, GSLB = moss.
+const PF_TONE = { 'api-security': 'coral', 'api-discovery': 'flow', gslb: 'moss' };
+const noArrow = (s) => s.replace(/\s*→$/, '');
 
 function PlansApp() {
   const locale = getLocale();
@@ -88,98 +92,68 @@ function PlansApp() {
   return (
     <>
       <Nav active="plans"/>
+      <main className="rl plans">
+        <PageHero
+          title={<><span className="rl-h1-line">{t.hero.title1}</span>{' '}<span className="rl-h1-line">{t.hero.title2}</span></>}
+          lede={t.hero.subtitle}
+          actions={<>
+            <a href={locHref('contact')} className="rl-go">{t.cta.contact}<Arrow/></a>
+            <a href="/docs/" className="rl-pill">{t.cta.docs}</a>
+          </>}
+        />
 
-      {/* Hero */}
-      <section className="section" style={{ paddingTop: 80, paddingBottom: 50, position: 'relative', overflow: 'hidden' }}>
-        <div className="aurora" style={{ width: 800, height: 500, top: -100, left: '20%', background: 'radial-gradient(closest-side, #c7d2fe, transparent)', opacity: .5 }}></div>
-        <div className="grid-bg"></div>
-        <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: 880, margin: '0 auto' }}>
-          <span className="eyebrow"><span className="dot"></span>{t.hero.eyebrow}</span>
-          <h1 style={{ marginTop: 24, marginBottom: 20 }}>
-            {t.hero.title1}<br/><span className="grad-text">{t.hero.title2}</span>
-          </h1>
-          <p style={{ fontSize: 19, color: 'var(--slate-600)', maxWidth: 660, margin: '0 auto' }}>{t.hero.subtitle}</p>
-        </div>
-      </section>
-
-      {/* Core base card */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container" style={{ maxWidth: 940 }}>
-          <div className="plans-core card" style={{ borderColor: `${core.accent}44` }}>
-            <div className="plans-core-main">
-              <span className="adv-tag mono" style={{ color: core.accent, background: `${core.accent}1a`, borderColor: `${core.accent}33` }}>{t.coreCard.tag}</span>
-              <h2 style={{ margin: '14px 0 10px' }}>{core[locale].metaName}</h2>
-              <p style={{ color: 'var(--slate-600)', maxWidth: 560 }}>{t.coreCard.blurb}</p>
-              <a href={locHref('products/core')} className="btn btn-blue" style={{ marginTop: 18 }}>{t.coreCard.cta}</a>
+        {/* The family: add-ons standing on the Core base */}
+        <Band tone="water" id="products">
+          <BandHead h2={t.addonsTitle} intro={t.addonsSubtitle}/>
+          <div className="pf">
+            <div className="pf-addons">
+              {ADDONS.map((slug) => {
+                const pt = PRODUCTS[slug][locale];
+                return (
+                  <a key={slug} href={locHref(`products/${slug}`)} className={`pf-unit pf-${PF_TONE[slug]}`}>
+                    <h3>{pt.metaName}</h3>
+                    <p>{pt.subtitle}</p>
+                    <span className="pf-foot"><span className="pf-kind">{t.requires}</span><span className="pf-more">{noArrow(t.learnMore)}<Arrow/></span></span>
+                  </a>
+                );
+              })}
             </div>
-            <div className="plans-core-side">
-              <span className="pill" style={{ background: '#dcfce7', color: '#15803d', borderColor: '#bbf7d0' }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }}></span>
-                {t.coreCard.included}
-              </span>
-            </div>
+            <a href={locHref('products/core')} className="pf-core">
+              <h3>{core[locale].metaName}</h3>
+              <span className="pf-kind">{t.coreCard.included}</span>
+              <p>{t.coreCard.blurb}</p>
+              <span className="pf-more">{noArrow(t.coreCard.cta)}<Arrow/></span>
+            </a>
           </div>
-        </div>
-      </section>
+        </Band>
 
-      {/* Add-ons */}
-      <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div className="container">
-          <div className="section-head">
-            <h2>{t.addonsTitle}</h2>
-            <p>{t.addonsSubtitle}</p>
-          </div>
-          <div className="plans-addons">
-            {ADDONS.map((slug) => {
-              const p = PRODUCTS[slug];
-              const pt = p[locale];
-              return (
-                <a key={slug} href={locHref(`products/${slug}`)} className="card plans-addon-card">
-                  <div className="plans-addon-head">
-                    <span className="plans-addon-req mono">{t.requires}</span>
-                  </div>
-                  <h3><span className="product-related-dot" style={{ background: p.accent }}></span>{pt.metaName}</h3>
-                  <p>{pt.subtitle.length > 150 ? pt.subtitle.slice(0, 147) + '…' : pt.subtitle}</p>
-                  <span className="product-related-more" style={{ color: p.accent }}>{t.learnMore}</span>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* How licensing works */}
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow"><span className="dot"></span>{t.how.eyebrow}</span>
-            <h2>{t.how.title}</h2>
-          </div>
-          <div className="plans-how">
-            {t.how.items.map((it, i) => (
-              <div key={i} className="card feat-card">
-                <div className="product-cap-num mono" style={{ color: 'var(--blue-600)', background: 'var(--blue-50)' }}>{String(i + 1).padStart(2, '0')}</div>
+        {/* How licensing works */}
+        <Band tone="mist" id="licensing">
+          <BandHead h2={t.how.title}/>
+          <ul className="rl-notes rl-notes-4 plans-how">
+            {t.how.items.map((it) => (
+              <li key={it.t}>
                 <h3>{it.t}</h3>
                 <p>{it.d}</p>
-              </div>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
+          </ul>
+        </Band>
 
-      {/* CTA */}
-      <section className="section" style={{ background: 'var(--slate-900)', color: 'white', position: 'relative', overflow: 'hidden' }}>
-        <div className="dot-bg" style={{ opacity: 0.15 }}></div>
-        <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
-          <h2 style={{ color: 'white' }}>{t.cta.title}</h2>
-          <p style={{ color: '#94a3b8', maxWidth: 560, margin: '12px auto 28px' }}>{t.cta.subtitle}</p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href={locHref('contact')} className="btn btn-blue">{t.cta.contact}</a>
-            <a href="/docs/" className="btn btn-ghost-dark">{t.cta.docs}</a>
+        {/* Closing */}
+        <Band tone="moss" className="rl-cta-band">
+          <div className="pd-cta">
+            <div>
+              <h2 className="rl-h2 cta-h2">{t.cta.title}</h2>
+              <p className="rl-lede">{t.cta.subtitle}</p>
+            </div>
+            <div className="rl-actions">
+              <a href={locHref('contact')} className="rl-go">{t.cta.contact}<Arrow/></a>
+              <a href="/docs/" className="rl-pill">{t.cta.docs}</a>
+            </div>
           </div>
-        </div>
-      </section>
-
+        </Band>
+      </main>
       <Footer/>
     </>
   );

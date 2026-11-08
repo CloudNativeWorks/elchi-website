@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { getLocale, locHref } from './i18n.js';
+import { getLocale } from './i18n.js';
 import { Nav, Footer } from './shared.jsx';
+import { Band, BandHead, PageHero, Arrow } from './relief.jsx';
 
 // All user-visible strings for the Architecture page, per locale. Technical terms
 // (Envoy, Shield, proxy, control plane, xDS, WAF, gRPC, MongoDB, ClickHouse, …) and
@@ -229,285 +230,204 @@ function ArchApp() {
   return (
     <>
       <Nav active="architecture"/>
-      <ArchHero/>
-      <ThreeProcess/>
-      <EdgeDataPlane/>
-      <LayeredArch/>
-      <RequestFlow/>
-      <Integrations/>
-      <ArchCTA/>
+      <main className="rl">
+        <ArchHero/>
+        <ThreeProcess/>
+        <EdgeDataPlane/>
+        <LayeredArch/>
+        <RequestFlow/>
+        <Integrations/>
+        <ArchCTA/>
+      </main>
       <Footer/>
     </>
   );
 }
 
 function ArchHero() {
-  const t = STR[getLocale()].hero;
+  const locale = getLocale();
+  const t = STR[locale].hero;
+  const c = STR[locale].cta;
   return (
-    <section className="section" style={{ paddingTop: 80, paddingBottom: 60, position: 'relative', overflow: 'hidden' }}>
-      <div className="aurora" style={{ width: 700, height: 500, top: -150, right: '10%', background: 'radial-gradient(closest-side, #c7d2fe, transparent)', opacity: .55 }}></div>
-      <div className="aurora" style={{ width: 500, height: 400, top: 80, left: '5%', background: 'radial-gradient(closest-side, #bae6fd, transparent)', opacity: .4 }}></div>
-      <div className="grid-bg"></div>
-      <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: 920, margin: '0 auto' }}>
-        <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
-        <h1 style={{ marginTop: 24, marginBottom: 24 }}>
-          {t.titleLine1}<br/>
-          <span className="grad-text">{t.titleGrad}</span>
-        </h1>
-        <p style={{ fontSize: 19, color: 'var(--slate-600)', maxWidth: 720, margin: '0 auto' }}>
-          {t.subtitle}
-        </p>
-      </div>
-    </section>
+    <PageHero
+      title={<><span className="rl-h1-line">{t.titleLine1}</span> <span className="rl-h1-line">{t.titleGrad}</span></>}
+      lede={t.subtitle}
+      actions={<>
+        <a href="/docs/getting-started/quickstart" className="rl-go">{c.tryDemo}<Arrow/></a>
+        <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="rl-pill">{c.helmCharts}</a>
+      </>}
+    />
   );
 }
 
+/* the three backend processes: one tonal row each, name and role on the left, duties on the right */
 function ThreeProcess() {
   const t = STR[getLocale()].threeProcess;
-  const procs = t.procs;
-
   return (
-    <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
-          <h2>{t.headingLine1}<br/>{t.headingLine2}</h2>
-          <p>{t.intro}</p>
-        </div>
-
-        <div className="proc-grid-light">
-          {procs.map((p, i) => (
-            <div key={i} className="proc-card-light card">
-              <div className="proc-head-light" style={{ borderBottomColor: `${p.accent}33` }}>
-                <span className="proc-dot" style={{ background: p.accent, boxShadow: `0 0 12px ${p.accent}` }}></span>
-                <span style={{ fontSize: 18, fontWeight: 600 }}>{p.name}</span>
-                <span className="mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--slate-500)', background: 'var(--slate-100)', padding: '3px 8px', borderRadius: 6 }}>{p.port}</span>
+    <Band tone="water" id="processes">
+      <BandHead h2={<>{t.headingLine1} {t.headingLine2}</>} intro={t.intro}/>
+      <div className="ap-procs">
+        {t.procs.map((p) => (
+          <div key={p.name} className="ap-proc">
+            <div className="ap-proc-id">
+              <div className="ap-name">
+                <h3>{p.name}</h3>
+                <span className="ap-port">{p.port}</span>
               </div>
-              <p style={{ fontSize: 14, color: 'var(--slate-600)', margin: '14px 0 18px' }}>{p.desc}</p>
-              <ul className="proc-list-light">
-                {p.items.map((it, j) => (
-                  <li key={j}>
-                    <span style={{ color: p.accent, fontWeight: 700 }}>›</span> {it}
-                  </li>
-                ))}
-              </ul>
+              <p>{p.desc}</p>
             </div>
-          ))}
-        </div>
-
-        <div className="ha-grid-light">
-          {t.ha.map(([t2, d], i) => (
-            <div key={i} className="ha-cell-light">
-              <div className="mono" style={{ fontSize: 11, color: 'var(--blue-600)', marginBottom: 10 }}>{String(i+1).padStart(2,'0')}</div>
-              <h4 style={{ marginBottom: 8, fontSize: 16 }}>{t2}</h4>
-              <p style={{ fontSize: 13.5, color: 'var(--slate-600)' }}>{d}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function EdgeDataPlane() {
-  const t = STR[getLocale()].edge;
-  const nodes = t.nodes;
-  return (
-    <section className="section">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
-          <h2>{t.headingLine1}<br/>{t.headingLine2}</h2>
-          <p>{t.intro}</p>
-        </div>
-
-        <div className="proc-grid-light">
-          {nodes.map((p, i) => (
-            <div key={i} className="proc-card-light card">
-              <div className="proc-head-light" style={{ borderBottomColor: `${p.accent}33` }}>
-                <span className="proc-dot" style={{ background: p.accent, boxShadow: `0 0 12px ${p.accent}` }}></span>
-                <span style={{ fontSize: 18, fontWeight: 600 }}>{p.name}</span>
-                <span className="mono" style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--slate-500)', background: 'var(--slate-100)', padding: '3px 8px', borderRadius: 6 }}>{p.port}</span>
-              </div>
-              <p style={{ fontSize: 14, color: 'var(--slate-600)', margin: '14px 0 18px' }}>{p.desc}</p>
-              <ul className="proc-list-light">
-                {p.items.map((it, j) => (
-                  <li key={j}>
-                    <span style={{ color: p.accent, fontWeight: 700 }}>›</span> {it}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <p style={{ textAlign: 'center', marginTop: 32, fontSize: 14.5, color: 'var(--slate-600)' }}>
-          {t.docPre}
-          <a href="/docs/getting-started/architecture" style={{ color: 'var(--blue-600)', fontWeight: 600 }}>{t.docLink}</a>{t.docPost}
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function LayeredArch() {
-  const t = STR[getLocale()].layered;
-  return (
-    <section className="section">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
-          <h2>{t.headingLine1}<br/>{t.headingLine2}</h2>
-          <p>{t.intro}</p>
-        </div>
-
-        <div className="layered-stack">
-          {t.layers.map((layer, i) => (
-            <Layer
-              key={i}
-              title={layer.title}
-              color={layer.color}
-              wide={layer.wide}
-              items={layer.items}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Layer({ title, items, color, wide }) {
-  return (
-    <div className="layer">
-      <div className="layer-label">
-        <span className="layer-dot" style={{ background: color }}></span>
-        <span className="mono" style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--slate-500)' }}>
-          {title}
-        </span>
-      </div>
-      <div className="layer-row" style={{ '--accent': color }}>
-        {items.map((it, i) => (
-          <div key={i} className="layer-cell">
-            <div className="layer-cell-head">
-              <strong>{it.name}</strong>
-              {it.port && <span className="mono" style={{ fontSize: 10, color, background: `${color}1a`, padding: '2px 6px', borderRadius: 4 }}>{it.port}</span>}
-            </div>
-            <span style={{ fontSize: 13, color: 'var(--slate-500)' }}>{it.desc}</span>
+            <ul className="ap-list">{p.items.map((it) => <li key={it}>{it}</li>)}</ul>
           </div>
         ))}
       </div>
-    </div>
+      <ul className="rl-notes ap-ha">
+        {t.ha.map(([h, d]) => (
+          <li key={h}><h3>{h}</h3><p>{d}</p></li>
+        ))}
+      </ul>
+    </Band>
+  );
+}
+
+/* one edge host: Envoy carries the traffic, the three agents sit beside it on the same host */
+const EDGE_DOT = { Envoy: 'rl-dot-flow', Shield: 'rl-dot-coral', 'elchi-client': 'rl-dot-lake' };
+
+function EdgeDataPlane() {
+  const t = STR[getLocale()].edge;
+  const [envoy, ...agents] = t.nodes;
+  return (
+    <Band tone="sage" id="edge">
+      <BandHead h2={<>{t.headingLine1} {t.headingLine2}</>} intro={t.intro}/>
+      <div className="eh">
+        <div className="eh-envoy">
+          <div className="eh-envoy-id">
+            <div className="ap-name">
+              <span className={`rl-dot ${EDGE_DOT[envoy.name] || ''}`}></span>
+              <h3>{envoy.name}</h3>
+              <span className="ap-port">{envoy.port}</span>
+            </div>
+            <p>{envoy.desc}</p>
+          </div>
+          <ul className="ap-list">{envoy.items.map((it) => <li key={it}>{it}</li>)}</ul>
+        </div>
+        <div className="eh-agents">
+          {agents.map((n) => (
+            <div key={n.name} className={`eh-agent${n.name === 'Shield' ? ' is-shield' : ''}`}>
+              <div className="ap-name">
+                <span className={`rl-dot ${EDGE_DOT[n.name] || ''}`}></span>
+                <h3>{n.name}</h3>
+                <span className="ap-port">{n.port}</span>
+              </div>
+              <p>{n.desc}</p>
+              <ul className="ap-list">{n.items.map((it) => <li key={it}>{it}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="ap-doc">
+        {t.docPre}
+        <a href="/docs/getting-started/architecture" className="rl-link">{t.docLink}</a>{t.docPost}
+      </p>
+    </Band>
+  );
+}
+
+/* the layers as terraces: the console at the top of the hill, the proxy layer the widest and deepest */
+function LayeredArch() {
+  const t = STR[getLocale()].layered;
+  const n = t.layers.length;
+  return (
+    <Band tone="mist2" id="layers">
+      <BandHead h2={<>{t.headingLine1} {t.headingLine2}</>} intro={t.intro}/>
+      <div className="terr">
+        {t.layers.map((layer, i) => (
+          <div key={layer.title} className={`terr-layer terr-${i + 1}`} style={{ '--inset': n - 1 - i }}>
+            <h3 className="terr-title">{layer.title}</h3>
+            <ul className="terr-items">
+              {layer.items.map((it) => (
+                <li key={it.name} className={it.name === 'Shield' ? 'is-shield' : it.name === 'Envoy Proxy' ? 'is-flow' : ''}>
+                  <strong>{it.name}</strong>
+                  <span>{it.desc}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </Band>
+  );
+}
+
+/* the request path across the deep lake: soft nodes joined by animated water lines */
+function FlowLine() {
+  return (
+    <svg className="af-line" width="56" height="20" viewBox="0 0 56 20" aria-hidden="true">
+      <path className="af-line-dash" d="M4 10H46" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 7"/>
+      <path d="M42 5l6 5-6 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
   );
 }
 
 function RequestFlow() {
   const t = STR[getLocale()].requestFlow;
   const steps = t.steps;
-
   return (
-    <section className="section" style={{ background: 'var(--slate-900)', color: 'white', position: 'relative', overflow: 'hidden' }}>
-      <div className="dot-bg" style={{ opacity: 0.18 }}></div>
-      <div className="aurora" style={{ width: 700, height: 500, top: 100, left: '50%', transform: 'translateX(-50%)', background: 'radial-gradient(closest-side, #1d4ed8, transparent)', opacity: 0.35 }}></div>
-
-      <div className="container" style={{ position: 'relative' }}>
-        <div className="section-head">
-          <span className="eyebrow" style={{ background: 'rgba(59,130,246,.15)', borderColor: 'rgba(59,130,246,.3)', color: '#93c5fd' }}>
-            <span className="dot"></span>{t.eyebrow}
-          </span>
-          <h2 style={{ color: 'white' }}>{t.headingLine1}<br/>{t.headingLine2}</h2>
-          <p style={{ color: '#94a3b8' }}>{t.intro}</p>
-        </div>
-
-        <div className="flow-row">
-          {steps.map((s, i) => (
-            <React.Fragment key={i}>
-              <div className="flow-step">
-                <div className="flow-circle" style={{ borderColor: s.accent, color: s.accent }}>
-                  <span className="flow-dot" style={{ background: s.accent }}></span>
-                </div>
-                <div className="flow-label">{s.label}</div>
-                <div className="flow-sub">{s.sub}</div>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="flow-arrow">
-                  <svg width="100%" height="40" viewBox="0 0 100 40" preserveAspectRatio="none">
-                    <line x1="0" y1="20" x2="92" y2="20" stroke={steps[i+1].accent} strokeWidth="2" strokeDasharray="4 4">
-                      <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1.4s" repeatCount="indefinite"/>
-                    </line>
-                    <path d={`M 86 14 L 96 20 L 86 26`} stroke={steps[i+1].accent} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span className="mono flow-arrow-label">{steps[i+1].arrow}</span>
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-
-        <div className="flow-explain">
-          {t.explain.map(([t2, d], i) => (
-            <div key={i} className="flow-explain-cell">
-              <div className="mono" style={{ fontSize: 11, color: '#60a5fa', marginBottom: 8 }}>{String(i+1).padStart(2,'0')}</div>
-              <h4 style={{ color: 'white', fontSize: 15, marginBottom: 6 }}>{t2}</h4>
-              <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.55 }}>{d}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <Band tone="deep" id="request-flow">
+      <BandHead h2={<>{t.headingLine1} {t.headingLine2}</>} intro={t.intro}/>
+      <ol className="af-row">
+        {steps.map((s, i) => (
+          <React.Fragment key={s.label}>
+            {i > 0 && (
+              <li className="af-link" aria-hidden="true">
+                <FlowLine/>
+                <span className="rl-map-label">{s.arrow}</span>
+              </li>
+            )}
+            <li className={`af-step${i === steps.length - 1 ? ' is-end' : ''}`}>
+              <span className="af-node"><span></span></span>
+              <b>{s.label}</b>
+              <span className="af-sub">{s.sub}</span>
+            </li>
+          </React.Fragment>
+        ))}
+      </ol>
+      <ol className="af-explain">
+        {t.explain.map(([h, d]) => (
+          <li key={h}><h3>{h}</h3><p>{d}</p></li>
+        ))}
+      </ol>
+    </Band>
   );
 }
 
+const INTEGRATIONS = ['Kubernetes', 'Docker', 'Envoy', 'Grafana', 'Prometheus', 'OpenStack', 'OpenRouter', 'LDAP / AD', 'Syslog', 'ELK Stack', 'Let\'s Encrypt', 'Google Trust Services'];
+
 function Integrations() {
   const t = STR[getLocale()].integrations;
-  const ints = ['Kubernetes', 'Docker', 'Envoy', 'Grafana', 'Prometheus', 'OpenStack', 'OpenRouter', 'LDAP / AD', 'Syslog', 'ELK Stack', 'Let\'s Encrypt', 'Google Trust Services'];
   return (
-    <section className="section">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
-          <h2>{t.heading}</h2>
-          <p>{t.intro}</p>
-        </div>
-        <div className="int-grid">
-          {ints.map((name, i) => (
-            <div key={i} className="int-cell card">
-              <div className="int-mark mono">{name.slice(0, 2).toUpperCase()}</div>
-              <div>
-                <div style={{ fontWeight: 600, fontSize: 14 }}>{name}</div>
-                <div style={{ fontSize: 12, color: 'var(--slate-500)' }}>{t.nativeLabel}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+    <Band tone="mist" id="integrations">
+      <BandHead h2={t.heading} intro={t.intro}/>
+      <div className="ai">
+        <span className="rl-map-label">{t.nativeLabel}</span>
+        <ul>{INTEGRATIONS.map((name) => <li key={name}>{name}</li>)}</ul>
       </div>
-    </section>
+    </Band>
   );
 }
 
 function ArchCTA() {
   const t = STR[getLocale()].cta;
   return (
-    <section className="section">
-      <div className="container">
-        <div className="cta-card">
-          <div className="grid-bg" style={{ opacity: .4 }}></div>
-          <div style={{ position: 'relative', textAlign: 'center', maxWidth: 720, margin: '0 auto' }}>
-            <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
-            <h2 style={{ marginTop: 16, marginBottom: 16 }}>
-              {t.headingLine1}<br/>{t.headingLine2}
-            </h2>
-            <p style={{ fontSize: 18, color: 'var(--slate-600)', maxWidth: 560, margin: '0 auto' }}>
-              {t.subtitle}
-            </p>
-            <div style={{ display: 'flex', gap: 12, marginTop: 32, justifyContent: 'center' }}>
-              <a href="/docs/getting-started/quickstart" className="btn btn-blue">{t.tryDemo}</a>
-              <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="btn btn-ghost">{t.helmCharts}</a>
-            </div>
-          </div>
+    <Band tone="moss">
+      <div className="ap-cta">
+        <h2 className="rl-h2 cta-h2">{t.headingLine1} {t.headingLine2}</h2>
+        <p className="rl-lede">{t.subtitle}</p>
+        <div className="rl-actions">
+          <a href="/docs/getting-started/quickstart" className="rl-go">{t.tryDemo}<Arrow/></a>
+          <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="rl-pill">{t.helmCharts}</a>
         </div>
       </div>
-    </section>
+    </Band>
   );
 }
 

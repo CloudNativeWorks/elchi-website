@@ -1,133 +1,84 @@
-/* features-page-specific */
+/* ==========================================================
+   Features page, relief-map world. Shared bands, heads, notes, rows (.uc) and actions
+   come from relief.css; only what is particular to this page lives here.
+   ========================================================== */
 
-.adv-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+/* ---------- hero aside: a map legend of the bands below ---------- */
+.fx-legend { padding: 14px; border-radius: 28px; background: rgba(255, 255, 255, .62); box-shadow: var(--shade-1); }
+.fx-legend ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.fx-legend a {
+  display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  padding: 16px 20px; border-radius: 20px; color: var(--lake); transition: background .2s ease;
 }
-@media (max-width: 980px) { .adv-grid { grid-template-columns: 1fr; } }
+.fx-legend a:hover { background: #fff; }
+.fx-legend-name { font: 600 18px/1.25 var(--font-sans); letter-spacing: -.01em; }
+.fx-legend-n { font: italic 500 22px/1 var(--font-map); color: var(--lake-3); font-variant-numeric: tabular-nums; }
 
-.adv-card {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  min-height: 280px;
-  transition: all .25s ease;
+/* ---------- advanced: two plates, then open entries ---------- */
+.fx-plates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.fx-plate {
+  display: flex; flex-direction: column; gap: 26px; padding: 14px 14px 32px; border-radius: 32px;
+  background: rgba(255, 255, 255, .72); box-shadow: var(--shade-1);
 }
-.adv-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-lg);
-}
-.adv-content { padding: 28px; display: flex; flex-direction: column; justify-content: center; }
-.adv-tag {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid;
-  width: fit-content;
-}
-.adv-bullets {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 16px;
-}
-.adv-bullets li {
-  font-size: 13px;
-  color: var(--slate-700);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.adv-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  flex-shrink: 0;
-}
-.adv-visual {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+.fx-plate-pic { aspect-ratio: 3 / 2; max-height: 240px; border-radius: 22px; background: var(--mist); padding: 12px 20px; }
+.fx-plate-pic svg { display: block; }
+.fx-plate-body { padding: 0 18px; }
+.fx-plate h3, .fx-entry h3 { font: 700 30px/1.08 var(--font-sans); letter-spacing: -.02em; color: var(--lake); }
+.fx-plate .rl-map-label, .fx-entry .rl-map-label { margin-top: 6px; font-size: 17px; color: var(--lake-3); }
+.fx-plate p, .fx-entry p { margin-top: 14px; font-size: 16.5px; line-height: 1.6; max-width: 60ch; }
+.fx-bullets { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
+.fx-bullets li { display: flex; gap: 10px; align-items: baseline; font-size: 15px; line-height: 1.4; color: var(--lake-2); }
+.fx-bullets li::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--moss); transform: translateY(-1px); }
+.fx-flow .fx-bullets li::before { background: var(--flow); }
+.fx-coral .fx-bullets li::before { background: var(--coral); }
 
-/* comprehensive grid */
-.comp-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-@media (max-width: 980px) { .comp-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .comp-grid { grid-template-columns: 1fr; } }
+/* pictures, drawn in tokens: flow for the inventory of traffic, coral for Shield */
+.fx-axis { stroke: var(--lake); opacity: .22; }
+.fx-pt { fill: var(--flow); }
+.fx-halo { fill: var(--flow); }
+.fx-flowline { stroke: var(--flow); opacity: .55; }
+.fx-shield-back { fill: var(--coral); opacity: .1; }
+.fx-shield { fill: #fff; stroke: var(--coral); }
+.fx-shield-tick { stroke: var(--coral); }
 
-.comp-card { padding: 24px; }
-.comp-num {
-  font-size: 11px;
-  color: var(--blue-600);
-  margin-bottom: 12px;
-}
-.comp-card h3 { font-size: 16px; margin-bottom: 8px; }
-.comp-card > p {
-  font-size: 13.5px;
-  color: var(--slate-600);
-  line-height: 1.55;
-  margin-bottom: 14px;
-}
-.comp-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 4px;
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
-}
-.comp-card li {
-  font-size: 12.5px;
-  color: var(--slate-500);
-  display: flex; gap: 6px;
-}
-.comp-card li span { color: var(--blue-600); }
+.fx-open { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px 72px; margin-top: 80px; padding: 0 18px; }
+.fx-entry h3 { font-size: 26px; }
+.fx-chips { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.fx-chips .rl-chip { font-size: 14px; }
 
-/* compliance */
-.comply-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  max-width: 880px;
-  margin: 0 auto;
+/* ---------- comprehensive: the shared .uc rows, a touch tighter for twenty of them ---------- */
+.fx-rows .uc-row { padding: 24px 32px; }
+.fx-rows .uc-row h3 { font-size: 20px; }
+
+/* ---------- compliance: the closing band ---------- */
+.fx-comply { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.fx-comply li {
+  display: flex; align-items: center; gap: 14px; padding: 18px 22px; border-radius: 22px;
+  background: rgba(255, 255, 255, .6); font: 600 16.5px/1.35 var(--font-sans); color: var(--lake);
 }
-@media (max-width: 720px) { .comply-grid { grid-template-columns: 1fr 1fr; } }
-.comply-cell {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 18px 20px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  font-size: 14px;
-  color: #e2e8f0;
-  transition: all .2s ease;
+.fx-comply .rl-tick { flex: none; color: var(--lake); }
+#compliance .rl-actions { margin-top: 48px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1180px) {
+  .fx-comply { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-.comply-cell:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(59, 130, 246, .3);
+@media (max-width: 980px) {
+  .fx-plates { grid-template-columns: minmax(0, 1fr); }
+  .fx-open { gap: 48px 40px; margin-top: 64px; }
 }
-.comply-tick {
-  width: 26px; height: 26px;
-  background: rgba(16, 185, 129, .15);
-  color: #10b981;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+@media (max-width: 720px) {
+  .fx-legend { padding: 8px; border-radius: 24px; }
+  .fx-legend a { padding: 14px 14px; gap: 14px; }
+  .fx-legend-name { font-size: 16.5px; }
+  .fx-plate { padding: 8px 8px 26px; border-radius: 24px; }
+  .fx-plate-pic { border-radius: 18px; padding: 8px 12px; }
+  .fx-plate-body { padding: 0 14px; }
+  .fx-plate h3 { font-size: 26px; }
+  .fx-bullets { grid-template-columns: minmax(0, 1fr); }
+  .fx-open { grid-template-columns: minmax(0, 1fr); padding: 0; margin-top: 56px; }
+  .fx-entry h3 { font-size: 23px; }
+  .fx-rows .uc-row { padding: 22px 20px; }
+  .fx-comply { grid-template-columns: minmax(0, 1fr); }
+  .fx-comply li { padding: 16px 18px; font-size: 15.5px; }
 }

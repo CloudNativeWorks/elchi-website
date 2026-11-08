@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { Nav, Footer } from './shared.jsx';
 import { getLocale, locHref } from './i18n.js';
+import { Band, BandHead, PageHero, Tick, Arrow } from './relief.jsx';
 
 // All user-visible copy for the features page. Technical terms (Envoy, xDS, WAF,
 // DLP, JWT, mTLS, Kubernetes, Grafana, OpenAPI, GSLB, ACME, …) are intentionally
@@ -234,358 +235,192 @@ const STR = {
   },
 };
 
+/* The section headings were stored as two lines; join them back into one sentence
+   ("security-" + "first mindset." keeps the hyphenated word whole). */
+const join = (a, b) => (/[\s-]$/.test(a) ? a + b : `${a} ${b}`);
+const noArrow = (s) => s.replace(/\s*→$/, '');
+/* The old uppercase eyebrows become sentence-case legend entries in the hero. */
+const sentence = (s, loc) => {
+  const low = s.toLocaleLowerCase(loc);
+  return low.charAt(0).toLocaleUpperCase(loc) + low.slice(1);
+};
+
 function FeaturesApp() {
   return (
     <>
       <Nav active="features"/>
-      <FeaturesHero/>
-      <CoreFeatures/>
-      <AdvancedFeatures/>
-      <ComprehensiveFeatures/>
-      <Compliance/>
+      <main className="rl">
+        <FeaturesHero/>
+        <CoreFeatures/>
+        <AdvancedFeatures/>
+        <ComprehensiveFeatures/>
+        <Compliance/>
+      </main>
       <Footer/>
     </>
   );
 }
 
+/* ====================== HERO ====================== */
 function FeaturesHero() {
-  const t = STR[getLocale()];
+  const loc = getLocale();
+  const t = STR[loc];
+  const legend = [
+    ['core', t.core, 'rl-dot'],
+    ['advanced', t.advanced, 'rl-dot rl-dot-flow'],
+    ['comprehensive', t.comprehensive, 'rl-dot rl-dot-lake'],
+    ['compliance', t.compliance, 'rl-dot'],
+  ];
   return (
-    <section className="section" style={{ paddingTop: 80, paddingBottom: 60, position: 'relative', overflow: 'hidden' }}>
-      <div className="aurora" style={{ width: 800, height: 500, top: -100, left: '20%', background: 'radial-gradient(closest-side, #c7d2fe, transparent)', opacity: .5 }}></div>
-      <div className="grid-bg"></div>
-      <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: 880, margin: '0 auto' }}>
-        <span className="eyebrow"><span className="dot"></span>{t.hero.eyebrow}</span>
-        <h1 style={{ marginTop: 24, marginBottom: 24 }}>
-          {t.hero.title1}<br/>
-          <span className="grad-text">{t.hero.title2}</span>
-        </h1>
-        <p style={{ fontSize: 19, color: 'var(--slate-600)', maxWidth: 640, margin: '0 auto' }}>
-          {t.hero.subtitle}
-        </p>
-        <div style={{ display:'flex', gap:12, justifyContent:'center', marginTop: 32 }}>
-          <a href="/docs/getting-started/quickstart" className="btn btn-blue">{t.hero.btnDemo}</a>
-          <a href={locHref('architecture')} className="btn btn-ghost">{t.hero.btnArch}</a>
-        </div>
-      </div>
-    </section>
+    <PageHero
+      title={<><span className="rl-h1-line">{t.hero.title1.trim()}</span>{' '}<span className="rl-h1-line">{t.hero.title2}</span></>}
+      lede={t.hero.subtitle}
+      actions={<>
+        <a href="/docs/getting-started/quickstart" className="rl-go">{noArrow(t.hero.btnDemo)}<Arrow/></a>
+        <a href={locHref('architecture')} className="rl-link">{t.hero.btnArch}<Arrow/></a>
+      </>}
+      aside={
+        <nav className="fx-legend" aria-label={sentence(t.hero.eyebrow, loc)}>
+          <ul>
+            {legend.map(([id, sec, dot]) => (
+              <li key={id}>
+                <a href={`#${id}`}>
+                  <span className={dot} aria-hidden="true"/>
+                  <span className="fx-legend-name">{sentence(sec.eyebrow, loc)}</span>
+                  <span className="fx-legend-n">{sec.items.length}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      }
+    />
   );
 }
 
+/* ====================== CORE ====================== */
 function CoreFeatures() {
-  const t = STR[getLocale()];
-  const items = t.core.items;
-  const ICONS = ['proto', 'graph', 'spark', 'agent', 'xds', 'check', 'flow', 'version', 'lock'];
-
-  const ICON = {
-    proto:   <path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>,
-    graph:   <g stroke="currentColor" strokeWidth="2" fill="none"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6 8v6M18 8v6M8 6h8M8 18h8" strokeLinecap="round"/></g>,
-    spark:   <path d="M12 2l2 7 7 2-7 2-2 7-2-7-7-2 7-2z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill="none"/>,
-    agent:   <g stroke="currentColor" strokeWidth="2" fill="none"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 12h8M8 9h4M8 15h6" strokeLinecap="round"/></g>,
-    xds:     <g stroke="currentColor" strokeWidth="2" fill="none"><path d="M4 8l4 4-4 4M20 8l-4 4 4 4M14 4l-4 16" strokeLinecap="round"/></g>,
-    check:   <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>,
-    flow:    <g stroke="currentColor" strokeWidth="2" fill="none"><path d="M3 12c4-4 8 4 12 0s4-4 6 0" strokeLinecap="round"/><circle cx="3" cy="12" r="2"/><circle cx="21" cy="12" r="2"/></g>,
-    version: <g stroke="currentColor" strokeWidth="2" fill="none"><path d="M4 7l4-4 4 4M8 3v18M12 17l4 4 4-4M16 21V3" strokeLinecap="round" strokeLinejoin="round"/></g>,
-    lock:    <g stroke="currentColor" strokeWidth="2" fill="none"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4" strokeLinecap="round"/></g>,
-  };
-
+  const t = STR[getLocale()].core;
   return (
-    <section className="section">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.core.eyebrow}</span>
-          <h2>{t.core.title1}<br/>{t.core.title2}</h2>
-          <p>{t.core.subtitle}</p>
-        </div>
-        <div className="features-grid">
-          {items.map((it, i) => (
-            <div key={i} className="card feat-card">
-              <div className="feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none">{ICON[ICONS[i]]}</svg></div>
-              <h3>{it.t}</h3>
-              <p>{it.d}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <Band tone="mist" id="core">
+      <BandHead h2={join(t.title1, t.title2)} intro={t.subtitle}/>
+      <ul className="rl-notes">
+        {t.items.map((it) => (
+          <li key={it.t}><h3>{it.t}</h3><p>{it.d}</p></li>
+        ))}
+      </ul>
+    </Band>
   );
 }
+
+/* ====================== ADVANCED ======================
+   The two security products stand as plates with a small picture each; the other four follow
+   as open entries on the water band. Dot colour carries meaning: flow = traffic, coral = Shield. */
+const ADV_DOT = ['flow', 'coral', 'lake', 'moss', 'moss', 'flow'];
 
 function AdvancedFeatures() {
-  const t = STR[getLocale()];
-  const items = t.advanced.items;
-  const META = [
-    { accent: '#6366f1', visual: 'inventory' },
-    { accent: '#f43f5e', visual: 'shield' },
-    { accent: '#8b5cf6', visual: 'ai' },
-    { accent: '#06b6d4', visual: 'k8s' },
-    { accent: '#10b981', visual: 'cert' },
-    { accent: '#f59e0b', visual: 'gslb' },
-  ];
-
+  const t = STR[getLocale()].advanced;
+  const [lead, rest] = [t.items.slice(0, 2), t.items.slice(2)];
   return (
-    <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.advanced.eyebrow}</span>
-          <h2>{t.advanced.title1}<br/>{t.advanced.title2}</h2>
-          <p>{t.advanced.subtitle}</p>
-        </div>
-
-        <div className="adv-grid">
-          {items.map((it, i) => {
-            const m = META[i];
-            return (
-              <div key={i} className="adv-card">
-                <div className="adv-content">
-                  <span className="adv-tag mono" style={{ color: m.accent, background: `${m.accent}1a`, borderColor: `${m.accent}33` }}>{it.tag}</span>
-                  <h3 style={{ marginTop: 14, marginBottom: 12, fontSize: 24 }}>{it.t}</h3>
-                  <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--slate-600)', marginBottom: 20 }}>{it.d}</p>
-                  <ul className="adv-bullets">
-                    {it.bullets.map((b, j) => (
-                      <li key={j}>
-                        <span className="adv-dot" style={{ background: m.accent }}></span>
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="adv-visual" style={{ background: `linear-gradient(135deg, ${m.accent}10, ${m.accent}03)` }}>
-                  <AdvVisual kind={m.visual} accent={m.accent}/>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function AdvVisual({ kind, accent }) {
-  if (kind === 'ai') {
-    return (
-      <svg viewBox="0 0 300 200" width="100%" height="100%">
-        <defs>
-          <linearGradient id="ai-g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor={accent}/>
-            <stop offset="100%" stopColor="#3b82f6"/>
-          </linearGradient>
-        </defs>
-        {/* neural network */}
-        {[60, 110, 160].map((y, i) => (
-          <circle key={`l1-${i}`} cx="60" cy={y} r="8" fill="url(#ai-g)" opacity="0.8">
-            <animate attributeName="r" values="6;9;6" dur={`${2+i*0.3}s`} repeatCount="indefinite"/>
-          </circle>
-        ))}
-        {[40, 80, 130, 170].map((y, i) => (
-          <circle key={`l2-${i}`} cx="150" cy={y} r="8" fill="url(#ai-g)" opacity="0.6">
-            <animate attributeName="r" values="6;10;6" dur={`${2.5+i*0.2}s`} repeatCount="indefinite"/>
-          </circle>
-        ))}
-        {[80, 130].map((y, i) => (
-          <circle key={`l3-${i}`} cx="240" cy={y} r="10" fill="url(#ai-g)">
-            <animate attributeName="r" values="8;12;8" dur={`${2+i*0.3}s`} repeatCount="indefinite"/>
-          </circle>
-        ))}
-        {[60,110,160].flatMap(y1 => [40,80,130,170].map(y2 => (
-          <line key={`${y1}-${y2}`} x1="60" y1={y1} x2="150" y2={y2} stroke={accent} strokeOpacity="0.18" strokeWidth="1"/>
-        )))}
-        {[40,80,130,170].flatMap(y1 => [80,130].map(y2 => (
-          <line key={`b-${y1}-${y2}`} x1="150" y1={y1} x2="240" y2={y2} stroke={accent} strokeOpacity="0.18" strokeWidth="1"/>
-        )))}
-      </svg>
-    );
-  }
-  if (kind === 'k8s') {
-    return (
-      <svg viewBox="0 0 300 200" width="100%" height="100%">
-        {/* k8s cluster grid */}
-        {Array.from({length: 4}).map((_, row) =>
-          Array.from({length: 6}).map((_, col) => {
-            const x = 30 + col*42;
-            const y = 30 + row*42;
-            const delay = (row*6 + col)*0.1;
-            return (
-              <g key={`${row}-${col}`}>
-                <rect x={x} y={y} width="32" height="32" rx="6" fill="white" stroke={accent} strokeWidth="1.5" strokeOpacity="0.5">
-                  <animate attributeName="stroke-opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite" begin={`${delay}s`}/>
-                </rect>
-                <circle cx={x+16} cy={y+16} r="4" fill={accent}>
-                  <animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" begin={`${delay}s`}/>
-                </circle>
-              </g>
-            );
-          })
-        )}
-      </svg>
-    );
-  }
-  if (kind === 'cert') {
-    return (
-      <svg viewBox="0 0 300 200" width="100%" height="100%">
-        <g transform="translate(150, 100)">
-          <circle r="70" fill="none" stroke={accent} strokeWidth="2" strokeDasharray="4 6" opacity="0.4">
-            <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
-          </circle>
-          <circle r="55" fill="none" stroke={accent} strokeWidth="1.5" strokeDasharray="2 4" opacity="0.3">
-            <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="16s" repeatCount="indefinite"/>
-          </circle>
-          <rect x="-30" y="-36" width="60" height="72" rx="6" fill="white" stroke={accent} strokeWidth="2"/>
-          <path d="M -10 -10 l 8 8 l 16 -16" stroke={accent} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-          <rect x="-22" y="14" width="44" height="2" fill={accent} opacity="0.4"/>
-          <rect x="-22" y="20" width="30" height="2" fill={accent} opacity="0.4"/>
-        </g>
-      </svg>
-    );
-  }
-  if (kind === 'gslb') {
-    return (
-      <svg viewBox="0 0 300 200" width="100%" height="100%">
-        <defs>
-          <radialGradient id="globe-g">
-            <stop offset="0%" stopColor={accent} stopOpacity="0.2"/>
-            <stop offset="100%" stopColor={accent} stopOpacity="0"/>
-          </radialGradient>
-        </defs>
-        <g transform="translate(150, 100)">
-          <circle r="70" fill="url(#globe-g)"/>
-          <circle r="60" fill="none" stroke={accent} strokeWidth="1.5"/>
-          <ellipse rx="60" ry="22" fill="none" stroke={accent} strokeWidth="1" opacity="0.6"/>
-          <ellipse rx="60" ry="44" fill="none" stroke={accent} strokeWidth="1" opacity="0.4"/>
-          <line x1="-60" y1="0" x2="60" y2="0" stroke={accent} strokeWidth="1" opacity="0.6"/>
-          <line x1="0" y1="-60" x2="0" y2="60" stroke={accent} strokeWidth="1" opacity="0.4"/>
-          {[
-            [-32, -16], [22, -28], [40, 14], [-20, 30], [10, 38]
-          ].map(([x, y], i) => (
-            <g key={i}>
-              <circle cx={x} cy={y} r="4" fill={accent}>
-                <animate attributeName="r" values="3;6;3" dur={`${2+i*0.3}s`} repeatCount="indefinite"/>
-              </circle>
-              <circle cx={x} cy={y} r="8" fill="none" stroke={accent} strokeWidth="1" opacity="0.4">
-                <animate attributeName="r" values="4;14;4" dur={`${2+i*0.3}s`} repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0.6;0;0.6" dur={`${2+i*0.3}s`} repeatCount="indefinite"/>
-              </circle>
-            </g>
-          ))}
-        </g>
-      </svg>
-    );
-  }
-  if (kind === 'shield') {
-    const shieldPath = "M0,-62 L54,-42 L54,8 C54,44 30,64 0,74 C-30,64 -54,44 -54,8 L-54,-42 Z";
-    return (
-      <svg viewBox="0 0 300 200" width="100%" height="100%">
-        <g transform="translate(150, 100)">
-          <path d={shieldPath} fill="white" stroke={accent} strokeWidth="2"/>
-          {/* scan lines sweeping the shield */}
-          {[-34, -18, -2, 14].map((y, i) => (
-            <line key={i} x1="-40" y1={y} x2="40" y2={y} stroke={accent} strokeWidth="1.5" opacity="0.35">
-              <animate attributeName="opacity" values="0.12;0.6;0.12" dur={`${2 + i * 0.3}s`} repeatCount="indefinite"/>
-            </line>
-          ))}
-          {/* verified check */}
-          <path d="M-20,6 l13,13 l26,-30" stroke={accent} strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-          {/* pulse outline */}
-          <path d={shieldPath} fill="none" stroke={accent} strokeWidth="1.5" opacity="0.4">
-            <animateTransform attributeName="transform" type="scale" values="1;1.06;1" dur="3s" repeatCount="indefinite"/>
-          </path>
-        </g>
-      </svg>
-    );
-  }
-  if (kind === 'inventory') {
-    return (
-      <svg viewBox="0 0 300 200" width="100%" height="100%">
-        {/* axes: exposure (x) vs threat (y) */}
-        <line x1="40" y1="170" x2="270" y2="170" stroke={accent} strokeWidth="1.5" opacity="0.5"/>
-        <line x1="40" y1="170" x2="40" y2="20" stroke={accent} strokeWidth="1.5" opacity="0.5"/>
-        {[60, 100, 140].map((y, i) => (
-          <line key={`g-${i}`} x1="40" y1={y} x2="270" y2={y} stroke={accent} strokeWidth="0.5" strokeDasharray="3 5" opacity="0.2"/>
-        ))}
-        {/* endpoint dots — bigger/redder = higher risk */}
-        {[
-          [80, 140, 4, 0.4], [120, 120, 5, 0.5], [150, 95, 6, 0.6],
-          [185, 70, 8, 0.85], [215, 50, 10, 1], [100, 150, 3, 0.35],
-          [170, 110, 5, 0.55], [235, 80, 7, 0.7], [60, 155, 3, 0.3],
-        ].map(([x, y, r, op], i) => (
-          <g key={i}>
-            <circle cx={x} cy={y} r={r} fill={accent} opacity={op}>
-              <animate attributeName="r" values={`${r-1};${r+2};${r-1}`} dur={`${2.4+i*0.25}s`} repeatCount="indefinite"/>
-            </circle>
-            <circle cx={x} cy={y} r={r+4} fill="none" stroke={accent} strokeWidth="1" opacity={op*0.4}>
-              <animate attributeName="r" values={`${r};${r+10};${r}`} dur={`${2.4+i*0.25}s`} repeatCount="indefinite"/>
-              <animate attributeName="opacity" values={`${op*0.5};0;${op*0.5}`} dur={`${2.4+i*0.25}s`} repeatCount="indefinite"/>
-            </circle>
-          </g>
-        ))}
-      </svg>
-    );
-  }
-  return null;
-}
-
-function ComprehensiveFeatures() {
-  const t = STR[getLocale()];
-  const items = t.comprehensive.items;
-
-  return (
-    <section className="section">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.comprehensive.eyebrow}</span>
-          <h2>{t.comprehensive.title1}<br/>{t.comprehensive.title2}</h2>
-          <p>{t.comprehensive.subtitle}</p>
-        </div>
-
-        <div className="comp-grid">
-          {items.map((it, i) => (
-            <div key={i} className="comp-card card">
-              <div className="comp-num mono">{String(i+1).padStart(2,'0')}</div>
+    <Band tone="water" id="advanced">
+      <BandHead h2={join(t.title1, t.title2)} intro={t.subtitle}/>
+      <div className="fx-plates">
+        {lead.map((it, i) => (
+          <article key={it.t} className={`fx-plate fx-${ADV_DOT[i]}`}>
+            <div className="fx-plate-pic" aria-hidden="true">{i === 0 ? <InventoryPic/> : <ShieldPic/>}</div>
+            <div className="fx-plate-body">
               <h3>{it.t}</h3>
+              <span className="rl-map-label">{it.tag}</span>
               <p>{it.d}</p>
-              <ul>
-                {it.list.map((l, j) => (
-                  <li key={j}><span>•</span> {l}</li>
-                ))}
-              </ul>
+              <ul className="fx-bullets">{it.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
       </div>
-    </section>
+      <div className="fx-open">
+        {rest.map((it, i) => (
+          <article key={it.t} className={`fx-entry fx-${ADV_DOT[i + 2]}`}>
+            <h3>{it.t}</h3>
+            <span className="rl-map-label">{it.tag}</span>
+            <p>{it.d}</p>
+            <ul className="fx-chips">{it.bullets.map((b) => <li key={b} className="rl-chip">{b}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </Band>
   );
 }
 
-function Compliance() {
-  const t = STR[getLocale()];
-  const items = t.compliance.items;
+/* API Discovery: endpoints scattered by exposure (x) and threat (y); larger and darker = riskier. */
+function InventoryPic() {
+  const pts = [
+    [80, 140, 4, .35], [120, 120, 5, .45], [150, 95, 6, .6], [185, 70, 8, .8], [215, 50, 10, 1],
+    [100, 150, 3, .3], [170, 110, 5, .5], [235, 80, 7, .7], [60, 155, 3, .3],
+  ];
   return (
-    <section className="section" style={{ background: 'var(--slate-900)', color: 'white', position: 'relative', overflow: 'hidden' }}>
-      <div className="dot-bg" style={{ opacity: 0.15 }}></div>
-      <div className="container" style={{ position: 'relative' }}>
-        <div className="section-head">
-          <span className="eyebrow" style={{ background: 'rgba(59,130,246,.15)', borderColor: 'rgba(59,130,246,.3)', color: '#93c5fd' }}>
-            <span className="dot"></span>{t.compliance.eyebrow}
-          </span>
-          <h2 style={{ color: 'white' }}>{t.compliance.title1}<br/>{t.compliance.title2}</h2>
-          <p style={{ color: '#94a3b8' }}>{t.compliance.subtitle}</p>
-        </div>
+    <svg viewBox="0 0 300 200" width="100%" height="100%">
+      <path className="fx-axis" d="M40 20v150h230" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {pts.map(([x, y, r, op], i) => (
+        <g key={i}>
+          <circle className="fx-halo" cx={x} cy={y} r={r + 6} opacity={op * .35}/>
+          <circle className="fx-pt" cx={x} cy={y} r={r} opacity={op}/>
+        </g>
+      ))}
+    </svg>
+  );
+}
 
-        <div className="comply-grid">
-          {items.map((it, i) => (
-            <div key={i} className="comply-cell">
-              <span className="comply-tick">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
-              <span>{it}</span>
-            </div>
-          ))}
-        </div>
+/* Shield: the guard in the request path. */
+function ShieldPic() {
+  const d = 'M0,-62 L54,-42 L54,8 C54,44 30,64 0,74 C-30,64 -54,44 -54,8 L-54,-42 Z';
+  return (
+    <svg viewBox="0 0 300 200" width="100%" height="100%">
+      <path className="fx-flowline" d="M14 100H96M204 100H286" fill="none" strokeWidth="3" strokeLinecap="round" strokeDasharray="2 10"/>
+      <g transform="translate(150 96)">
+        <path className="fx-shield-back" d={d} transform="scale(1.12)"/>
+        <path className="fx-shield" d={d} strokeWidth="3" strokeLinejoin="round"/>
+        <path className="fx-shield-tick" d="M-20,6 l13,13 l26,-30" fill="none" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+      </g>
+    </svg>
+  );
+}
+
+/* ====================== COMPREHENSIVE ====================== */
+function ComprehensiveFeatures() {
+  const t = STR[getLocale()].comprehensive;
+  return (
+    <Band tone="sage" id="comprehensive">
+      <BandHead h2={join(t.title1, t.title2)} intro={t.subtitle}/>
+      <div className="uc fx-rows">
+        {t.items.map((it) => (
+          <div key={it.t} className="uc-row">
+            <h3>{it.t}</h3>
+            <p>{it.d}</p>
+            <ul>{it.list.map((l) => <li key={l}>{l}</li>)}</ul>
+          </div>
+        ))}
       </div>
-    </section>
+    </Band>
+  );
+}
+
+/* ====================== COMPLIANCE (closing band) ====================== */
+function Compliance() {
+  const all = STR[getLocale()];
+  const t = all.compliance;
+  return (
+    <Band tone="moss" id="compliance">
+      <BandHead h2={join(t.title1, t.title2)} intro={t.subtitle}/>
+      <ul className="fx-comply">
+        {t.items.map((it) => (
+          <li key={it}><Tick/><span>{it}</span></li>
+        ))}
+      </ul>
+      <div className="rl-actions">
+        <a href="/docs/getting-started/quickstart" className="rl-go">{noArrow(all.hero.btnDemo)}<Arrow/></a>
+        <a href={locHref('architecture')} className="rl-link">{all.hero.btnArch}<Arrow/></a>
+      </div>
+    </Band>
   );
 }
 

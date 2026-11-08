@@ -1,13 +1,13 @@
 import ReactDOM from 'react-dom/client';
 import { Nav, Footer } from './shared.jsx';
 import { getLocale } from './i18n.js';
+import { Band, BandHead, PageHero, Arrow } from './relief.jsx';
 
 // All user-visible copy for the contact page. Office names, addresses and
 // phone numbers are shared verbatim between locales.
 const STR = {
   en: {
     hero: {
-      eyebrow: 'CONTACT',
       title: 'Get in touch.',
       subtitle: 'Questions about Elchi, enterprise support, or a demo? Reach us at any of our offices.',
     },
@@ -21,7 +21,6 @@ const STR = {
   },
   tr: {
     hero: {
-      eyebrow: 'İLETİŞİM',
       title: 'Bize ulaşın.',
       subtitle: 'Elchi hakkında sorularınız, kurumsal destek veya demo için ofislerimizden bize ulaşabilirsiniz.',
     },
@@ -40,7 +39,6 @@ const CONTACT_EMAIL = 'info@profelis.com.tr';
 function offices(t) {
   return [
     {
-      flag: '🇹🇷',
       city: 'Ankara',
       sub: t.hq,
       address: 'Cinnah Cad. Vali Doktor Reşit Sok. No:6/1, 06690 Çankaya / Ankara',
@@ -51,7 +49,6 @@ function offices(t) {
       ],
     },
     {
-      flag: '🇹🇷',
       city: 'İstanbul',
       sub: t.tr,
       address: t.istanbulOffice,
@@ -60,7 +57,6 @@ function offices(t) {
       ],
     },
     {
-      flag: '🇧🇬',
       city: 'Sofia',
       sub: t.bg,
       address: '1 Dimitar Manchev St., Vitosha Tulip, Block G, Floor 1, No:3, 1407 Krastova vada, Sofia',
@@ -71,53 +67,58 @@ function offices(t) {
   ];
 }
 
-function OfficeCard({ office }) {
+// A small map pin (replaces the flag emoji: no glyphs as icons).
+const Pin = () => (
+  <svg className="office-pin" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 16.2s5.4-4.9 5.4-9A5.4 5.4 0 0 0 3.6 7.2c0 4.1 5.4 9 5.4 9z" fill="currentColor" opacity=".2"/><circle cx="9" cy="7.2" r="2.2" fill="currentColor"/></svg>
+);
+
+function OfficeCard({ office, hq }) {
   return (
-    <div className="card office-card">
-      <div className="office-head">
-        <span className="office-flag">{office.flag}</span>
-        <div>
-          <h3>{office.city}</h3>
-          <span className="office-sub">{office.sub}</span>
-        </div>
-      </div>
+    <article className={`office${hq ? ' office-hq' : ''}`}>
+      <header className="office-head">
+        <span className="rl-map-label office-country"><Pin />{office.sub}</span>
+        <h3>{office.city}</h3>
+      </header>
       <p className="office-address">{office.address}</p>
-      <div className="office-lines">
+      <dl className="office-lines">
         {office.phones.map((p, i) => (
-          <span key={i} className="office-line mono">
-            <span className="office-line-key">{p.label}:</span>
-            {p.link
+          <div key={i} className="office-line">
+            <dt>{p.label}</dt>
+            <dd>{p.link
               ? <a href={`tel:${p.num.replace(/\s/g, '')}`}>{p.num}</a>
-              : <span>{p.num}</span>}
-          </span>
+              : <span>{p.num}</span>}</dd>
+          </div>
         ))}
-        <span className="office-line mono">
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-        </span>
-      </div>
-    </div>
+      </dl>
+      <a className="office-mail" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+    </article>
   );
 }
 
 function ContactApp() {
   const locale = getLocale();
   const t = STR[locale];
+  const list = offices(t);
+  const hqTel = list[0].phones[0].num;
   return (
     <>
       <Nav active="contact" />
-      <section className="section" style={{ position: 'relative', overflow: 'hidden' }}>
-        <div className="grid-bg"></div>
-        <div className="container" style={{ position: 'relative' }}>
-          <div className="section-head">
-            <span className="eyebrow"><span className="dot"></span>{t.hero.eyebrow}</span>
-            <h1 style={{ fontSize: 'clamp(36px, 5vw, 60px)', marginBottom: 16 }}>{t.hero.title}</h1>
-            <p style={{ fontSize: 18 }}>{t.hero.subtitle}</p>
-          </div>
+      <main className="rl">
+        <PageHero
+          title={t.hero.title}
+          lede={t.hero.subtitle}
+          actions={<>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="rl-go contact-mail">{CONTACT_EMAIL}<Arrow /></a>
+            <a href={`tel:${hqTel.replace(/\s/g, '')}`} className="rl-pill contact-tel">{hqTel}</a>
+          </>}
+        />
+        <Band tone="water">
+          <BandHead h2={t.offices} />
           <div className="offices-grid">
-            {offices(t).map((o, i) => <OfficeCard key={i} office={o} />)}
+            {list.map((o, i) => <OfficeCard key={o.city} office={o} hq={i === 0} />)}
           </div>
-        </div>
-      </section>
+        </Band>
+      </main>
       <Footer />
     </>
   );

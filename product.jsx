@@ -4,6 +4,7 @@ import { getLocale, locHref } from './i18n.js';
 import { PRODUCTS } from './products-data.js';
 import { ProductShots } from './screens.jsx';
 import { VideoStrip } from './video-player.jsx';
+import { Band, BandHead, PageHero, Tick, Arrow } from './relief.jsx';
 
 // Product pages share one component; the HTML shell selects the product via
 // <div id="root" data-product="core">. Copy lives here as STR-style {en,tr}
@@ -61,134 +62,120 @@ const VIDEOS_BY_PRODUCT = {
   gslb: ['gslb', 'ha-pair', 'bgp-vip'],
 };
 
+// One colour, one meaning: Core = lake, API Security (Shield) = coral,
+// API Discovery = flow (the request path), GSLB = moss.
+const TONE = { core: 'lake', 'api-security': 'coral', 'api-discovery': 'flow', gslb: 'moss' };
+
+const noArrow = (s) => s.replace(/\s*→$/, '');
+
 function ProductPage({ slug }) {
   const locale = getLocale();
   const p = PRODUCTS[slug];
   const t = p[locale];
   const pg = PAGE[locale];
   const isCore = slug === 'core';
+  const tone = TONE[slug];
 
   return (
     <>
       <Nav active={`products/${slug}`}/>
+      <main className={`rl pd pd-${tone}`}>
+        <PageHero
+          title={<><span className="rl-h1-line">{t.title1}</span>{' '}<span className="rl-h1-line">{t.title2}</span></>}
+          lede={t.subtitle}
+          actions={<>
+            <a href="/docs/getting-started/quickstart" className="rl-go">{noArrow(pg.btnDemo)}<Arrow/></a>
+            <a href={p.docs} className="rl-pill">{pg.btnDocs}</a>
+          </>}
+          aside={
+            <div className="pd-facts">
+              <p className="pd-tag"><span className={`rl-dot rl-dot-${tone}`}></span>{t.tag}</p>
+              <p className="pd-pos"><b>{isCore ? pg.foundation : pg.addon}</b>{t.positioning}</p>
+              <ul className="pd-badges">
+                {t.badges.map((b) => <li key={b}><Tick/>{b}</li>)}
+              </ul>
+              <a href={locHref('plans')} className="rl-link">{pg.btnPlans}<Arrow/></a>
+            </div>
+          }
+        />
 
-      {/* Hero */}
-      <section className="section product-hero" style={{ position: 'relative', overflow: 'hidden' }}>
-        <div className="aurora" style={{ width: 800, height: 500, top: -120, left: '18%', background: `radial-gradient(closest-side, ${p.accent}33, transparent)`, opacity: .7 }}></div>
-        <div className="grid-bg"></div>
-        <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: 880, margin: '0 auto' }}>
-          <span className="eyebrow"><span className="dot" style={{ background: p.accent }}></span>{t.tag}</span>
-          <h1 style={{ marginTop: 24, marginBottom: 20 }}>
-            {t.title1}<br/><span className="grad-text">{t.title2}</span>
-          </h1>
-          <p style={{ fontSize: 19, color: 'var(--slate-600)', maxWidth: 680, margin: '0 auto' }}>{t.subtitle}</p>
-          <div className="product-badges">
-            {t.badges.map((b, i) => (
-              <span key={i} className="pill product-badge" style={{ borderColor: `${p.accent}44`, color: 'var(--slate-700)' }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: p.accent }}></span>{b}
-              </span>
-            ))}
-          </div>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 30, flexWrap: 'wrap' }}>
-            <a href="/docs/getting-started/quickstart" className="btn btn-blue">{pg.btnDemo}</a>
-            <a href={p.docs} className="btn btn-ghost">{pg.btnDocs}</a>
-            <a href={locHref('plans')} className="btn btn-ghost">{pg.btnPlans}</a>
-          </div>
-          <div className="product-positioning" style={{ borderColor: `${p.accent}33`, background: `${p.accent}0d` }}>
-            <span className="product-positioning-tag mono" style={{ color: p.accent }}>{isCore ? pg.foundation : pg.addon}</span>
-            <span>{t.positioning}</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Capabilities */}
-      <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow"><span className="dot" style={{ background: p.accent }}></span>{pg.capsEyebrow}</span>
-            <h2>{pg.capsTitle}</h2>
-          </div>
-          <div className="features-grid">
-            {t.caps.map((c, i) => (
-              <div key={i} className="card feat-card">
-                <div className="product-cap-num mono" style={{ color: p.accent, background: `${p.accent}14` }}>{String(i + 1).padStart(2, '0')}</div>
+        {/* Capabilities */}
+        <Band tone="water" id="capabilities">
+          <BandHead h2={pg.capsTitle}/>
+          <ul className="rl-notes pd-caps">
+            {t.caps.map((c) => (
+              <li key={c.t}>
                 <h3>{c.t}</h3>
                 <p>{c.d}</p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
           {t.also && (
-            <div className="product-also">
-              <h4>{t.also.title}</h4>
-              <div className="product-also-items">
-                {t.also.items.map((a, i) => (
-                  <span key={i} className="pill">{a}</span>
-                ))}
-              </div>
+            <div className="pd-also">
+              <h3 className="rl-h3">{t.also.title}</h3>
+              <ul>
+                {t.also.items.map((a) => <li key={a} className="rl-chip">{a}</li>)}
+              </ul>
             </div>
           )}
-        </div>
-      </section>
+        </Band>
 
-      {p.shots && <ProductShots ids={p.shots} eyebrow={pg.shotsEyebrow} title={pg.shotsTitle}/>}
+        {/* Screenshots (ProductShots draws its own heading; the band heading replaces it) */}
+        {p.shots && (
+          <Band tone="mist" id="screenshots" className="pd-shots">
+            <BandHead h2={pg.shotsTitle}/>
+            <ProductShots ids={p.shots} eyebrow={pg.shotsEyebrow} title={pg.shotsTitle}/>
+          </Band>
+        )}
 
-      {/* Video tutorials (only the public ones show; nothing renders if none is) */}
-      {VIDEOS_BY_PRODUCT[slug] && <VideoStrip slugs={VIDEOS_BY_PRODUCT[slug]} eyebrow={pg.videosEyebrow} title={pg.videosTitle}/>}
+        {/* Video tutorials: VideoStrip draws its own band, and nothing when no video is public yet */}
+        <VideoStrip slugs={VIDEOS_BY_PRODUCT[slug] || []} eyebrow={pg.videosEyebrow} title={pg.videosTitle} tone="sage"/>
 
-      {/* Flow */}
-      <section className="section" style={t.versus ? { background: 'var(--bg-tint)', borderTop: '1px solid var(--border)' } : {}}>
-        <div className="container">
-          <div className="section-head">
-            <h2>{t.flow.title}</h2>
-          </div>
-          <div className="product-flow">
+        {/* Flow */}
+        <Band tone="mist2" id="how-it-works">
+          <BandHead h2={t.flow.title}/>
+          <ol className="pd-flow">
             {t.flow.steps.map((s, i) => (
-              <div key={i} className="product-flow-step card">
-                <div className="product-flow-num mono" style={{ background: p.accent }}>{i + 1}</div>
+              <li key={s.t} className={`pd-step pd-step-${i}`}>
+                <span className="pd-step-n" aria-hidden="true">{i + 1}</span>
                 <h3>{s.t}</h3>
                 <p>{s.d}</p>
-              </div>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
+          </ol>
+        </Band>
 
-      {/* Related products */}
-      <section className="section" style={{ borderTop: '1px solid var(--border)' }}>
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow"><span className="dot"></span>{pg.relatedEyebrow}</span>
-            <h2>{pg.relatedTitle}</h2>
-          </div>
-          <div className="product-related">
+        {/* Related products */}
+        <Band tone="mist" id="related">
+          <BandHead h2={pg.relatedTitle}/>
+          <div className="pd-rel">
             {p.related.map((slug2) => {
-              const rp = PRODUCTS[slug2];
-              const rt = rp[locale];
+              const rt = PRODUCTS[slug2][locale];
               return (
-                <a key={slug2} href={locHref(`products/${slug2}`)} className="card product-related-card">
-                  <h3><span className="product-related-dot" style={{ background: rp.accent }}></span>{rt.metaName}</h3>
-                  <p>{rt.subtitle.length > 130 ? rt.subtitle.slice(0, 127) + '…' : rt.subtitle}</p>
-                  <span className="product-related-more" style={{ color: rp.accent }}>{pg.learnMore}</span>
+                <a key={slug2} href={locHref(`products/${slug2}`)} className="pd-rel-row">
+                  <h3><span className={`rl-dot rl-dot-${TONE[slug2]}`}></span>{rt.metaName}</h3>
+                  <p>{rt.subtitle}</p>
+                  <span className="pf-more">{noArrow(pg.learnMore)}<Arrow/></span>
                 </a>
               );
             })}
           </div>
-        </div>
-      </section>
+        </Band>
 
-      {/* CTA */}
-      <section className="section" style={{ background: 'var(--slate-900)', color: 'white', position: 'relative', overflow: 'hidden' }}>
-        <div className="dot-bg" style={{ opacity: 0.15 }}></div>
-        <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
-          <h2 style={{ color: 'white' }}>{pg.ctaTitle}</h2>
-          <p style={{ color: '#94a3b8', maxWidth: 560, margin: '12px auto 28px' }}>{pg.ctaSubtitle}</p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="/docs/getting-started/quickstart" className="btn btn-blue">{pg.btnDemo}</a>
-            <a href={locHref('contact')} className="btn btn-ghost-dark">{pg.ctaContact}</a>
+        {/* Closing */}
+        <Band tone="moss" className="rl-cta-band">
+          <div className="pd-cta">
+            <div>
+              <h2 className="rl-h2 cta-h2">{pg.ctaTitle}</h2>
+              <p className="rl-lede">{pg.ctaSubtitle}</p>
+            </div>
+            <div className="rl-actions">
+              <a href="/docs/getting-started/quickstart" className="rl-go">{noArrow(pg.btnDemo)}<Arrow/></a>
+              <a href={locHref('contact')} className="rl-pill">{pg.ctaContact}</a>
+            </div>
           </div>
-        </div>
-      </section>
-
+        </Band>
+      </main>
       <Footer/>
     </>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { getLocale, locHref } from './i18n.js';
 import { VIDEOS } from './videos-data.js';
+import { Band, BandHead, Arrow } from './relief.jsx';
 import './videos.css';
 
 // Video card + click-to-play player, shared by the Videos page and the product pages.
@@ -8,8 +9,8 @@ import './videos.css';
 // visitor presses play (no cookies, no request to YouTube before that). A video with `src`
 // (the self-hosted brand film, film-data.js) plays in a plain <video> instead.
 const STR = {
-  en: { close: 'Close', onYoutube: 'Watch on YouTube', privacy: 'Plays from youtube-nocookie.com', play: (t) => `Play: ${t}`, all: 'All video tutorials →' },
-  tr: { close: 'Kapat', onYoutube: "YouTube'da izle", privacy: 'youtube-nocookie.com üzerinden oynatılır', play: (t) => `Oynat: ${t}`, all: 'Tüm video eğitimleri →' },
+  en: { close: 'Close', onYoutube: 'Watch on YouTube', privacy: 'Plays from youtube-nocookie.com', play: (t) => `Play: ${t}`, all: 'All video tutorials' },
+  tr: { close: 'Kapat', onYoutube: "YouTube'da izle", privacy: 'youtube-nocookie.com üzerinden oynatılır', play: (t) => `Oynat: ${t}`, all: 'Tüm video eğitimleri' },
 };
 
 export const thumb = (v) => `/videos/${v.slug}.webp`;
@@ -24,6 +25,13 @@ export function PlayIcon({ size = 22 }) {
   );
 }
 
+// "Opens elsewhere" mark for external links (an inline SVG, not a ↗ glyph).
+export function ExtIcon({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5h7v7M12.2 3.8L3.8 12.2" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+  );
+}
+
 export function VideoCard({ v, onPlay, anchor = true }) {
   const t = STR[getLocale()];
   const locale = getLocale();
@@ -32,7 +40,7 @@ export function VideoCard({ v, onPlay, anchor = true }) {
       <button className="vid-thumb" onClick={() => onPlay(v)} aria-label={t.play(v.title)}>
         <img src={thumb(v)} alt="" loading="lazy" decoding="async" width="960" height="540"/>
         <span className="vid-play"><PlayIcon/></span>
-        <span className="vid-dur mono">{v.duration}</span>
+        <span className="vid-dur">{v.duration}</span>
       </button>
       <div className="vid-meta">
         <h3><button className="vid-title" onClick={() => onPlay(v)}>{v.title}</button></h3>
@@ -85,7 +93,7 @@ export function Player({ v, onClose }) {
           {v.yt && !v.src && (
             <div className="vid-modal-links">
               <span className="vid-note">{t.privacy}</span>
-              <a href={`https://www.youtube.com/watch?v=${v.yt}`} target="_blank" rel="noopener">{t.onYoutube} ↗</a>
+              <a href={`https://www.youtube.com/watch?v=${v.yt}`} target="_blank" rel="noopener">{t.onYoutube}<ExtIcon/></a>
             </div>
           )}
         </div>
@@ -95,24 +103,20 @@ export function Player({ v, onClose }) {
 }
 
 // A row of videos (by slug, in the given order; videos that are not public yet are skipped).
-export function VideoStrip({ slugs, eyebrow, title, max = 6 }) {
+export function VideoStrip({ slugs, eyebrow, title, max = 6, tone = 'water' }) {
+  // `eyebrow` is kept for API compatibility; the relief design sets no label above a heading.
   const t = STR[getLocale()];
   const [playing, setPlaying] = useState(null);
   const items = slugs.map((s) => VIDEOS.find((v) => v.slug === s)).filter(Boolean).slice(0, max);
   if (!items.length) return null;
   return (
-    <section className="section" style={{ borderTop: '1px solid var(--border)' }}>
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{eyebrow}</span>
-          <h2>{title}</h2>
-        </div>
-        <div className="vid-grid">
-          {items.map((v) => <VideoCard key={v.slug} v={v} onPlay={setPlaying} anchor={false}/>)}
-        </div>
-        <p style={{ textAlign: 'center', marginTop: 36 }}><a href={locHref('videos')} className="btn btn-ghost">{t.all}</a></p>
+    <Band tone={tone} className="vid-strip">
+      <BandHead h2={title} />
+      <div className="vid-grid">
+        {items.map((v) => <VideoCard key={v.slug} v={v} onPlay={setPlaying} anchor={false}/>)}
       </div>
+      <p className="vid-strip-more"><a href={locHref('videos')} className="rl-link">{t.all}<Arrow /></a></p>
       {playing && <Player v={playing} onClose={() => setPlaying(null)}/>}
-    </section>
+    </Band>
   );
 }

@@ -1,186 +1,121 @@
-/* Product & plans page styles. Nav dropdown styles live in styles.css (global). */
+/* ==========================================================
+   Product pages (product.jsx) and Plans & Licensing (plans.jsx) in the relief world.
+   Shared relief classes (bands, heads, notes, pf-* family panels, actions) live in
+   relief.css; this file holds only what these pages add. Tone separates regions,
+   never drawn rules.
+   ========================================================== */
 
-/* ---------- Product hero ---------- */
-.product-hero { padding-top: 80px; padding-bottom: 60px; }
+/* one colour, one meaning: Core = lake, API Security (Shield) = coral,
+   API Discovery = flow, GSLB = moss. Used as a dot, a tick or one filled step. */
+.pd-lake  { --pd: var(--lake);  --pd-soft: rgba(23, 50, 74, .16); --pd-on: #fff; }
+.pd-coral { --pd: var(--coral); --pd-soft: rgba(194, 65, 45, .16); --pd-on: #fff; }
+.pd-flow  { --pd: var(--flow);  --pd-soft: rgba(31, 122, 153, .18); --pd-on: #fff; }
+.pd-moss  { --pd: var(--moss);  --pd-soft: rgba(159, 185, 162, .32); --pd-on: var(--lake); }
+.rl-dot-moss { background: var(--moss); }
 
-.product-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 26px;
+/* ---------- hero: the fact panel beside the headline ---------- */
+.pd-facts {
+  display: grid; gap: 22px; padding: 32px; border-radius: 30px;
+  background: rgba(255, 255, 255, .68); box-shadow: var(--shade-1);
 }
-.product-badge { font-weight: 500; }
+.pd-tag { display: flex; align-items: center; gap: 10px; font: 600 13px/1.3 var(--font-sans); letter-spacing: .06em; color: var(--lake-3) !important; }
+.pd-tag .rl-dot { background: var(--pd); box-shadow: 0 0 0 5px var(--pd-soft); }
+.pd-pos { font-size: 16px; line-height: 1.55; }
+.pd-pos b { display: block; margin-bottom: 6px; font: 600 18px/1.3 var(--font-sans); letter-spacing: -.01em; color: var(--lake); }
+.pd-badges { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.pd-badges li { display: flex; align-items: center; gap: 12px; font: 500 16px/1.3 var(--font-sans); color: var(--lake); }
+.pd-badges .rl-tick { flex: none; color: var(--pd); }
+.pd-moss .pd-badges .rl-tick { color: #5f8466; }
+.pd-facts .rl-link { justify-self: start; }
 
-.product-positioning {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
-  margin: 34px auto 0;
-  max-width: 640px;
-  padding: 14px 22px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 14.5px;
-  color: var(--slate-700);
-  line-height: 1.55;
-}
-.product-positioning-tag {
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
+/* ---------- capabilities: notes, dotted in the product colour ---------- */
+.pd .pd-caps li::before { background: var(--pd); box-shadow: 0 0 0 5px var(--pd-soft); }
+.pd-also .rl-h3 { margin-top: 80px; margin-bottom: 22px; }
+.pd-also ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 
-/* ---------- Capability cards ---------- */
-.product-cap-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  font-size: 12.5px;
-  font-weight: 600;
-  margin-bottom: 14px;
+/* ---------- screenshots: ProductShots (screens.jsx) restyled into the band ---------- */
+.rl .product-shots { padding: 0; }
+.rl .product-shots > .container { max-width: none; padding: 0; }
+.rl .product-shots .section-head { display: none; } /* the band's own heading carries the title */
+.rl .ps-layout { grid-template-columns: 320px minmax(0, 1fr); gap: 32px; }
+.rl .ps-layout.single { grid-template-columns: minmax(0, 1fr); max-width: none; }
+.rl .ps-list { gap: 8px; }
+.rl .ps-item {
+  border: 0; border-radius: 20px; padding: 16px 18px; background: rgba(255, 255, 255, .6);
+  transition: background .2s ease, box-shadow .2s ease;
 }
+.rl .ps-item:hover { background: rgba(255, 255, 255, .92); }
+.rl .ps-item.active { background: #fff; box-shadow: var(--shade-1); }
+.rl .ps-item h4 { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font: 600 16px/1.3 var(--font-sans); letter-spacing: -.01em; color: var(--lake); }
+.rl .ps-item h4::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--sage); transition: background .2s ease; }
+.rl .ps-item.active h4::before { background: var(--pd, var(--flow)); }
+.rl .ps-item p { font-size: 14px; line-height: 1.5; color: var(--lake-3); }
+.rl .compare-handle::before { background: #fff; box-shadow: 0 0 0 1px rgba(13, 27, 38, .18); }
+.rl .compare-knob { border: 0; color: var(--lake); box-shadow: var(--shade-1); }
+.rl .compare-knob svg:last-child { color: var(--flow); }
+.rl .compare-handle:focus-visible .compare-knob { box-shadow: 0 0 0 3px var(--flow); }
+.rl .compare-hint, .rl .shot-open { border: 0; background: rgba(13, 27, 38, .82); backdrop-filter: none; }
+.rl .compare-hint:hover, .rl .shot-open:hover { background: var(--lake); }
+.rl .lightbox-x:hover, .rl .lightbox-nav:hover { background: var(--flow); }
 
-.product-also {
-  margin-top: 40px;
-  text-align: center;
+/* ---------- how it works: four stations on one path ---------- */
+.pd-flow { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 40px; }
+.pd-flow::before {
+  content: ''; position: absolute; left: 22px; right: 22px; top: 21px; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--sage), var(--pd));
 }
-.product-also h4 {
-  font-size: 15px;
-  color: var(--slate-700);
-  margin-bottom: 14px;
+.pd-step { position: relative; }
+.pd-step-n {
+  position: relative; display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 24px; border-radius: 50%;
+  background: #fff; box-shadow: inset 0 0 0 4px var(--sage), var(--shade-1);
+  font: 700 16px/1 var(--font-sans); font-variant-numeric: tabular-nums; color: var(--lake);
 }
-.product-also-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  max-width: 860px;
-  margin: 0 auto;
-}
+.pd-step:last-child .pd-step-n { background: var(--pd); color: var(--pd-on); box-shadow: 0 0 0 6px var(--pd-soft); }
+.pd-step h3 { margin-bottom: 10px; font: 700 24px/1.15 var(--font-sans); letter-spacing: -.02em; color: var(--lake); }
+.pd-step p { font-size: 16px; line-height: 1.55; max-width: 32ch; }
 
-/* ---------- Flow steps ---------- */
-.product-flow {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+/* ---------- related products: tonal rows ---------- */
+.pd-rel { border-radius: 28px; overflow: hidden; background: rgba(255, 255, 255, .5); }
+.pd-rel-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr) auto; gap: 10px 40px; align-items: center;
+  padding: 28px 32px; color: var(--lake); transition: background .2s ease;
 }
-.product-flow-step { position: relative; padding: 22px; }
-.product-flow-step h3 { font-size: 16.5px; margin: 12px 0 8px; }
-.product-flow-step p { font-size: 14px; color: var(--slate-600); line-height: 1.55; }
-.product-flow-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  color: white;
-  font-size: 13px;
-  font-weight: 600;
-}
-@media (max-width: 900px) { .product-flow { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .product-flow { grid-template-columns: 1fr; } }
+.pd-rel-row:nth-child(even) { background: rgba(255, 255, 255, .55); }
+.pd-rel-row:hover { background: #fff; }
+.pd-rel-row h3 { display: flex; align-items: center; gap: 12px; font: 700 22px/1.2 var(--font-sans); letter-spacing: -.015em; color: var(--lake); }
+.pd-rel-row p { font-size: 16px; line-height: 1.55; }
+.pd-rel-row .pf-more { margin: 0; padding: 0; white-space: nowrap; }
+.pd-rel-row:hover .pf-more svg { transform: translateX(3px); }
 
-/* ---------- Related products ---------- */
-.product-related {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  max-width: 1020px;
-  margin: 0 auto;
-}
-.product-related-card {
-  display: block;
-  padding: 24px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.product-related-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15,23,42,.08); }
-.product-related-card h3 {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 17px;
-  margin: 0 0 8px;
-}
-.product-related-card p { font-size: 13.5px; color: var(--slate-600); line-height: 1.55; }
-.product-related-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-.product-related-more {
-  display: inline-block;
-  margin-top: 12px;
-  font-size: 13.5px;
-  font-weight: 600;
-}
+/* ---------- closing band (product pages and plans) ---------- */
+.pd-cta { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px 64px; align-items: end; }
+.pd-cta .rl-lede { margin-top: 24px; max-width: 54ch; color: var(--lake-2); }
+.pd-cta .rl-actions { margin-top: 0; justify-content: flex-end; }
 
-/* ---------- Plans page ---------- */
-.plans-core {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 32px 36px;
+/* ---------- responsive ---------- */
+@media (max-width: 980px) {
+  .rl .ps-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .rl .ps-list { flex-direction: row; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+  .rl .ps-item { flex: none; min-width: 240px; max-width: 300px; }
+  .pd-flow { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .pd-flow::before { left: 20px; right: auto; top: 22px; bottom: 22px; width: 3px; height: auto; background: linear-gradient(180deg, var(--sage), var(--pd)); }
+  .pd-step { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 20px; }
+  .pd-step-n { grid-row: 1 / 3; margin: 0; }
+  .pd-step h3 { align-self: center; margin: 8px 0 6px; font-size: 22px; }
+  .pd-step p { max-width: 60ch; }
+  .pd-rel-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .pd-rel-row p { grid-column: 1 / -1; grid-row: 2; }
+  .pd-cta { grid-template-columns: minmax(0, 1fr); }
+  .pd-cta .rl-actions { justify-content: flex-start; }
 }
-.plans-core-side { flex-shrink: 0; }
 @media (max-width: 720px) {
-  .plans-core { flex-direction: column; align-items: flex-start; }
+  .pd-facts { padding: 24px 22px; border-radius: 24px; }
+  .pd-also .rl-h3 { margin-top: 56px; }
+  .pd-rel { border-radius: 22px; }
+  .pd-rel-row { grid-template-columns: minmax(0, 1fr); padding: 22px 20px; }
+  .pd-rel-row p { grid-row: auto; }
 }
 
-.plans-addons {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  max-width: 1100px;
-  margin: 0 auto;
+@media (prefers-reduced-motion: reduce) {
+  .rl .ps-item, .pd-rel-row { transition: none; }
 }
-.plans-addon-card {
-  display: block;
-  padding: 26px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.plans-addon-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15,23,42,.08); }
-.plans-addon-card h3 {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 18px;
-  margin: 14px 0 8px;
-}
-.plans-addon-card p { font-size: 14px; color: var(--slate-600); line-height: 1.6; }
-.plans-addon-head {
-  display: flex;
-  justify-content: flex-end;
-}
-.plans-addon-req {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  color: var(--slate-500);
-  background: var(--slate-100);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 3px 10px;
-}
-@media (max-width: 900px) { .plans-addons { grid-template-columns: 1fr; } }
-
-.plans-how {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-@media (max-width: 900px) { .plans-how { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .plans-how { grid-template-columns: 1fr; } }

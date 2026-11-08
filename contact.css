@@ -1,54 +1,66 @@
-/* contact-page-specific */
+/* Contact page (contact.jsx): offices as tonal panels in the water band.
+   Shared relief classes (bands, hero, pills) live in relief.css. */
+
+.contact-mail { font-variant-numeric: tabular-nums; }
+.contact-tel { font-variant-numeric: tabular-nums; }
 
 .offices-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  align-items: stretch;
-}
-@media (max-width: 980px) { .offices-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; } }
-
-.office-card {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px; align-items: stretch;
 }
 
-.office-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.office {
+  display: flex; flex-direction: column; gap: 18px;
+  padding: 32px; border-radius: 28px;
+  background: rgba(255, 255, 255, .7); color: var(--lake);
+  transition: background .25s ease, box-shadow .25s ease;
 }
-.office-flag {
-  font-size: 26px;
-  line-height: 1;
-}
-.office-head h3 { font-size: 20px; }
-.office-sub {
-  font-size: 13px;
-  color: var(--slate-500);
-}
+.office:hover { background: #fff; box-shadow: var(--shade-1); }
 
-.office-address {
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: var(--slate-600);
-}
+.office-head { display: grid; gap: 10px; }
+.office-country { display: inline-flex; align-items: center; gap: 8px; font-size: 17px; }
+.office-pin { flex: none; color: var(--moss); }
+.office h3 { font: 700 34px/1.05 var(--font-sans); letter-spacing: -.025em; color: var(--lake); }
+.rl .office-address { font-size: 16px; line-height: 1.6; color: var(--lake-2); max-width: 34ch; }
 
-.office-lines {
-  display: grid;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-}
+.office-lines { display: grid; gap: 6px; margin: auto 0 0; padding-top: 8px; }
 .office-line {
-  display: flex;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--slate-500);
+  display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: baseline; gap: 12px;
+  padding: 10px 14px; border-radius: 16px; background: rgba(223, 233, 239, .55);
 }
-.office-line-key { color: var(--slate-400); }
-.office-line a { color: var(--slate-600); }
-.office-line a:hover { color: var(--blue-600); }
+.office-line dt { font: 500 13.5px/1.2 var(--font-sans); color: var(--lake-3); }
+.office-line dd { margin: 0; font: 600 16px/1.2 var(--font-sans); font-variant-numeric: tabular-nums; color: var(--lake); }
+.office-line a { color: inherit; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; transition: text-decoration-color .2s ease; }
+.office-line a:hover { text-decoration-color: currentColor; }
+
+.office-mail {
+  align-self: flex-start; display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px;
+  background: rgba(23, 50, 74, .06); font: 600 15px/1 var(--font-sans); color: var(--lake);
+  transition: background .2s ease;
+}
+.office-mail:hover { background: var(--sage); }
+
+/* headquarters: the deepest panel of the band */
+.office-hq { background: var(--lake); color: #fff; box-shadow: var(--shade-1); }
+.office-hq:hover { background: #133049; box-shadow: var(--shade-2); }
+.office-hq h3 { color: #fff; font-size: 42px; }
+.office-hq .office-country { color: #dfe9ef; }
+.office-hq .office-pin { color: var(--flow-l); }
+.rl .office-hq .office-address { color: #c7d5df; }
+.office-hq .office-line { background: rgba(223, 233, 239, .1); }
+.office-hq .office-line dt { color: #a9bccb; }
+.office-hq .office-line dd { color: #fff; }
+.office-hq .office-mail { background: rgba(223, 233, 239, .12); color: #fff; }
+.office-hq .office-mail:hover { background: #dfe9ef; color: var(--lake); }
+
+@media (max-width: 1100px) {
+  .offices-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .office-hq { grid-column: 1 / -1; }
+}
+@media (max-width: 720px) {
+  .offices-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .office { padding: 24px 20px; border-radius: 24px; }
+  .office h3 { font-size: 30px; }
+  .office-hq h3 { font-size: 34px; }
+  .office-line { padding: 10px 12px; }
+}
