@@ -420,7 +420,7 @@
 .hx-shade { /* legibility on the left + fade into the page below */
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(5,6,15,.92) 0%, rgba(5,6,15,.7) 30%, rgba(5,6,15,0) 58%),
+    linear-gradient(90deg, rgba(5,6,15,.94) 0%, rgba(5,6,15,.82) 30%, rgba(5,6,15,.45) 46%, rgba(5,6,15,0) 62%),
     linear-gradient(0deg, var(--hx-bg) 0%, rgba(5,6,15,0) 22%),
     linear-gradient(180deg, rgba(5,6,15,.6) 0%, rgba(5,6,15,0) 16%);
 }

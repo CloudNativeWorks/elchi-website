@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Billboard, ContactShadows, Environment, Lightformer, MeshReflectorMaterial, PerformanceMonitor, RoundedBox, Sparkles, SpotLight, useTexture } from '@react-three/drei';
-import { Bloom, ChromaticAberration, DepthOfField, EffectComposer, Noise, SMAA, SSAO, Vignette } from '@react-three/postprocessing';
+import { Bloom, ChromaticAberration, DepthOfField, EffectComposer, SMAA, SSAO, Vignette } from '@react-three/postprocessing';
 import { BlendFunction, Effect, EffectAttribute } from 'postprocessing';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { canvasTex, crackTexture, holoTexture, SIGN_COLORS, signTexture, textures } from './hero-3d-textures.js';
@@ -115,26 +115,36 @@ const approach = (o, entryX, e, bend) => new THREE.CatmullRomCurve3([
 const PACKET_CURVES = PACKETS.map((p) => approach(p.origin, ENTRY_X, p.entry, p.bend));
 const ATTACK_CURVES = ATTACKS.map((a) => approach(a.origin, SHIELD_X, a.entry, a.bend));
 const attackPoint = (j, u, out) => ATTACK_CURVES[j].getPointAt(Math.min(1, Math.max(0, u)), out);
-// gate exit → rise into the overhead cable tray → run along it → drop down the
-// rack's cable into the top of the cabinet (built lazily: ROW_* is defined below)
+// gate exit → rise onto the overhead tray → run inside a blue tray cable → down the rack's own
+// blue drop cable into the top of the cabinet (built lazily: the cables are defined below)
 const ROUTE_CACHE = new Map();
-function routeCurve(rack) {
-  const key = `${rack[0].toFixed(3)},${rack[2].toFixed(3)}`;
+const LANE = { orders: 2, usersA: 3, usersB: 3, pay: 4, payNew: 4 }; // which blue tray cable
+function routeCurve(rack, dest) {
+  const key = `${dest},${rack[0].toFixed(3)},${rack[2].toFixed(3)}`;
   let c = ROUTE_CACHE.get(key);
   if (c) return c;
-  const y = TRAY_Y + 0.12; // just above the cable bundle so the light reads over the rails
-  const along = (rack[0] - ROW_A[0]) * ROW_DIR[0] + (rack[2] - ROW_A[1]) * ROW_DIR[1];
+  const { tray, drops } = cableRuns();
+  const run = tray[LANE[dest] ?? 3];
+  // a rack standing where a drop cable comes down uses that cable; the v2 rack, still sliding in, gets a free drop
+  const id = Object.keys(drops).find((k) => Math.abs(RACKS[k].pos[0] - rack[0]) < 1e-3 && Math.abs(RACKS[k].pos[2] - rack[2]) < 1e-3);
+  const drop = id ? drops[id][1] : null;
+  const along = drop ? drop.along : (rack[0] - ROW_A[0]) * ROW_DIR[0] + (rack[2] - ROW_A[1]) * ROW_DIR[1];
+  const start = run.getPoint(0);
   const pts = [
     new THREE.Vector3(EXIT_X, MERGE.y, MERGE.z),
     new THREE.Vector3(EXIT_X + 0.35, MERGE.y + 0.9, MERGE.z + 0.35),
-    rowPoint(0.15, 0, y),
+    start.clone().lerp(new THREE.Vector3(EXIT_X + 0.35, start.y, MERGE.z + 0.35), 0.35),
   ];
-  for (let k = 0.9; k < along - 0.5; k += 0.9) pts.push(rowPoint(k, 0, y));
-  const top = new THREE.Vector3(rack[0], 2.8, rack[2]);
-  const onTray = rowPoint(along, 0, y);
-  pts.push(onTray);
-  pts.push(onTray.clone().lerp(top, 0.5).setY(TRAY_Y - 0.15));
-  pts.push(top);
+  const uEnd = clamp01((along - 0.18) / ROW_LEN);
+  for (let u = 0; u < uEnd; u += 0.25 / ROW_LEN) pts.push(run.getPoint(u));
+  pts.push(run.getPoint(uEnd));
+  if (drop) {
+    for (let k = 0; k <= 6; k++) pts.push(drop.curve.getPoint(k / 6));
+  } else {
+    const top = new THREE.Vector3(rack[0], 2.8, rack[2]);
+    const onTray = run.getPoint(clamp01(along / ROW_LEN));
+    pts.push(onTray, onTray.clone().lerp(top, 0.5).setY(TRAY_Y - 0.15), top);
+  }
   pts.push(new THREE.Vector3(rack[0], 2.45, rack[2]));
   c = new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.4);
   if (ROUTE_CACHE.size > 64) ROUTE_CACHE.clear();
@@ -200,7 +210,7 @@ export default function Hero3D({ timeRef, active = true, reduce = false, onReady
       <Environment files="/hero3d/env.hdr" resolution={256} frames={1} environmentIntensity={0.55}>
         <Lightformer form="rect" intensity={2.2} position={[0, 7, 0]} rotation-x={Math.PI / 2} scale={[14, 1.2, 1]} color="#e6ecff" />
         <Lightformer form="rect" intensity={2.2} position={[0, 7, -5]} rotation-x={Math.PI / 2} scale={[14, 1.2, 1]} color="#e6ecff" />
-        <Lightformer form="rect" intensity={3} position={[-7, 2.5, 2]} rotation-y={Math.PI / 2} scale={[10, 2.5, 1]} color="#6d5dfc" />
+        <Lightformer form="rect" intensity={3} position={[-7, 2.5, 2]} rotation-y={Math.PI / 2} scale={[10, 2.5, 1]} color="#2f6bff" />
         <Lightformer form="rect" intensity={2.2} position={[9, 2.5, -1]} rotation-y={-Math.PI / 2} scale={[10, 2.5, 1]} color="#22d3ee" />
       </Environment>
 
@@ -233,11 +243,10 @@ export default function Hero3D({ timeRef, active = true, reduce = false, onReady
       ) : (
         <EffectComposer multisampling={0} enableNormalPass>
           <SSAO resolutionScale={0.75} samples={11} rings={4} radius={0.1} intensity={12} luminanceInfluence={0.6} bias={0.03} worldDistanceThreshold={8} worldDistanceFalloff={2} worldProximityThreshold={0.6} worldProximityFalloff={0.3} color="#000000" />
-          <DepthOfField target={FOCUS} focalLength={0.045} bokehScale={3.2} />
+          <DepthOfField target={FOCUS} focalLength={0.045} bokehScale={2.2} />
           <Bloom mipmapBlur intensity={1.15} luminanceThreshold={0.85} luminanceSmoothing={0.2} radius={0.78} />
           <Lens />
-          <ChromaticAberration offset={[0.00045, 0.0003]} radialModulation modulationOffset={0.35} />
-          <Noise opacity={0.04} />
+          <ChromaticAberration offset={[0.00022, 0.00015]} radialModulation modulationOffset={0.45} />
           <Vignette offset={0.22} darkness={0.8} />
           <SMAA />
         </EffectComposer>
@@ -443,13 +452,15 @@ function Clock({ timeRef, reduce, onReady }) {
 // world-space shots (the scene group is turned by WORLD_YAW); subject stays right of the headline
 // focus: [from, to] — a rack-focus pull while the shot holds (world space)
 const SHOTS = [
-  { t: 0, pos: [-3.6, 1.9, 12.8], look: [1.6, 2.25, -0.6], focus: [[1.7, 2.0, -1.0], [3.6, 1.6, 0.3]] }, // Route — gate, then racks
+  { t: 0, pos: [-3.6, 1.9, 12.8], look: [0.7, 2.25, -0.6], focus: [[1.7, 2.0, -1.0], [3.6, 1.6, 0.3]] }, // Route — gate, then racks
   { t: 5, pos: [-4.9, 1.7, 11.1], look: [0.95, 2.15, -0.7], focus: [[0.6, 1.8, -0.4], [0.6, 1.8, -0.4]] }, // Protect — on the shield
   { t: 10, pos: [-2.6, 1.3, 11.8], look: [1.7, 2.85, -0.9], focus: [[1.7, 4.7, -1.0], [4.5, 1.6, 0.0]] }, // Ship — emblem, then the v2 rack
-  { t: 15, pos: [-2.4, 2.2, 14.6], look: [2.5, 3.55, -0.3], focus: [[2.4, 4.6, 0.6], [4.0, 4.8, 1.5]] }, // Discover — along the API map
-  { t: 20, pos: [-1.0, 1.8, 12.1], look: [3.0, 2.0, 0.0], focus: [[1.7, 2.0, -1.0], [4.3, 1.7, 0.3]] }, // Heal — gate, then the failing rack
+  { t: 15, pos: [-2.4, 2.2, 14.6], look: [2.0, 3.55, -0.3], focus: [[2.4, 4.6, 0.6], [4.0, 4.8, 1.5]] }, // Discover — along the API map
+  { t: 20, pos: [-1.0, 1.8, 12.1], look: [1.9, 2.0, 0.0], focus: [[1.7, 2.0, -1.0], [4.3, 1.7, 0.3]] }, // Heal — gate, then the failing rack
 ];
 const MOVE = 3.0; // seconds each camera move takes
+const VIEW_SHIFT = 0.13; // share of the width the picture is panned right on wide screens
+const VIEW = { fadeFrom: -2 }; // shared with the trail shader
 const DOLLY = 0.025; // how far a held shot creeps in towards its subject
 const shotEnd = (k) => (k + 1 < SHOTS.length ? SHOTS[k + 1].t : LOOP);
 const FOCUS = new THREE.Vector3(1.9, 2, -1.3);
@@ -492,9 +503,20 @@ function CameraRig({ timeRef, reduce }) {
     pos.y += pointer.current[1] * 0.15;
     state.camera.position.copy(pos);
     state.camera.lookAt(look);
-    const aspect = state.size.width / Math.max(1, state.size.height);
+    const { width: W, height: H } = state.size;
+    const aspect = W / Math.max(1, H);
     const fov = THREE.MathUtils.clamp(33 * Math.pow(1.6 / aspect, aspect > 1.6 ? 0.3 : 0.55), 29, 46);
-    if (Math.abs(state.camera.fov - fov) > 0.01) { state.camera.fov = fov; state.camera.updateProjectionMatrix(); }
+    // on wide layouts the headline owns the left half: pan the picture right (off-axis, so the shots
+    // keep their angles) and let the light trails fade in only past the copy column
+    const wide = clamp01((aspect - 1.05) / 0.3);
+    const shift = Math.round(W * VIEW_SHIFT * wide);
+    VIEW.fadeFrom = -1.4 + 1.38 * wide; // NDC x where trails start to show
+    const cam = state.camera;
+    if (Math.abs(cam.fov - fov) > 0.01 || (cam.view?.offsetX ?? 0) !== -shift || cam.view?.fullWidth !== W || cam.view?.fullHeight !== H) {
+      cam.fov = fov;
+      if (shift) cam.setViewOffset(W, H, -shift, 0, W, H); else cam.clearViewOffset();
+      cam.updateProjectionMatrix();
+    }
     const fa = to.focus[0], fb = to.focus[1];
     const fk = easeIO3(clamp01((t - to.t - 1.2) / 2.8));
     a.set(...fa).lerp(b.set(...fb), fk);
@@ -578,6 +600,41 @@ const rowPoint = (k, side = 0, y = TRAY_Y) => new THREE.Vector3(
   ROW_A[0] + ROW_DIR[0] * k - ROW_DIR[1] * side, y, ROW_A[1] + ROW_DIR[1] * k + ROW_DIR[0] * side,
 );
 
+// cables: bundles along the tray + drops into the racks. Shared with the request routes, so the
+// light rides inside the very cables that are drawn.
+const TRAY_CABLES = ['#f5c518', '#f5c518', '#2f6fed', '#2f6fed', '#2f6fed', '#e9ecf2'];
+const DROPS = [['#f5c518', -0.12], ['#2f6fed', 0.0], ['#2f6fed', 0.1]];
+let CABLES = null;
+function cableRuns() {
+  if (CABLES) return CABLES;
+  const all = [], tray = [], drops = {};
+  TRAY_CABLES.forEach((c, i) => {
+    const side = -0.14 + i * 0.056;
+    const pts = [];
+    for (let k = 0; k <= 12; k++) {
+      const kk = (k / 12) * ROW_LEN;
+      pts.push(rowPoint(kk, side, TRAY_Y + 0.05 + Math.sin(k * 1.7 + i) * 0.012));
+    }
+    const curve = new THREE.CatmullRomCurve3(pts);
+    tray.push(curve);
+    all.push({ curve, color: c, r: i < 2 ? 0.014 : 0.018 });
+  });
+  ['orders', 'usersA', 'usersB', 'pay'].forEach((id) => {
+    const r = RACKS[id].pos;
+    drops[id] = DROPS.map(([c, off], k) => {
+      const top = new THREE.Vector3(r[0] + off * Math.cos(RACK_YAW), 2.76, r[2] - off * Math.sin(RACK_YAW));
+      const along = Math.hypot(r[0] - ROW_A[0], r[2] - ROW_A[1]) + off;
+      const from = rowPoint(along, -0.1 + k * 0.08, TRAY_Y + 0.04);
+      const mid = from.clone().lerp(top, 0.5); mid.y = TRAY_Y - 0.12;
+      const curve = new THREE.CatmullRomCurve3([from, mid, top]);
+      all.push({ curve, color: c, r: 0.016 });
+      return { curve, along };
+    });
+  });
+  CABLES = { all, tray, drops };
+  return CABLES;
+}
+
 function DataCenter() {
   const rungs = useRef();
   const { brushed } = textures();
@@ -593,31 +650,7 @@ function DataCenter() {
     grd.addColorStop(0, 'rgba(120,190,255,.55)'); grd.addColorStop(1, 'rgba(120,190,255,0)');
     g.fillStyle = grd; g.fillRect(0, 0, w, h);
   }), []);
-  // cables: bundles along the tray + drops into the racks
-  const cables = useMemo(() => {
-    const out = [];
-    const colors = ['#f5c518', '#f5c518', '#2f6fed', '#2f6fed', '#2f6fed', '#e9ecf2'];
-    colors.forEach((c, i) => {
-      const side = -0.14 + i * 0.056;
-      const pts = [];
-      for (let k = 0; k <= 12; k++) {
-        const kk = (k / 12) * ROW_LEN;
-        pts.push(rowPoint(kk, side, TRAY_Y + 0.05 + Math.sin(k * 1.7 + i) * 0.012));
-      }
-      out.push({ curve: new THREE.CatmullRomCurve3(pts), color: c, r: i < 2 ? 0.014 : 0.018 });
-    });
-    ['orders', 'usersA', 'usersB', 'pay'].forEach((id, j) => {
-      const r = RACKS[id].pos;
-      [['#f5c518', -0.12], ['#2f6fed', 0.0], ['#2f6fed', 0.1]].forEach(([c, off], k) => {
-        const top = new THREE.Vector3(r[0] + off * Math.cos(RACK_YAW), 2.76, r[2] - off * Math.sin(RACK_YAW));
-        const along = Math.hypot(r[0] - ROW_A[0], r[2] - ROW_A[1]) + off;
-        const from = rowPoint(along, -0.1 + k * 0.08, TRAY_Y + 0.04);
-        const mid = from.clone().lerp(top, 0.5); mid.y = TRAY_Y - 0.12;
-        out.push({ curve: new THREE.CatmullRomCurve3([from, mid, top]), color: c, r: 0.016 });
-      });
-    });
-    return out;
-  }, []);
+  const cables = useMemo(() => cableRuns().all, []);
   useLayoutEffect(() => {
     const o = new THREE.Object3D();
     const n = Math.floor(ROW_LEN / 0.3);
@@ -848,7 +881,7 @@ function packetPos(p, s, d, t, out) {
     return { dest, k };
   }
   const u = easeInOut(clamp01((d - T_IN - T_GATE) / T_OUT));
-  routeCurve(rackPos(dest, t)).getPointAt(Math.min(1, u), out);
+  routeCurve(rackPos(dest, t), dest).getPointAt(Math.min(1, u), out);
   return { dest, k: 1 };
 }
 
@@ -866,9 +899,13 @@ attribute float width;
 attribute vec4 color;
 varying vec4 vColor;
 varying float vSide;
+varying float vX;
 void main() {
   mat4 mvp = projectionMatrix * modelViewMatrix;
   vec4 cp = mvp * vec4(position, 1.0);
+  // depth only: pulled 6 cm towards the camera, so a streak running inside a cable shows through it
+  vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  vec4 biased = projectionMatrix * vec4(mv.xyz * (1.0 - 0.06 / max(length(mv.xyz), 0.1)), 1.0);
   vec4 pp = mvp * vec4(prev, 1.0);
   vec4 np = mvp * vec4(next, 1.0);
   vec2 dir = (np.xy / np.w - pp.xy / pp.w) * uRes;
@@ -878,19 +915,24 @@ void main() {
   float px = width * projectionMatrix[1][1] * uRes.y * 0.5 / cp.w;
   px = width > 0.0 ? max(px, 1.5) : 0.0;
   cp.xy += n / uRes * px * side * cp.w;
+  cp.z = biased.z / biased.w * cp.w;
   gl_Position = cp;
+  vX = cp.x / cp.w;
   vColor = color;
   vSide = side;
 }`;
 const TRAIL_FRAG = /* glsl */ `
+uniform float uFadeFrom;
 varying vec4 vColor;
 varying float vSide;
+varying float vX;
 void main() {
   float d = abs(vSide);
   float core = exp(-d * d * 22.0);
   float glow = exp(-d * d * 3.5);
   vec3 c = vColor.rgb * glow * 0.55 + mix(vColor.rgb, vec3(1.0), 0.65) * core * 1.6;
-  gl_FragColor = vec4(c * vColor.a, 1.0);
+  float keep = smoothstep(uFadeFrom, uFadeFrom + 0.35, vX); // nothing crosses the headline
+  gl_FragColor = vec4(c * vColor.a * keep, 1.0);
 }`;
 
 function LightTrails({ timeRef }) {
@@ -912,7 +954,7 @@ function LightTrails({ timeRef }) {
     return { geo: g, attr };
   }, []);
   const mat = useMemo(() => new THREE.ShaderMaterial({
-    uniforms: { uRes: { value: new THREE.Vector2(1, 1) } },
+    uniforms: { uRes: { value: new THREE.Vector2(1, 1) }, uFadeFrom: { value: -2 } },
     vertexShader: TRAIL_VERT,
     fragmentShader: TRAIL_FRAG,
     transparent: true,
@@ -929,6 +971,7 @@ function LightTrails({ timeRef }) {
     const { size, gl } = st;
     const dpr = gl.getPixelRatio();
     mat.uniforms.uRes.value.set(size.width * dpr, size.height * dpr);
+    mat.uniforms.uFadeFrom.value = VIEW.fadeFrom;
     const t = timeRef.current;
     const P = attr.position.array, PR = attr.prev.array, NX = attr.next.array, WD = attr.width.array, C = attr.color.array;
     let tr = 0;
@@ -1073,7 +1116,9 @@ function Attacks({ timeRef }) {
     for (let i = 0; i < ATTACKS.length; i++) bolts.current.setColorAt(i, RED);
     for (let i = 0; i < ATTACKS.length * SH; i++) shards.current.setColorAt(i, RED);
   }, []);
-  useFrame(() => {
+  const ndc = useMemo(() => new THREE.Vector3(), []);
+  const col = useMemo(() => new THREE.Color(), []);
+  useFrame(({ camera }) => {
     const t = timeRef.current;
     ATTACKS.forEach((a, j) => {
       const d = t - a.s;
@@ -1082,6 +1127,10 @@ function Attacks({ timeRef }) {
         attackPoint(a.j, Math.min(u, 0.999), vA);
         attackPoint(a.j, Math.min(u + 0.01, 1), vB);
         placeAlong(bolts.current, j, vA, vB, 0.12, 0.05);
+        // like the light trails, a bolt only shows once it is past the headline
+        bolts.current.localToWorld(ndc.copy(vA)).project(camera);
+        const x = clamp01((ndc.x - VIEW.fadeFrom) / 0.35);
+        bolts.current.setColorAt(j, col.copy(RED).multiplyScalar(x * x * (3 - 2 * x)));
       } else {
         o3.scale.setScalar(0); o3.updateMatrix(); bolts.current.setMatrixAt(j, o3.matrix);
       }
@@ -1107,6 +1156,7 @@ function Attacks({ timeRef }) {
       }
     });
     bolts.current.instanceMatrix.needsUpdate = true;
+    bolts.current.instanceColor.needsUpdate = true;
     shards.current.instanceMatrix.needsUpdate = true;
   });
   return (
