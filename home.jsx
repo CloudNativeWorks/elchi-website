@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import { getLocale, locHref } from './i18n.js';
-import { Nav, Footer } from './shared.jsx';
+import { Nav, Footer, useArchiveVersions } from './shared.jsx';
 import { PRODUCTS } from './products-data.js';
-import { Fragment, lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HOME_FILM } from './film-data.js';
 
@@ -10,7 +10,6 @@ import { HOME_FILM } from './film-data.js';
 // "Watch the film" opens the featured video; the player and the video list load on demand
 const loadPlayer = () => Promise.all([import('./video-player.jsx'), import('./video-list.js')]);
 const FilmPlayer = lazy(() => loadPlayer().then(([m, l]) => ({ default: (p) => <m.Player v={l.FEATURED} {...p} /> })));
-import { motion } from 'motion/react';
 import { HeroStage } from './hero-stage.jsx';
 import { ScreenGallery } from './screens.jsx';
 
@@ -25,11 +24,11 @@ const STR = {
     heroEyebrow: 'TRAFFIC MANAGEMENT & API SECURITY',
     heroH1a: 'Manage Traffic at',
     heroH1b: 'enterprise scale.',
-    heroPara1: 'A visual control plane for your entire Envoy fleet — full xDS config, GSLB, and certificates — with ',
-    heroParaStrong1: 'edge API security',
-    heroPara2: ' and traffic-derived',
-    heroParaStrong2: ' API discovery',
-    heroPara3: ' built in. Scalable, automated, enterprise-ready.',
+    heroPara1: 'The enterprise control plane for ',
+    heroParaStrong1: 'traffic management',
+    heroPara2: ' and ',
+    heroParaStrong2: 'API security',
+    heroPara3: '. Configure, validate and publish your entire Envoy fleet from one place — listeners, routes, GSLB and certificates — and protect every API at the edge with Shield and traffic-derived API discovery.',
     heroBtnDemo: 'Get Started →',
     heroBtnArch: 'View architecture',
     heroBtnFilm: 'Watch the film',
@@ -146,7 +145,7 @@ const STR = {
     // Final CTA
     ctaEyebrow: 'EXPERIENCE ELCHI NOW',
     ctaH2a: 'Ready to simplify your',
-    ctaH2b: 'client management?',
+    ctaH2b: 'traffic management?',
     ctaIntro: 'Try the stack solution for proxy management with our demo, or deploy to your Kubernetes cluster using our Helm chart.',
     ctaBtnDemo: 'Contact us',
     ctaBtnHelm: 'Helm Charts',
@@ -158,11 +157,11 @@ const STR = {
     heroEyebrow: 'TRAFİK YÖNETİMİ VE API GÜVENLİĞİ',
     heroH1a: 'Trafiği yönetin,',
     heroH1b: 'kurumsal ölçekte.',
-    heroPara1: 'Tüm Envoy filonuz için görsel bir control plane — tam xDS yapılandırması, GSLB ve sertifikalar — üstelik ',
-    heroParaStrong1: 'edge API güvenliği',
-    heroPara2: ' ve trafikten türetilen',
-    heroParaStrong2: ' API keşfi',
-    heroPara3: ' yerleşik olarak. Ölçeklenebilir, otomatik ve kurumsala hazır.',
+    heroPara1: '',
+    heroParaStrong1: 'Trafik yönetimi',
+    heroPara2: ' ve ',
+    heroParaStrong2: 'API güvenliği',
+    heroPara3: ' için kurumsal control plane. Tüm Envoy filonuzu tek yerden yapılandırın, doğrulayın ve yayınlayın — listener’lar, route’lar, GSLB ve sertifikalar — ve her API’yi Shield ile trafikten türetilen API keşfi sayesinde edge’de koruyun.',
     heroBtnDemo: 'Başlayın →',
     heroBtnArch: 'Mimariyi görün',
     heroBtnFilm: 'Filmi izleyin',
@@ -278,7 +277,7 @@ const STR = {
 
     // Final CTA
     ctaEyebrow: 'ELCHI’Yİ ŞİMDİ DENEYİN',
-    ctaH2a: 'Client yönetiminizi',
+    ctaH2a: 'Trafik yönetiminizi',
     ctaH2b: 'basitleştirmeye hazır mısınız?',
     ctaIntro: 'Proxy yönetimi için yığın çözümünü demomuzla deneyin veya Helm chart’ımızı kullanarak Kubernetes cluster’ınıza dağıtın.',
     ctaBtnDemo: 'Bize Ulaşın',
@@ -287,60 +286,80 @@ const STR = {
   },
 };
 
+// Strings of the relief-map chrome. Product facts stay in STR.
+const RL = {
+  en: {
+    integrations: 'Works with', notes: 'What sets it apart', requires: 'Requires Core', release: 'Current release',
+    yes: 'Yes', no: 'No',
+    shipTitle: 'How a change ships',
+    ship: [['Save', 'as a draft'], ['Validate', 'in the editor and on the server'], ['Publish', 'to the fleet, atomically']],
+    shipNote: 'Every change is recorded in the audit log.',
+  },
+  tr: {
+    integrations: 'Birlikte çalışır', notes: 'Farkı', requires: 'Core gerektirir', release: 'Güncel sürüm',
+    yes: 'Var', no: 'Yok',
+    shipTitle: 'Bir değişiklik nasıl yayına çıkar',
+    ship: [['Kaydet', 'taslak olarak'], ['Doğrula', 'editörde ve sunucuda'], ['Yayınla', 'filoya, atomik olarak']],
+    shipNote: 'Her değişiklik denetim kaydına yazılır.',
+  },
+};
+
 function App() {
   return (
     <>
-      <Nav active="home" overlay />
-      <Hero />
-      <Logos />
-      <ProductFamily />
-      <FeaturesGrid />
-      <Comparison />
-      <ScreenshotsGallery />
-      <Architecture3 />
-      <UseCases />
-      <Industries />
-      <FinalCTA />
+      <Nav active="home" />
+      <main className="rl">
+        <Hero />
+        <ProductFamily />
+        <FeaturesGrid />
+        <Comparison />
+        <ScreenshotsGallery />
+        <Architecture3 />
+        <UseCases />
+        <FinalCTA />
+      </main>
       <Footer />
     </>
   );
 }
 
-/* ====================== HERO ====================== */
-// Full-bleed dark hero over the real-time 3D story scene (hero-stage.jsx / hero-3d.jsx).
-const EASE = [0.22, 1, 0.36, 1];
-function BlurIn({ delay = 0, children, className, as = 'div' }) {
-  const M = motion[as];
+/* One elevation band of the relief: tone sets it apart from its neighbours, never a rule. */
+function Band({ tone = 'mist', id, className = '', children }) {
   return (
-    <M className={className}
-      initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
-      animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-      transition={{ duration: 0.6, delay, ease: EASE }}>
-      {children}
-    </M>
+    <section className={`rl-band rl-${tone} ${className}`} id={id}>
+      <div className="rl-wrap">{children}</div>
+    </section>
   );
 }
-function SplitWords({ text, delay = 0, className }) {
-  const words = text.split(' ');
-  return words.map((w, i) => (
-    <Fragment key={i}>
-      <span className="hx-word-mask">
-        <motion.span className={`hx-word ${className || ''}`}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: delay + i * 0.08, ease: EASE }}>
-          {w}
-        </motion.span>
-      </span>
-      {i < words.length - 1 ? ' ' : null}
-    </Fragment>
-  ));
+
+function BandHead({ h2, intro }) {
+  return (
+    <header className="rl-head">
+      <h2 className="rl-h2">{h2}</h2>
+      {intro && <p className="rl-lede">{intro}</p>}
+    </header>
+  );
 }
 
+const Tick = () => (
+  <svg className="rl-tick" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor" opacity=".14"/><path d="M6 10.4l2.6 2.6L14 7.6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+);
+const Dash = () => (
+  <svg className="rl-dash" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M6.5 10h7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+);
+const Arrow = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+);
+const Play = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4a.6.6 0 0 0 .9.5l7-4.2a.6.6 0 0 0 0-1L3.9 1.3a.6.6 0 0 0-.9.5z" fill="currentColor"/></svg>
+);
+
+/* ====================== HERO ====================== */
 function Hero() {
   const locale = getLocale();
   const t = STR[locale];
-  const n1 = t.heroH1a.split(' ').length;
+  const r = RL[locale];
+  const { ui, backend } = useArchiveVersions();
   const [filmOpen, setFilmOpen] = useState(false);
   const closeFilm = useCallback(() => setFilmOpen(false), []);
   // fetch the player while the visitor reads, so the click opens it at once
@@ -349,43 +368,41 @@ function Hero() {
     return () => (window.cancelIdleCallback ? window.cancelIdleCallback(id) : clearTimeout(id));
   }, []);
   return (
-    <section className="hx">
-      <HeroStage locale={locale} paused={filmOpen} />
-      <div className="hx-shade" aria-hidden="true" />
-      <div className="container hx-inner">
-        <div className="hx-copy">
-          <BlurIn className="hx-pill">
-            <svg width="12" height="13" viewBox="-10 -11 20 22" aria-hidden="true"><path d="M0 -10 L9 -5 L9 5 L0 10 L-9 5 L-9 -5 Z" fill="none" stroke="currentColor" strokeWidth="2"/></svg>
-            {t.heroEyebrow}
-          </BlurIn>
-          <h1 className="hx-h1">
-            <span className="hx-line"><SplitWords text={t.heroH1a} delay={0.1} /></span>
-            <span className="hx-line"><SplitWords text={t.heroH1b} delay={0.1 + n1 * 0.08} className="hx-serif" /></span>
+    <section className="rl-hero">
+      <div className="rl-wrap rl-hero-grid">
+        <div className="rl-hero-copy">
+          <h1 className="rl-h1">
+            <span className="rl-h1-line">{t.heroH1a}</span>{' '}
+            <span className="rl-h1-line">{t.heroH1b}</span>
           </h1>
-          <BlurIn as="p" className="hx-sub" delay={0.4}>
+          <p className="rl-hero-p">
             {t.heroPara1}<strong>{t.heroParaStrong1}</strong>{t.heroPara2}
             <strong>{t.heroParaStrong2}</strong>{t.heroPara3}
-          </BlurIn>
-          <BlurIn className="hx-ctas" delay={0.6}>
-            <a href="/docs/getting-started/quickstart" className="hx-btn hx-btn-solid">
-              {t.heroBtnDemo.replace(/\s*→$/, '')}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </p>
+          <div className="rl-actions">
+            <a href="/docs/getting-started/quickstart" className="rl-go">
+              {t.heroBtnDemo.replace(/\s*→$/, '')}<Arrow />
             </a>
-            <a href={locHref('architecture')} className="hx-btn hx-btn-glass">{t.heroBtnArch}</a>
-            <button type="button" className="hx-btn hx-btn-film" onClick={() => setFilmOpen(true)} onPointerEnter={loadPlayer} onFocus={loadPlayer}>
-              <span className="hx-film-play"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg></span>
-              {t.heroBtnFilm}<span className="hx-film-dur">{HOME_FILM.duration}</span>
+            <button type="button" className="rl-pill" onClick={() => setFilmOpen(true)} onPointerEnter={loadPlayer} onFocus={loadPlayer}>
+              <span className="rl-pill-play"><Play /></span>{t.heroBtnFilm}<span className="rl-pill-dur">{HOME_FILM.duration}</span>
             </button>
-          </BlurIn>
-          <BlurIn className="hx-facts" delay={0.8}>
-            {t.heroBadges.map(([k, v]) => (
-              <div key={k} className="hx-fact">
-                <span className="hx-fact-k">{k}</span>
-                <span className="hx-fact-v">{v}</span>
-              </div>
-            ))}
-          </BlurIn>
+          </div>
+          <a href={locHref('architecture')} className="rl-link">{t.heroBtnArch}<Arrow /></a>
         </div>
+        <HeroStage locale={locale} paused={filmOpen} />
+        <div className="rl-facts">
+          {t.heroBadges.map(([k, v]) => (
+            <div key={k} className="rl-fact"><b>{k}</b><span>{v}</span></div>
+          ))}
+          <div className="rl-fact rl-fact-rev">
+            <span className="rl-map-label">{r.release}</span>
+            <span className="rl-revs">
+              <a href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-ui-${ui}`} target="_blank" rel="noopener">UI {ui}</a>
+              <a href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-backend-${backend}`} target="_blank" rel="noopener">API {backend}</a>
+            </span>
+          </div>
+        </div>
+        <p className="rl-works"><span className="rl-map-label rl-works-label">{r.integrations}</span>{t.logosItems.map((it) => <span key={it} className="rl-works-item">{it}</span>)}</p>
       </div>
       {filmOpen && createPortal(
         <Suspense fallback={null}><FilmPlayer onClose={closeFilm} /></Suspense>,
@@ -395,33 +412,11 @@ function Hero() {
   );
 }
 
-/* ====================== LOGOS / TRUST ====================== */
-function Logos() {
-  const t = STR[getLocale()];
-  const items = t.logosItems;
-  return (
-    <div className="logos-strip">
-      <div className="container">
-        <div className="logos-label mono">{t.logosLabel}</div>
-        <div className="logos-marquee">
-          <div className="logos-track">
-            {[...items, ...items].map((it, i) => (
-              <span key={i} className="logos-item">{it}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ====================== FEATURES GRID ====================== */
-// ============== PRODUCT FAMILY ==============
-// One card per licensed product; copy comes from products-data.js so the home
-// page, nav dropdown, and product pages never drift apart.
+/* ====================== PRODUCT FAMILY: plateaus on Core ====================== */
+// One panel per licensed product; copy comes from products-data.js so the home page, nav
+// dropdown, and product pages never drift apart. Core is the ground every add-on stands on.
 const PF_STR = {
   en: {
-    eyebrow: 'THE ELCHI PRODUCT FAMILY',
     h2a: 'One platform.',
     h2b: 'Four products.',
     intro: 'Start with Elchi Core — the complete Envoy management platform — and license security, discovery, and traffic products as you need them.',
@@ -431,7 +426,6 @@ const PF_STR = {
     plansCta: 'See plans & licensing →',
   },
   tr: {
-    eyebrow: 'ELCHI ÜRÜN AİLESİ',
     h2a: 'Tek platform.',
     h2b: 'Dört ürün.',
     intro: 'Eksiksiz Envoy yönetim platformu Elchi Core ile başlayın; güvenlik, keşif ve trafik ürünlerini ihtiyacınız oldukça lisanslayın.',
@@ -441,282 +435,194 @@ const PF_STR = {
     plansCta: 'Paketleri & lisanslamayı görün →',
   },
 };
+// what each add-on works on: Shield guards the request path, discovery reads it, GSLB steers it
+const PF_TONE = { 'api-security': 'coral', 'api-discovery': 'flow', gslb: 'moss' };
 
 function ProductFamily() {
   const locale = getLocale();
   const t = PF_STR[locale];
-  const slugs = ['core', 'api-security', 'api-discovery', 'gslb'];
+  const r = RL[locale];
+  const core = PRODUCTS.core;
+  const addons = ['api-security', 'api-discovery', 'gslb'];
   return (
-    <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.eyebrow}</span>
-          <h2>{t.h2a}<br/>{t.h2b}</h2>
-          <p>{t.intro}</p>
-        </div>
-        <div className="pf-grid">
-          {slugs.map((slug) => {
-            const p = PRODUCTS[slug];
-            const pt = p[locale];
-            const isCore = slug === 'core';
+    <Band tone="water">
+      <BandHead h2={<>{t.h2a} {t.h2b}</>} intro={t.intro} />
+      <div className="pf">
+        <div className="pf-addons">
+          {addons.map((slug) => {
+            const pt = PRODUCTS[slug][locale];
             return (
-              <a key={slug} href={locHref(`products/${slug}`)} className={`card pf-card${isCore ? ' pf-card-core' : ''}`} style={isCore ? { borderColor: `${p.accent}55` } : {}}>
-                <div className="pf-card-head">
-                  <span className="pf-kind mono" style={isCore ? { color: p.accent, background: `${p.accent}14`, borderColor: `${p.accent}33` } : {}}>
-                    {isCore ? t.base : t.addon}
-                  </span>
-                </div>
-                <h3><span className="pf-dot" style={{ background: p.accent }}></span>{pt.metaName}</h3>
-                <p>{pt.subtitle.length > 140 ? pt.subtitle.slice(0, 137) + '…' : pt.subtitle}</p>
-                <span className="pf-more" style={{ color: p.accent }}>{t.learnMore}</span>
+              <a key={slug} href={locHref(`products/${slug}`)} className={`pf-unit pf-${PF_TONE[slug]}`}>
+                <h3>{pt.metaName}</h3>
+                <p>{pt.subtitle}</p>
+                <span className="pf-foot"><span className="pf-kind">{t.addon} · {r.requires}</span><span className="pf-more">{t.learnMore.replace(/\s*→$/, '')}<Arrow /></span></span>
               </a>
             );
           })}
         </div>
-        <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <a href={locHref('plans')} className="btn btn-ghost">{t.plansCta}</a>
-        </div>
+        <a href={locHref('products/core')} className="pf-core">
+          <h3>{core[locale].metaName}</h3>
+          <span className="pf-kind">{t.base}</span>
+          <p>{core[locale].subtitle}</p>
+          <span className="pf-more">{t.learnMore.replace(/\s*→$/, '')}<Arrow /></span>
+        </a>
       </div>
-    </section>
+      <p className="rl-after"><a href={locHref('plans')} className="rl-link">{t.plansCta.replace(/\s*→$/, '')}<Arrow /></a></p>
+    </Band>
   );
 }
 
+/* ====================== FEATURES ====================== */
 function FeaturesGrid() {
   const t = STR[getLocale()];
-  const items = t.features;
   return (
-    <section className="section" id="features">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.featuresEyebrow}</span>
-          <h2>{t.featuresH2a}<br/>{t.featuresH2b}</h2>
-          <p>{t.featuresIntro}</p>
-        </div>
-        <div className="features-grid">
-          {items.map((it, i) => (
-            <div key={i} className="card feat-card">
-              <div className="feat-icon"><FeatIcon name={it.icon}/></div>
-              <h3>{it.t}</h3>
-              <p>{it.d}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <Band tone="mist" id="features">
+      <BandHead h2={<>{t.featuresH2a} {t.featuresH2b}</>} intro={t.featuresIntro} />
+      <ul className="rl-notes">
+        {t.features.map((it, i) => (
+          <li key={i}>
+            <h3>{it.t}</h3>
+            <p>{it.d}</p>
+          </li>
+        ))}
+      </ul>
+    </Band>
   );
-}
-
-function FeatIcon({ name }) {
-  const map = {
-    proto:   <path d="M4 6h16M4 12h10M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>,
-    graph:   <g stroke="currentColor" strokeWidth="2" fill="none"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6 8v6M18 8v6M8 6h8M8 18h8" strokeLinecap="round"/></g>,
-    spark:   <path d="M12 2l2 7 7 2-7 2-2 7-2-7-7-2 7-2z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill="none"/>,
-    agent:   <g stroke="currentColor" strokeWidth="2" fill="none"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 12h8M8 9h4M8 15h6" strokeLinecap="round"/></g>,
-    xds:     <g stroke="currentColor" strokeWidth="2" fill="none"><path d="M4 8l4 4-4 4M20 8l-4 4 4 4M14 4l-4 16" strokeLinecap="round"/></g>,
-    check:   <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>,
-    flow:    <g stroke="currentColor" strokeWidth="2" fill="none"><path d="M3 12c4-4 8 4 12 0s4-4 6 0" strokeLinecap="round"/><circle cx="3" cy="12" r="2"/><circle cx="21" cy="12" r="2"/></g>,
-    version: <g stroke="currentColor" strokeWidth="2" fill="none"><path d="M4 7l4-4 4 4M8 3v18M12 17l4 4 4-4M16 21V3" strokeLinecap="round" strokeLinejoin="round"/></g>,
-    lock:    <g stroke="currentColor" strokeWidth="2" fill="none"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4" strokeLinecap="round"/></g>,
-  };
-  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none">{map[name]}</svg>;
 }
 
 /* ====================== COMPARISON ====================== */
 function Comparison() {
-  const t = STR[getLocale()];
-  const rows = t.cmpRows;
-
+  const locale = getLocale();
+  const t = STR[locale];
+  const r = RL[locale];
   const Cell = ({ v }) => {
-    if (v === true) return <span className="cmp-yes">✓</span>;
-    if (v === false) return <span className="cmp-no">—</span>;
-    return <span className="cmp-partial">{v}</span>;
+    if (v === true) return <><Tick /><span className="sr">{r.yes}</span></>;
+    if (v === false) return <><Dash /><span className="sr">{r.no}</span></>;
+    return <span className="cmp-val">{v}</span>;
   };
-
   return (
-    <section className="section" style={{ background: 'var(--bg-tint)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.cmpEyebrow}</span>
-          <h2>{t.cmpH2a}<br/>{t.cmpH2b}</h2>
-          <p>{t.cmpIntro}</p>
+    <Band tone="sage">
+      <BandHead h2={<>{t.cmpH2a} {t.cmpH2b}</>} intro={t.cmpIntro} />
+      <div className="cmp" role="table">
+        <div className="cmp-row cmp-head" role="row">
+          <div className="cmp-f" role="columnheader">{t.cmpHeadFeature}</div>
+          <div className="cmp-c cmp-e" role="columnheader">{t.cmpHeadElchi}</div>
+          <div className="cmp-c" role="columnheader">{t.cmpHeadManual}</div>
+          <div className="cmp-c" role="columnheader">{t.cmpHeadMesh}</div>
         </div>
-
-        <div className="cmp-table card" style={{ overflow: 'hidden' }}>
-          <div className="cmp-row cmp-head">
-            <div className="cmp-feat">{t.cmpHeadFeature}</div>
-            <div className="cmp-col cmp-elchi">{t.cmpHeadElchi}</div>
-            <div className="cmp-col">{t.cmpHeadManual}</div>
-            <div className="cmp-col">{t.cmpHeadMesh}</div>
+        {t.cmpRows.map((row, i) => (
+          <div key={i} className="cmp-row" role="row">
+            <div className="cmp-f" role="rowheader"><b>{row.f}</b><span>{row.sub}</span></div>
+            <div className="cmp-c cmp-e" role="cell" data-h={t.cmpHeadElchi}><Cell v={row.e} /></div>
+            <div className="cmp-c" role="cell" data-h={t.cmpHeadManual}><Cell v={row.m} /></div>
+            <div className="cmp-c" role="cell" data-h={t.cmpHeadMesh}><Cell v={row.s} /></div>
           </div>
-          {rows.map((r, i) => (
-            <div key={i} className="cmp-row">
-              <div className="cmp-feat">
-                <div style={{ fontWeight: 500 }}>{r.f}</div>
-                <div style={{ fontSize: 13, color: 'var(--slate-500)', marginTop: 2 }}>{r.sub}</div>
-              </div>
-              <div className="cmp-col cmp-elchi"><Cell v={r.e}/></div>
-              <div className="cmp-col"><Cell v={r.m}/></div>
-              <div className="cmp-col"><Cell v={r.s}/></div>
-            </div>
-          ))}
-        </div>
-
-        <div className="unique-grid" style={{ marginTop: 64 }}>
-          {t.cmpUnique.map(([ut, d], i) => (
-            <div key={i} className="unique-cell">
-              <div className="unique-num mono">{String(i+1).padStart(2,'0')}</div>
-              <h4>{ut}</h4>
-              <p>{d}</p>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
-    </section>
+      <h3 className="rl-h3">{r.notes}</h3>
+      <ul className="rl-notes rl-notes-4">
+        {t.cmpUnique.map(([ut, ud], i) => (
+          <li key={i}><h3>{ut}</h3><p>{ud}</p></li>
+        ))}
+      </ul>
+    </Band>
   );
 }
 
-/* ====================== SCREENSHOTS GALLERY ====================== */
+/* ====================== SCREENSHOTS ====================== */
 function ScreenshotsGallery() {
   const t = STR[getLocale()];
-  return <ScreenGallery eyebrow={t.ssEyebrow} title1={t.ssH2a} title2={t.ssH2b} intro={t.ssIntro}/>;
+  return (
+    <Band tone="mist" id="screenshots" className="rl-shots">
+      <BandHead h2={<>{t.ssH2a} {t.ssH2b}</>} intro={t.ssIntro} />
+      <ScreenGallery bare />
+    </Band>
+  );
 }
 
-/* ====================== 3-PROCESS ARCHITECTURE ====================== */
+/* ====================== ARCHITECTURE: the deep lake ====================== */
 function Architecture3() {
   const t = STR[getLocale()];
   return (
-    <section className="section" style={{ background: 'var(--slate-900)', color: 'white', position: 'relative', overflow: 'hidden' }}>
-      <div className="dot-bg" style={{ opacity: 0.2 }}></div>
-      <div className="aurora" style={{ width: 600, height: 600, top: -100, right: -100, background: 'radial-gradient(closest-side, #1d4ed8, transparent)', opacity: 0.4 }}></div>
-
-      <div className="container" style={{ position: 'relative' }}>
-        <div className="section-head">
-          <span className="eyebrow" style={{ background: 'rgba(59,130,246,.15)', borderColor: 'rgba(59,130,246,.3)', color: '#93c5fd' }}>
-            <span className="dot"></span>{t.archEyebrow}
-          </span>
-          <h2 style={{ color: 'white' }}>{t.archH2a}<br/>{t.archH2b}</h2>
-          <p style={{ color: '#94a3b8' }}>{t.archIntro}</p>
-        </div>
-
-        <div className="proc-grid">
-          {t.archProc.map((p, i) => (
-            <div key={i} className="proc-card">
-              <div className="proc-head">
-                <span className="proc-dot" style={{ background: p.accent, boxShadow: `0 0 14px ${p.accent}` }}></span>
-                <span className="proc-name">{p.name}</span>
-                <span className="mono proc-port">{p.port}</span>
-              </div>
-              <p className="proc-desc">{p.desc}</p>
-              <ul>
-                {p.items.map((it, j) => (
-                  <li key={j}>
-                    <span className="proc-tick" style={{ color: p.accent }}>›</span> {it}
-                  </li>
-                ))}
-              </ul>
+    <Band tone="deep">
+      <BandHead h2={<>{t.archH2a} {t.archH2b}</>} intro={t.archIntro} />
+      <div className="arch">
+        {t.archProc.map((p) => (
+          <div key={p.name} className="arch-proc">
+            <div className="arch-proc-head">
+              <h3>{p.name}</h3>
+              <span className="arch-port">{p.port}</span>
             </div>
-          ))}
-        </div>
-
-        <div className="ha-grid">
-          {t.archHa.map(([ht, d], i) => (
-            <div key={i} className="ha-cell">
-              <h4>{ht}</h4>
-              <p>{d}</p>
-            </div>
-          ))}
-        </div>
+            <p>{p.desc}</p>
+            <ul>{p.items.map((it) => <li key={it}>{it}</li>)}</ul>
+          </div>
+        ))}
       </div>
-    </section>
+      <div className="arch-ha">
+        {t.archHa.map(([ht, hd]) => (
+          <div key={ht}><h3>{ht}</h3><p>{hd}</p></div>
+        ))}
+      </div>
+    </Band>
   );
 }
 
 /* ====================== USE CASES ====================== */
 function UseCases() {
   const t = STR[getLocale()];
-  const cases = t.ucCases;
   return (
-    <section className="section" id="use-cases">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{t.ucEyebrow}</span>
-          <h2>{t.ucH2}</h2>
-          <p>{t.ucIntro}</p>
-        </div>
-        <div className="uc-grid">
-          {cases.map((c, i) => (
-            <div key={i} className="uc-card card">
-              <div className="uc-num mono">{String(i+1).padStart(2, '0')}</div>
-              <h3>{c.t}</h3>
-              <p>{c.d}</p>
-              <ul>
-                {c.list.map((it, j) => (
-                  <li key={j}><span>›</span> {it}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+    <Band tone="mist2" id="use-cases">
+      <BandHead h2={t.ucH2} intro={t.ucIntro} />
+      <div className="uc">
+        {t.ucCases.map((c) => (
+          <div key={c.t} className="uc-row">
+            <h3>{c.t}</h3>
+            <p>{c.d}</p>
+            <ul>{c.list.map((it) => <li key={it}>{it}</li>)}</ul>
+          </div>
+        ))}
       </div>
-    </section>
-  );
-}
-
-/* ====================== INDUSTRIES ====================== */
-function Industries() {
-  const t = STR[getLocale()];
-  const items = t.indItems;
-  return (
-    <section className="section-tight" style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-      <div className="container" style={{ textAlign: 'center' }}>
-        <div className="mono" style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--slate-500)', marginBottom: 24 }}>
-          {t.indLabel}
-        </div>
-        <div className="ind-row">
-          {items.map(it => (
-            <div key={it} className="ind-item">{it}</div>
-          ))}
-        </div>
-        <p style={{ marginTop: 28, color: 'var(--slate-500)' }}>
-          {t.indNote}
-        </p>
+      <div className="ind">
+        <span className="rl-map-label">{t.indLabel}</span>
+        <ul>{t.indItems.map((it) => <li key={it}>{it}</li>)}</ul>
+        <p>{t.indNote}</p>
       </div>
-    </section>
+    </Band>
   );
 }
 
 /* ====================== FINAL CTA ====================== */
 function FinalCTA() {
-  const t = STR[getLocale()];
+  const locale = getLocale();
+  const t = STR[locale];
+  const r = RL[locale];
   return (
-    <section className="section">
-      <div className="container">
-        <div className="cta-card">
-          <div className="grid-bg" style={{ opacity: .4 }}></div>
-          <div style={{ position: 'relative' }}>
-            <span className="eyebrow"><span className="dot"></span>{t.ctaEyebrow}</span>
-            <h2 style={{ marginTop: 16, marginBottom: 16 }}>
-              {t.ctaH2a}<br/>{t.ctaH2b}
-            </h2>
-            <p style={{ fontSize: 18, color: 'var(--slate-600)', maxWidth: 600 }}>
-              {t.ctaIntro}
-            </p>
-            <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
-              <a href={locHref('contact')} className="btn btn-blue">{t.ctaBtnDemo}</a>
-              <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="btn btn-ghost">{t.ctaBtnHelm}</a>
-            </div>
-            <div style={{ display: 'flex', gap: 24, marginTop: 36, flexWrap: 'wrap' }}>
-              {t.ctaBadges.map(bt => (
-                <span key={bt} style={{ fontSize: 14, color: 'var(--slate-700)', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ width: 18, height: 18, borderRadius: '50%', background: '#dcfce7', color: '#15803d', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>✓</span>
-                  {bt}
-                </span>
-              ))}
-            </div>
+    <Band tone="moss" className="rl-cta-band">
+      <div className="cta">
+        <div className="cta-main">
+          <h2 className="rl-h2 cta-h2">{t.ctaH2a} {t.ctaH2b}</h2>
+          <p className="rl-lede">{t.ctaIntro}</p>
+          <div className="rl-actions">
+            <a href={locHref('contact')} className="rl-go">{t.ctaBtnDemo}<Arrow /></a>
+            <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="rl-pill">{t.ctaBtnHelm}</a>
           </div>
+          <ul className="cta-specs">{t.ctaBadges.map((b) => <li key={b}>{b}</li>)}</ul>
+        </div>
+        <div className="ship">
+          <h3 className="rl-map-label">{r.shipTitle}</h3>
+          <ol>
+            {r.ship.map(([step, how], i) => (
+              <li key={step} className={`ship-step ship-${i}`}>
+                <span className="ship-dot" aria-hidden="true" />
+                <b>{step}</b>
+                <span>{how}</span>
+              </li>
+            ))}
+          </ol>
+          <p>{r.shipNote}</p>
         </div>
       </div>
-    </section>
+    </Band>
   );
 }
 

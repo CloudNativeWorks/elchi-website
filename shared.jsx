@@ -38,7 +38,7 @@ const SHARED = {
   en: {
     nav: { home: 'Home', products: 'Products', features: 'Features', architecture: 'Architecture', videos: 'Videos', plans: 'Plans', docs: 'Docs', contact: 'Contact', getStarted: 'Get Started →', allPlans: 'Plans & Licensing' },
     footer: {
-      tagline: 'Enterprise proxy management platform. 3-process distributed architecture with full xDS protocol support.',
+      tagline: 'Elchi is the enterprise platform for traffic management and API security. One control plane for your whole fleet, with full xDS support and Shield at the edge.',
       products: 'Products', platform: 'Platform', resources: 'Resources', company: 'Company',
       features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', videos: 'Video tutorials', plans: 'Plans & Licensing',
       documentation: 'Documentation', helm: 'Helm Charts', github: 'GitHub',
@@ -51,7 +51,7 @@ const SHARED = {
   tr: {
     nav: { home: 'Ana Sayfa', products: 'Ürünler', features: 'Özellikler', architecture: 'Mimari', videos: 'Videolar', plans: 'Paketler', docs: 'Dokümanlar', contact: 'İletişim', getStarted: 'Başlayın →', allPlans: 'Paketler & Lisanslama' },
     footer: {
-      tagline: 'Kurumsal proxy yönetim platformu. Tam xDS protokol desteğiyle 3 süreçli dağıtık mimari.',
+      tagline: 'Elchi, trafik yönetimi ve API güvenliği için kurumsal platformdur. Tam xDS desteği ve edge’de Shield ile tüm filonuz için tek control plane.',
       products: 'Ürünler', platform: 'Platform', resources: 'Kaynaklar', company: 'Şirket',
       features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', videos: 'Video eğitimleri', plans: 'Paketler & Lisanslama',
       documentation: 'Dokümantasyon', helm: 'Helm Charts', github: 'GitHub',
@@ -109,7 +109,7 @@ function ProductIcon({ slug, size = 16 }) {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={PRODUCTS[slug].accent}
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -209,7 +209,7 @@ function Nav({ active, overlay = false }) {
               <span className="nav-version-tag">{backendVersion}</span>
             </a>
           </div>
-          <a href="/docs/getting-started/quickstart" className="btn btn-primary">{t.getStarted}</a>
+          <a href="/docs/getting-started/quickstart" className="btn btn-primary">{t.getStarted.replace(/\s*→$/, '')}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></a>
           <button
             type="button"
             className="nav-burger"
@@ -238,12 +238,12 @@ function Footer() {
             <div className="brand" style={{marginBottom: 14}}>
               <span className="brand-mark"></span>
             </div>
-            <p style={{maxWidth: 360, fontSize: 14, lineHeight: 1.6}}>
+            <p style={{maxWidth: 360, fontSize: 15, lineHeight: 1.6}}>
               {t.tagline}
             </p>
-            <div style={{display: 'flex', gap: 8, marginTop: 18}}>
-              <span className="pill">UI {uiVersion}</span>
-              <span className="pill">API {backendVersion}</span>
+            <div className="footer-rev">
+              <a href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-ui-${uiVersion}`} target="_blank" rel="noopener"><b>UI</b>{uiVersion}</a>
+              <a href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-backend-${backendVersion}`} target="_blank" rel="noopener"><b>API</b>{backendVersion}</a>
             </div>
           </div>
           <div>
@@ -297,4 +297,4 @@ function Footer() {
   );
 }
 
-export { Nav, Footer };
+export { Nav, Footer, useArchiveVersions };

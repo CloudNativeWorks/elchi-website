@@ -459,7 +459,6 @@ const SHOTS = [
   { t: 20, pos: [-1.0, 1.8, 12.1], look: [1.9, 2.0, 0.0], focus: [[1.7, 2.0, -1.0], [4.3, 1.7, 0.3]] }, // Heal — gate, then the failing rack
 ];
 const MOVE = 3.0; // seconds each camera move takes
-const VIEW_SHIFT = 0.13; // share of the width the picture is panned right on wide screens
 const VIEW = { fadeFrom: -2 }; // shared with the trail shader
 const DOLLY = 0.025; // how far a held shot creeps in towards its subject
 const shotEnd = (k) => (k + 1 < SHOTS.length ? SHOTS[k + 1].t : LOOP);
@@ -506,15 +505,17 @@ function CameraRig({ timeRef, reduce }) {
     const { width: W, height: H } = state.size;
     const aspect = W / Math.max(1, H);
     const fov = THREE.MathUtils.clamp(33 * Math.pow(1.6 / aspect, aspect > 1.6 ? 0.3 : 0.55), 29, 46);
-    // on wide layouts the headline owns the left half: pan the picture right (off-axis, so the shots
-    // keep their angles) and let the light trails fade in only past the copy column
-    const wide = W > 760 ? clamp01((aspect - 1.05) / 0.3) : 0; // phones: the copy is below the scene, not beside it
-    const shift = Math.round(W * VIEW_SHIFT * wide);
-    VIEW.fadeFrom = -1.4 + 1.38 * wide; // NDC x where trails start to show
+    // the scene sits in its own framed viewport (no copy over it), so the picture is centred
+    // and the light trails show across the whole frame
+    VIEW.fadeFrom = -2;
     const cam = state.camera;
-    if (Math.abs(cam.fov - fov) > 0.01 || (cam.view?.offsetX ?? 0) !== -shift || cam.view?.fullWidth !== W || cam.view?.fullHeight !== H) {
-      cam.fov = fov;
-      if (shift) cam.setViewOffset(W, H, -shift, 0, W, H); else cam.clearViewOffset();
+    // frame the gate and the racks in the middle of the window: zoom out a touch, slide the picture left
+    // (the empty hall on the left shrinks) and up (clear of the chapter control along the bottom edge)
+    const fovF = fov * 1.08;
+    const ox = Math.round(W * 0.07), oy = Math.round(H * 0.05);
+    if (Math.abs(cam.fov - fovF) > 0.01 || cam.view?.offsetX !== ox || cam.view?.offsetY !== oy || cam.view?.fullWidth !== W || cam.view?.fullHeight !== H) {
+      cam.fov = fovF;
+      cam.setViewOffset(W, H, ox, oy, W, H);
       cam.updateProjectionMatrix();
     }
     const fa = to.focus[0], fb = to.focus[1];

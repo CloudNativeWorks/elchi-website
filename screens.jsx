@@ -161,7 +161,13 @@ export function ShotCard({ id, theme, onClick, active }) {
 
 // The home gallery: theme switch, a spotlight with the light|dark compare,
 // category filter, the grid and a lightbox.
-export function ScreenGallery({ eyebrow, title1, title2, intro }) {
+// `bare`: the caller (the home page's sheet) draws the section and its heading
+function Wrap({ bare, children }) {
+  if (bare) return <div className="ss-bare">{children}</div>;
+  return <section className="section" id="screenshots"><div className="container">{children}</div></section>;
+}
+
+export function ScreenGallery({ eyebrow, title1, title2, intro, bare = false }) {
   const loc = getLocale();
   const u = UI[loc];
   const [theme, setTheme] = useShotTheme();
@@ -181,13 +187,14 @@ export function ScreenGallery({ eyebrow, title1, title2, intro }) {
   };
   const ss = shotById[spot];
   return (
-    <section className="section" id="screenshots">
-      <div className="container">
-        <div className="section-head">
-          <span className="eyebrow"><span className="dot"></span>{eyebrow}</span>
-          <h2>{title1}<br/>{title2}</h2>
-          <p>{intro}</p>
-        </div>
+    <Wrap bare={bare}>
+        {!bare && (
+          <div className="section-head">
+            <span className="eyebrow"><span className="dot"></span>{eyebrow}</span>
+            <h2>{title1}<br/>{title2}</h2>
+            <p>{intro}</p>
+          </div>
+        )}
 
         <div className="ss-themebar">
           <ThemeSwitch theme={theme} onChange={setTheme}/>
@@ -219,9 +226,8 @@ export function ScreenGallery({ eyebrow, title1, title2, intro }) {
             <button className="btn btn-ghost" onClick={() => setAll(v => !v)}>{all ? u.less : u.more(inCat.length)}</button>
           </div>
         )}
-      </div>
       {box !== null && <Lightbox ids={ids} index={box} theme={theme} onTheme={setTheme} onIndex={setBox} onClose={() => setBox(null)}/>}
-    </section>
+    </Wrap>
   );
 }
 

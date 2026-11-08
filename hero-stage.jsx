@@ -1,28 +1,33 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
-/* Hero background: the real-time 3D scene (hero-3d.jsx, lazy-loaded so the
-   headline paints first) + chapter captions synced to the scene's clock. */
+/* The sheet's model viewport: the real-time 3D scene (hero-3d.jsx, lazy-loaded so the sheet paints
+   first) and the chapter control (captions) synced to the scene's clock. */
 const Hero3D = lazy(() => import('./hero-3d.jsx'));
 
 const LOOP = 24;
-const LOADING = { en: 'Loading the live scene', tr: 'Canlı sahne yükleniyor' };
 const CHAPTERS = [0, 5, 10, 15, 20]; // keep in sync with the beats in hero-3d.jsx
 const STR = {
-  en: [
-    ['Route', 'Every request is checked at the gate and sent to the right service.'],
-    ['Protect', 'Shield stops attacks at the edge — they never reach your services.'],
-    ['Ship live', 'An xDS push rolls out v2 with zero dropped requests.'],
-    ['Discover', 'Your API inventory builds itself from real traffic.'],
-    ['Heal', 'An unhealthy instance is drained, then rejoins on its own.'],
-  ],
-  tr: [
-    ['Yönlendir', 'Her istek kapıda denetlenir ve doğru servise gönderilir.'],
-    ['Koru', 'Shield saldırıları kenarda durdurur — servislerinize hiç ulaşmazlar.'],
-    ['Canlı yayınla', 'Bir xDS push ile v2, tek istek kaybetmeden devreye girer.'],
-    ['Keşfet', 'API envanteriniz gerçek trafikten kendiliğinden oluşur.'],
-    ['Onar', 'Sağlıksız instance trafikten çekilir, düzelince geri döner.'],
-  ],
+  en: {
+    loading: 'Loading the live model',
+    steps: [
+      ['Route', 'Every request is checked at the gate and sent to the right service.'],
+      ['Protect', 'Shield stops attacks at the edge — they never reach your services.'],
+      ['Ship live', 'An xDS push rolls out v2 with zero dropped requests.'],
+      ['Discover', 'Your API inventory builds itself from real traffic.'],
+      ['Heal', 'An unhealthy instance is drained, then rejoins on its own.'],
+    ],
+  },
+  tr: {
+    loading: 'Canlı model yükleniyor',
+    steps: [
+      ['Yönlendir', 'Her istek kapıda denetlenir ve doğru servise gönderilir.'],
+      ['Koru', 'Shield saldırıları kenarda durdurur — servislerinize hiç ulaşmazlar.'],
+      ['Canlı yayınla', 'Bir xDS push ile v2, tek istek kaybetmeden devreye girer.'],
+      ['Keşfet', 'API envanteriniz gerçek trafikten kendiliğinden oluşur.'],
+      ['Onar', 'Sağlıksız instance trafikten çekilir, düzelince geri döner.'],
+    ],
+  },
 };
 
 function webglOk() {
@@ -32,8 +37,8 @@ function webglOk() {
   } catch { return false; }
 }
 
-// `paused` (the film player is open over the hero): the scene stops drawing, and if it has not
-// mounted yet it waits until the player closes, so the video never competes with WebGL.
+// `paused` (the film player is open): the scene stops drawing, and if it has not mounted yet it
+// waits until the player closes, so the video never competes with WebGL.
 export function HeroStage({ locale = 'en', paused = false }) {
   const t = STR[locale] || STR.en;
   const hostRef = useRef(null);
@@ -46,7 +51,6 @@ export function HeroStage({ locale = 'en', paused = false }) {
   const [ready, setReady] = useState(false); // first 3D frame drawn
   const [webgl, setWebgl] = useState(true);
   const [progress, setProgress] = useState(0.06); // real stages: code → prepared → mounted → first frame
-  // the last stage (shaders compiling before the first frame) has no milestones: creep on slowly so it never looks stuck
   useEffect(() => {
     if (progress !== 0.88 || ready) return;
     const id = setTimeout(() => setProgress(0.97), 700);
@@ -61,9 +65,7 @@ export function HeroStage({ locale = 'en', paused = false }) {
 
   useEffect(() => {
     setReduce(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    // start the 3D only once the headline animation has finished and the browser is idle,
-    // so loading/compiling never stalls the text (it would freeze mid-blur)
-    // …and spread the work over idle slots: load the code, prepare textures/geometry, then mount
+    // load the 3D once the sheet has painted and the browser is idle: code, then textures/geometry, then mount
     let idle = 0;
     let cancelled = false;
     const whenIdle = (fn) => {
@@ -84,7 +86,7 @@ export function HeroStage({ locale = 'en', paused = false }) {
           });
         });
       });
-    }, 1500);
+    }, 900);
     const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { threshold: 0 });
     io.observe(hostRef.current);
     let raf = 0;
@@ -102,13 +104,13 @@ export function HeroStage({ locale = 'en', paused = false }) {
   }, []);
 
   return (
-    <>
-      <div ref={hostRef} className="hx3" aria-hidden="true">
+    <div className={`vp${ready ? ' is-live' : ''}`}>
+      <div ref={hostRef} className="vp-model" aria-hidden="true">
         {/* a still of the scene: shown while the 3D loads, and as the fallback without WebGL */}
-        <img className="hx3-poster" src="/hero3d/poster.webp" alt="" width="1400" height="769" decoding="async" fetchpriority="high" style={{ opacity: ready ? 0 : 1 }} />
+        <img className="vp-poster" src="/hero3d/poster.webp" alt="" width="819" height="512" decoding="async" fetchpriority="high" style={{ opacity: ready ? 0 : 1 }} />
         {mounted && (
           <Suspense fallback={null}>
-            <motion.div className="hx3-fade" initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 0.4 }}>
+            <motion.div className="vp-fade" initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 0.4 }}>
               <Hero3D timeRef={timeRef} active={active && !paused} reduce={reduce} onReady={() => { setProgress(1); setReady(true); }} />
             </motion.div>
           </Suspense>
@@ -119,48 +121,32 @@ export function HeroStage({ locale = 'en', paused = false }) {
         {webgl && !ready && (
           <motion.div
             key="loader"
-            className="hx-loader"
+            className="vp-loader"
             role="status"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6, filter: 'blur(6px)' }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <span className="hx-loader-row">
-              <svg className="hx-loader-hex" width="18" height="20" viewBox="-10 -11 20 22" aria-hidden="true">
-                <path d="M0 -10 L9 -5 L9 5 L0 10 L-9 5 L-9 -5 Z" pathLength="1" />
-              </svg>
-              <span className="hx-loader-text">{LOADING[locale] || LOADING.en}</span>
-            </span>
-            <span className={`hx-loader-bar${progress === 0.97 ? ' is-creep' : ''}`} aria-hidden="true"><span style={{ transform: `scaleX(${progress})` }} /></span>
+            <span className="vp-loader-text">{t.loading}</span>
+            <span className={`vp-loader-bar${progress === 0.97 ? ' is-creep' : ''}`} aria-hidden="true"><span style={{ transform: `scaleX(${progress})` }} /></span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className={`hx-chapters${ready ? ' is-ready' : ''}`} aria-hidden="true">
-        <ol className="hx-steps">
-          {t.map(([name], i) => (
+      {/* detail schedule: which beat of the loop is playing */}
+      <div className="vp-steps" aria-hidden="true">
+        <ol>
+          {t.steps.map(([name], i) => (
             <li key={name} className={i === chapter ? 'is-on' : i < chapter ? 'is-done' : ''}>
-              <span className="hx-step-n">0{i + 1}</span>
-              <span className="hx-step-name">{name}</span>
-              {i === chapter && <span className="hx-step-bar"><span ref={barRef} /></span>}
+              <span className="vp-step-n">{String(i + 1).padStart(2, '0')}</span>
+              <span className="vp-step-name">{name}</span>
+              {i === chapter && <span className="vp-step-bar"><span ref={barRef} /></span>}
             </li>
           ))}
         </ol>
-        <div className="hx-caption">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.p
-              key={chapter}
-              initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -8, filter: 'blur(6px)' }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {t[chapter][1]}
-            </motion.p>
-          </AnimatePresence>
-        </div>
+        <p className="vp-caption">{t.steps[chapter][1]}</p>
       </div>
-    </>
+    </div>
   );
 }
