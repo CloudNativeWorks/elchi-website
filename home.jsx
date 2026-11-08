@@ -4,11 +4,12 @@ import { Nav, Footer } from './shared.jsx';
 import { PRODUCTS } from './products-data.js';
 import { Fragment, lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FILM } from './film-data.js';
+import { HOME_FILM } from './film-data.js';
 
 // The film player (and videos.css) loads only when the visitor presses "Watch the film".
-const loadPlayer = () => import('./video-player.jsx');
-const FilmPlayer = lazy(() => loadPlayer().then((m) => ({ default: m.Player })));
+// "Watch the film" opens the featured video; the player and the video list load on demand
+const loadPlayer = () => Promise.all([import('./video-player.jsx'), import('./video-list.js')]);
+const FilmPlayer = lazy(() => loadPlayer().then(([m, l]) => ({ default: (p) => <m.Player v={l.FEATURED} {...p} /> })));
 import { motion } from 'motion/react';
 import { HeroStage } from './hero-stage.jsx';
 import { ScreenGallery } from './screens.jsx';
@@ -373,7 +374,7 @@ function Hero() {
             <a href={locHref('architecture')} className="hx-btn hx-btn-glass">{t.heroBtnArch}</a>
             <button type="button" className="hx-btn hx-btn-film" onClick={() => setFilmOpen(true)} onPointerEnter={loadPlayer} onFocus={loadPlayer}>
               <span className="hx-film-play"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg></span>
-              {t.heroBtnFilm}<span className="hx-film-dur">{FILM.duration}</span>
+              {t.heroBtnFilm}<span className="hx-film-dur">{HOME_FILM.duration}</span>
             </button>
           </BlurIn>
           <BlurIn className="hx-facts" delay={0.8}>
@@ -387,7 +388,7 @@ function Hero() {
         </div>
       </div>
       {filmOpen && createPortal(
-        <Suspense fallback={null}><FilmPlayer v={FILM} onClose={closeFilm} /></Suspense>,
+        <Suspense fallback={null}><FilmPlayer onClose={closeFilm} /></Suspense>,
         document.body,
       )}
     </section>
