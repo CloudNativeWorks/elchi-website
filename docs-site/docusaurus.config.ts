@@ -137,6 +137,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 '/installation/client/waf-versions',
               ],
             },
+            // Old URLs Google still crawls (Search Console reported them as 404).
+            {to: '/category/api-security-shield', from: '/category/shield-api-security'},
+            {to: '/envoy-configuration/versions-and-upgrades', from: '/reference/envoy-versions'},
+            {to: '/installation/bare-metal/port-atlas', from: '/reference/ports'},
+            {to: '/getting-started/concepts', from: '/reference/glossary'},
           ],
         },
       ],
