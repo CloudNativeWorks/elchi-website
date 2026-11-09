@@ -1,0 +1,9 @@
+{
+  "label": "How-to Guides",
+  "position": 13.5,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Short, task-focused answers to common Envoy operations questions: config without hand-written xDS, a WAF with ext_proc, multi-version upgrades, GSLB failover, shadow API discovery, and blue/green with EDS."
+  }
+}

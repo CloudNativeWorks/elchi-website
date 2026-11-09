@@ -135,7 +135,7 @@ export function Lightbox({ ids, index, theme, onTheme, onIndex, onClose }) {
       </div>
       <div className="lightbox-stage" onClick={e => e.stopPropagation()}>
         <button className="lightbox-nav prev" onClick={() => onIndex((index - 1 + ids.length) % ids.length)} aria-label={u.prev}>‹</button>
-        <ThemedImg id={s.id} theme={theme} alt={s[loc][0]} eager/>
+        <ThemedImg id={s.id} theme={theme} alt={`Elchi — ${s[loc][0]}: ${s[loc][1]}`} eager/>
         <button className="lightbox-nav next" onClick={() => onIndex((index + 1) % ids.length)} aria-label={u.next}>›</button>
       </div>
     </div>
@@ -148,7 +148,7 @@ export function ShotCard({ id, theme, onClick, active }) {
   return (
     <button className={`ss-card ${active ? 'active' : ''}`} onClick={onClick}>
       <div className="ss-img">
-        <ThemedImg id={id} theme={theme} alt={s[loc][0]}/>
+        <ThemedImg id={id} theme={theme} alt={`Elchi — ${s[loc][0]}: ${s[loc][1]}`}/>
         <span className="ss-cat mono">{SHOT_CATS[loc][s.cat]}</span>
       </div>
       <div className="ss-meta">

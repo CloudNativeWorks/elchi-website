@@ -40,7 +40,7 @@ const SHARED = {
     footer: {
       tagline: 'Elchi is the enterprise platform for traffic management and API security. One control plane for your whole fleet, with full xDS support and Shield at the edge.',
       products: 'Products', platform: 'Platform', resources: 'Resources', company: 'Company',
-      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', videos: 'Video tutorials', plans: 'Plans & Licensing',
+      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', videos: 'Video tutorials', faq: 'FAQ', plans: 'Plans & Licensing',
       documentation: 'Documentation', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Install', platformInstall: 'Platform Install',
       about: 'About', contact: 'Contact',
@@ -53,7 +53,7 @@ const SHARED = {
     footer: {
       tagline: 'Elchi, trafik yönetimi ve API güvenliği için kurumsal platformdur. Tam xDS desteği ve edge’de Shield ile tüm filonuz için tek control plane.',
       products: 'Ürünler', platform: 'Platform', resources: 'Kaynaklar', company: 'Şirket',
-      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', videos: 'Video eğitimleri', plans: 'Paketler & Lisanslama',
+      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', videos: 'Video eğitimleri', faq: 'SSS', plans: 'Paketler & Lisanslama',
       documentation: 'Dokümantasyon', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Kurulumu', platformInstall: 'Platform Kurulumu',
       about: 'Hakkında', contact: 'İletişim',
@@ -262,6 +262,7 @@ function Footer() {
               <li><a href={locHref('architecture')}>{t.architecture}</a></li>
               <li><a href={locHref('home#screenshots')}>{t.screenshots}</a></li>
               <li><a href={locHref('videos')}>{t.videos}</a></li>
+              <li><a href={locHref('faq')}>{t.faq}</a></li>
             </ul>
           </div>
           <div>

@@ -1,5 +1,5 @@
 ---
-title: Elchi Documentation
+title: Introduction to Elchi
 description: Everything you need to install, configure, and operate the Elchi proxy management platform, from quick local trials to production-grade Kubernetes deployments.
 sidebar_position: 1
 ---

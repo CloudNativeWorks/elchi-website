@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # full history: sitemap <lastmod> and the docs' "last updated" dates come from git
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -64,3 +67,28 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Tell IndexNow engines (Bing, Yandex, Seznam, Naver…) which URLs changed: those whose
+      # sitemap <lastmod> (from git) is today. Bing's index also feeds Copilot and ChatGPT
+      # search. Key file: public/2495e897fc8278a147b89e6d790e8689.txt. Best-effort: never fails the deploy.
+      - name: Ping IndexNow
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import json, re, datetime, urllib.request
+          today = datetime.date.today().isoformat()
+          urls = []
+          for f in ('dist/sitemap.xml', 'dist/docs/sitemap.xml'):
+              for block in re.findall(r'<url>(.*?)</url>', open(f).read(), re.S):
+                  loc = re.search(r'<loc>([^<]+)', block).group(1)
+                  mod = re.search(r'<lastmod>([^<]+)', block)
+                  if mod and mod.group(1)[:10] >= today:
+                      urls.append(loc)
+          print(f'{len(urls)} changed URL(s)')
+          if urls:
+              body = json.dumps({'host': 'www.elchi.io', 'key': '2495e897fc8278a147b89e6d790e8689',
+                                 'keyLocation': 'https://www.elchi.io/2495e897fc8278a147b89e6d790e8689.txt', 'urlList': urls}).encode()
+              req = urllib.request.Request('https://api.indexnow.org/indexnow', data=body,
+                                           headers={'Content-Type': 'application/json; charset=utf-8'})
+              print('IndexNow HTTP', urllib.request.urlopen(req, timeout=30).status)
+          PY

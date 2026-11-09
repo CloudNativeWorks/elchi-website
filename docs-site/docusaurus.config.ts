@@ -102,12 +102,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             routeBasePath: '/',
             sidebarPath: './sidebars.ts',
             editUrl: 'https://github.com/CloudNativeWorks/elchi-website/edit/main/docs-site/',
-            showLastUpdateTime: false,
+            // visible "Last updated" date (from git; CI checks out full history)
+            showLastUpdateTime: true,
           },
           blog: false,
           pages: false,
           theme: {customCss: './src/css/custom.css'},
-          sitemap: {changefreq: 'weekly'},
+          // lastmod from git: search engines and the CI IndexNow ping see real change dates
+          sitemap: {changefreq: 'weekly', lastmod: 'date'},
         } satisfies Preset.Options,
       ],
     ],
