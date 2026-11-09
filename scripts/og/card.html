@@ -1,0 +1,56 @@
+<!doctype html>
+<!--
+  Social card (Open Graph / Twitter) template, 1200x630.
+  Rendered by scripts/og/render.sh into public/og-image.png and
+  docs-site/static/img/og-docs.png. Content comes from the query string:
+  ?eyebrow=…&l1=…&l2a=…&l2b=…&sub=…&url=…   (l2b is the accent part)
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    font-family: 'Geist', system-ui, sans-serif;
+    background: #fbfcfe;
+    color: #0f172a;
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(#eef1f6 1px, transparent 1px),
+      linear-gradient(90deg, #eef1f6 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .glow-a { position: absolute; right: -120px; top: -160px; width: 640px; height: 520px;
+    background: radial-gradient(closest-side, rgba(129,140,248,.16), transparent); }
+  .glow-b { position: absolute; left: -200px; bottom: -260px; width: 620px; height: 560px;
+    background: radial-gradient(closest-side, rgba(56,189,248,.16), transparent); }
+  .wrap { position: absolute; left: 80px; top: 88px; right: 80px; }
+  .logo { display: block; height: 76px; }
+  .eyebrow { margin-top: 58px; font-size: 19px; font-weight: 700; letter-spacing: .2em;
+    text-transform: uppercase; color: #0066cc; }
+  h1 { margin: 18px 0 0; font-size: 66px; line-height: 1.12; font-weight: 800; letter-spacing: -.025em; }
+  h1 .grad { color: #0066cc; }
+  .sub { margin-top: 30px; font-size: 22px; color: #475569; }
+  .url { position: absolute; right: 80px; bottom: 50px; font-size: 19px; font-weight: 700; color: #0066cc; }
+</style>
+</head>
+<body>
+  <div class="grid"></div><div class="glow-a"></div><div class="glow-b"></div>
+  <div class="wrap">
+    <img class="logo" src="../../public/logo.svg" alt="">
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1><span id="l1"></span><br><span id="l2a"></span><span class="grad" id="l2b"></span></h1>
+    <div class="sub" id="sub"></div>
+  </div>
+  <div class="url" id="url"></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  for (const k of ['eyebrow', 'l1', 'l2a', 'l2b', 'sub', 'url']) document.getElementById(k).textContent = q.get(k) || '';
+</script>
+</body>
+</html>
