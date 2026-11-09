@@ -109,7 +109,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           pages: false,
           theme: {customCss: './src/css/custom.css'},
           // lastmod from git: search engines and the CI IndexNow ping see real change dates
-          sitemap: {changefreq: 'weekly', lastmod: 'date'},
+          // Tag listings and the search page are link lists with no content of their
+          // own; keep them out so the sitemap lists only pages worth indexing.
+          sitemap: {changefreq: 'weekly', lastmod: 'date', ignorePatterns: ['/docs/tags/**', '/docs/search']},
         } satisfies Preset.Options,
       ],
     ],
