@@ -25,11 +25,11 @@ helm install elchi elchi/elchi-stack \
   --create-namespace
 ```
 
-The gateway listens on NodePort `30000`; the install prints the address to open
-(`http://192.168.1.10:30000`). If that port is taken, pick another one between 30000 and 32767
-with `--set global.envoy.service.httpNodePort=30080`. The chart passes the same port to the
-Envoy proxies it configures, so set only this one. Set `global.port` yourself only when clients
-reach Elchi through a load balancer or ingress on a different port.
+The chart picks a free NodePort for the gateway (`30000` when it is free, otherwise the next free
+one), keeps it on upgrades, passes it to the Envoy proxies it configures, and prints the address to
+open (`http://192.168.1.10:30000`). To fix the port yourself, for example for GitOps or when your
+user may not list Services cluster-wide, set `--set global.envoy.service.httpNodePort=30080`. Set
+`global.port` only when clients reach Elchi through a load balancer or ingress on another port.
 
 ## Install with a values file
 

@@ -9,4 +9,4 @@ sidebar_position: 2
 - `kubectl` configured with cluster access
 - About **2 CPU cores, 4 GB RAM and 20 GB of disk** free for the default install (one replica of each component). Production replica counts need more; see [Production](/installation/helm-platform/production).
 - A default storage class for persistent volumes (MongoDB 5 GB, VictoriaMetrics 5 GB, ClickHouse 10 GB) — only required when using the built-in MongoDB / VictoriaMetrics / ClickHouse
-- A free NodePort for the gateway: `30000` by default, changed with `global.envoy.service.httpNodePort`
+- One NodePort for the gateway. The chart picks the first free one from `30000` up (listing Services needs cluster-wide read; without it, set `global.envoy.service.httpNodePort` yourself)

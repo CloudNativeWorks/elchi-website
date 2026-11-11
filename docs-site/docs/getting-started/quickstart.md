@@ -14,7 +14,7 @@ This page uses Helm on an existing cluster. Prefer a different substrate? Elchi 
 
 - A Kubernetes cluster, and `kubectl` + `helm` pointed at it.
 - About **2 CPU, 4 GB RAM and 20 GB disk** free.
-- TCP port **30000** open on your nodes, from your browser and from the hosts that will run Envoy.
+- The NodePort range (**30000–32767**) reachable on your nodes from your browser and from the hosts that will run Envoy. Elchi uses one port from it and prints which one in step 4; you can open only that port afterwards.
 - A **default storage class**. Check it:
 
 ```bash
@@ -68,10 +68,17 @@ Every pod shows `1/1 Running` within a few minutes; the first install spends mos
 
 ## 4. Open Elchi
 
-Open the address the install printed under **OPEN ELCHI**:
+Elchi picks a free port for its gateway (**30000** when it is free, otherwise the next free one) and keeps it on upgrades. The install prints the full address under **OPEN ELCHI**. Open it in your browser:
 
 ```text
 http://192.168.1.10:30000
+```
+
+This address and port are where everything reaches Elchi: your browser, and the edge hosts in step 5. Lost the output? Show it again, or ask for the port:
+
+```bash
+helm get notes elchi -n elchi-stack
+kubectl get svc envoy-service -n elchi-stack -o jsonpath='{.spec.ports[?(@.name=="http")].nodePort}'
 ```
 
 Sign in with `admin` / `admin`. Elchi then asks you to choose your own password before anything else opens; it needs at least 12 characters with an uppercase letter, a lowercase letter, a number and a symbol. Sign in again with it. See [Passwords](/administration/auth-and-access#passwords).
@@ -83,7 +90,7 @@ The JWT secret and the database passwords were generated during the install and 
 An edge host is the Linux machine that will run Envoy. It runs the **elchi-client** agent, which connects to Elchi and installs and manages Envoy for you.
 
 1. In the UI, open **Settings → Tokens** and create a token.
-2. On the edge host, run the installer with the same address and port as above, without TLS:
+2. On the edge host, run the installer with the address and port from step 4, without TLS:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/client/get.sh \
@@ -99,24 +106,11 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
 
 ## If something goes wrong
 
-**`provided port is already allocated`**: something else on the cluster already uses port `30000`, for example a second Elchi install. List the ports in use and pick a free one between 30000 and 32767:
+**`cannot list resource "services" ... at the cluster scope`**: your Kubernetes user may only manage its own namespace, so Elchi cannot see which ports are free. Choose a free port between 30000 and 32767 yourself and run the install command again with `--set global.envoy.service.httpNodePort=<port>`.
 
-```bash
-kubectl get svc -A -o jsonpath='{.items[*].spec.ports[*].nodePort}' | tr ' ' '\n' | sort -n | uniq
-```
+**`provided port is already allocated`**: the port you set with `httpNodePort` is taken. Pick another one, or leave the setting out and Elchi picks a free one.
 
-Run the install command again with that port, then use it everywhere instead of 30000, including the client's `--port`:
-
-```bash
-helm upgrade --install elchi elchi/elchi-stack \
-  --set-string global.mainAddress=192.168.1.10 \
-  --set global.envoy.service.httpNodePort=30500 \
-  --namespace elchi-stack --create-namespace
-```
-
-Then open `http://192.168.1.10:30500`.
-
-**The page does not open**: check that your computer can reach the node IP on port 30000 (firewall). To rule out the network, forward the gateway to your machine and open `http://localhost:8080`:
+**The page does not open**: check that your computer can reach the node IP on the port from step 4 (firewall). To rule out the network, forward the gateway to your machine and open `http://localhost:8080`:
 
 ```bash
 kubectl port-forward svc/envoy-service 8080:8080 -n elchi-stack

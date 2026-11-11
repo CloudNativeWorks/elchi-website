@@ -63,7 +63,7 @@ not reproduced — set your own for every secret and address.
 | `global.storageClass` | `""` | inherits base `""` | `local-path` | `""` | inherits base `""` |
 | Controller / control-plane replicas | 1 / 1 | 2 / 2 | 4 / 4 | 1 / 1 | 2 / 2 |
 | External MongoDB (`mongodb.hosts`) | none | none | configured | configured | none |
-| `envoy.service.httpNodePort` | `30000` | `30080` | `30083` | `30000` | `30010` |
+| `envoy.service.httpNodePort` | auto (first free from `30000`) | `30080` | `30083` | `30000` | `30010` |
 
 Notes:
 

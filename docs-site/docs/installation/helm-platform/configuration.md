@@ -21,7 +21,7 @@ The chart does not create or select a Kubernetes namespace — choose one at ins
 | `global.internalCommunication` | Controller → control-plane calls stay inside the cluster (through `envoy-service:8080`) instead of going out to `mainAddress:port` and back. | `true` |
 | `global.versions` | List of Elchi backend versions to deploy (illustrative — see [Versions & Upgrades](/envoy-configuration/versions-and-upgrades) for how the current set is resolved). | `[v1.8.4-v0.14.0-envoy1.40.2]` |
 | `global.envoy.service.type` | Gateway Service type: `NodePort`, `LoadBalancer` or `ClusterIP`. | `NodePort` |
-| `global.envoy.service.httpNodePort` | Gateway NodePort (30000–32767). | `30000` |
+| `global.envoy.service.httpNodePort` | Gateway NodePort (30000–32767). Empty = the first free one from 30000 up, kept on upgrades (needs cluster-wide Service read; set it for GitOps / `helm template`). | `null` (auto) |
 | `global.envoy.service.exposeAdmin` | Add the Envoy admin interface (9901) to the gateway Service. It can stop the gateway, so it stays off; use `kubectl port-forward deploy/envoy 9901` instead. Setting `adminNodePort` also exposes it. | `false` |
 | `global.jwt.secret` | JWT signing secret. Leave empty and the chart generates one; an explicit value needs 32+ characters. See [Credentials](#credentials). | `""` (generated) |
 | `global.jwt.accessTokenDuration` | Access token lifetime. | `"1h"` |
@@ -48,7 +48,7 @@ Envoy proxies and clients run **outside** the cluster, so pick an address they c
 
 | Cluster | Use as mainAddress | Port |
 |---|---|---|
-| One node, a first try, or no load balancer (typical on-premises) | The IP of any one node | derived (http NodePort, `30000`) |
+| One node, a first try, or no load balancer (typical on-premises) | The IP of any one node | derived (the http NodePort the chart picked, printed at install) |
 | Several nodes, cloud or MetalLB | A DNS name for the gateway's LoadBalancer IP (`global.envoy.service.type=LoadBalancer`) | derived (`8080`, or `8443` with TLS) |
 | Several nodes, own load balancer or VIP (HAProxy, F5, kube-vip, keepalived) | A DNS name for the VIP, which forwards to the gateway NodePort on **every** node | the port the VIP listens on: set `global.port` when it differs from the NodePort |
 

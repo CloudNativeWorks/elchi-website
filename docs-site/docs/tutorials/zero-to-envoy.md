@@ -36,7 +36,7 @@ helm install elchi elchi/elchi-stack \
   --create-namespace
 ```
 
-`192.168.1.10` is the IP of one of your nodes (or your load balancer). Elchi then answers on `http://192.168.1.10:30000`. Sign in with the bootstrap credentials `admin` / `admin`. Elchi asks you to choose your own password (12+ characters, upper, lower, number, symbol) before anything else, then you sign in again with it.
+`192.168.1.10` is the IP of one of your nodes (or your load balancer). The install prints the address to open, for example `http://192.168.1.10:30000` (the port is the first free one from 30000). Sign in with the bootstrap credentials `admin` / `admin`. Elchi asks you to choose your own password (12+ characters, upper, lower, number, symbol) before anything else, then you sign in again with it.
 
 :::warning[Before production]
 Turn on TLS (`global.tlsEnabled: true` with a certificate), put a load balancer or VIP in front of the nodes, point at a managed MongoDB, and run ≥3 replicas of the controller and control-plane. The credentials are already generated for you. See the [production checklist](/installation/helm-platform/production).
@@ -44,7 +44,7 @@ Turn on TLS (`global.tlsEnabled: true` with a certificate), put a load balancer 
 
 ## Step 2 — Connect an edge client
 
-Each edge host runs Envoy plus the **elchi-client** agent, which registers the node and applies what the controller pushes. Install it with one command — create a token under **Settings → Tokens** in the UI first. Use the same address and port you open Elchi on; for the Quick Start install that is port `30000` without TLS:
+Each edge host runs Envoy plus the **elchi-client** agent, which registers the node and applies what the controller pushes. Install it with one command — create a token under **Settings → Tokens** in the UI first. Use the same address and port you open Elchi on (the Quick Start install: the printed port, without TLS):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/client/get.sh \
