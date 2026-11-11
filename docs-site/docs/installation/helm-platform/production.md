@@ -30,7 +30,13 @@ global:
     controlPlaneDefaultReplicas: 3
     controllerDefaultReplicas: 3
   versions:
-    - tag: v1.6.27-v0.14.0-envoy1.39.3
+    - tag: v1.8.4-v0.14.0-envoy1.40.2
+
+# The defaults run one replica of each, sized for a first try
+envoy:
+  replicas: 2
+elchi-collector:
+  replicaCount: 2
 
 # Resource limits
 elchi:
@@ -46,6 +52,7 @@ elchi:
 
 ## High availability
 
+- Point `global.mainAddress` at a load balancer or VIP in front of every node, by DNS name. See [Choosing mainAddress](/installation/helm-platform/configuration#choosing-mainaddress).
 - Run at least 3 replicas for every critical component.
 - Configure pod anti-affinity rules to spread replicas across nodes.
 - Use an external MongoDB replica set for durable persistence.

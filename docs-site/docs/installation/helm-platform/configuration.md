@@ -10,22 +10,64 @@ The chart does not create or select a Kubernetes namespace — choose one at ins
 
 | Parameter | Description | Default |
 |---|---|---|
-| `global.mainAddress` | Public base URL for all components. | **required** |
-| `global.port` | Controller API port. Falls back to 80/443 based on TLS. | `""` |
+| `global.mainAddress` | IP or DNS name Envoy proxies and clients use to reach Elchi. See [Choosing mainAddress](#choosing-mainaddress). | **required** |
+| `global.port` | Port clients use with `mainAddress`. Empty = derived from the gateway Service: the http NodePort (the https NodePort with `tlsEnabled`), or 80/443 behind an ingress or load balancer. Set it when a load balancer in front listens on another port. A release installed before chart 2.1.0 keeps the port it runs with. | `""` (derived) |
 | `global.tlsEnabled` | Enable HTTPS for external traffic. | `false` |
 | `global.installMongo` | Use the bundled MongoDB. | `true` |
 | `global.installVictoriaMetrics` | Use the bundled VictoriaMetrics. | `true` |
 | `global.installClickhouse` | Use the bundled ClickHouse (raw API-events store). | `true` |
 | `global.installCollector` | Deploy the bundled elchi-collector (API discovery). | `true` |
 | `global.installGslb` | Deploy the GSLB DNS component. | `false` |
-| `global.internalCommunication` | Enable internal-only communication between services. | `false` |
-| `global.versions` | List of Elchi backend versions to deploy (illustrative — see [Versions & Upgrades](/envoy-configuration/versions-and-upgrades) for how the current set is resolved). | `[v1.6.27-v0.14.0-envoy1.39.3]` |
+| `global.internalCommunication` | Controller → control-plane calls stay inside the cluster (through `envoy-service:8080`) instead of going out to `mainAddress:port` and back. | `true` |
+| `global.versions` | List of Elchi backend versions to deploy (illustrative — see [Versions & Upgrades](/envoy-configuration/versions-and-upgrades) for how the current set is resolved). | `[v1.8.4-v0.14.0-envoy1.40.2]` |
+| `global.envoy.service.type` | Gateway Service type: `NodePort`, `LoadBalancer` or `ClusterIP`. | `NodePort` |
+| `global.envoy.service.httpNodePort` | Gateway NodePort (30000–32767). | `30000` |
+| `global.envoy.service.exposeAdmin` | Add the Envoy admin interface (9901) to the gateway Service. It can stop the gateway, so it stays off; use `kubectl port-forward deploy/envoy 9901` instead. Setting `adminNodePort` also exposes it. | `false` |
 | `global.jwt.secret` | JWT signing secret. Leave empty and the chart generates one; an explicit value needs 32+ characters. See [Credentials](#credentials). | `""` (generated) |
 | `global.jwt.accessTokenDuration` | Access token lifetime. | `"1h"` |
 | `global.jwt.refreshTokenDuration` | Refresh token lifetime. | `"5h"` |
-| `global.elchiBackend.controlPlaneDefaultReplicas` | Default replica count for control-plane services. | `4` |
-| `global.elchiBackend.controllerDefaultReplicas` | Default replica count for controller services. | `4` |
+| `global.elchiBackend.controlPlaneDefaultReplicas` | Replica count for control-plane services. Production: 3 or more. | `1` |
+| `global.elchiBackend.controllerDefaultReplicas` | Replica count for controller services. Production: 3 or more. | `1` |
+| `envoy.replicas` / `elchi.replicas` / `elchi-collector.replicaCount` | Replica counts of the gateway Envoy, the UI and the collector. Production: 2 or more. | `1` |
 | `global.cors.allowedOrigins` | CORS allowed origins. Comma-separated, or `*` for all. | `"*"` |
+
+## Choosing mainAddress
+
+`global.mainAddress` (with the port the chart derives, or `global.port`) is the **front door that
+everything outside the cluster uses**. It ends up in:
+
+- every Envoy bootstrap Elchi generates: the `elchi-control-plane` cluster the proxy dials for its
+  configuration (ADS), and the gRPC authority it sends;
+- the access-log stream (`elchi-als`) those proxies send to the collector, which uses the same cluster;
+- the self-signed gateway certificate, which is issued for this name;
+- the address you give each elchi-client (`--host` / `--port`, see [Client installation](/installation/client/installation)).
+
+The browser UI does not depend on it: it calls the API on whatever address you opened it on.
+
+Envoy proxies and clients run **outside** the cluster, so pick an address they can always reach:
+
+| Cluster | Use as mainAddress | Port |
+|---|---|---|
+| One node, a first try, or no load balancer (typical on-premises) | The IP of any one node | derived (http NodePort, `30000`) |
+| Several nodes, cloud or MetalLB | A DNS name for the gateway's LoadBalancer IP (`global.envoy.service.type=LoadBalancer`) | derived (`8080`, or `8443` with TLS) |
+| Several nodes, own load balancer or VIP (HAProxy, F5, kube-vip, keepalived) | A DNS name for the VIP, which forwards to the gateway NodePort on **every** node | the port the VIP listens on: set `global.port` when it differs from the NodePort |
+
+A single node's IP always works, because the gateway NodePort answers on every node. Its only cost:
+when that node goes down, Envoy proxies keep serving traffic with the configuration they have but
+stop receiving changes, and clients lose their connection, until the node is back or you move
+`mainAddress` to another node. On a cluster of many nodes, a load balancer or VIP in front of all of
+them (by DNS name) removes that single point; add one when you can.
+
+Prefer a DNS name over an IP. The address is written into every bootstrap, so moving to a new IP is
+then a DNS change, not a reconfiguration. With `global.tlsEnabled: true`, put a certificate for that
+name in `global.envoy.tls.secretName`.
+
+The control plane speaks long-lived gRPC streams. Use a layer-4 (TCP) load balancer, or a layer-7 one
+with HTTP/2 to the backend and no stream or idle timeouts.
+
+When `mainAddress` or the port changes, Elchi updates the default `elchi-control-plane` cluster when it
+restarts, unless someone edited that cluster by hand. Proxies that are already running keep their old
+bootstrap: download it again and redeploy them.
 
 ## Credentials
 

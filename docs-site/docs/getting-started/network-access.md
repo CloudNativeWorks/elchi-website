@@ -30,9 +30,18 @@ Use it to size egress allow-lists, plan NAT/proxy rules, or harden a network pol
              elchi-client ──HTTPS─► archive.elchi.io     optional egress → ClickHouse / OTel
 ```
 
-The key design fact: **in every production install path (bare-metal standalone, Docker Swarm, Helm), all client-facing traffic — browser UI, REST API, elchi-client command stream, Envoy xDS/ADS, and Envoy access-log streaming — enters through a single TLS port (`443`) on a front Envoy.** The registry's `ext_proc` filter inspects each request and sets an `x-target-cluster` header that routes it to the right internal process. You do not expose the controller, control-plane, or registry ports directly.
+The key design fact: **in every production install path (bare-metal standalone, Docker Swarm, Helm), all client-facing traffic — browser UI, REST API, elchi-client command stream, Envoy xDS/ADS, and Envoy access-log streaming — enters through a single port on a front Envoy: TLS `443` on bare metal and Docker Swarm, the gateway NodePort (`30000` by default) or your load balancer on Kubernetes.** The registry's `ext_proc` filter inspects each request and sets an `x-target-cluster` header that routes it to the right internal process. You do not expose the controller, control-plane, or registry ports directly.
 
 ## Inbound — platform servers
+
+### On Kubernetes (Helm chart)
+
+The Helm chart has the same single front door, the gateway Envoy, exposed as a NodePort on every node:
+
+- **TCP `30000`** (`global.envoy.service.httpNodePort`): plain HTTP. Carries the UI, the REST API, the `elchi-client` stream, Envoy xDS/ADS and the access-log streams. Allow it from operator networks **and** every edge-host subnet.
+- **The https NodePort** (`global.envoy.service.httpsNodePort`, picked by Kubernetes unless you set it): the same routes over TLS.
+
+With `global.envoy.service.type=LoadBalancer` the load balancer listens on `8080` (and `8443` for TLS) instead. Envoy admin (`9901`) is not exposed by the chart.
 
 ### Single-node (standalone) install: one port
 

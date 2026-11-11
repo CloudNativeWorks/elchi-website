@@ -39,12 +39,12 @@ cd elchi-archive
 For example:
 
 ```bash
-./install.sh elchi.example.com 8080
+./install.sh elchi.example.com 30080
 ./install.sh 192.168.1.100 30080
 ```
 
 - `mainAddress` — the DNS name or IP clients use to reach Elchi.
-- `port` — the port to expose the UI on (1–65535); it is mapped into the kind cluster.
+- `port` — the port to expose the UI on. It becomes the gateway's NodePort, so it must be between **30000 and 32767**; the installer refuses anything else. It is mapped from the kind cluster to the host.
 
 ## What it does
 

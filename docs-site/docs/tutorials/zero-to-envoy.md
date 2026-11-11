@@ -24,37 +24,39 @@ Pick the install path that matches your environment:
 - **Kubernetes** — the bundled `elchi-stack` Helm chart installs every component (controller, control-plane, registry, MongoDB, collector, UI) with sensible defaults. See [Helm installation](/installation/helm-platform/installation).
 - **Bare metal / VM** — the single-host installer script. See the [bare-metal quickstart](/installation/bare-metal/quickstart).
 
-The Helm quick start is:
+The [Quick Start](/getting-started/quickstart) is the shortest path on Kubernetes:
 
 ```bash
 helm repo add elchi https://charts.elchi.io
 helm repo update
 
-helm install my-elchi elchi/elchi-stack \
-  --set-string global.mainAddress="elchi.example.com" \
+helm install elchi elchi/elchi-stack \
+  --set-string global.mainAddress=192.168.1.10 \
   --namespace elchi-stack \
   --create-namespace
 ```
 
-Sign in with the bootstrap credentials `admin` / `admin`. Elchi asks you to choose your own password (12+ characters, upper, lower, number, symbol) before anything else, then you sign in again with it.
+`192.168.1.10` is the IP of one of your nodes (or your load balancer). Elchi then answers on `http://192.168.1.10:30000`. Sign in with the bootstrap credentials `admin` / `admin`. Elchi asks you to choose your own password (12+ characters, upper, lower, number, symbol) before anything else, then you sign in again with it.
 
-:::warning[Don't ship the defaults]
-Before production, set `global.tlsEnabled: true`, replace `global.jwt.secret` with a 32+ character random value, point at a managed MongoDB, and run ≥3 replicas of the controller and control-plane. See the [production checklist](/installation/helm-platform/production).
+:::warning[Before production]
+Turn on TLS (`global.tlsEnabled: true` with a certificate), put a load balancer or VIP in front of the nodes, point at a managed MongoDB, and run ≥3 replicas of the controller and control-plane. The credentials are already generated for you. See the [production checklist](/installation/helm-platform/production).
 :::
 
 ## Step 2 — Connect an edge client
 
-Each edge host runs Envoy plus the **elchi-client** agent, which registers the node and applies what the controller pushes. Install it with one command — grab your project's auth token from the UI first:
+Each edge host runs Envoy plus the **elchi-client** agent, which registers the node and applies what the controller pushes. Install it with one command — create a token under **Settings → Tokens** in the UI first. Use the same address and port you open Elchi on; for the Quick Start install that is port `30000` without TLS:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main/deploy/client/get.sh \
   | sudo bash -s -- \
   --name=edge-01 \
-  --host=elchi.example.com \
-  --port=443 \
-  --tls=true \
+  --host=192.168.1.10 \
+  --port=30000 \
+  --tls=false \
   --token=your-auth-token
 ```
+
+Behind TLS (a load balancer on 443, or the gateway's https port), use that port with `--tls=true`.
 
 Full flag reference and OpenStack/BGP variants are in the [client installation guide](/installation/client/installation). Once it registers, `edge-01` appears under **Clients** in the UI, and the agent bootstraps an Envoy that connects back to the control plane over xDS.
 

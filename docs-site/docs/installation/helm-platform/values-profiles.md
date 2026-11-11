@@ -52,16 +52,16 @@ not reproduced — set your own for every secret and address.
 |---|---|---|---|---|---|
 | `global.mainAddress` | *(required, blank)* | local domain | private domain | public domain | public IP |
 | `global.tlsEnabled` | `false` | `false` | `true` | `true` | `false` |
-| `global.port` | auto (80/443) | `8010` | `443` | auto | `30010` |
+| `global.port` | derived (http NodePort) | `8010` | `443` | derived (443) | `30010` |
 | `global.installMongo` | `true` | `true` | `false` (external) | `false` (external) | `true` |
 | `global.installVictoriaMetrics` | `true` | `true` | `true` | `true` | `true` |
 | `global.installClickhouse` | `true` | default `true` | default `true` | default `true` | default `true` |
 | `global.installCollector` | `true` | default `true` | default `true` | default `true` | default `true` |
 | `global.installGslb` | `false` | default `false` | `true` | `true` | default `false` |
-| `global.internalCommunication` | `false` | `false` | `false` | `false` | `false` |
+| `global.internalCommunication` | `true` | `false` | `false` | `false` | `false` |
 | Envoy versions | 1 | 1 | **2** | 1 | 1 |
 | `global.storageClass` | `""` | inherits base `""` | `local-path` | `""` | inherits base `""` |
-| Controller / control-plane replicas | 4 / 4 | 2 / 2 | 4 / 4 | 1 / 1 | 2 / 2 |
+| Controller / control-plane replicas | 1 / 1 | 2 / 2 | 4 / 4 | 1 / 1 | 2 / 2 |
 | External MongoDB (`mongodb.hosts`) | none | none | configured | configured | none |
 | `envoy.service.httpNodePort` | `30000` | `30080` | `30083` | `30000` | `30010` |
 
