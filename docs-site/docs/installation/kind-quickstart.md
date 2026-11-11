@@ -52,11 +52,11 @@ The installer runs through a fixed sequence:
 
 1. **Validates the OS** (expects Ubuntu 24.04) and checks sudo access + disk space.
 2. **Installs the required tools** if missing: Docker (from the official Docker apt repo), **kubectl**, **kind `v0.20.0`**, **Helm**, and network utilities.
-3. **Creates the `elchi-cluster` kind cluster** — one control-plane + two worker nodes — with your `<port>` mapped from container to host, and waits for all nodes to be Ready.
-4. **Adds the Elchi Helm repo** (`https://charts.elchi.io/`) and installs the **`elchi-stack`** chart into the `elchi-stack` namespace, passing `global.mainAddress`, `global.port`, and standard-class persistent storage for MongoDB and VictoriaMetrics.
+3. **Creates the `elchi-cluster` kind cluster** — one control-plane + two worker nodes — with your `<port>` and `30001`/`30002` mapped from container to host, and waits for all nodes to be Ready.
+4. **Adds the Elchi Helm repo** (`https://charts.elchi.io/`) and installs the **`elchi-stack`** chart into the `elchi-stack` namespace, passing `global.mainAddress`, `global.port` (the gateway's http NodePort), the https NodePort (`30001`, or `30002` when your port is 30001) and the `standard` storage class for every volume.
 5. **Verifies** the pods and services and prints a summary.
 
-When it finishes, the UI is reachable at `http://<mainAddress>:<port>`. Pods may still be starting in the background:
+When it finishes, the UI is reachable at `http://<mainAddress>:<port>` (and with a self-signed certificate at `https://<mainAddress>:30001`). Connect edge hosts with `--host=<mainAddress> --port=<port> --tls=false`; the installer prints this line too. Pods may still be starting in the background:
 
 ```bash
 kubectl get pods -n elchi-stack -w
