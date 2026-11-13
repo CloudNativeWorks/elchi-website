@@ -1,6 +1,7 @@
 ---
-title: Nodes & CoreDNS
-description: The elchi-coredns GSLB nodes — how CoreDNS consumes the zone-authenticated DNS snapshot API, node tracking and cleanup, proxied health/records, and single-node vs. broadcast notify.
+title: "GSLB Nodes & CoreDNS Plugin"
+sidebar_label: "Nodes & CoreDNS"
+description: "The elchi-coredns GSLB nodes: how CoreDNS reads the zone-authenticated DNS snapshot API, node tracking and cleanup, and single-node vs broadcast notify."
 sidebar_position: 4
 tags: [gslb, traffic]
 ---

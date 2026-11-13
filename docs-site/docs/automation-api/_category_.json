@@ -4,6 +4,6 @@
   "collapsed": true,
   "link": {
     "type": "generated-index",
-    "description": "The public REST API for scripts and pipelines: project API tokens, the conventions every endpoint follows, the error codes, and the endpoint (server) disable API."
+    "description": "The public REST API for scripts and pipelines: project API tokens, shared conventions and error codes, the endpoint disable API that drains an upstream IP or hostname, and the blue/green cluster endpoints switch for EDS clusters."
   }
 }

@@ -1,6 +1,7 @@
 ---
-title: Templates & Snippets
-description: Reusable Envoy config building blocks in Elchi — per-type resource templates for consistent starting points, and searchable field-level snippets for repeated fragments, with batch operations.
+title: "Envoy Config Templates & Snippets"
+sidebar_label: "Templates & Snippets"
+description: "Reusable Envoy config building blocks in Elchi: per-type resource templates for consistent starting points and searchable field-level snippets, in batches."
 sidebar_position: 6
 tags: [envoy]
 ---

@@ -1,6 +1,7 @@
 ---
-title: "Docker Swarm: Overview"
-description: What the Docker Swarm installer deploys, the prebuilt-image model, and how it compares to bare-metal and Helm/kind.
+title: "Docker Swarm Install Overview"
+sidebar_label: "Overview"
+description: "What the Elchi Docker Swarm installer deploys, its prebuilt-image model, single-node vs HA and air-gapped modes, and how it compares with bare-metal and Helm."
 sidebar_position: 1
 tags: [installation, docker]
 ---

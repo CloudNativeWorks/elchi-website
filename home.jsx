@@ -1,8 +1,9 @@
 import ReactDOM from 'react-dom/client';
+import './home.css';
 import { getLocale, locHref } from './i18n.js';
 import { Nav, Footer, useArchiveVersions } from './shared.jsx';
 import { PRODUCTS } from './products-data.js';
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { lazy, startTransition, Suspense, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { HOME_FILM } from './film-data.js';
 
@@ -11,7 +12,7 @@ import { HOME_FILM } from './film-data.js';
 const loadPlayer = () => Promise.all([import('./video-player.jsx'), import('./video-list.js')]);
 const FilmPlayer = lazy(() => loadPlayer().then(([m, l]) => ({ default: (p) => <m.Player v={l.FEATURED} {...p} /> })));
 import { HeroStage } from './hero-stage.jsx';
-import { Band, BandHead, Tick, Dash, Arrow, Play } from './relief.jsx';
+import { Band, BandHead, Tick, Dash, Half, Arrow, Play } from './relief.jsx';
 import { ScreenGallery } from './screens.jsx';
 
 // All user-visible strings for the home page. Technical/product terms (Envoy, xDS,
@@ -22,17 +23,14 @@ import { ScreenGallery } from './screens.jsx';
 const STR = {
   en: {
     // Hero
-    heroEyebrow: 'TRAFFIC MANAGEMENT & API SECURITY',
-    heroH1a: 'Manage Traffic at',
-    heroH1b: 'enterprise scale.',
-    heroPara1: 'Elchi is the visual Envoy control plane for ',
-    heroParaStrong1: 'traffic management',
-    heroPara2: ' and ',
-    heroParaStrong2: 'API security',
-    heroPara3: ' at enterprise scale. Configure, validate and publish your entire Envoy fleet from one place — listeners, routes, GSLB and certificates — and protect every API at the edge with Shield and traffic-derived API discovery.',
-    heroBtnDemo: 'Get Started →',
+    heroH1a: 'Elchi:',
+    heroH1b: 'every proxy, every edge, one control plane.',
+    heroPara: 'With Elchi you configure, validate and publish listeners, routes, clusters and certificates for every proxy from one place, and protect your APIs at the edge with Elchi Shield and Elchi API Discovery.',
+    heroBtnStart: 'Get Started',
+    heroBtnDemo: 'Book a demo',
     heroBtnArch: 'View architecture',
     heroBtnFilm: 'Watch the film',
+    heroFree: 'Free tier: Elchi Core with one managed client, no license needed.',
     heroBadges: [
       ['3-Process', 'Distributed Architecture'],
       ['Full xDS', 'Protocol Support'],
@@ -40,18 +38,19 @@ const STR = {
       ['Real-time', 'Validation'],
     ],
 
+    // What is Elchi (the definitional paragraph)
+    whatH2: 'What is Elchi?',
+    whatP: 'Elchi is a self-hosted control plane with a web UI for fleets of Envoy proxies. In Elchi you edit listeners, routes, clusters and certificates in typed forms instead of hand-writing xDS or YAML; Elchi validates each change and publishes it to the proxies that the Elchi agent runs on each Linux host. Elchi Shield (WAF), Elchi API Discovery and Elchi GSLB are add-ons.',
+
     // Logos
-    logosLabel: 'TRUSTED INTEGRATIONS',
     logosItems: ['Kubernetes', 'Envoy', 'Grafana', 'OpenStack', 'LDAP / AD', 'Let\'s Encrypt', 'OpenRouter'],
 
     // Features
-    featuresEyebrow: 'CORE FEATURES',
-    featuresH2a: 'Everything you need.',
-    featuresH2b: "Nothing you don't.",
-    featuresIntro: 'Comprehensive platform for enterprise proxy management with modern UI and powerful automation.',
+    featuresH2: 'What Elchi does, feature by feature.',
+    featuresIntro: 'Typed editors, two-step validation, versioned rollouts and edge security, all in Elchi.',
     features: [
-      { t: 'Proto-Driven Configuration', d: 'Typed models and field metadata are generated from each Envoy version\'s protobufs. Listeners, Clusters, Endpoints, Routes — with full TypeScript safety.', icon: 'proto' },
-      { t: 'Interactive Dependency Graphs', d: 'Interactive visual diagrams display relationships between Envoy resources. Understand data flow and troubleshoot interactively.', icon: 'graph' },
+      { t: 'Proto-Driven Configuration', d: 'Elchi generates its typed models and field metadata from each proxy version\'s protobufs. Listeners, Clusters, Endpoints, Routes — with full TypeScript safety.', icon: 'proto' },
+      { t: 'Interactive Dependency Graphs', d: 'Diagrams of how listeners, routes, clusters and endpoints depend on each other, to follow a request and find what a change affects.', icon: 'graph' },
       { t: 'Shield — Edge API Security', d: 'A per-edge ext_proc sidecar that enforces API security in the request path: WAF (OWASP CRS), authentication, rate limiting, and bot defense — twelve engines plus built-in DLP, rolled out safely from detect to block.', icon: 'lock' },
       { t: 'API Discovery & Inventory', d: 'Turn live traffic into a continuously-scored inventory of every API you expose — shadow endpoints, missing auth, PII leaks, enumeration — check it against your OpenAPI specs and export it as OpenAPI.', icon: 'graph' },
       { t: 'Quick Start Scenarios', d: 'Guided wizards that build a complete set of resources for common setups, such as an HTTP or TCP proxy, plus your own reusable scenarios.', icon: 'spark' },
@@ -59,58 +58,71 @@ const STR = {
       { t: 'Full xDS Protocol Support', d: 'Complete implementation of xDS (ADS, CDS, EDS, LDS, RDS, VHDS). Delta xDS for efficient updates.', icon: 'xds' },
       { t: 'Two-Step Validation', d: 'Validation in the editor and again on the server ensures configurations are correct before deployment.', icon: 'check' },
       { t: 'Save & Publish Workflow', d: 'Draft mode for safe configuration changes. Save incrementally and publish bulk updates atomically. Every change is recorded in the audit log.', icon: 'flow' },
-      { t: 'Multi-Version Envoy Support', d: 'Manage multiple Envoy versions from a single interface. Intelligent version routing with seamless migration X → Y.', icon: 'version' },
+      { t: 'Multi-Version Support', d: 'Run several Envoy versions from one Elchi. Each proxy is served by a control plane built for its own version, and a listener moves to a newer version by hot restart.', icon: 'version' },
       { t: 'Project-Based Multi-Tenancy', d: 'Organize configurations by teams, environments, or customers. 4-tier RBAC (Owner, Admin, Editor, Viewer).', icon: 'lock' },
     ],
 
-    // Comparison
-    cmpEyebrow: 'WHY ELCHI',
-    cmpH2a: 'Built for the work,',
-    cmpH2b: 'not the workaround.',
-    cmpIntro: 'See how Elchi compares to hand-written Envoy configuration and to a service mesh.',
-    cmpHeadFeature: 'Feature',
+    // Comparison: buyer criteria, named alternatives, honest answers
+    cmpH2: 'Elchi vs. hand-written xDS and a service mesh.',
+    cmpIntro: 'Compared on what platform teams check before they choose. A service mesh is the better fit when you need mTLS and policy between pods inside Kubernetes; Elchi manages the proxy fleets at your edge.',
+    cmpCaption: 'Elchi compared with hand-written xDS (go-control-plane) and a service mesh such as Istio',
+    cmpHeadFeature: 'What you need',
     cmpHeadElchi: 'Elchi',
-    cmpHeadManual: 'Manual Config',
-    cmpHeadMesh: 'Service Mesh',
+    cmpHeadManual: 'Hand-written xDS / go-control-plane',
+    cmpHeadMesh: 'Service mesh (e.g. Istio)',
     cmpRows: [
-      { f: 'AI-Assisted Configuration Analysis', e: true, m: false, s: 'basic', sub: 'On-demand review of a resource and its dependencies' },
-      { f: 'Proto-Driven Configuration UI', e: true, m: false, s: false, sub: 'Typed models generated per Envoy version' },
-      { f: 'Multi-Version Envoy Support', e: true, m: false, s: 'partial', sub: 'Single interface, version routing' },
-      { f: '3-Process Distributed Architecture', e: true, m: false, s: false, sub: 'Registry, Controller, Control-Plane' },
-      { f: 'Real-time Configuration Validation', e: true, m: false, s: 'basic', sub: 'Two-step validation before production' },
-      { f: 'Kubernetes Discovery', e: true, m: false, s: true, sub: 'Endpoints synced from cluster node IPs' },
-      { f: 'Visual Dependency Graphs', e: true, m: false, s: 'via add-ons', sub: 'Interactive resource graphs' },
-      { f: 'Enterprise Multi-Tenancy', e: true, m: false, s: 'varies', sub: 'Project isolation, 4-tier RBAC' },
-      { f: 'Envoy Version Upgrade', e: true, m: false, s: 'varies', sub: 'Move a listener to a new Envoy version' },
-      { f: 'LDAP / AD Authentication', e: true, m: false, s: 'varies', sub: 'Central login against your directory' },
-      { f: 'Log Export (Syslog / ELK)', e: true, m: false, s: 'varies', sub: 'External observability stack' },
-      { f: 'ACME Certificate Management', e: true, m: false, s: 'via add-ons', sub: 'Let\'s Encrypt + Google Trust' },
-      { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'DNS-based with health probing' },
-      { f: 'API Discovery & Inventory', e: true, m: false, s: false, sub: 'Auto-discovered surface, risk & PII scoring' },
-      { f: 'Shield — Edge API Security', e: true, m: false, s: false, sub: 'OWASP CRS WAF, auth, rate limit — 12 engines + built-in DLP' },
+      { f: 'Edit proxy config without writing YAML or xDS code',
+        e: ['yes', 'Typed forms generated from each version’s protobufs'],
+        m: ['no', 'You write the YAML, or Go code against go-control-plane'],
+        s: ['part', 'Mesh resources; raw Envoy settings through EnvoyFilter patches'] },
+      { f: 'Checked before it reaches a proxy',
+        e: ['yes', 'Validated in the editor and again on the server'],
+        m: ['part', 'Only the checks you build into your pipeline'],
+        s: ['part', 'Schema checks on the mesh’s own resources'] },
+      { f: 'Runs on plain Linux hosts and VMs',
+        e: ['yes', 'The Elchi agent runs each proxy as a systemd service'],
+        m: ['yes', 'With your own deployment tooling'],
+        s: ['part', 'VMs join a mesh whose control plane runs on Kubernetes'] },
+      { f: 'Several proxy versions at once',
+        e: ['yes', 'One Elchi control plane per version; listeners move by hot restart'],
+        m: ['part', 'If you build and run it'],
+        s: ['part', 'Through control-plane revisions during an upgrade'] },
+      { f: 'Draft, publish and an audit log for every change',
+        e: ['yes', 'Save as a draft, publish atomically, every change recorded'],
+        m: ['part', 'Git history, if you build the workflow'],
+        s: ['part', 'Through your GitOps tooling'] },
+      { f: 'WAF and API discovery in the same control plane',
+        e: ['yes', 'Shield (OWASP CRS via ext_proc) and API Discovery add-ons'],
+        m: ['no', 'Separate tools to integrate'],
+        s: ['no', 'Separate products to integrate'] },
+      { f: 'mTLS and traffic policy between pods inside Kubernetes',
+        e: ['no', 'Not a sidecar mesh: Elchi manages edge and gateway fleets'],
+        m: ['part', 'Only what you configure yourself'],
+        s: ['yes', 'The core job of a service mesh'] },
+      { f: 'Cost',
+        e: ['info', 'Free tier with one managed client; licensed by client count above that'],
+        m: ['info', 'Open source; you pay in engineering time'],
+        s: ['info', 'Open source; you run and upgrade the mesh'] },
     ],
+    cmpMore: 'Detailed comparisons',
     cmpUnique: [
       ['AI-Assisted Analysis', 'On-demand AI review of configuration and logs, with your own OpenRouter key.'],
-      ['Proto-Driven Models', 'Typed models and field metadata come from each Envoy version\'s protos, so the editors follow the Envoy API closely.'],
-      ['Version Routing', 'Each Envoy is served by the control plane of its own version.'],
-      ['Enterprise Ready', 'Built from the ground up for multi-tenancy, RBAC, two-factor authentication and a complete audit trail.'],
-      ['Seamless Upgrades', 'Move a listener and its resources to a new Envoy version and cut over with a hot restart, without dropped requests.'],
+      ['Proto-Driven Models', 'Elchi\'s typed models come from each version\'s protos, so its editors follow the proxy API closely.'],
+      ['Version Routing', 'Each proxy is served by the Elchi control plane of its own version.'],
+      ['Multi-Tenancy & Audit', 'Projects isolate teams; 4-tier RBAC, two-factor authentication and an audit log of every change.'],
+      ['Zero-Downtime Upgrades', 'Move a listener and its resources to a new version and cut over with a hot restart, without dropped requests.'],
       ['Enterprise Auth', 'LDAP / AD integration for centralized authentication and authorization.'],
       ['Log Centralization', 'Ship logs with Filebeat to Elasticsearch or Logstash, or through rsyslog.'],
-      ['Advanced Metrics', 'Built-in dashboards with Grafana integration for comprehensive monitoring.'],
+      ['Metrics', 'Built-in per-service dashboards, plus Grafana integration.'],
     ],
 
     // Screenshots
-    ssEyebrow: 'PLATFORM SCREENSHOTS',
-    ssH2a: 'Designed for the operator,',
-    ssH2b: 'built for the platform team.',
-    ssIntro: 'Captured from a live environment — real Envoy traffic, Shield blocks and discovered APIs. Drag the slider to see each screen in light and dark.',
+    ssH2: 'The Elchi UI, captured from a live environment.',
+    ssIntro: 'Elchi with real traffic, Shield blocks and discovered APIs. Drag the slider to see each screen in light and dark.',
 
     // Architecture (3-process)
-    archEyebrow: '3-PROCESS ARCHITECTURE',
-    archH2a: 'Three processes.',
-    archH2b: 'One coherent platform.',
-    archIntro: 'Enterprise-grade scalability with specialized microservices working in harmony.',
+    archH2: 'Elchi architecture: Registry, Controller, Control-Plane.',
+    archIntro: 'Three processes plus a lightweight agent on every edge host. Run several Controllers and Control-Planes; the Elchi Registry sends each client to a control plane built for its version.',
     archProc: [
       { name: 'Registry', port: 'routing', accent: '#22d3ee', desc: 'Service discovery and routing hub',
         items: ['Controller registration', 'Client location tracking', 'Version-based routing', 'Automatic cleanup'] },
@@ -121,51 +133,60 @@ const STR = {
     ],
     archHa: [
       ['High Availability', 'Multiple control-plane instances with automatic failover, and active/passive edge pairs that share VIPs'],
-      ['Scalability', 'Load balancing across controllers and control-planes for enterprise workloads'],
-      ['Version Routing', 'Intelligent routing to appropriate control-plane versions based on client requirements'],
+      ['Scalability', 'Run several controller and control-plane instances and spread the clients across them'],
+      ['Version Routing', 'Each client is served by a control plane of its own version'],
     ],
 
     // Use cases
-    ucEyebrow: 'USE CASES',
-    ucH2: 'Versatile by design.',
-    ucIntro: 'Versatile platform designed for diverse deployment scenarios.',
+    ucH2: 'Six ways teams use Elchi.',
+    ucIntro: 'Common deployments, each linked to the docs page that sets it up.',
     ucCases: [
-      { t: 'API Gateway Management', d: 'Centralized management of clients as an API gateway for microservices architectures.', list: ['Rate limiting & traffic control','Authentication & authorization','Request/response transformation','API versioning & routing'] },
-      { t: 'Load Balancing & Traffic Steering', d: 'Run Envoy fleets as load balancers in front of your services, with health checks and controlled rollouts.', list: ['Weighted traffic splitting & canary','Circuit breaking, retries & outlier detection','Active health checks','Metrics & live traffic view'] },
-      { t: 'Multi-Site & Multi-Cluster Backends', d: 'Put edge fleets in front of several sites and Kubernetes clusters, managed from one control plane.', list: ['Kubernetes node discovery per cluster','GSLB failover between sites','Active/passive edge HA pairs','Unified policy enforcement'] },
-      { t: 'Enterprise Microservices', d: 'Enterprise-grade client management with multi-tenancy and role-based access control.', list: ['Team-based config isolation','Complete audit trail','Centralized policy management','Self-service configuration'] },
-      { t: 'Cloud-Native Applications', d: 'Run the control plane on Kubernetes and keep the edge proxies in step with your clusters.', list: ['Control plane on Kubernetes via Helm','Kubernetes node discovery','Zero-downtime listener upgrades','Health checking & monitoring'] },
-      { t: 'Edge Proxy & Ingress', d: 'Run Envoy at the edge to terminate TLS, protect incoming traffic and route it.', list: ['SSL/TLS termination with ACME certificates','Rate limits & connection limits','Bot & IP-reputation blocking (Shield)','Region-scoped DNS answers with GSLB'] },
+      { t: 'API Gateway Management', d: 'Run your edge clients as an API gateway in front of microservices, managed centrally.', list: ['Rate limiting & traffic control','Authentication & authorization','Request/response transformation','API versioning & routing'],
+        href: '/docs/shield/overview', more: 'Shield docs' },
+      { t: 'Load Balancing & Traffic Steering', d: 'Use Elchi to run load balancers in front of your services, with health checks and controlled rollouts.', list: ['Weighted traffic splitting & canary','Circuit breaking, retries & outlier detection','Active health checks','Metrics & live traffic view'],
+        href: '/docs/guides/blue-green-envoy-eds', more: 'Blue/green guide' },
+      { t: 'Multi-Site & Multi-Cluster Backends', d: 'Put edge fleets in front of several sites and Kubernetes clusters, managed from one control plane.', list: ['Kubernetes node discovery per cluster','GSLB failover between sites','Active/passive edge HA pairs','Unified policy enforcement'],
+        href: '/docs/gslb/overview', more: 'GSLB docs' },
+      { t: 'Multi-Team Platforms', d: 'Client management with project-based multi-tenancy and role-based access control.', list: ['Team-based config isolation','Complete audit trail','Centralized policy management','Self-service configuration'],
+        href: '/docs/administration/auth-and-access', more: 'Access control docs' },
+      { t: 'Cloud-Native Applications', d: 'Run the control plane on Kubernetes and keep the edge proxies in step with your clusters.', list: ['Control plane on Kubernetes via Helm','Kubernetes node discovery','Zero-downtime listener upgrades','Health checking & monitoring'],
+        href: '/docs/installation/helm-platform/installation', more: 'Helm install' },
+      { t: 'Edge Proxy & Ingress', d: 'Use Elchi at the edge to terminate TLS, protect incoming traffic and route it.', list: ['SSL/TLS termination with ACME certificates','Rate limits & connection limits','Bot & IP-reputation blocking (Shield)','Region-scoped DNS answers with GSLB'],
+        href: '/docs/traffic-and-certificates/acme/overview', more: 'ACME certificates docs' },
     ],
 
-    // Industries
-    indLabel: 'BUILT FOR',
-    indItems: ['Financial Services','E-Commerce','Healthcare','Technology','Telecommunications','Media & Entertainment'],
-    indNote: 'Whatever your use case, Elchi provides the flexibility and power you need.',
+    // Guides (docs/guides)
+    guidesH3: 'How-to guides',
+    guidesNote: '',
+    guideLabel: 'Guide',
+    guides: [
+      ['manage-envoy-without-yaml', 'Manage proxies without hand-writing xDS or YAML'],
+      ['run-multiple-envoy-versions', 'Run several versions and upgrade listeners with zero downtime'],
+      ['add-waf-to-envoy-ext-proc', 'Add a WAF (OWASP Core Rule Set) with Elchi Shield'],
+      ['find-shadow-apis-envoy-access-logs', 'Find shadow and undocumented APIs from access logs'],
+      ['gslb-dns-failover-envoy', 'GSLB and DNS-based failover with Elchi'],
+      ['blue-green-envoy-eds', 'Blue/green deployments with EDS'],
+    ],
 
     // Final CTA
-    ctaEyebrow: 'EXPERIENCE ELCHI NOW',
     ctaH2a: 'Ready to simplify your',
     ctaH2b: 'traffic management?',
-    ctaIntro: 'Try the stack solution for proxy management with our demo, or deploy to your Kubernetes cluster using our Helm chart.',
-    ctaBtnDemo: 'Contact us',
+    ctaIntro: 'Book a demo to walk through Elchi with your own setup in mind, or install the free tier on Kubernetes with the Helm chart and manage one client without a license.',
+    ctaBtnDemo: 'Book a demo',
     ctaBtnHelm: 'Helm Charts',
     ctaBadges: ['Ready To Use','Self-Hosted','Multi-Version Proxy','Agent Support'],
   },
 
   tr: {
     // Hero
-    heroEyebrow: 'TRAFİK YÖNETİMİ VE API GÜVENLİĞİ',
-    heroH1a: 'Trafiği yönetin,',
-    heroH1b: 'kurumsal ölçekte.',
-    heroPara1: 'Elchi, ',
-    heroParaStrong1: 'trafik yönetimi',
-    heroPara2: ' ve ',
-    heroParaStrong2: 'API güvenliği',
-    heroPara3: ' için kurumsal ölçekte görsel bir Envoy control plane’idir. Tüm Envoy filonuzu tek yerden yapılandırın, doğrulayın ve yayınlayın — listener’lar, route’lar, GSLB ve sertifikalar — ve her API’yi Shield ile trafikten türetilen API keşfi sayesinde edge’de koruyun.',
-    heroBtnDemo: 'Başlayın →',
+    heroH1a: 'Elchi:',
+    heroH1b: 'her proxy, her edge, tek control plane.',
+    heroPara: 'Elchi ile her proxy için listener, route, cluster ve sertifikaları tek yerden yapılandırın, doğrulayın ve yayınlayın; API’lerinizi Elchi Shield ve Elchi API Discovery ile edge’de koruyun.',
+    heroBtnStart: 'Başlayın',
+    heroBtnDemo: 'Demo talep et',
     heroBtnArch: 'Mimariyi görün',
     heroBtnFilm: 'Filmi izleyin',
+    heroFree: 'Ücretsiz seviye: lisans gerekmeden tek yönetilen client ile Elchi Core.',
     heroBadges: [
       ['3 Süreç', 'Dağıtık Mimari'],
       ['Tam xDS', 'Protokol Desteği'],
@@ -173,18 +194,19 @@ const STR = {
       ['Gerçek Zamanlı', 'Doğrulama'],
     ],
 
+    // What is Elchi
+    whatH2: 'Elchi nedir?',
+    whatP: 'Elchi, Envoy proxy filoları için web arayüzlü ve kendi altyapınızda çalışan bir control plane’dir. Elchi’de xDS veya YAML’ı elle yazmak yerine listener, route, cluster ve sertifikaları tipli formlarda düzenlersiniz; Elchi her değişikliği doğrular ve Elchi agent’ının her Linux host’ta çalıştırdığı proxy’lere yayınlar. Elchi Shield (WAF), Elchi API Discovery ve Elchi GSLB eklenti ürünlerdir.',
+
     // Logos
-    logosLabel: 'GÜVENİLİR ENTEGRASYONLAR',
     logosItems: ['Kubernetes', 'Envoy', 'Grafana', 'OpenStack', 'LDAP / AD', 'Let\'s Encrypt', 'OpenRouter'],
 
     // Features
-    featuresEyebrow: 'TEMEL ÖZELLİKLER',
-    featuresH2a: 'İhtiyacınız olan her şey.',
-    featuresH2b: 'Fazlası değil.',
-    featuresIntro: 'Modern arayüz ve güçlü otomasyonla kurumsal proxy yönetimi için kapsamlı bir platform.',
+    featuresH2: 'Özellik özellik Elchi.',
+    featuresIntro: 'Tipli editörler, iki aşamalı doğrulama, sürümlü geçişler ve edge güvenliği; hepsi Elchi’de.',
     features: [
-      { t: 'Proto Tabanlı Yapılandırma', d: 'Tipli modeller ve alan meta verileri her Envoy sürümünün protobuf tanımlarından üretilir. Listener, Cluster, Endpoint, Route — tam TypeScript güvenliğiyle.', icon: 'proto' },
-      { t: 'Etkileşimli Bağımlılık Grafikleri', d: 'Envoy kaynakları arasındaki ilişkileri gösteren etkileşimli görsel diyagramlar. Veri akışını anlayın ve etkileşimli olarak sorun giderin.', icon: 'graph' },
+      { t: 'Proto Tabanlı Yapılandırma', d: 'Elchi tipli modelleri ve alan meta verilerini her proxy sürümünün protobuf tanımlarından üretir. Listener, Cluster, Endpoint, Route — tam TypeScript güvenliğiyle.', icon: 'proto' },
+      { t: 'Etkileşimli Bağımlılık Grafikleri', d: 'Listener, route, cluster ve endpoint’lerin birbirine nasıl bağlandığını gösteren diyagramlar; bir isteği izleyin, bir değişikliğin neyi etkilediğini görün.', icon: 'graph' },
       { t: 'Shield — Edge API Güvenliği', d: 'Request path’inde API güvenliğini uygulayan, her edge’de çalışan bir ext_proc sidecar: WAF (OWASP CRS), kimlik doğrulama, rate limiting ve bot savunması — on iki motor artı yerleşik DLP, detect’ten block’a güvenle devreye alınır.', icon: 'lock' },
       { t: 'API Keşfi ve Envanteri', d: 'Canlı trafiği, sunduğunuz her API’nin sürekli puanlanan bir envanterine dönüştürün — shadow endpoint’ler, eksik kimlik doğrulama, PII sızıntıları, numaralandırma — OpenAPI spec’lerinizle karşılaştırın ve OpenAPI olarak dışa aktarın.', icon: 'graph' },
       { t: 'Hızlı Başlangıç Senaryoları', d: 'HTTP veya TCP proxy gibi yaygın kurulumlar için eksiksiz kaynak setini adım adım oluşturan sihirbazlar; kendi senaryolarınızı da kaydedip yeniden kullanın.', icon: 'spark' },
@@ -192,58 +214,71 @@ const STR = {
       { t: 'Tam xDS Protokol Desteği', d: 'xDS’in (ADS, CDS, EDS, LDS, RDS, VHDS) eksiksiz uygulaması. Verimli güncellemeler için Delta xDS.', icon: 'xds' },
       { t: 'İki Aşamalı Doğrulama', d: 'Editörde ve ardından sunucuda yapılan doğrulama, yapılandırmaların dağıtımdan önce doğru olmasını sağlar.', icon: 'check' },
       { t: 'Kaydet ve Yayınla Akışı', d: 'Güvenli yapılandırma değişiklikleri için taslak modu. Adım adım kaydedin ve toplu güncellemeleri atomik olarak yayınlayın. Her değişiklik denetim kaydına yazılır.', icon: 'flow' },
-      { t: 'Çok Sürümlü Envoy Desteği', d: 'Birden fazla Envoy sürümünü tek bir arayüzden yönetin. Sorunsuz X → Y geçişiyle akıllı sürüm yönlendirmesi.', icon: 'version' },
+      { t: 'Çok Sürüm Desteği', d: 'Birden fazla Envoy sürümünü tek bir Elchi’den çalıştırın. Her proxy kendi sürümü için derlenmiş bir control plane’den beslenir; bir listener hot restart ile yeni sürüme geçer.', icon: 'version' },
       { t: 'Proje Bazlı Çok Kiracılılık', d: 'Yapılandırmaları ekiplere, ortamlara veya müşterilere göre düzenleyin. 4 katmanlı RBAC (Owner, Admin, Editor, Viewer).', icon: 'lock' },
     ],
 
     // Comparison
-    cmpEyebrow: 'NEDEN ELCHI',
-    cmpH2a: 'Çözüm için tasarlandı,',
-    cmpH2b: 'geçici çözümler için değil.',
-    cmpIntro: 'Elchi’nin elle yazılan Envoy yapılandırması ve bir service mesh ile nasıl karşılaştırıldığını görün.',
-    cmpHeadFeature: 'Özellik',
+    cmpH2: 'Elchi, elle yazılan xDS ve service mesh karşısında.',
+    cmpIntro: 'Platform ekiplerinin seçmeden önce baktığı ölçütlerle karşılaştırma. Kubernetes içinde pod’lar arasında mTLS ve politika gerekiyorsa service mesh daha uygundur; Elchi edge’inizdeki proxy filolarını yönetir.',
+    cmpCaption: 'Elchi; elle yazılan xDS (go-control-plane) ve Istio gibi bir service mesh ile karşılaştırma',
+    cmpHeadFeature: 'İhtiyaç',
     cmpHeadElchi: 'Elchi',
-    cmpHeadManual: 'Manuel Yapılandırma',
-    cmpHeadMesh: 'Service Mesh',
+    cmpHeadManual: 'Elle yazılan xDS / go-control-plane',
+    cmpHeadMesh: 'Service mesh (ör. Istio)',
     cmpRows: [
-      { f: 'AI Destekli Yapılandırma Analizi', e: true, m: false, s: 'temel', sub: 'Bir kaynağın ve bağımlılıklarının istek üzerine incelenmesi' },
-      { f: 'Proto Tabanlı Yapılandırma Arayüzü', e: true, m: false, s: false, sub: 'Her Envoy sürümü için üretilen tipli modeller' },
-      { f: 'Çok Sürümlü Envoy Desteği', e: true, m: false, s: 'kısmi', sub: 'Tek arayüz, sürüm yönlendirme' },
-      { f: '3 Süreçli Dağıtık Mimari', e: true, m: false, s: false, sub: 'Registry, Controller, Control-Plane' },
-      { f: 'Gerçek Zamanlı Yapılandırma Doğrulaması', e: true, m: false, s: 'temel', sub: 'Üretimden önce iki aşamalı doğrulama' },
-      { f: 'Kubernetes Keşfi', e: true, m: false, s: true, sub: 'Cluster node IP’lerinden endpoint senkronizasyonu' },
-      { f: 'Görsel Bağımlılık Grafikleri', e: true, m: false, s: 'eklentiyle', sub: 'Etkileşimli kaynak grafikleri' },
-      { f: 'Kurumsal Çok Kiracılılık', e: true, m: false, s: 'değişken', sub: 'Proje izolasyonu, 4 katmanlı RBAC' },
-      { f: 'Envoy Sürüm Yükseltme', e: true, m: false, s: 'değişken', sub: 'Bir listener’ı yeni Envoy sürümüne taşıyın' },
-      { f: 'LDAP / AD Kimlik Doğrulama', e: true, m: false, s: 'değişken', sub: 'Dizininize karşı merkezi giriş' },
-      { f: 'Log Aktarımı (Syslog / ELK)', e: true, m: false, s: 'değişken', sub: 'Harici observability yığını' },
-      { f: 'ACME Sertifika Yönetimi', e: true, m: false, s: 'eklentiyle', sub: 'Let\'s Encrypt + Google Trust' },
-      { f: 'Global Server Load Balancing', e: true, m: false, s: false, sub: 'Sağlık kontrollü, DNS tabanlı' },
-      { f: 'API Keşfi ve Envanteri', e: true, m: false, s: false, sub: 'Otomatik keşfedilen yüzey, risk ve PII puanlaması' },
-      { f: 'Shield — Edge API Güvenliği', e: true, m: false, s: false, sub: 'OWASP CRS WAF, auth, rate limit — 12 motor + yerleşik DLP' },
+      { f: 'YAML veya xDS kodu yazmadan proxy yapılandırması',
+        e: ['yes', 'Her sürümün protobuf’larından üretilen tipli formlar'],
+        m: ['no', 'YAML’ı ya da go-control-plane ile Go kodunu siz yazarsınız'],
+        s: ['part', 'Mesh kaynakları; ham Envoy ayarları EnvoyFilter yamalarıyla'] },
+      { f: 'Proxy’ye ulaşmadan önce denetim',
+        e: ['yes', 'Editörde ve ardından sunucuda doğrulanır'],
+        m: ['part', 'Yalnızca pipeline’ınıza eklediğiniz kontroller'],
+        s: ['part', 'Mesh’in kendi kaynaklarında şema kontrolü'] },
+      { f: 'Düz Linux host’lar ve VM’lerde çalışır',
+        e: ['yes', 'Elchi agent her proxy’yi systemd servisi olarak çalıştırır'],
+        m: ['yes', 'Kendi dağıtım araçlarınızla'],
+        s: ['part', 'VM’ler, control plane’i Kubernetes’te çalışan bir mesh’e katılır'] },
+      { f: 'Aynı anda birden fazla proxy sürümü',
+        e: ['yes', 'Sürüm başına bir Elchi control plane; listener’lar hot restart ile geçer'],
+        m: ['part', 'Kendiniz kurup işletirseniz'],
+        s: ['part', 'Yükseltme sırasında control-plane revizyonlarıyla'] },
+      { f: 'Her değişiklik için taslak, yayın ve denetim kaydı',
+        e: ['yes', 'Taslak olarak kaydedin, atomik yayınlayın, her değişiklik kayıtlı'],
+        m: ['part', 'Akışı kurarsanız Git geçmişi'],
+        s: ['part', 'GitOps araçlarınız üzerinden'] },
+      { f: 'Aynı control plane’de WAF ve API keşfi',
+        e: ['yes', 'Shield (ext_proc ile OWASP CRS) ve API Discovery eklentileri'],
+        m: ['no', 'Ayrı araçları entegre edersiniz'],
+        s: ['no', 'Ayrı ürünleri entegre edersiniz'] },
+      { f: 'Kubernetes içinde pod’lar arası mTLS ve trafik politikası',
+        e: ['no', 'Sidecar mesh değildir: Elchi edge ve gateway filolarını yönetir'],
+        m: ['part', 'Yalnızca kendiniz yapılandırdığınız kadar'],
+        s: ['yes', 'Service mesh’in asıl işi'] },
+      { f: 'Maliyet',
+        e: ['info', 'Tek yönetilen client ile ücretsiz seviye; üzerinde client sayısına göre lisans'],
+        m: ['info', 'Açık kaynak; bedeli mühendislik zamanıyla ödersiniz'],
+        s: ['info', 'Açık kaynak; mesh’i siz işletir ve yükseltirsiniz'] },
     ],
+    cmpMore: 'Ayrıntılı karşılaştırmalar',
     cmpUnique: [
       ['AI Destekli Analiz', 'Kendi OpenRouter anahtarınızla yapılandırma ve logların istek üzerine AI incelemesi.'],
-      ['Proto Tabanlı Modeller', 'Tipli modeller ve alan meta verileri her Envoy sürümünün proto’larından gelir; editörler Envoy API’sini yakından izler.'],
-      ['Sürüm Yönlendirme', 'Her Envoy, kendi sürümünün control plane’inden beslenir.'],
-      ['Kurumsala Hazır', 'Çok kiracılılık, RBAC, iki faktörlü kimlik doğrulama ve eksiksiz denetim kaydı için baştan tasarlandı.'],
-      ['Sorunsuz Yükseltmeler', 'Bir listener’ı ve kaynaklarını yeni Envoy sürümüne taşıyın, hot restart ile istek kaybetmeden geçin.'],
+      ['Proto Tabanlı Modeller', 'Elchi’nin tipli modelleri her sürümün proto’larından gelir; editörler proxy API’sini yakından izler.'],
+      ['Sürüm Yönlendirme', 'Her proxy, kendi sürümünün Elchi control plane’inden beslenir.'],
+      ['Çok Kiracılılık ve Denetim', 'Projeler ekipleri ayırır; 4 katmanlı RBAC, iki faktörlü kimlik doğrulama ve her değişikliğin denetim kaydı.'],
+      ['Kesintisiz Yükseltmeler', 'Bir listener’ı ve kaynaklarını yeni sürüme taşıyın, hot restart ile istek kaybetmeden geçin.'],
       ['Kurumsal Kimlik Doğrulama', 'Merkezi kimlik doğrulama ve yetkilendirme için LDAP / AD entegrasyonu.'],
       ['Log Merkezileştirme', 'Logları Filebeat ile Elasticsearch veya Logstash’e ya da rsyslog üzerinden gönderin.'],
-      ['Gelişmiş Metrikler', 'Kapsamlı izleme için Grafana entegrasyonlu yerleşik dashboard’lar.'],
+      ['Metrikler', 'Servis başına yerleşik dashboard’lar ve Grafana entegrasyonu.'],
     ],
 
     // Screenshots
-    ssEyebrow: 'PLATFORM EKRAN GÖRÜNTÜLERİ',
-    ssH2a: 'Operatör için tasarlandı,',
-    ssH2b: 'platform ekibi için inşa edildi.',
-    ssIntro: 'Canlı bir ortamdan alındı — gerçek Envoy trafiği, Shield engellemeleri ve keşfedilen API’ler. Her ekranı açık ve koyu temada görmek için kaydırıcıyı sürükleyin.',
+    ssH2: 'Canlı bir ortamdan Elchi arayüzü.',
+    ssIntro: 'Gerçek trafik, Shield engellemeleri ve keşfedilen API’lerle Elchi. Her ekranı açık ve koyu temada görmek için kaydırıcıyı sürükleyin.',
 
     // Architecture (3-process)
-    archEyebrow: '3 SÜREÇLİ MİMARİ',
-    archH2a: 'Üç süreç.',
-    archH2b: 'Tek tutarlı platform.',
-    archIntro: 'Uyum içinde çalışan özelleşmiş mikroservislerle kurumsal düzeyde ölçeklenebilirlik.',
+    archH2: 'Elchi mimarisi: Registry, Controller, Control-Plane.',
+    archIntro: 'Üç süreç ve her edge host’ta hafif bir agent. Birden fazla Controller ve Control-Plane çalıştırın; Elchi Registry her client’ı kendi sürümü için derlenmiş bir control plane’e yönlendirir.',
     archProc: [
       { name: 'Registry', port: 'routing', accent: '#22d3ee', desc: 'Servis keşfi ve yönlendirme merkezi',
         items: ['Controller kaydı', 'Client konum takibi', 'Sürüm tabanlı yönlendirme', 'Otomatik temizleme'] },
@@ -254,34 +289,46 @@ const STR = {
     ],
     archHa: [
       ['Yüksek Erişilebilirlik', "Otomatik failover'lı birden fazla control plane örneği ve VIP paylaşan aktif/pasif edge çiftleri"],
-      ['Ölçeklenebilirlik', 'Kurumsal iş yükleri için controller ve control plane’ler arasında load balancing'],
-      ['Sürüm Yönlendirme', 'Client gereksinimlerine göre uygun control plane sürümlerine akıllı yönlendirme'],
+      ['Ölçeklenebilirlik', 'Birden fazla controller ve control plane örneği çalıştırın, client’ları aralarında dağıtın'],
+      ['Sürüm Yönlendirme', 'Her client, kendi sürümünün control plane’inden beslenir'],
     ],
 
     // Use cases
-    ucEyebrow: 'KULLANIM SENARYOLARI',
-    ucH2: 'Tasarımı gereği çok yönlü.',
-    ucIntro: 'Farklı dağıtım senaryoları için tasarlanmış çok yönlü platform.',
+    ucH2: 'Ekiplerin Elchi’yi kullandığı altı yol.',
+    ucIntro: 'Yaygın kurulumlar; her biri onu kuran doküman sayfasına bağlı.',
     ucCases: [
-      { t: 'API Gateway Yönetimi', d: 'Mikroservis mimarileri için client’ları bir API gateway olarak merkezi yönetim.', list: ['Rate limiting ve trafik kontrolü','Kimlik doğrulama ve yetkilendirme','Request/response dönüşümü','API sürümleme ve yönlendirme'] },
-      { t: 'Load Balancing ve Trafik Yönlendirme', d: 'Envoy filolarını servislerinizin önünde sağlık kontrollü ve kontrollü geçişli load balancer olarak çalıştırın.', list: ['Ağırlıklı trafik bölme ve canary','Circuit breaking, yeniden deneme ve outlier detection','Aktif sağlık kontrolleri','Metrikler ve canlı trafik görünümü'] },
-      { t: 'Çok Lokasyonlu ve Çok Cluster’lı Backend’ler', d: 'Edge filolarını birden fazla lokasyonun ve Kubernetes cluster’ının önüne koyun, tek control plane’den yönetin.', list: ['Cluster başına Kubernetes node keşfi','Lokasyonlar arası GSLB failover','Aktif/pasif edge HA çiftleri','Birleşik politika uygulama'] },
-      { t: 'Kurumsal Mikroservisler', d: 'Çok kiracılılık ve rol tabanlı erişim kontrolüyle kurumsal düzeyde client yönetimi.', list: ['Ekip bazlı yapılandırma izolasyonu','Eksiksiz denetim kaydı','Merkezi politika yönetimi','Self-servis yapılandırma'] },
-      { t: 'Cloud-Native Uygulamalar', d: 'Control plane’i Kubernetes’te çalıştırın, edge proxy’leri cluster’larınızla senkron tutun.', list: ['Helm ile Kubernetes’te control plane','Kubernetes node keşfi','Kesintisiz listener yükseltmeleri','Sağlık kontrolü ve izleme'] },
-      { t: 'Edge Proxy ve Ingress', d: 'Envoy’u edge’de çalıştırarak TLS’i sonlandırın, gelen trafiği koruyun ve yönlendirin.', list: ['ACME sertifikalarıyla SSL/TLS termination','Rate limit ve bağlantı limitleri','Bot ve IP itibarı engelleme (Shield)','GSLB ile bölgeye göre DNS yanıtları'] },
+      { t: 'API Gateway Yönetimi', d: 'Edge client’larınızı mikroservislerin önünde bir API gateway olarak çalıştırın, merkezden yönetin.', list: ['Rate limiting ve trafik kontrolü','Kimlik doğrulama ve yetkilendirme','Request/response dönüşümü','API sürümleme ve yönlendirme'],
+        href: '/docs/shield/overview', more: 'Shield dokümanı' },
+      { t: 'Load Balancing ve Trafik Yönlendirme', d: 'Elchi ile servislerinizin önünde sağlık kontrollü ve kontrollü geçişli load balancer olarak çalıştırın.', list: ['Ağırlıklı trafik bölme ve canary','Circuit breaking, yeniden deneme ve outlier detection','Aktif sağlık kontrolleri','Metrikler ve canlı trafik görünümü'],
+        href: '/docs/guides/blue-green-envoy-eds', more: 'Blue/green rehberi' },
+      { t: 'Çok Lokasyonlu ve Çok Cluster’lı Backend’ler', d: 'Edge filolarını birden fazla lokasyonun ve Kubernetes cluster’ının önüne koyun, tek control plane’den yönetin.', list: ['Cluster başına Kubernetes node keşfi','Lokasyonlar arası GSLB failover','Aktif/pasif edge HA çiftleri','Birleşik politika uygulama'],
+        href: '/docs/gslb/overview', more: 'GSLB dokümanı' },
+      { t: 'Çok Ekipli Platformlar', d: 'Proje bazlı çok kiracılılık ve rol tabanlı erişim kontrolüyle client yönetimi.', list: ['Ekip bazlı yapılandırma izolasyonu','Eksiksiz denetim kaydı','Merkezi politika yönetimi','Self-servis yapılandırma'],
+        href: '/docs/administration/auth-and-access', more: 'Erişim kontrolü dokümanı' },
+      { t: 'Cloud-Native Uygulamalar', d: 'Control plane’i Kubernetes’te çalıştırın, edge proxy’leri cluster’larınızla senkron tutun.', list: ['Helm ile Kubernetes’te control plane','Kubernetes node keşfi','Kesintisiz listener yükseltmeleri','Sağlık kontrolü ve izleme'],
+        href: '/docs/installation/helm-platform/installation', more: 'Helm kurulumu' },
+      { t: 'Edge Proxy ve Ingress', d: 'Elchi’yi edge’de kullanarak TLS’i sonlandırın, gelen trafiği koruyun ve yönlendirin.', list: ['ACME sertifikalarıyla SSL/TLS termination','Rate limit ve bağlantı limitleri','Bot ve IP itibarı engelleme (Shield)','GSLB ile bölgeye göre DNS yanıtları'],
+        href: '/docs/traffic-and-certificates/acme/overview', more: 'ACME sertifika dokümanı' },
     ],
 
-    // Industries
-    indLabel: 'KİMLER İÇİN',
-    indItems: ['Finansal Hizmetler','E-Ticaret','Sağlık','Teknoloji','Telekomünikasyon','Medya ve Eğlence'],
-    indNote: 'Kullanım senaryonuz ne olursa olsun, Elchi ihtiyacınız olan esnekliği ve gücü sunar.',
+    // Guides (docs/guides; the docs are in English)
+    guidesH3: 'Adım adım rehberler',
+    guidesNote: 'Rehberler İngilizcedir.',
+    guideLabel: 'Rehber',
+    guides: [
+      ['manage-envoy-without-yaml', 'Proxy’leri xDS veya YAML elle yazmadan yönetin'],
+      ['run-multiple-envoy-versions', 'Birden fazla sürümü yan yana çalıştırın, listener’ları kesintisiz yükseltin'],
+      ['add-waf-to-envoy-ext-proc', 'Elchi Shield ile WAF (OWASP Core Rule Set) ekleyin'],
+      ['find-shadow-apis-envoy-access-logs', 'Access loglarından shadow ve belgelenmemiş API’leri bulun'],
+      ['gslb-dns-failover-envoy', 'Elchi ile GSLB ve DNS tabanlı failover'],
+      ['blue-green-envoy-eds', 'EDS ile blue/green dağıtım'],
+    ],
 
     // Final CTA
-    ctaEyebrow: 'ELCHI’Yİ ŞİMDİ DENEYİN',
     ctaH2a: 'Trafik yönetiminizi',
     ctaH2b: 'basitleştirmeye hazır mısınız?',
-    ctaIntro: 'Proxy yönetimi için yığın çözümünü demomuzla deneyin veya Helm chart’ımızı kullanarak Kubernetes cluster’ınıza dağıtın.',
-    ctaBtnDemo: 'Bize Ulaşın',
+    ctaIntro: 'Elchi’yi kendi kurulumunuz üzerinden konuşmak için demo talep edin ya da Helm chart ile ücretsiz seviyeyi Kubernetes’e kurup tek bir client’ı lisanssız yönetin.',
+    ctaBtnDemo: 'Demo talep et',
     ctaBtnHelm: 'Helm Charts',
     ctaBadges: ['Kullanıma Hazır','Kendi Altyapınızda','Çok Sürümlü Proxy','Agent Desteği'],
   },
@@ -291,14 +338,14 @@ const STR = {
 const RL = {
   en: {
     integrations: 'Works with', notes: 'What sets it apart', requires: 'Requires Core', release: 'Current release',
-    yes: 'Yes', no: 'No',
+    verdict: { yes: 'Yes', no: 'No', part: 'Partly' },
     shipTitle: 'How a change ships',
     ship: [['Save', 'as a draft'], ['Validate', 'in the editor and on the server'], ['Publish', 'to the fleet, atomically']],
     shipNote: 'Every change is recorded in the audit log.',
   },
   tr: {
     integrations: 'Birlikte çalışır', notes: 'Farkı', requires: 'Core gerektirir', release: 'Güncel sürüm',
-    yes: 'Var', no: 'Yok',
+    verdict: { yes: 'Evet', no: 'Hayır', part: 'Kısmen' },
     shipTitle: 'Bir değişiklik nasıl yayına çıkar',
     ship: [['Kaydet', 'taslak olarak'], ['Doğrula', 'editörde ve sunucuda'], ['Yayınla', 'filoya, atomik olarak']],
     shipNote: 'Her değişiklik denetim kaydına yazılır.',
@@ -345,18 +392,17 @@ function Hero() {
             <span className="rl-h1-line">{t.heroH1a}</span>{' '}
             <span className="rl-h1-line">{t.heroH1b}</span>
           </h1>
-          <p className="rl-hero-p">
-            {t.heroPara1}<strong>{t.heroParaStrong1}</strong>{t.heroPara2}
-            <strong>{t.heroParaStrong2}</strong>{t.heroPara3}
-          </p>
+          <p className="rl-hero-p">{t.heroPara}</p>
           <div className="rl-actions">
             <a href="/docs/getting-started/quickstart" className="rl-go">
-              {t.heroBtnDemo.replace(/\s*→$/, '')}<Arrow />
+              {t.heroBtnStart}<Arrow />
             </a>
+            <a href={locHref('contact')} className="rl-pill rl-pill-demo">{t.heroBtnDemo}</a>
             <button type="button" className="rl-pill" onClick={() => setFilmOpen(true)} onPointerEnter={loadPlayer} onFocus={loadPlayer}>
               <span className="rl-pill-play"><Play /></span>{t.heroBtnFilm}<span className="rl-pill-dur">{HOME_FILM.duration}</span>
             </button>
           </div>
+          <p className="rl-free">{t.heroFree}</p>
           <a href={locHref('architecture')} className="rl-link">{t.heroBtnArch}<Arrow /></a>
         </div>
         <HeroStage locale={locale} paused={filmOpen} />
@@ -373,6 +419,10 @@ function Hero() {
           </div>
         </div>
         <p className="rl-works"><span className="rl-map-label rl-works-label">{r.integrations}</span>{t.logosItems.map((it) => <span key={it} className="rl-works-item">{it}</span>)}</p>
+        <div className="rl-whatis">
+          <h2>{t.whatH2}</h2>
+          <p>{t.whatP}</p>
+        </div>
       </div>
       {filmOpen && createPortal(
         <Suspense fallback={null}><FilmPlayer onClose={closeFilm} /></Suspense>,
@@ -387,18 +437,18 @@ function Hero() {
 // dropdown, and product pages never drift apart. Core is the ground every add-on stands on.
 const PF_STR = {
   en: {
-    h2a: 'One platform.',
-    h2b: 'Four products.',
-    intro: 'Start with Elchi Core — the complete Envoy management platform — and license security, discovery, and traffic products as you need them.',
+    h2a: 'Elchi Core',
+    h2b: 'and three add-ons.',
+    intro: 'Start with Elchi Core — the base of the Elchi platform — and license security, discovery, and traffic products as you need them.',
     base: 'Base platform',
     addon: 'Add-on',
     learnMore: 'Learn more →',
     plansCta: 'See plans & licensing →',
   },
   tr: {
-    h2a: 'Tek platform.',
-    h2b: 'Dört ürün.',
-    intro: 'Eksiksiz Envoy yönetim platformu Elchi Core ile başlayın; güvenlik, keşif ve trafik ürünlerini ihtiyacınız oldukça lisanslayın.',
+    h2a: 'Elchi Core',
+    h2b: 've üç eklenti.',
+    intro: 'Elchi platformunun temeli Elchi Core ile başlayın; güvenlik, keşif ve trafik ürünlerini ihtiyacınız oldukça lisanslayın.',
     base: 'Temel platform',
     addon: 'Eklenti',
     learnMore: 'İncele →',
@@ -447,7 +497,7 @@ function FeaturesGrid() {
   const t = STR[getLocale()];
   return (
     <Band tone="mist" id="features">
-      <BandHead h2={<>{t.featuresH2a} {t.featuresH2b}</>} intro={t.featuresIntro} />
+      <BandHead h2={t.featuresH2} intro={t.featuresIntro} />
       <ul className="rl-notes">
         {t.features.map((it, i) => (
           <li key={i}>
@@ -465,30 +515,43 @@ function Comparison() {
   const locale = getLocale();
   const t = STR[locale];
   const r = RL[locale];
-  const Cell = ({ v }) => {
-    if (v === true) return <><Tick /><span className="sr">{r.yes}</span></>;
-    if (v === false) return <><Dash /><span className="sr">{r.no}</span></>;
-    return <span className="cmp-val">{v}</span>;
+  const ICON = { yes: Tick, no: Dash, part: Half };
+  // icon for the eye, the verdict and the reason as text (screen readers and extractors read the text)
+  const Cell = ({ v: [k, text], head, e }) => {
+    const Icon = ICON[k];
+    return (
+      <td className={`cmp-c${e ? ' cmp-e' : ''} cmp-${k}`} data-h={head}>
+        {Icon && <Icon />}
+        <span className="cmp-val">{r.verdict[k] && <b className="cmp-k">{r.verdict[k]}. </b>}{text}</span>
+      </td>
+    );
   };
   return (
-    <Band tone="sage">
-      <BandHead h2={<>{t.cmpH2a} {t.cmpH2b}</>} intro={t.cmpIntro} />
-      <div className="cmp" role="table">
-        <div className="cmp-row cmp-head" role="row">
-          <div className="cmp-f" role="columnheader">{t.cmpHeadFeature}</div>
-          <div className="cmp-c cmp-e" role="columnheader">{t.cmpHeadElchi}</div>
-          <div className="cmp-c" role="columnheader">{t.cmpHeadManual}</div>
-          <div className="cmp-c" role="columnheader">{t.cmpHeadMesh}</div>
-        </div>
-        {t.cmpRows.map((row, i) => (
-          <div key={i} className="cmp-row" role="row">
-            <div className="cmp-f" role="rowheader"><b>{row.f}</b><span>{row.sub}</span></div>
-            <div className="cmp-c cmp-e" role="cell" data-h={t.cmpHeadElchi}><Cell v={row.e} /></div>
-            <div className="cmp-c" role="cell" data-h={t.cmpHeadManual}><Cell v={row.m} /></div>
-            <div className="cmp-c" role="cell" data-h={t.cmpHeadMesh}><Cell v={row.s} /></div>
-          </div>
-        ))}
-      </div>
+    <Band tone="sage" id="compare">
+      <BandHead h2={t.cmpH2} intro={t.cmpIntro} />
+      {/* explicit roles keep the table semantics when the phone layout turns rows into grids */}
+      <table className="cmp" role="table">
+        <caption className="sr">{t.cmpCaption}</caption>
+        <thead role="rowgroup">
+          <tr className="cmp-row cmp-head" role="row">
+            <th scope="col" className="cmp-f" role="columnheader">{t.cmpHeadFeature}</th>
+            <th scope="col" className="cmp-c cmp-e" role="columnheader">{t.cmpHeadElchi}</th>
+            <th scope="col" className="cmp-c" role="columnheader">{t.cmpHeadManual}</th>
+            <th scope="col" className="cmp-c" role="columnheader">{t.cmpHeadMesh}</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          {t.cmpRows.map((row) => (
+            <tr key={row.f} className="cmp-row" role="row">
+              <th scope="row" className="cmp-f" role="rowheader">{row.f}</th>
+              <Cell v={row.e} head={t.cmpHeadElchi} e />
+              <Cell v={row.m} head={t.cmpHeadManual} />
+              <Cell v={row.s} head={t.cmpHeadMesh} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="rl-after"><a href={locHref('compare')} className="rl-link">{t.cmpMore}<Arrow /></a></p>
       <h3 className="rl-h3">{r.notes}</h3>
       <ul className="rl-notes rl-notes-4">
         {t.cmpUnique.map(([ut, ud], i) => (
@@ -504,7 +567,7 @@ function ScreenshotsGallery() {
   const t = STR[getLocale()];
   return (
     <Band tone="mist" id="screenshots" className="rl-shots">
-      <BandHead h2={<>{t.ssH2a} {t.ssH2b}</>} intro={t.ssIntro} />
+      <BandHead h2={t.ssH2} intro={t.ssIntro} />
       <ScreenGallery bare />
     </Band>
   );
@@ -515,7 +578,7 @@ function Architecture3() {
   const t = STR[getLocale()];
   return (
     <Band tone="deep">
-      <BandHead h2={<>{t.archH2a} {t.archH2b}</>} intro={t.archIntro} />
+      <BandHead h2={t.archH2} intro={t.archIntro} />
       <div className="arch">
         {t.archProc.map((p) => (
           <div key={p.name} className="arch-proc">
@@ -539,7 +602,8 @@ function Architecture3() {
 
 /* ====================== USE CASES ====================== */
 function UseCases() {
-  const t = STR[getLocale()];
+  const locale = getLocale();
+  const t = STR[locale];
   return (
     <Band tone="mist2" id="use-cases">
       <BandHead h2={t.ucH2} intro={t.ucIntro} />
@@ -547,16 +611,27 @@ function UseCases() {
         {t.ucCases.map((c) => (
           <div key={c.t} className="uc-row">
             <h3>{c.t}</h3>
-            <p>{c.d}</p>
+            <div className="uc-d">
+              <p>{c.d}</p>
+              <a href={c.href} className="rl-link uc-more">{c.more}<Arrow /></a>
+            </div>
             <ul>{c.list.map((it) => <li key={it}>{it}</li>)}</ul>
           </div>
         ))}
       </div>
-      <div className="ind">
-        <span className="rl-map-label">{t.indLabel}</span>
-        <ul>{t.indItems.map((it) => <li key={it}>{it}</li>)}</ul>
-        <p>{t.indNote}</p>
-      </div>
+      <h3 className="rl-h3" id="guides">{t.guidesH3}</h3>
+      {t.guidesNote && <p className="guides-note">{t.guidesNote}</p>}
+      <ul className="guides">
+        {t.guides.map(([slug, title]) => (
+          <li key={slug}>
+            <a href={`/docs/guides/${slug}`} hrefLang={locale === 'tr' ? 'en' : undefined}>
+              <span className="guides-kind">{t.guideLabel}</span>
+              <span className="guides-t">{title}</span>
+              <Arrow />
+            </a>
+          </li>
+        ))}
+      </ul>
     </Band>
   );
 }
@@ -597,4 +672,9 @@ function FinalCTA() {
 }
 
 export const Page = App;
-if (typeof document !== 'undefined') ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+// The prerendered HTML stays on screen until React commits; rendering inside a transition lets React
+// split that first render into small slices instead of one long task.
+if (typeof document !== 'undefined') {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  startTransition(() => root.render(<App/>));
+}

@@ -1,6 +1,7 @@
 ---
-title: Port atlas
-description: Every port the bare-metal Elchi stack listens on, per service and per node role.
+title: "Bare-Metal Port Atlas"
+sidebar_label: "Port atlas"
+description: "Every port the bare-metal Elchi stack listens on, per service and per node role, and whether it binds loopback or all interfaces, for your firewall rules."
 sidebar_position: 9
 ---
 

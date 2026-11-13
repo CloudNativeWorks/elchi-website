@@ -1,6 +1,7 @@
 ---
-title: Recommended Alerts
-description: A tiered set of PromQL alerting rules for an Elchi platform — config health, shield safety, collector backpressure, and backend/registry health — using the exact documented metric names, with honestly-framed starting thresholds.
+title: "Recommended Alerts for Elchi (PromQL)"
+sidebar_label: "Recommended Alerts"
+description: "Tiered PromQL alerting rules for an Elchi platform: config health, Shield safety, collector backpressure and backend health, with starting thresholds."
 sidebar_position: 5
 tags: [operations]
 ---

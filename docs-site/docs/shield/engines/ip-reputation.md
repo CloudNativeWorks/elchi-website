@@ -1,6 +1,7 @@
 ---
-title: IP Reputation
-description: Source-IP blocking by CIDR allow/deny lists, disk threat-intelligence feeds, and GeoIP country/ASN rules.
+title: "Shield IP Reputation, Threat Feeds & GeoIP"
+sidebar_label: "IP Reputation"
+description: "Block source IPs at the Envoy edge with Shield: CIDR allow and deny lists, threat-intelligence feeds from disk, and GeoIP country and ASN rules."
 sidebar_position: 8
 tags: [shield, engine]
 ---

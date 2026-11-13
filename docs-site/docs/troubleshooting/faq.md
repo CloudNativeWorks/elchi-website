@@ -1,6 +1,7 @@
 ---
-title: FAQ
-description: Frequently asked questions about Elchi — what it is, how config reaches edges, where the WAF lives, API Discovery privacy, deployment options, and data locality.
+title: "Elchi FAQ"
+sidebar_label: "FAQ"
+description: "Answers about Elchi: what it is, how config reaches Envoy edges, where the WAF runs, API Discovery privacy, deployment options and where data lives."
 sidebar_position: 2
 tags: [troubleshooting, faq]
 ---

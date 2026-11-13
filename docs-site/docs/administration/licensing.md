@@ -1,6 +1,7 @@
 ---
-title: Licensing
-description: View, activate, re-validate, and remove license keys, and the egress the license API requires.
+title: "Licensing: Activate and Manage License Keys"
+sidebar_label: "Licensing"
+description: "View, activate, re-validate and remove Elchi license keys, the free tier (Elchi Core with one managed client), and the access the license API needs."
 sidebar_position: 5
 ---
 

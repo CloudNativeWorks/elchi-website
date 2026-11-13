@@ -1,6 +1,7 @@
 ---
-title: Path Normalization
-description: How API Discovery templates high-cardinality request paths into stable operations — built-in detectors, learned templating for letter+digit ids and the merge job, operator rules, and the normalization-gap workflow.
+title: "API Path Normalization and Templating"
+sidebar_label: "Path Normalization"
+description: "How API Discovery turns high-cardinality request paths into stable operations: built-in detectors, learned templating, the merge job and operator rules."
 sidebar_position: 8
 tags: [api-discovery]
 ---

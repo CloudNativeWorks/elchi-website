@@ -1,6 +1,7 @@
 ---
-title: Drift & Snapshots
-description: Daily snapshots of the confirmed API surface and the change feed against them — new and removed operations, auth downgrades, new PII categories and risk flags, cleared flags, risk increases, status regressions, zombie resurrections and templated merges.
+title: "API Drift & Daily Snapshots"
+sidebar_label: "Drift & Snapshots"
+description: "Daily snapshots of your confirmed API surface and the change feed against them: new and removed operations, auth downgrades, new PII, risk rises and zombies."
 sidebar_position: 11
 tags: [api-discovery]
 ---

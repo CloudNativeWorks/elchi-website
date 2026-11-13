@@ -1,6 +1,7 @@
 ---
-title: Execute and Validate
-description: Turn a saved scenario into live Envoy resources — validate the component set, choose a version, fill execution-time values, and apply, with automatic rollback if any resource fails.
+title: "Execute and Validate a Scenario"
+sidebar_label: "Execute and Validate"
+description: "Turn a saved Elchi scenario into live Envoy resources: validate components, pick a version, fill execution-time values and apply, with automatic rollback."
 sidebar_position: 3
 tags: [scenarios, execute, validate, rollback]
 ---

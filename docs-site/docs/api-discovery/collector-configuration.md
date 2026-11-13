@@ -1,6 +1,6 @@
 ---
 title: Collector Configuration
-description: The elchi-collector runtime config document — header policy, ingest exclusions, path normalization and learned templating, PII switches, credential names, TLS proxies, GraphQL, and FP-first detector thresholds, hot-reloaded from MongoDB.
+description: "The elchi-collector runtime config: header policy, ingest exclusions, path normalization, PII switches, TLS proxies, GraphQL and detector thresholds."
 sidebar_position: 14
 tags: [api-discovery, collector]
 ---

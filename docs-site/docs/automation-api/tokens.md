@@ -1,6 +1,7 @@
 ---
-title: API tokens
-description: Project API tokens for the automation API — who can create them, scopes, expiry, how a token is checked on every request, and revoking one.
+title: "Automation API Tokens and Scopes"
+description: "Project API tokens for the Elchi automation API: who can create them, scopes, expiry, how each request is checked, and how to revoke a token."
+sidebar_label: "API tokens"
 sidebar_position: 2
 tags: [automation, api, security]
 ---
@@ -74,3 +75,7 @@ Every change made through the automation API is written to the audit log (**Admi
 - the actor type `api_token`;
 - the token's id and name;
 - the request's `X-Request-Id`.
+
+:::tip OpenAPI
+[Download the OpenAPI spec](https://www.elchi.io/docs/openapi/elchi-public-v1.yaml) for the full request and response schemas of the automation API.
+:::

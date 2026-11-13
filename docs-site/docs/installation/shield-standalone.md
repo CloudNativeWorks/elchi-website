@@ -1,6 +1,7 @@
 ---
-title: Standalone Shield Install
-description: Install elchi-shield as its own hardened systemd service on an edge host that runs Envoy without elchi-client.
+title: "Install Shield Standalone (without the Client)"
+sidebar_label: "Standalone Shield Install"
+description: "Install elchi-shield as its own hardened systemd service on an edge host that runs Envoy without elchi-client, and wire it to Envoy over ext_proc."
 sidebar_position: 7
 tags: [installation]
 ---

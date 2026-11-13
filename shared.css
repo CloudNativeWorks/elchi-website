@@ -1,0 +1,54 @@
+/* Nav and footer additions owned by shared.jsx (imported there, so every page gets
+   them). The base nav/footer styles are in styles.css; selectors here carry one more
+   class than the rules they adjust, so they win whatever order the bundles load in. */
+
+/* ---------- header: "Book a demo" next to Get started ---------- */
+.nav .nav-cta .nav-demo { height: 44px; padding: 0 18px; font-size: 15px; white-space: nowrap; }
+.nav .nav-cta .nav-demo.is-active { background: var(--sage); box-shadow: none; }
+
+/* the language toggle and the release pills: 44px tall tap targets */
+.nav .nav-cta .lang-switch-link { min-width: 44px; height: 44px; justify-content: center; padding: 0 10px; font-size: 12.5px; }
+.nav .nav-cta .nav-version { height: 44px; font-size: 12.5px; }
+
+/* desktop: the full link row, the demo button and the release pills do not all fit
+   below ~1440px, so the pills (also in the footer) give way first */
+@media (max-width: 1440px) { .nav .nav-cta .nav-versions { display: none; } }
+
+/* small desktops (above the burger breakpoint): the logo already links home, so the
+   Home link gives way and the links tighten, leaving room for both buttons */
+.nav .nav-links > a, .nav .nav-dd-trigger { white-space: nowrap; }
+@media (min-width: 1041px) and (max-width: 1280px) {
+  .nav .nav-links > a.nav-home { display: none; }
+  .nav .nav-links > a, .nav .nav-links .nav-dd-trigger { padding: 0 9px; }
+  .nav .nav-cta .nav-demo, .nav .nav-cta .btn-primary { padding: 0 14px; }
+}
+
+/* the menu's closing actions exist only inside the phone/tablet drawer */
+.nav .nav-links .nav-drawer-cta { display: none; }
+@media (max-width: 1040px) {
+  .nav.nav-open .nav-links .nav-drawer-cta {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; padding-top: 10px;
+    border-top: 1px solid rgba(23, 50, 74, .1);
+  }
+  .nav.nav-open .nav-links .nav-drawer-cta .btn {
+    display: inline-flex; align-items: center; justify-content: center; height: 52px; padding: 0 16px; font-size: 16px; width: 100%;
+  }
+}
+@media (max-width: 400px) {
+  .nav .nav-cta .nav-demo { padding: 0 14px; font-size: 14px; }
+  .nav .brand { margin-right: 4px; }
+}
+@media (max-width: 360px) {
+  .nav .nav-cta .nav-demo { display: none; }
+}
+
+/* ---------- footer ---------- */
+.footer .footer-legal { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; }
+
+/* touch screens: links in the footer lists and legal line get 44px tap targets */
+@media (pointer: coarse) {
+  .footer .footer-grid ul { gap: 0; }
+  .footer .footer-grid ul a { display: inline-flex; align-items: center; min-height: 44px; }
+  .footer .footer-bottom a { display: inline-flex; align-items: center; min-height: 44px; }
+  .footer .footer-rev a { display: inline-flex; align-items: center; min-height: 44px; padding-top: 0; padding-bottom: 0; }
+}

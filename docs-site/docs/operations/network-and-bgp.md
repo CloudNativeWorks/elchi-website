@@ -1,6 +1,7 @@
 ---
-title: Client Network & BGP
-description: The Network tab of a client — the netplan editor with safety-mode rollback, static routes, routing policies, routing tables, and FRR/BGP (configuration, neighbours with BFD, policies, routes, logs) including how service VIPs are announced.
+title: "Edge Client Network & BGP"
+sidebar_label: "Client Network & BGP"
+description: "An Elchi client's Network tab: netplan editing with rollback, static routes, routing policies and tables, and FRR/BGP with BFD, including VIP announcement."
 sidebar_position: 4
 tags: [operations]
 ---

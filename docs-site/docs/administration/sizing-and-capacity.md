@@ -1,6 +1,6 @@
 ---
 title: Sizing & Capacity
-description: Per-component resource guidance for an Elchi platform — control plane, MongoDB, ClickHouse, VictoriaMetrics, collector, and the shield sidecars — anchored to the Helm chart defaults, with a "what grows with what" model for planning capacity.
+description: "Size an Elchi platform: CPU, memory and storage for the control plane, MongoDB, ClickHouse, VictoriaMetrics, the collector and Shield, and what grows."
 sidebar_position: 11
 tags: [operations]
 ---

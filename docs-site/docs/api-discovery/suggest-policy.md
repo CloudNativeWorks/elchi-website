@@ -1,6 +1,6 @@
 ---
 title: Suggest a Shield Policy
-description: Turn a discovered API inventory into a draft Shield SecurityPolicy — the bridge from API Discovery to API Security.
+description: "Turn a discovered API inventory into a draft Shield SecurityPolicy, the bridge from Elchi API Discovery to API security enforcement at the Envoy edge."
 sidebar_position: 13
 tags: [api-discovery, shield]
 ---

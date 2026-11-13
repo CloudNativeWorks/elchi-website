@@ -1,6 +1,7 @@
 ---
-title: Configuration
-description: Point the Elchi Client at your Elchi server by editing its YAML config and restarting the service.
+title: "Elchi Client Configuration"
+sidebar_label: "Configuration"
+description: "Configure the Elchi Client edge agent: point it at your Elchi server in /etc/elchi/config.yaml, set its registration token, and restart the service."
 sidebar_position: 4
 ---
 

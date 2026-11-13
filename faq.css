@@ -7,7 +7,7 @@
 }
 .faq-item h3 { font: 700 22px/1.25 var(--font-sans); letter-spacing: -.015em; color: var(--lake); }
 .rl .faq-item p { font-size: 16px; line-height: 1.65; color: var(--lake-2); }
-.faq-doc { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--lake); text-decoration: none; }
+.faq-doc { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 600; color: var(--lake); text-decoration: none; }
 .faq-doc:hover { text-decoration: underline; }
 @media (max-width: 860px) {
   .faq-list { grid-template-columns: minmax(0, 1fr); }

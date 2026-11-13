@@ -1,6 +1,7 @@
 ---
-title: Clusters (blue/green switch)
-description: Point an EDS cluster at another endpoints resource (backend-blue to backend-green, and back) through the automation API; every listener that uses the cluster gets it at once.
+title: "Cluster Switch API: Blue/Green for Envoy EDS"
+description: "Point an Envoy EDS cluster at another endpoints resource (backend-blue to backend-green and back) with the Elchi automation API; every listener gets it at once."
+sidebar_label: "Clusters (blue/green switch)"
 sidebar_position: 5
 tags: [automation, api, operations]
 ---
@@ -177,3 +178,7 @@ curl -sS -X POST "$BASE/projects/$P/clusters/payments/switch-endpoints" \
 ```
 
 The old target stays as it is after a switch. Once nothing uses it, it can be deleted, or left in place for the next release.
+
+:::tip OpenAPI
+[Download the OpenAPI spec](https://www.elchi.io/docs/openapi/elchi-public-v1.yaml) for the full request and response schemas of the automation API.
+:::

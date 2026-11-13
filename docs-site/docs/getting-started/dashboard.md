@@ -1,6 +1,7 @@
 ---
-title: The Dashboard
-description: The first screen after login — a widget-based, per-project overview of resource counts, service errors, traffic, and security health, with links into every area of Elchi.
+title: "The Elchi Dashboard"
+sidebar_label: "The Dashboard"
+description: "The first screen after login: a per-project widget overview of Envoy resource counts, service errors, traffic and security health, linking into every area."
 sidebar_position: 6
 tags: [dashboard, overview, health, projects]
 ---

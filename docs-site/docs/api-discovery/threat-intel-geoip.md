@@ -1,6 +1,7 @@
 ---
-title: Threat Intelligence & GeoIP
-description: The elchi-collector enrichment chain — GeoIP, User-Agent classification, and Mongo-backed threat-intel feeds that add geo, reputation, and bot context to API Discovery.
+title: "Threat Intel & GeoIP in API Discovery"
+description: "How the elchi-collector enriches API Discovery events: GeoIP country and ASN tags, User-Agent classification and threat-intel blocklist matches."
+sidebar_label: "Threat Intelligence & GeoIP"
 sidebar_position: 15
 tags: [api-discovery, collector]
 ---

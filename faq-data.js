@@ -16,6 +16,13 @@ export const FAQ_GROUPS = [
           'Elchi, Envoy proxy filoları için görsel bir control plane’dir. Listener, route, cluster, endpoint, filtre ve sertifikaları, editörleri her Envoy sürümünün protobuf’larından üretilen bir arayüzde yapılandırır, değişikliği doğrular ve yayınlarsınız; Elchi bunu xDS ile Envoy’larınıza iletir. Hafif edge agent’lar Envoy’u kendi sunucularınızda çalıştırır; ek ürünler API güvenliğini (Shield), API keşfini ve GSLB’yi aynı control plane’e getirir.'],
       },
       {
+        doc: '/docs/getting-started/architecture',
+        en: ['Is Elchi a service mesh, or an alternative to Istio?',
+          'No, Elchi is not a service mesh. It is a control plane for Envoy proxies that run as edge and gateway proxies on Linux hosts, where an agent runs each listener as its own Envoy process. It does not inject sidecars into Kubernetes pods. Elchi fits when you run Envoy fleets on VMs or bare metal, need several Envoy versions side by side, or want the full Envoy API through typed editors. If what you need is service-to-service traffic management between pods with automatic sidecar injection, a mesh such as Istio is the better fit; Elchi can still run the Envoy edge in front of the cluster.'],
+        tr: ['Elchi bir service mesh mi, Istio’ya bir alternatif mi?',
+          'Hayır, Elchi bir service mesh değildir. Linux sunucularda edge ve gateway proxy olarak çalışan Envoy’lar için bir control plane’dir; her listener’ı bir agent ayrı bir Envoy süreci olarak çalıştırır. Kubernetes pod’larına sidecar enjekte etmez. Envoy filolarını VM ya da bare metal üzerinde çalıştırıyorsanız, birden çok Envoy sürümünü yan yana kullanmanız gerekiyorsa ya da Envoy API’sinin tamamına tipli editörlerle erişmek istiyorsanız Elchi uygundur. İhtiyacınız pod’lar arası servisten servise trafik yönetimi ve otomatik sidecar enjeksiyonuysa Istio gibi bir mesh daha uygundur; Elchi yine de cluster’ın önündeki Envoy edge’ini çalıştırabilir.'],
+      },
+      {
         doc: '/docs/envoy-configuration/config-model',
         en: ['Do I still have to write Envoy YAML or xDS by hand?',
           'No. Every Envoy resource is edited through typed forms, and each change is checked twice: in the editor against types generated from the Envoy API, and on the server against the Envoy API’s validation rules before it is stored. Changes go through draft, save and publish steps with an audit log, and a published change reaches the running Envoys over xDS without a restart.'],
@@ -45,9 +52,9 @@ export const FAQ_GROUPS = [
       {
         doc: '/docs/installation/helm-platform/overview',
         en: ['Do I need Kubernetes to run Elchi?',
-          'No. The control plane installs with a Helm chart on Kubernetes, with the Docker Swarm installer, or on bare-metal Linux hosts; a single-VM evaluation install is also available. The Envoy proxies themselves run on Linux edge hosts managed by the Elchi client, or on Elchi OS appliances.'],
+          'No. The control plane installs with a Helm chart on Kubernetes, with the Docker Swarm installer, or as systemd services on bare-metal Linux hosts with no Kubernetes and no Docker; a single-VM evaluation install is also available. The Envoy proxies themselves run on Linux edge hosts (VMs or bare metal) managed by the Elchi client, each listener as its own systemd service, or on Elchi OS appliances.'],
         tr: ['Elchi’yi çalıştırmak için Kubernetes gerekir mi?',
-          'Hayır. Control plane Kubernetes üzerinde Helm chart ile, Docker Swarm kurucusuyla veya bare-metal Linux sunuculara kurulur; tek VM’lik bir deneme kurulumu da vardır. Envoy proxy’lerin kendisi, Elchi client’ın yönettiği Linux edge sunucularda ya da Elchi OS appliance’larında çalışır.'],
+          'Hayır. Control plane Kubernetes üzerinde Helm chart ile, Docker Swarm kurucusuyla ya da Kubernetes ve Docker olmadan bare-metal Linux sunuculara systemd servisleri olarak kurulur; tek VM’lik bir deneme kurulumu da vardır. Envoy proxy’lerin kendisi, Elchi client’ın yönettiği Linux edge sunucularda (VM ya da bare metal), her listener ayrı bir systemd servisi olarak, ya da Elchi OS appliance’larında çalışır.'],
       },
       {
         doc: '/docs/installation/client/overview',
@@ -75,6 +82,13 @@ export const FAQ_GROUPS = [
           'Through Shield, an ext_proc sidecar that runs next to Envoy on each edge host. Envoy streams each request to Shield over a local socket, and Shield returns allow, block (403) or record-only detect verdicts from twelve security engines (among them authentication, rate limiting, bot defense and a WAF built on the OWASP Core Rule Set) plus built-in data-loss prevention. Policies are rolled out from detect to block.'],
         tr: ['Elchi, Envoy’a WAF’ı nasıl ekler?',
           'Her edge sunucuda Envoy’un yanında çalışan bir ext_proc sidecar olan Shield ile. Envoy her isteği yerel bir soket üzerinden Shield’a iletir; Shield; kimlik doğrulama, rate limiting, bot savunması ve OWASP Core Rule Set tabanlı bir WAF dahil on iki güvenlik motoru ile yerleşik veri sızıntısı önleme üzerinden allow, block (403) veya yalnızca kayıt tutan detect kararı döner. Politikalar detect’ten block’a kademeli olarak devreye alınır.'],
+      },
+      {
+        doc: '/docs/guides/add-waf-to-envoy-ext-proc',
+        en: ['How does Shield compare to a Wasm-based WAF?',
+          'Shield runs outside Envoy. Envoy’s ext_proc filter streams each request to the Shield sidecar over a local Unix socket, so the WAF is a separate process with its own memory limit, its own release cycle and its own failure domain: a crash in Shield does not take Envoy down, and Envoy’s failure_mode_allow setting decides whether traffic continues without it. The cost is a gRPC round trip per inspected message, and the body is buffered only on routes whose policy inspects it. A Wasm WAF runs inside Envoy’s worker threads in a sandboxed VM: it avoids the extra hop but shares Envoy’s process and resources, and it is loaded and updated through the Envoy configuration. Shield also runs authentication, rate limiting, bot detection and DLP in the same pass as the OWASP Core Rule Set.'],
+        tr: ['Shield, Wasm tabanlı bir WAF ile nasıl karşılaştırılır?',
+          'Shield Envoy’un dışında çalışır. Envoy’un ext_proc filter’ı her isteği yerel bir Unix soketi üzerinden Shield sidecar’ına akıtır; böylece WAF kendi bellek sınırı, kendi sürüm döngüsü ve kendi hata alanı olan ayrı bir süreçtir: Shield’daki bir çökme Envoy’u düşürmez ve trafiğin onsuz devam edip etmeyeceğine Envoy’un failure_mode_allow ayarı karar verir. Bedeli, incelenen her mesaj için bir gRPC gidiş-dönüşüdür; gövde yalnızca policy’si gövde inceleyen route’larda buffer’lanır. Wasm tabanlı bir WAF Envoy’un worker thread’lerinde, sandbox’lı bir VM içinde çalışır: ek atlamadan kaçınır ama Envoy’un sürecini ve kaynaklarını paylaşır, Envoy yapılandırması üzerinden yüklenir ve güncellenir. Shield ayrıca kimlik doğrulama, rate limiting, bot tespiti ve DLP’yi OWASP Core Rule Set ile aynı geçişte çalıştırır.'],
       },
       {
         doc: '/docs/api-discovery/overview',
@@ -109,6 +123,13 @@ export const FAQ_GROUPS = [
           'Yes. Without a license, Elchi runs Elchi Core with one managed client, which is enough to evaluate the platform end to end.'],
         tr: ['Ücretsiz bir sürüm var mı?',
           'Evet. Lisans olmadan Elchi, bir yönetilen client ile Elchi Core olarak çalışır; bu, platformu uçtan uca denemek için yeterlidir.'],
+      },
+      {
+        doc: '/docs/changelog',
+        en: ['Is Elchi open source?',
+          'No. The source code of Elchi’s components (the UI, the backend, the edge agent, Shield and the collector) is not public. Release binaries and the installers are published openly in the elchi-archive repository on GitHub, container images on Docker Hub, and the Helm charts at charts.elchi.io. Without a license the platform runs the free tier, Elchi Core with one managed client, so you can install and evaluate it without talking to anyone.'],
+        tr: ['Elchi açık kaynak mı?',
+          'Hayır. Elchi bileşenlerinin (arayüz, backend, edge agent, Shield ve collector) kaynak kodu herkese açık değildir. Sürüm binary’leri ve kurucular GitHub’daki elchi-archive deposunda, container imajları Docker Hub’da, Helm chart’ları charts.elchi.io adresinde açıkça yayınlanır. Lisans olmadan platform ücretsiz seviyede, bir yönetilen client ile Elchi Core olarak çalışır; yani kimseyle konuşmadan kurup deneyebilirsiniz.'],
       },
     ],
   },

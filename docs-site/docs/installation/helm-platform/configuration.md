@@ -1,6 +1,7 @@
 ---
-title: Configuration
-description: Chart values for the Elchi platform, including global parameters and external MongoDB / VictoriaMetrics settings.
+title: "Helm Chart Configuration Values"
+sidebar_label: "Configuration"
+description: "elchi-stack Helm chart values for the Elchi platform: global parameters, the required main address, credentials, and external MongoDB and VictoriaMetrics."
 sidebar_position: 4
 ---
 

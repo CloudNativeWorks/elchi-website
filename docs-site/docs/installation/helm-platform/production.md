@@ -1,6 +1,7 @@
 ---
-title: Production Setup
-description: A reference production values file and high-availability guidelines for the Elchi platform.
+title: "Helm Production Setup and HA"
+sidebar_label: "Production Setup"
+description: "A reference production values file for the elchi-stack Helm chart and high-availability guidance for running the Elchi platform on Kubernetes."
 sidebar_position: 6
 ---
 

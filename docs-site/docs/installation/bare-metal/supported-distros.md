@@ -1,6 +1,7 @@
 ---
-title: Supported distros + idempotency
-description: Supported Linux distributions, why older releases are dropped, and how hash-based reconcile makes reruns idempotent.
+title: "Bare-Metal Supported Distros & Idempotency"
+sidebar_label: "Supported distros + idempotency"
+description: "The Linux distributions the bare-metal Elchi installer supports, why older releases are dropped, and how hash-based reconcile makes reruns idempotent."
 sidebar_position: 12
 ---
 

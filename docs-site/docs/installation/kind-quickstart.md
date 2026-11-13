@@ -1,6 +1,7 @@
 ---
-title: Single-Host (kind + Helm)
-description: Evaluate the full Elchi stack on a single Ubuntu 24.04 VM — the root installer auto-provisions Docker, kind, kubectl and Helm and deploys the elchi-stack chart into a local kind cluster.
+title: "Single-Host Install with kind and Helm"
+sidebar_label: "Single-Host (kind + Helm)"
+description: "Evaluate the full Elchi stack on one Ubuntu 24.04 VM: the installer provisions Docker, kind, kubectl and Helm and deploys the elchi-stack chart for you."
 sidebar_position: 3
 tags: [installation, docker]
 ---

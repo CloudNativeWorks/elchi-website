@@ -1,6 +1,7 @@
 ---
-title: elchi-stack — operator helper
-description: Subcommand reference for the elchi-stack operator helper installed on every node.
+title: "elchi-stack Operator Helper Reference"
+sidebar_label: "elchi-stack helper"
+description: "Reference for elchi-stack, the helper on every bare-metal Elchi node: status, logs, add-node, MongoDB and ClickHouse checks, secrets, TLS info and verify."
 sidebar_position: 8
 ---
 

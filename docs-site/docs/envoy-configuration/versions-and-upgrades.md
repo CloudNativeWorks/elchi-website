@@ -1,6 +1,7 @@
 ---
-title: Versions & Upgrades
-description: How Elchi runs mixed Envoy versions side by side and migrates resources from one version to another.
+title: "Envoy Versions & Zero-Downtime Upgrades"
+sidebar_label: "Versions & Upgrades"
+description: "How Elchi serves several Envoy versions side by side, routes each proxy to its version's control plane, and moves listeners to a new version by hot restart."
 sidebar_position: 3
 ---
 

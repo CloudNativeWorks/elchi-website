@@ -1,6 +1,6 @@
 ---
 title: Backup & Restore
-description: Export and re-import a project's platform state, validate a backup before applying it, inspect backup metadata, and clean up resources for a retired Envoy version.
+description: "Export and re-import an Elchi project's platform state, validate a backup before applying it, inspect its metadata, and clean up a retired Envoy version."
 sidebar_position: 6
 tags: [administration, backup, maintenance]
 ---

@@ -1,9 +1,11 @@
 ---
-title: How to Run Several Envoy Versions Side by Side and Upgrade Listeners with Zero Downtime
-description: Deploy one Elchi control-plane variant per Envoy version so proxies on different versions are served at the same time, then move listeners to the newer version with the listener upgrade, which copies their dependencies to the target version and switches the running Envoy by hot restart.
+title: "Run Multiple Envoy Versions, Zero-Downtime Upgrades"
+description: "Run several Envoy versions side by side with one Elchi control plane per version, then upgrade listeners by hot restart without dropping connections."
 sidebar_position: 3
 tags: [guide]
 ---
+
+# How to Run Several Envoy Versions Side by Side and Upgrade Listeners with Zero Downtime
 
 To run several Envoy versions at once, each proxy has to be served by a control plane that builds configuration for its version. Elchi deploys one control-plane variant per configured Envoy version, and the registry routes each proxy to the variant that matches the version it reports, so listeners on different versions run side by side in one project. To move a listener to a newer version, you use the listener upgrade: it copies the listener's dependencies into the target version, moves the listener and its bootstrap, and the edge agent switches the running Envoy with a hot restart, which keeps existing connections open when the two Envoy binaries are hot-restart compatible.
 
@@ -39,3 +41,9 @@ To run several Envoy versions at once, each proxy has to be served by a control 
 - [Snapshot Dump](/envoy-configuration/snapshot-dump) - confirm which version a node is served.
 - [Background Jobs](/observability/background-jobs) - follow and retry the upgrade job.
 - [Registry & HA](/administration/registry-and-ha) - how the registry tracks control planes.
+
+## Next steps
+
+- **Product:** [Elchi Core](https://www.elchi.io/products/core.html) - multi-version control planes and the listener upgrade described here.
+- **Plans:** [compare plans and licensing](https://www.elchi.io/plans.html), from the free tier to enterprise.
+- **Talk to us:** running this across many Envoy edges? [Book a demo](https://www.elchi.io/contact.html) with the Elchi team.

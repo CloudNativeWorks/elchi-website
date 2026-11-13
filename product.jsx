@@ -17,40 +17,38 @@ const PAGE = {
   en: {
     addon: 'Add-on · Requires Elchi Core',
     foundation: 'Foundation · Included in every deployment',
-    capsEyebrow: 'CAPABILITIES',
-    capsTitle: 'What you get.',
     btnDemo: 'Get Started →',
     btnDocs: 'Read the docs',
+    btnTalk: 'Request a demo',
     btnPlans: 'See plans',
-    relatedEyebrow: 'BETTER TOGETHER',
+    docsLabel: 'In the docs',
     relatedTitle: 'Works with the rest of the platform.',
     learnMore: 'Learn more →',
-    ctaTitle: 'See it live.',
-    ctaSubtitle: 'Talk to us about a proof of concept, or start with the quickstart guide.',
+    ctaTitle: 'Talk to us about a demo.',
+    ctaSubtitle: 'Tell us how many Envoy hosts you run, which Envoy versions, and which add-ons you are evaluating. We reply with a demo or a proof-of-concept plan for your setup. To try it yourself first, the quickstart installs the free tier.',
     ctaContact: 'Contact us',
+    ctaQuickstart: 'Quickstart guide',
     shotsEyebrow: 'IN THE PRODUCT',
-    shotsTitle: 'See it in action.',
     videosEyebrow: 'VIDEO TUTORIALS',
-    videosTitle: 'Watch it work.',
+    videosTitle: (name) => `${name} video tutorials`,
   },
   tr: {
     addon: 'Eklenti · Elchi Core gerektirir',
     foundation: 'Temel · Her kurulumda dahildir',
-    capsEyebrow: 'YETENEKLER',
-    capsTitle: 'Neler sunar.',
     btnDemo: 'Başlayın →',
     btnDocs: 'Dokümanları okuyun',
+    btnTalk: 'Demo isteyin',
     btnPlans: 'Paketleri görün',
-    relatedEyebrow: 'BİRLİKTE DAHA GÜÇLÜ',
+    docsLabel: 'Dokümanlarda',
     relatedTitle: 'Platformun geri kalanıyla birlikte çalışır.',
     learnMore: 'İncele →',
-    ctaTitle: 'Canlı görün.',
-    ctaSubtitle: 'Bir proof of concept için bizimle konuşun ya da quickstart rehberiyle başlayın.',
+    ctaTitle: 'Bir demo için konuşalım.',
+    ctaSubtitle: 'Kaç Envoy sunucusu çalıştırdığınızı, hangi Envoy sürümlerini kullandığınızı ve hangi eklentileri değerlendirdiğinizi yazın. Kurulumunuza göre bir demo ya da proof-of-concept planıyla dönelim. Önce kendiniz denemek isterseniz quickstart ücretsiz seviyeyi kurar.',
     ctaContact: 'Bize ulaşın',
+    ctaQuickstart: 'Quickstart rehberi',
     shotsEyebrow: 'ÜRÜNDEN',
-    shotsTitle: 'İş başında görün.',
     videosEyebrow: 'VİDEO EĞİTİMLERİ',
-    videosTitle: 'Çalışırken izleyin.',
+    videosTitle: (name) => `${name} video eğitimleri`,
   },
 };
 
@@ -85,7 +83,7 @@ function ProductPage({ slug }) {
           lede={t.subtitle}
           actions={<>
             <a href="/docs/getting-started/quickstart" className="rl-go">{noArrow(pg.btnDemo)}<Arrow/></a>
-            <a href={p.docs} className="rl-pill">{pg.btnDocs}</a>
+            <a href={locHref('contact')} className="rl-pill">{pg.btnTalk}</a>
           </>}
           aside={
             <div className="pd-facts">
@@ -94,14 +92,35 @@ function ProductPage({ slug }) {
               <ul className="pd-badges">
                 {t.badges.map((b) => <li key={b}><Tick/>{b}</li>)}
               </ul>
-              <a href={locHref('plans')} className="rl-link">{pg.btnPlans}<Arrow/></a>
+              <p className="pd-facts-links">
+                <a href={p.docs} className="rl-link">{pg.btnDocs}<Arrow/></a>
+                <a href={locHref('plans')} className="rl-link">{pg.btnPlans}<Arrow/></a>
+              </p>
             </div>
           }
         />
 
+        {/* Definition first: the opening passage answers "What is …?" and points at the docs */}
+        <Band tone="mist" id="what">
+          <div className="pd-what">
+            <div className="pd-what-copy">
+              <h2 className="rl-h2 pd-what-h">{t.what.q}</h2>
+              <p className="pd-what-p">{t.what.p}</p>
+            </div>
+            <nav className="pd-docs" aria-label={pg.docsLabel}>
+              <p className="pd-docs-label">{pg.docsLabel}</p>
+              <ul>
+                {p.guides.map((g) => (
+                  <li key={g.href}><a href={g.href}><span>{g[locale]}</span><Arrow/></a></li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </Band>
+
         {/* Capabilities */}
         <Band tone="water" id="capabilities">
-          <BandHead h2={pg.capsTitle}/>
+          <BandHead h2={t.capsTitle}/>
           <ul className="rl-notes pd-caps">
             {t.caps.map((c) => (
               <li key={c.t}>
@@ -120,19 +139,30 @@ function ProductPage({ slug }) {
           )}
         </Band>
 
-        {/* Screenshots (ProductShots draws its own heading; the band heading replaces it) */}
+        {/* Screenshots: ProductShots draws the band's only heading (one H2, no duplicate) */}
         {p.shots && (
           <Band tone="mist" id="screenshots" className="pd-shots">
-            <BandHead h2={pg.shotsTitle}/>
-            <ProductShots ids={p.shots} eyebrow={pg.shotsEyebrow} title={pg.shotsTitle}/>
+            <ProductShots ids={p.shots} eyebrow={pg.shotsEyebrow} title={t.shotsTitle}/>
           </Band>
         )}
 
+        {/* Evaluation: the questions an engineer asks before running it */}
+        <Band tone="mist2" id="evaluate">
+          <div className="pd-eval">
+            {t.evaluate.map((e) => (
+              <section key={e.q} className="pd-eval-item">
+                <h2 className="pd-eval-h">{e.q}</h2>
+                {e.a.map((para, i) => <p key={i}>{para}</p>)}
+              </section>
+            ))}
+          </div>
+        </Band>
+
         {/* Video tutorials: VideoStrip draws its own band, and nothing when no video is public yet */}
-        <VideoStrip slugs={VIDEOS_BY_PRODUCT[slug] || []} eyebrow={pg.videosEyebrow} title={pg.videosTitle} tone="sage"/>
+        <VideoStrip slugs={VIDEOS_BY_PRODUCT[slug] || []} eyebrow={pg.videosEyebrow} title={pg.videosTitle(t.metaName)} tone="sage"/>
 
         {/* Flow */}
-        <Band tone="mist2" id="how-it-works">
+        <Band tone="mist" id="how-it-works">
           <BandHead h2={t.flow.title}/>
           <ol className="pd-flow">
             {t.flow.steps.map((s, i) => (
@@ -143,6 +173,19 @@ function ProductPage({ slug }) {
               </li>
             ))}
           </ol>
+        </Band>
+
+        {/* Short Q&A (visible text only; product pages carry no FAQPage schema) */}
+        <Band tone="water" id="questions">
+          <BandHead h2={t.qa.title}/>
+          <div className="pd-qa">
+            {t.qa.items.map((it) => (
+              <article key={it.q} className="pd-qa-item">
+                <h3>{it.q}</h3>
+                <p>{it.a}</p>
+              </article>
+            ))}
+          </div>
         </Band>
 
         {/* Related products */}
@@ -162,7 +205,7 @@ function ProductPage({ slug }) {
           </div>
         </Band>
 
-        {/* Closing */}
+        {/* Closing: the conversation is the goal; the quickstart is the self-serve path */}
         <Band tone="moss" className="rl-cta-band">
           <div className="pd-cta">
             <div>
@@ -170,8 +213,8 @@ function ProductPage({ slug }) {
               <p className="rl-lede">{pg.ctaSubtitle}</p>
             </div>
             <div className="rl-actions">
-              <a href="/docs/getting-started/quickstart" className="rl-go">{noArrow(pg.btnDemo)}<Arrow/></a>
-              <a href={locHref('contact')} className="rl-pill">{pg.ctaContact}</a>
+              <a href={locHref('contact')} className="rl-go">{pg.ctaContact}<Arrow/></a>
+              <a href="/docs/getting-started/quickstart" className="rl-pill">{pg.ctaQuickstart}</a>
             </div>
           </div>
         </Band>

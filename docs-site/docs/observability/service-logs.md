@@ -1,6 +1,7 @@
 ---
-title: Service Logs
-description: Search a listener's Envoy and access logs by time range — Discover-style histogram, field sidebar, query syntax, exact totals and paging evaluated on the proxy host.
+title: "Envoy Service Logs Search"
+sidebar_label: "Service Logs"
+description: "Search an Envoy listener's logs and access logs by time range with a histogram, field sidebar and query syntax, with totals and paging evaluated on the host."
 sidebar_position: 2
 tags: [operations]
 ---

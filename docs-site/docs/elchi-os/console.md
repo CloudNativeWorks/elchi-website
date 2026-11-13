@@ -1,6 +1,7 @@
 ---
-title: Console Reference
-description: The Elchi OS management console — show, set and apply, network changes with commit-confirm, firewall, system, config and import commands, logs, diagnostics and help, with exact syntax.
+title: "Elchi OS Console Reference"
+sidebar_label: "Console Reference"
+description: "The Elchi OS management console: show, set and apply, network changes with commit-confirm, firewall, system, config, logs and diagnostics, with exact syntax."
 sidebar_position: 3
 tags: [elchi-os, operations, reference]
 ---

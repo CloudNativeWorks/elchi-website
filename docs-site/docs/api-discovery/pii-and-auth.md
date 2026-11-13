@@ -1,6 +1,6 @@
 ---
 title: PII, Auth & Consumers
-description: How API Discovery detects PII in paths and query strings (including Turkish national ids and mobile numbers), the per-detector switches, credential parameter names, auth-scheme and consumer inference, and the metadata-only privacy model.
+description: "How API Discovery detects PII in paths and query strings, infers auth schemes and consumers, and keeps a metadata-only privacy model with per-detector switches."
 sidebar_position: 6
 tags: [api-discovery]
 ---

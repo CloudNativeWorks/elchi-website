@@ -1,6 +1,7 @@
 ---
-title: Wizard Walkthrough
-description: Step through the Quick Start hub and the three-step create wizard — basic info, picking components and their fields, and review — and see exactly what the wizard generates.
+title: "Scenario Wizard Walkthrough"
+sidebar_label: "Wizard Walkthrough"
+description: "Step through the Scenario Quick Start hub and the three-step create wizard (basic info, components and fields, review) and see what the wizard generates."
 sidebar_position: 2
 tags: [scenarios, wizard, quick-start, create]
 ---

@@ -1,6 +1,7 @@
 ---
-title: Reports
-description: Project-wide reports — problems first, then the traffic map, domains, certificates, security per filter chain, unused and broken resources, the fleet and changes — each exportable to CSV or JSON.
+title: "Project Reports: Traffic, Certs, Security"
+sidebar_label: "Reports"
+description: "Project-wide Elchi reports: problems first, then traffic map, domains, certificates, security per filter chain, unused resources and changes, as CSV or JSON."
 sidebar_position: 2.7
 tags: [operations]
 ---

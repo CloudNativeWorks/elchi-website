@@ -1,6 +1,7 @@
 ---
-title: Appliance Tab
-description: The Appliance tab on an Elchi OS client's detail page in the Elchi UI — release and boot slots, health, upgrade state, firewall, network confirm, the CIS compliance check, and support bundle and configuration archive downloads.
+title: "Elchi OS Appliance Tab"
+sidebar_label: "Appliance Tab"
+description: "The Appliance tab of an Elchi OS client in the UI: release and boot slots, health, upgrades, firewall, network confirm, CIS check and support bundle downloads."
 sidebar_position: 6
 tags: [elchi-os, operations]
 ---

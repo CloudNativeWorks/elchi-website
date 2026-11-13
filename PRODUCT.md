@@ -35,7 +35,7 @@ Elchi manages a whole Envoy fleet from one place without hand-written xDS: typed
 - Product family: Elchi Core (base platform, included in every deployment) plus licensed add-ons API Security (Shield, with built-in WAF), API Discovery and GSLB. Each add-on requires Core.
 - Licensing scales with the number of managed clients (edge nodes); per-product enforcement is still being rolled out (current releases enforce the client count). Without a license the free tier runs one managed client.
 - Architecture: three processes (Registry, Controller, Control-Plane) plus a lightweight edge agent on every edge host.
-- Source is Apache-2.0 licensed; repositories under github.com/CloudNativeWorks. Built by CloudNativeWorks, powered by Profelis (footer).
+- Commercial license with a free tier; the product source repositories are private. Public under github.com/CloudNativeWorks: elchi-archive (release binaries and installers), elchi-proto, versioned-go-control-plane and this website (Apache-2.0). Built by CloudNativeWorks, powered by Profelis (footer).
 - Performance matters: the home hero is a live WebGL scene with a poster image first; heavy media must not block the first load.
 
 ## Brand Commitments

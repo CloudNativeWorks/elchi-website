@@ -1,6 +1,7 @@
 ---
-title: Risk Flags Reference
-description: The complete catalog of API Discovery risk flags — grouped by class, with severity, axis, OWASP API Top-10 mapping, meaning and remediation, plus how active, historical and derived flags work.
+title: "API Risk Flags Reference"
+sidebar_label: "Risk Flags Reference"
+description: "Every API Discovery risk flag by class, with severity, risk axis, OWASP API Top 10 mapping, meaning and remediation, and how active and historical flags work."
 sidebar_position: 5
 tags: [api-discovery]
 ---

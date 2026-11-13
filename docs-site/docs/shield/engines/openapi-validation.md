@@ -1,6 +1,7 @@
 ---
-title: OpenAPI Validation
-description: Positive security — validate every request against an OpenAPI 3.x contract and block anything the spec doesn't declare.
+title: "Shield OpenAPI Request Validation"
+sidebar_label: "OpenAPI Validation"
+description: "Positive security at the Envoy edge: Shield validates every request against an OpenAPI 3.x contract and blocks anything the spec does not declare."
 sidebar_position: 12
 tags: [shield, engine]
 ---

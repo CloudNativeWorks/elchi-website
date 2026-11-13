@@ -1,0 +1,50 @@
+# Elchi
+
+> Elchi (elchi.io) is a visual control plane for Envoy proxy fleets, built by CloudNativeWorks. You configure Envoy listeners, routes, clusters, endpoints, filters and certificates in a UI whose editors are generated from each Envoy version's protobufs, validate the change and publish it; Elchi pushes it to your Envoys over xDS, with several Envoy versions running side by side. Lightweight edge agents run Envoy on your Linux VMs, and the platform itself installs on Kubernetes (Helm), Docker Swarm or bare-metal VMs. Add-on products bring API security with a built-in OWASP CRS WAF via Envoy ext_proc (Shield), API discovery from Envoy access logs, and DNS-based GSLB for Envoy. This Elchi is not related to other products or projects that share the name, such as the Elchi dictation app.
+
+Core is the base product; API Security, API Discovery and GSLB are add-ons licensed on top of it. Licensing scales with the number of managed clients (edge nodes); without a license Elchi runs a free tier with a single managed client. A versioned REST automation API (project API tokens) can take upstream endpoints out of rotation and switch EDS clusters for blue/green releases.
+
+## Product pages
+
+- [Elchi home](https://www.elchi.io/): overview of the visual Envoy control plane and its add-on products
+- [Elchi Core](https://www.elchi.io/products/core.html): visual control plane for the Envoy fleet: full xDS, multi-version support, safe publish workflows and the edge agent
+- [Elchi API Security (Shield)](https://www.elchi.io/products/api-security.html): ext_proc engine next to each Envoy: authentication, rate limiting, bot defense, DLP and a built-in OWASP CRS WAF, composed per route
+- [Elchi API Discovery](https://www.elchi.io/products/api-discovery.html): API inventory from live Envoy traffic: shadow endpoints, missing auth, PII exposure, drift and OpenAPI 3.0.3 export
+- [Elchi GSLB](https://www.elchi.io/products/gslb.html): CoreDNS-based authoritative DNS driven by distributed health checks: region-scoped answers and failover zones
+- [Features](https://www.elchi.io/features.html): every platform capability in one list
+- [Architecture](https://www.elchi.io/architecture.html): the three backend processes (Registry, Controller, Control-Plane) and the edge data plane
+- [Plans & Licensing](https://www.elchi.io/plans.html): Core plus add-ons, licensed by managed client count; free tier with one client
+- [FAQ](https://www.elchi.io/faq.html): what Elchi is, supported Envoy versions, installation, Shield, API discovery and licensing
+- [Contact](https://www.elchi.io/contact.html): demos and enterprise licenses
+- [Compare alternatives](https://www.elchi.io/compare.html): Elchi vs Istio, Envoy Gateway and a custom go-control-plane build, with sources
+- [Elchi vs Istio](https://www.elchi.io/compare/istio.html): managing Envoy on VMs and edge fleets vs a service mesh
+- [Elchi vs Envoy Gateway](https://www.elchi.io/compare/envoy-gateway.html): typed Envoy API UI vs Gateway API resources
+- [Elchi vs go-control-plane](https://www.elchi.io/compare/go-control-plane.html): build your own control plane or use Elchi
+- [About](https://www.elchi.io/about.html): who builds Elchi (CloudNativeWorks), offices and distribution channels
+- [Blog](https://www.elchi.io/docs/blog): engineering posts on xDS, Envoy on VMs and the OWASP CRS via ext_proc
+
+## Docs
+
+- [Introduction](https://www.elchi.io/docs/getting-started/introduction): what Elchi is and how the documentation is organised
+- [Quick Start](https://www.elchi.io/docs/getting-started/quickstart): install the full stack on Kubernetes with one Helm command and connect the first edge host
+- [Core Concepts](https://www.elchi.io/docs/getting-started/concepts): the three cooperating processes, the client agent and how a configuration change flows
+- [Architecture](https://www.elchi.io/docs/getting-started/architecture): component map and every inter-component connection
+- [How to manage Envoy without hand-writing xDS or YAML](https://www.elchi.io/docs/guides/manage-envoy-without-yaml)
+- [How to add a WAF (OWASP Core Rule Set) to Envoy with ext_proc](https://www.elchi.io/docs/guides/add-waf-to-envoy-ext-proc)
+- [How to find shadow and undocumented APIs from Envoy access logs](https://www.elchi.io/docs/guides/find-shadow-apis-envoy-access-logs)
+- [How to do GSLB and DNS-based failover for Envoy](https://www.elchi.io/docs/guides/gslb-dns-failover-envoy)
+- [How to run several Envoy versions side by side and upgrade listeners with zero downtime](https://www.elchi.io/docs/guides/run-multiple-envoy-versions)
+- [How to do blue/green deployments with Envoy EDS](https://www.elchi.io/docs/guides/blue-green-envoy-eds)
+- [Automation API overview](https://www.elchi.io/docs/automation-api/overview): versioned REST API, project API tokens, problem+json errors
+- [Single-host install (kind + Helm)](https://www.elchi.io/docs/installation/kind-quickstart): evaluate the full stack on one Ubuntu VM
+- [Helm platform install](https://www.elchi.io/docs/installation/helm-platform/overview): the elchi-stack Helm chart on Kubernetes
+- [Docker Swarm install](https://www.elchi.io/docs/installation/docker-swarm/overview)
+- [Bare-metal install](https://www.elchi.io/docs/installation/bare-metal/overview): the stack as systemd services on 1, 2 or 3+ Linux VMs
+- [Elchi Client](https://www.elchi.io/docs/installation/client/overview): the edge agent that connects each Envoy host to the control plane
+
+## Optional
+
+- [Video tutorials](https://www.elchi.io/videos.html): short hands-on videos for routing, TLS, resilience, Shield, API Discovery, observability, HA and GSLB
+- [Turkish site (Türkçe)](https://www.elchi.io/tr/): the marketing site in Turkish
+- [YouTube channel](https://www.youtube.com/@CloudNativeWorks)
+- [Helm chart on ArtifactHub](https://artifacthub.io/packages/helm/elchi/elchi-stack)

@@ -82,4 +82,4 @@ The log viewer (**Observability → Logs**) searches a listener's Envoy and acce
 
 ## Endpoint discovery
 
-Under **Discovery**, connected Kubernetes clusters report their services so Envoy clusters always see up-to-date upstreams. See [Elchi Discovery](/installation/discovery-agent/overview) to install the agent.
+Under **Discovery**, connected Kubernetes clusters report their nodes (status, roles and node IPs), and endpoint resources linked to a cluster are kept filled with those node IPs on the port you choose, so Envoy always sees up-to-date upstreams. See [Elchi Discovery](/installation/discovery-agent/overview) to install the agent.

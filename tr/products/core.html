@@ -2,16 +2,9 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5G5WC537');</script>
-  <!-- End Google Tag Manager -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elchi Core — Envoy Yönetim Platformu</title>
-  <meta name="description" content="Elchi platformunun temeli: tüm Envoy filonuz için görsel control plane — tam xDS, çoklu sürüm desteği, güvenli yayınlama iş akışları ve edge agent.">
+  <title>Elchi Core: Görsel Envoy Control Plane ve xDS Yönetimi</title>
+  <meta name="description" content="Elchi'nin temeli: Envoy filonuz için görsel control plane; tam xDS, yan yana çalışan birden fazla Envoy sürümü, taslak-kaydet-yayınla iş akışı ve edge agent.">
   <link rel="canonical" href="https://www.elchi.io/tr/products/core.html">
   <link rel="alternate" hreflang="en" href="https://www.elchi.io/products/core.html">
   <link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/products/core.html">
@@ -22,12 +15,12 @@
   <meta property="og:locale" content="tr_TR">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:url" content="https://www.elchi.io/tr/products/core.html">
-  <meta property="og:title" content="Elchi Core — Envoy Yönetim Platformu">
-  <meta property="og:description" content="Elchi platformunun temeli: tüm Envoy filonuz için görsel control plane — tam xDS, çoklu sürüm desteği, güvenli yayınlama iş akışları ve edge agent.">
+  <meta property="og:title" content="Elchi Core: Görsel Envoy Control Plane ve xDS Yönetimi">
+  <meta property="og:description" content="Elchi'nin temeli: Envoy filonuz için görsel control plane; tam xDS, yan yana çalışan birden fazla Envoy sürümü, taslak-kaydet-yayınla iş akışı ve edge agent.">
   <meta property="og:image" content="https://www.elchi.io/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Elchi Core — Envoy Yönetim Platformu">
-  <meta name="twitter:description" content="Elchi platformunun temeli: tüm Envoy filonuz için görsel control plane — tam xDS, çoklu sürüm desteği, güvenli yayınlama iş akışları ve edge agent.">
+  <meta name="twitter:title" content="Elchi Core: Görsel Envoy Control Plane ve xDS Yönetimi">
+  <meta name="twitter:description" content="Elchi'nin temeli: Envoy filonuz için görsel control plane; tam xDS, yan yana çalışan birden fazla Envoy sürümü, taslak-kaydet-yayınla iş akışı ve edge agent.">
   <meta name="twitter:image" content="https://www.elchi.io/og-image.png">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -38,7 +31,7 @@
   <link rel="stylesheet" href="../../relief.css">
   <link rel="stylesheet" href="../../products.css">
   <script type="application/ld+json">
-{
+  {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
@@ -60,37 +53,45 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Elchi Core",
-    "url": "https://www.elchi.io/tr/products/core.html",
-    "description": "Elchi platformunun temeli: tüm Envoy filonuz için görsel control plane — tam xDS, çoklu sürüm desteği, güvenli yayınlama iş akışları ve edge agent.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Linux, Kubernetes",
-    "inLanguage": "tr",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Elchi",
-      "url": "https://www.elchi.io/"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Elchi",
-      "url": "https://www.elchi.io/",
-      "sameAs": [
-        "https://github.com/CloudNativeWorks",
-        "https://www.youtube.com/@CloudNativeWorks",
-        "https://artifacthub.io/packages/search?repo=elchi"
-      ],
-      "logo": "https://www.elchi.io/icon-512.png"
-    }
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.elchi.io/tr/products/core.html#webpage",
+        "url": "https://www.elchi.io/tr/products/core.html",
+        "name": "Elchi Core: Görsel Envoy Control Plane ve xDS Yönetimi",
+        "description": "Elchi'nin temeli: Envoy filonuz için görsel control plane; tam xDS, yan yana çalışan birden fazla Envoy sürümü, taslak-kaydet-yayınla iş akışı ve edge agent.",
+        "inLanguage": "tr",
+        "isPartOf": {
+          "@id": "https://www.elchi.io/#website"
+        },
+        "publisher": {
+          "@id": "https://www.elchi.io/#organization"
+        },
+        "about": {
+          "@id": "https://www.elchi.io/products/core.html#software"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://www.elchi.io/products/core.html#software",
+        "name": "Elchi Core",
+        "url": "https://www.elchi.io/tr/products/core.html",
+        "description": "Elchi'nin temeli: Envoy filonuz için görsel control plane; tam xDS, yan yana çalışan birden fazla Envoy sürümü, taslak-kaydet-yayınla iş akışı ve edge agent.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Linux, Kubernetes",
+        "inLanguage": "tr",
+        "isPartOf": {
+          "@id": "https://www.elchi.io/#software"
+        },
+        "publisher": {
+          "@id": "https://www.elchi.io/#organization"
+        }
+      }
+    ]
   }
   </script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5G5WC537"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
   <div id="root" data-product="core"></div>
   <script type="module" src="../../product.jsx"></script>
 </body>

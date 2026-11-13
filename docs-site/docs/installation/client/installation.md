@@ -1,6 +1,7 @@
 ---
-title: Installation
-description: Install the Elchi Client with the installer script or manually place the binary.
+title: "Install the Elchi Client (Envoy Edge Agent)"
+sidebar_label: "Installation"
+description: "Install the Elchi Client edge agent on a Linux host with the installer script or by placing the binary, then register it so it can run Envoy listeners."
 sidebar_position: 3
 ---
 
@@ -20,7 +21,7 @@ curl -fsSL https://raw.githubusercontent.com/CloudNativeWorks/elchi-archive/main
       --token=your-auth-token
 ```
 
-Pin a version with `--client-version=v1.7.7`. Every other flag is forwarded to
+Pin a version with `--client-version=v2.1.6`. Every other flag is forwarded to
 the installer; `--help` lists them. To install from a file instead, fetch
 `elchi-install.sh` from the release you want on the
 [archive's releases page](https://github.com/CloudNativeWorks/elchi-archive/releases)
@@ -96,7 +97,7 @@ Skip the installer and place the binary yourself:
 
 ```bash
 # AMD64
-wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v1.7.7/elchi-client-linux-amd64
+wget https://github.com/CloudNativeWorks/elchi-archive/releases/download/elchi-client-v2.1.6/elchi-client-linux-amd64
 sudo mkdir -p /etc/elchi/bin
 sudo mv elchi-client-linux-amd64 /etc/elchi/bin/elchi-client
 sudo chmod +x /etc/elchi/bin/elchi-client

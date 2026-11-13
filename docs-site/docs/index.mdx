@@ -1,6 +1,7 @@
 ---
-title: Elchi Documentation
-description: Manage Envoy proxies at scale — installation, configuration, traffic management, API discovery, and security.
+title: "Elchi Docs: Guides & Reference for Envoy Fleets"
+sidebar_label: Elchi Documentation
+description: "Elchi docs: install and operate the Elchi Envoy control plane, configure listeners and clusters over xDS, and add WAF, API discovery and GSLB."
 slug: /
 sidebar_position: 0
 hide_table_of_contents: true
@@ -8,10 +9,11 @@ hide_table_of_contents: true
 
 # Elchi Documentation
 
-Elchi is an enterprise **Envoy management platform**: a central control plane with a
-visual editor for every Envoy resource, plus edge agents that deploy and operate
-Envoy on your hosts — with GSLB, ACME certificates, API discovery, and API
-security (WAF included) built in.
+Elchi is a **visual control plane for Envoy proxy fleets**: a central xDS control
+plane with a typed, validated editor for every Envoy resource, plus edge agents that
+deploy and operate Envoy on your hosts (VMs, bare metal or appliances), with GSLB,
+ACME certificates, API discovery and API security (a WAF with the OWASP Core Rule
+Set) built in. New here? Read **[What is Elchi?](/getting-started/introduction)**.
 
 ## Start here
 
@@ -46,3 +48,11 @@ Pick the deployment substrate that fits — all bring up the same control plane:
 - **[Authentication & Access](/administration/auth-and-access)** — projects, RBAC, tokens, LDAP, 2FA.
 - **[Registry & High Availability](/administration/registry-and-ha)** — scaling the control plane (for the edge, see [Edge HA Pairs](/ha-pairs/overview)).
 - **[Troubleshooting](/troubleshooting/common-issues)** — when something doesn't work.
+
+## Automate and learn more
+
+- **[Automation API](/automation-api/overview)** — the public REST API with project tokens: drain an upstream endpoint, switch an EDS cluster blue/green. [OpenAPI spec](https://www.elchi.io/docs/openapi/elchi-public-v1.yaml).
+- **[How-to guides](/category/how-to-guides)** — short answers: Envoy without hand-written xDS, a WAF with ext_proc, multi-version upgrades, GSLB failover, shadow APIs, blue/green.
+- **[Blog](/blog)** — engineering notes on Envoy control planes, xDS and running Envoy on VMs.
+
+Running Envoy in production across many edges? See **[plans](https://www.elchi.io/plans.html)** or **[book a demo](https://www.elchi.io/contact.html)**.

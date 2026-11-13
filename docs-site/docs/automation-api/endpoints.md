@@ -1,6 +1,7 @@
 ---
-title: Endpoints (disable and enable)
-description: Take an upstream endpoint (an IP or a hostname, every port or some) out of rotation everywhere it is used in a project, and put it back, through the automation API.
+title: "Endpoint Disable API: Drain an Upstream IP"
+description: "Take an upstream IP or hostname (all ports or some) out of rotation everywhere it is used in an Elchi project, and put it back, with the automation API."
+sidebar_label: "Endpoints (disable and enable)"
 sidebar_position: 4
 tags: [automation, api, operations]
 ---
@@ -202,3 +203,7 @@ curl -sS -X POST "$BASE/projects/$P/endpoints/10.0.0.5/enable" \
   -H "Authorization: Bearer $ELCHI_TOKEN" -H "Idempotency-Key: $(uuidgen)" \
   -H 'Prefer: wait=60' -H 'Content-Type: application/json' -d '{}'
 ```
+
+:::tip OpenAPI
+[Download the OpenAPI spec](https://www.elchi.io/docs/openapi/elchi-public-v1.yaml) for the full request and response schemas of the automation API.
+:::

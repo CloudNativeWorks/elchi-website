@@ -1,6 +1,7 @@
 ---
-title: Global Search
-description: Find every place a domain or IP address appears across your Envoy configuration — virtual hosts, routes, filters, endpoints, clusters, listeners, services, and K8s discovery — and jump straight to the resource.
+title: "Global Search Across Envoy Config"
+sidebar_label: "Global Search"
+description: "Find every place a domain or IP appears in your Envoy config (virtual hosts, routes, filters, endpoints, clusters, listeners) and jump straight to the resource."
 sidebar_position: 7
 tags: [search, domains, ip-addresses, resources]
 ---

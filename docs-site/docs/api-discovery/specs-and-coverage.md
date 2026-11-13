@@ -1,6 +1,6 @@
 ---
 title: OpenAPI Specs & Coverage
-description: Import OpenAPI / Swagger specs, keep their versions, scope them to listeners, hosts and path prefixes, and compare them with observed traffic — documented, undocumented, unused, deprecated-in-use, parameter and status drift.
+description: "Import OpenAPI or Swagger specs, scope them to listeners and paths, and compare them with observed traffic: undocumented, unused, deprecated-in-use and drift."
 sidebar_position: 10
 tags: [api-discovery, openapi]
 ---

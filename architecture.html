@@ -2,16 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5G5WC537');</script>
-  <!-- End Google Tag Manager -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Architecture — Elchi</title>
-  <meta name="description" content="How Elchi is built: a 3-process distributed control plane (Registry, Controller, Control-Plane) plus the edge data plane — Envoy, the client agent, Shield API security, and the API-discovery collector.">
+  <title>Elchi Architecture: Distributed Envoy xDS Control Plane</title>
+  <meta name="description" content="Elchi's design: Registry, Controller and Control-Plane processes serve xDS to Envoy; the client agent, Shield and the API-discovery collector run at the edge.">
   <link rel="canonical" href="https://www.elchi.io/architecture.html">
   <link rel="alternate" hreflang="en" href="https://www.elchi.io/architecture.html">
   <link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/architecture.html">
@@ -20,12 +13,12 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Elchi">
   <meta property="og:url" content="https://www.elchi.io/architecture.html">
-  <meta property="og:title" content="Architecture — Elchi">
-  <meta property="og:description" content="A 3-process control plane plus the edge data plane — Envoy, the client agent, Shield, and the API-discovery collector.">
+  <meta property="og:title" content="Elchi Architecture: Distributed Envoy xDS Control Plane">
+  <meta property="og:description" content="Elchi's design: Registry, Controller and Control-Plane processes serve xDS to Envoy; the client agent, Shield and the API-discovery collector run at the edge.">
   <meta property="og:image" content="https://www.elchi.io/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Architecture — Elchi">
-  <meta name="twitter:description" content="A 3-process control plane plus the edge data plane — Envoy, client agent, Shield, and collector.">
+  <meta name="twitter:title" content="Elchi Architecture: Distributed Envoy xDS Control Plane">
+  <meta name="twitter:description" content="Elchi's design: Registry, Controller and Control-Plane processes serve xDS to Envoy; the client agent, Shield and the API-discovery collector run at the edge.">
   <meta name="twitter:image" content="https://www.elchi.io/og-image.png">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -36,7 +29,7 @@
   <link rel="stylesheet" href="./relief.css">
   <link rel="stylesheet" href="./architecture.css">
   <script type="application/ld+json">
-{
+  {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
@@ -55,12 +48,28 @@
     ]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.elchi.io/architecture.html#webpage",
+    "url": "https://www.elchi.io/architecture.html",
+    "name": "Elchi Architecture: Distributed Envoy xDS Control Plane",
+    "description": "Elchi's design: Registry, Controller and Control-Plane processes serve xDS to Envoy; the client agent, Shield and the API-discovery collector run at the edge.",
+    "inLanguage": "en",
+    "isPartOf": {
+      "@id": "https://www.elchi.io/#website"
+    },
+    "publisher": {
+      "@id": "https://www.elchi.io/#organization"
+    },
+    "about": {
+      "@id": "https://www.elchi.io/#software"
+    }
+  }
+  </script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5G5WC537"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
   <div id="root"></div>
   <script type="module" src="./architecture.jsx"></script>
 </body>

@@ -1,6 +1,6 @@
 ---
 title: Settings & the General Tab
-description: An orientation to the Settings area — the full tab set with links to each feature's doc, and the General tab's installation versions, Envoy versions list and live storage-usage card.
+description: "A map of Elchi's Settings area with links to each feature's doc, and the General tab: installed versions, the Envoy versions list and live storage usage."
 sidebar_position: 10
 tags: [administration, settings]
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Tutorial: Secure an API with Shield"
-description: The full end-to-end journey — observe an API with Discovery, review its risk, suggest a Shield policy, roll it out from detect to block, and verify enforcement with curl.
+description: "End to end: observe an API with Discovery, review its risk, generate a Shield policy, roll it out from detect to block, and verify enforcement with curl."
 sidebar_position: 1
 tags: [tutorial]
 ---

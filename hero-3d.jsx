@@ -539,7 +539,7 @@ function withSeams(img, seam, size = 512) {
   return c;
 }
 function Floor({ low }) {
-  const [diff, nor, rough] = useTexture(['/hero3d/floor_diff.jpg', '/hero3d/floor_nor.jpg', '/hero3d/floor_rough.jpg']);
+  const [diff, nor, rough] = useTexture(['/hero3d/floor_diff.webp', '/hero3d/floor_nor.webp', '/hero3d/floor_rough.webp']);
   const { floorDistort } = textures();
   const maps = useMemo(() => {
     const mk = (canvasOrImg, srgb) => {

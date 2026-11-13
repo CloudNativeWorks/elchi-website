@@ -1,6 +1,7 @@
 ---
-title: Network & External Access
-description: A firewall checklist for every Elchi component — what the platform exposes (ingress), what it needs to reach (egress), what edge hosts running elchi-client / Envoy / elchi-shield need, and the side-channels opened only when a feature is configured.
+title: "Network & Firewall Access for Elchi"
+sidebar_label: "Network & External Access"
+description: "Firewall checklist for Elchi: what the platform exposes, what it must reach, what edge hosts running elchi-client, Envoy and Shield need, and optional ports."
 sidebar_position: 5
 ---
 

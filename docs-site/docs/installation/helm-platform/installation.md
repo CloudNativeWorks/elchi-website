@@ -1,6 +1,7 @@
 ---
-title: Installation
-description: Install the Elchi platform with the bundled elchi-stack Helm chart, from quick defaults to a customized values file.
+title: "Helm Platform Installation"
+sidebar_label: "Installation"
+description: "Install the Elchi platform on Kubernetes with the elchi-stack Helm chart: add the repo, install with defaults or a custom values file, then sign in."
 sidebar_position: 3
 ---
 

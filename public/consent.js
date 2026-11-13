@@ -2,10 +2,13 @@
 //
 // Served at /consent.js. The docs are deployed under /docs/ on the same origin,
 // so they load this same file and the visitor's choice (localStorage) carries
-// over between the two. Until the visitor accepts:
-//   - Google tags run in Consent Mode with every storage type "denied" (the
-//     default is set by an inline snippet ahead of GTM — vite.config.js and
-//     docs-site/docusaurus.config.ts), so they set no cookies;
+// over between the two. Until the visitor accepts, nothing third-party loads
+// (KVKK md.5/md.9: no request to Google or Crisp without consent):
+//   - Google Tag Manager is not loaded at all — loadTagManager() injects it
+//     after "Accept" (or on a later visit when the stored choice is granted).
+//     The Consent Mode default (inline snippet in vite.config.js and
+//     docs-site/docusaurus.config.ts) still starts every storage type "denied"
+//     and is updated to "granted" before GTM loads;
 //   - the Crisp live chat is not loaded at all.
 // Any link to "#cookie-preferences" (site and docs footers) reopens the banner.
 (function () {
@@ -15,12 +18,18 @@
   var TEXT = {
     en: {
       body: 'We use cookies for analytics (Google Tag Manager) and for the live chat (Crisp). They are only set if you accept. You can change your choice at any time via “Cookie preferences” in the footer.',
+      short: 'Cookies for analytics and live chat, only if you accept.',
+      more: 'Privacy notice',
+      href: '/privacy.html',
       accept: 'Accept',
       reject: 'Reject',
       label: 'Cookie consent',
     },
     tr: {
       body: 'Analiz (Google Tag Manager) ve canlı destek (Crisp) için çerez kullanıyoruz. Bu çerezler yalnızca onay vermeniz halinde kullanılır. Tercihinizi sayfa altındaki “Çerez tercihleri” bağlantısından istediğiniz zaman değiştirebilirsiniz.',
+      short: 'Analiz ve canlı destek çerezleri, yalnızca onay verirseniz.',
+      more: 'KVKK ve Çerez Politikası',
+      href: '/tr/privacy.html',
       accept: 'Kabul et',
       reject: 'Reddet',
       label: 'Çerez onayı',
@@ -43,7 +52,21 @@
     'box-shadow:0 2px 6px rgba(23,50,74,.08),0 30px 60px -28px rgba(13,27,38,.5);font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:15px}' +
     'html:not([data-theme]) .elchi-consent button{border:0;border-radius:999px;padding:11px 20px;background:#17324a;color:#fff}' +
     'html:not([data-theme]) .elchi-consent button:first-child{background:#e3ebe1;color:#17324a}' +
-    'html:not([data-theme]) .elchi-consent button:focus-visible{outline-color:#1f7a99}';
+    'html:not([data-theme]) .elchi-consent button:focus-visible{outline-color:#1f7a99}' +
+    '.elchi-consent a{color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:3px}' +
+    '.elchi-consent .ec-short{display:none}' +
+    '.elchi-consent button{min-height:44px}' +
+    // phones: one compact bar at the bottom edge (short copy, link, two buttons)
+    // instead of a card that covered almost half the screen
+    '@media (max-width:600px){' +
+      '.elchi-consent,html:not([data-theme]) .elchi-consent{left:0;right:0;bottom:0;max-width:none;flex-wrap:nowrap;gap:10px;' +
+      'padding:8px 10px 8px 14px;padding-bottom:calc(8px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0;font-size:13px;line-height:1.35}' +
+      '.elchi-consent p{flex:1 1 auto;min-width:0}' +
+      '.elchi-consent .ec-long{display:none}' +
+      '.elchi-consent .ec-short{display:inline}' +
+      '.elchi-consent-actions{gap:6px;flex:none}' +
+      '.elchi-consent button,html:not([data-theme]) .elchi-consent button{padding:0 12px;font-size:13px}' +
+    '}';
 
   function read() {
     try { return localStorage.getItem(KEY); } catch (e) { return null; }
@@ -54,6 +77,18 @@
 
   function gtag() {
     (window.dataLayer = window.dataLayer || []).push(arguments);
+  }
+
+  var GTM_ID = 'GTM-5G5WC537';
+  function loadTagManager() {
+    if (window.__elchiGtm) return;
+    window.__elchiGtm = true;
+    var dl = (window.dataLayer = window.dataLayer || []);
+    dl.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
+    document.head.appendChild(s);
   }
 
   function loadChat() {
@@ -77,9 +112,12 @@
     });
   }
 
+  // The marketing pages are /tr/… in Turkish; the docs (/docs/, /docs/tr/…) set
+  // <html lang>, which is checked first.
   function locale() {
     var lang = (document.documentElement.lang || '').toLowerCase();
-    return lang.indexOf('tr') === 0 || location.pathname.indexOf('/tr/') === 0 ? 'tr' : 'en';
+    if (lang) return lang.indexOf('tr') === 0 ? 'tr' : 'en';
+    return location.pathname.indexOf('/tr/') === 0 ? 'tr' : 'en';
   }
 
   var banner = null;
@@ -94,9 +132,10 @@
     hide();
     setConsent(state);
     if (state === 'granted') {
+      loadTagManager();
       loadChat();
-    } else if (wasGranted && window.$crisp) {
-      // A loaded chat widget cannot be torn down; reload so it is gone.
+    } else if (wasGranted && (window.$crisp || window.__elchiGtm)) {
+      // A loaded chat widget or tag container cannot be torn down; reload so it is gone.
       location.reload();
     }
   }
@@ -115,8 +154,21 @@
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-label', t.label);
 
+    // Long copy on wide screens, a short line on phones; both end with the
+    // link to the privacy notice of the visitor's language.
     var p = document.createElement('p');
-    p.textContent = t.body;
+    var long = document.createElement('span');
+    long.className = 'ec-long';
+    long.textContent = t.body + ' ';
+    var short = document.createElement('span');
+    short.className = 'ec-short';
+    short.textContent = t.short + ' ';
+    var more = document.createElement('a');
+    more.href = t.href;
+    more.textContent = t.more;
+    p.appendChild(long);
+    p.appendChild(short);
+    p.appendChild(more);
 
     // Accept and Reject are deliberately styled the same: refusing must be as
     // easy as accepting.
@@ -147,7 +199,7 @@
 
   function init() {
     var state = read();
-    if (state === 'granted') loadChat();
+    if (state === 'granted') { setConsent('granted'); loadTagManager(); loadChat(); }
     else if (state !== 'denied') show();
   }
 

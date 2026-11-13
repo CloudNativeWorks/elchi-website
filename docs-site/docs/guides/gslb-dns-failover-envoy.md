@@ -1,9 +1,11 @@
 ---
-title: How to Do GSLB and DNS-Based Failover for Envoy with CoreDNS and Health Checks
-description: Create a GSLB record for the hostname your Envoy edges serve, add each edge IP with an HTTP, HTTPS or TCP health probe, and let elchi-coredns answer DNS with only the healthy IPs, falling back to a per-record failover name when none are healthy.
+title: "GSLB and DNS Failover for Envoy with CoreDNS"
+description: "DNS failover for Envoy edges: an Elchi GSLB record health-checks every edge IP, and elchi-coredns answers with only the healthy ones or a failover name."
 sidebar_position: 4
 tags: [guide]
 ---
+
+# How to Do GSLB and DNS-Based Failover for Envoy with CoreDNS and Health Checks
 
 DNS-based failover for Envoy works by answering a hostname with only the IP addresses of edges that pass a health check. In Elchi, a GSLB record maps an FQDN to the IPs of your Envoy edges, the controller probes every IP over HTTP, HTTPS or TCP, and elchi-coredns (a CoreDNS build with the Elchi GSLB plugin) serves the record authoritatively with the unhealthy IPs removed. When every IP of a record is down, the answer falls back to the record's failover FQDN in a backup zone.
 
@@ -41,3 +43,9 @@ GSLB steers at name resolution, so it is coarse-grained and bounded by resolver 
 - [Records & IPs](/gslb/records-and-ips) - record fields, IPs, regions and overrides.
 - [Nodes & CoreDNS](/gslb/nodes-coredns) - node tracking and notify operations.
 - [Services: Recreate GSLB](/operations/services#recreate-gslb-disaster-recovery) - rebuild a service's GSLB record after a restore.
+
+## Next steps
+
+- **Product:** [Elchi GSLB](https://www.elchi.io/products/gslb.html) - health-checked DNS steering across your Envoy edges.
+- **Plans:** [compare plans and licensing](https://www.elchi.io/plans.html), from the free tier to enterprise.
+- **Talk to us:** running this across many Envoy edges? [Book a demo](https://www.elchi.io/contact.html) with the Elchi team.

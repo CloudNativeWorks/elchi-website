@@ -11,19 +11,25 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://www.elchi.io';
 
-// [en path, component + data sources, changefreq, priority]
+// [en path, component + data sources]. No changefreq/priority: Google ignores both.
 const PAGES = [
-  ['', ['home.jsx', 'hero-stage.jsx', 'screens-data.js', 'products-data.js'], 'weekly', '1.0'],
-  ['features.html', ['features.jsx'], 'monthly', '0.9'],
-  ['architecture.html', ['architecture.jsx'], 'monthly', '0.8'],
-  ['products/core.html', ['product.jsx', 'products-data.js'], 'monthly', '0.9'],
-  ['products/api-security.html', ['product.jsx', 'products-data.js'], 'monthly', '0.9'],
-  ['products/api-discovery.html', ['product.jsx', 'products-data.js'], 'monthly', '0.9'],
-  ['products/gslb.html', ['product.jsx', 'products-data.js'], 'monthly', '0.9'],
-  ['plans.html', ['plans.jsx', 'products-data.js'], 'monthly', '0.8'],
-  ['faq.html', ['faq.jsx', 'faq-data.js'], 'monthly', '0.8'],
-  ['videos.html', ['videos.jsx', 'videos-data.js', 'film-data.js'], 'weekly', '0.7'],
-  ['contact.html', ['contact.jsx'], 'yearly', '0.6'],
+  ['', ['home.jsx', 'hero-stage.jsx', 'screens-data.js', 'products-data.js']],
+  ['features.html', ['features.jsx']],
+  ['architecture.html', ['architecture.jsx']],
+  ['products/core.html', ['product.jsx', 'products-data.js']],
+  ['products/api-security.html', ['product.jsx', 'products-data.js']],
+  ['products/api-discovery.html', ['product.jsx', 'products-data.js']],
+  ['products/gslb.html', ['product.jsx', 'products-data.js']],
+  ['compare.html', ['compare.jsx', 'compare-data.js']],
+  ['compare/istio.html', ['compare.jsx', 'compare-data.js']],
+  ['compare/envoy-gateway.html', ['compare.jsx', 'compare-data.js']],
+  ['compare/go-control-plane.html', ['compare.jsx', 'compare-data.js']],
+  ['plans.html', ['plans.jsx', 'products-data.js']],
+  ['faq.html', ['faq.jsx', 'faq-data.js']],
+  ['videos.html', ['videos.jsx', 'videos-data.js', 'film-data.js']],
+  ['contact.html', ['contact.jsx', 'offices.jsx']],
+  ['about.html', ['about.jsx', 'offices.jsx', 'legal-layout.jsx']],
+  ['privacy.html', ['privacy.jsx', 'offices.jsx', 'legal-layout.jsx']],
 ];
 
 const today = new Date().toISOString().slice(0, 10);
@@ -39,7 +45,7 @@ function lastmod(files) {
 const enHtml = (p) => (p === '' ? 'index.html' : p);
 const url = (p, tr) => `${SITE}/${tr ? 'tr/' : ''}${p}`;
 
-const entries = PAGES.flatMap(([p, sources, freq, prio]) => {
+const entries = PAGES.flatMap(([p, sources]) => {
   const mod = lastmod([enHtml(p), 'tr/' + enHtml(p), ...sources]);
   const alts = [
     `<xhtml:link rel="alternate" hreflang="en" href="${url(p, false)}"/>`,
@@ -50,8 +56,6 @@ const entries = PAGES.flatMap(([p, sources, freq, prio]) => {
     <loc>${url(p, tr)}</loc>
     ${alts}
     <lastmod>${mod}</lastmod>
-    <changefreq>${freq}</changefreq>
-    <priority>${tr ? (Number(prio) - 0.1).toFixed(1) : prio}</priority>
   </url>`);
 });
 

@@ -1,9 +1,11 @@
 ---
-title: How to Manage Envoy Proxies Without Hand-Writing xDS or YAML
-description: Use Elchi as the Envoy control plane - every listener, route, cluster, endpoint and secret is edited in a typed form generated from Envoy's protobuf definitions, validated in the editor and on the server, and pushed to running proxies over xDS without a restart.
+title: "Manage Envoy Without Hand-Writing xDS or YAML"
+description: "Manage Envoy without hand-written xDS or YAML: edit typed forms generated from Envoy's protobufs, validate twice and push over ADS without a restart."
 sidebar_position: 1
 tags: [guide]
 ---
+
+# How to Manage Envoy Proxies Without Hand-Writing xDS or YAML
 
 You can run Envoy without writing xDS payloads or YAML by managing it through a control plane that builds the configuration for you. In Elchi, every Envoy object (listener, route configuration, cluster, endpoints, secret, filter) is a resource edited in a form generated from that Envoy version's protobuf definitions. Each change is validated twice, in the editor and on the controller, and a publish pushes a new snapshot to connected proxies over xDS (ADS), which they apply without a restart.
 
@@ -44,3 +46,9 @@ Because the forms are generated from the protobuf definitions, a field added in 
 - [Templates & Snippets](/envoy-configuration/templates-snippets) - reusable resource templates and config snippets.
 - [Snapshot Dump](/envoy-configuration/snapshot-dump) - the xDS snapshot a node is served.
 - [Architecture](/getting-started/architecture) - every process, port and data flow.
+
+## Next steps
+
+- **Product:** [Elchi Core](https://www.elchi.io/products/core.html) - the visual Envoy control plane this guide uses.
+- **Plans:** [compare plans and licensing](https://www.elchi.io/plans.html), from the free tier to enterprise.
+- **Talk to us:** running this across many Envoy edges? [Book a demo](https://www.elchi.io/contact.html) with the Elchi team.

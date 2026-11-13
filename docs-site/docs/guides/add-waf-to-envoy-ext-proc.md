@@ -1,9 +1,11 @@
 ---
-title: How to Add a WAF (OWASP Core Rule Set) to Envoy with ext_proc
-description: Run the Elchi Shield sidecar next to Envoy, add its ext_proc HTTP filter ahead of the router, and enable the Coraza engine with the embedded OWASP Core Rule Set in a Shield policy, starting in detect mode and moving to block once the findings are clean.
+title: "Add an OWASP CRS WAF to Envoy with ext_proc"
+description: "Add a WAF to Envoy: run the Elchi Shield sidecar over ext_proc, enable Coraza with the OWASP Core Rule Set, start in detect mode, then switch to block."
 sidebar_position: 2
 tags: [guide]
 ---
+
+# How to Add a WAF (OWASP Core Rule Set) to Envoy with ext_proc
 
 To add a web application firewall to Envoy, run a WAF engine as an external processor and connect it through Envoy's `ext_proc` HTTP filter. In Elchi that engine is Shield (`elchi-shield`), a sidecar on each edge host that runs Coraza with the OWASP Core Rule Set (CRS) embedded in its binary. You enable the CRS in a Shield policy (`coraza: {include_owasp: true}`), deploy it in `detect` mode to see what it would block, tune out false positives, then switch the policy to `block`, where a match returns `403` before the request reaches the backend.
 
@@ -62,3 +64,9 @@ There are two failure layers. Envoy's `failure_mode_allow: true` on the ext_proc
 - [Wiring Shield into Envoy](/shield/envoy-wiring) - the ext_proc cluster and filter.
 - [Tutorial: Secure an API with Shield](/tutorials/secure-an-api-with-shield) - from API Discovery to an enforced policy.
 - [Shield metrics, audit and health](/shield/observability) - the metric set and the ClickHouse audit sink.
+
+## Next steps
+
+- **Product:** [Elchi API Security](https://www.elchi.io/products/api-security.html) - Shield, the ext_proc sidecar behind this guide, with the WAF, auth, rate limiting and DLP engines.
+- **Plans:** [compare plans and licensing](https://www.elchi.io/plans.html), from the free tier to enterprise.
+- **Talk to us:** running this across many Envoy edges? [Book a demo](https://www.elchi.io/contact.html) with the Elchi team.

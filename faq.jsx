@@ -8,15 +8,15 @@ import { FAQ_GROUPS } from './faq-data.js';
 // page's FAQPage JSON-LD below, so the markup always matches the visible text.
 const STR = {
   en: {
-    title: 'Frequently asked questions.',
-    lede: 'Short, factual answers about what Elchi is, how it runs, and how it is licensed. Each answer links the documentation page that covers it in full.',
+    title: 'Elchi FAQ: what engineers ask first.',
+    lede: 'Short, factual answers about what Elchi is and is not, how it runs on VMs and Kubernetes, how Shield compares, and how it is licensed. Each answer links the documentation page that covers it in full.',
     docs: 'Read the docs',
     contact: 'Ask us',
     more: 'In the docs',
   },
   tr: {
-    title: 'Sık sorulan sorular.',
-    lede: 'Elchi’nin ne olduğu, nasıl çalıştığı ve nasıl lisanslandığı hakkında kısa ve net cevaplar. Her cevap, konuyu ayrıntılı anlatan doküman sayfasına bağlanır.',
+    title: 'Elchi SSS: mühendislerin ilk sorduğu sorular.',
+    lede: 'Elchi’nin ne olduğu ve ne olmadığı, VM’lerde ve Kubernetes’te nasıl çalıştığı, Shield’ın nasıl karşılaştırıldığı ve nasıl lisanslandığı hakkında kısa ve net cevaplar. Her cevap, konuyu ayrıntılı anlatan doküman sayfasına bağlanır.',
     docs: 'Dokümanları okuyun',
     contact: 'Bize sorun',
     more: 'Dokümanda',

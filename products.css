@@ -1,5 +1,6 @@
 /* ==========================================================
    Product pages (product.jsx) and Plans & Licensing (plans.jsx) in the relief world.
+   Plans also reuses .pd-qa (licensing questions) and .pd-cta (closing band).
    Shared relief classes (bands, heads, notes, pf-* family panels, actions) live in
    relief.css; this file holds only what these pages add. Tone separates regions,
    never drawn rules.
@@ -26,7 +27,24 @@
 .pd-badges li { display: flex; align-items: center; gap: 12px; font: 500 16px/1.3 var(--font-sans); color: var(--lake); }
 .pd-badges .rl-tick { flex: none; color: var(--pd); }
 .pd-moss .pd-badges .rl-tick { color: #5f8466; }
-.pd-facts .rl-link { justify-self: start; }
+.pd-facts-links { display: flex; flex-wrap: wrap; gap: 0 24px; }
+/* text links read as links but are still 44px tall tap targets */
+.pd-facts .rl-link { min-height: 44px; }
+
+/* ---------- definition: the "What is …?" opening and the docs that back it ---------- */
+.pd-what { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 64px; align-items: start; }
+.pd-what-h { margin-bottom: 28px; }
+.rl .pd-what-p { font-size: 18.5px; line-height: 1.65; max-width: 68ch; color: var(--lake-2); }
+.pd-docs { padding: 24px 24px 18px; border-radius: 28px; background: rgba(255, 255, 255, .62); }
+.pd-docs-label { margin-bottom: 8px; font: 600 13px/1.3 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--lake-3); }
+.pd-docs ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.pd-docs a {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 44px; padding: 10px 0; font: 600 15.5px/1.35 var(--font-sans); color: var(--lake);
+  text-decoration: underline; text-decoration-color: rgba(23, 50, 74, .25); text-underline-offset: 5px;
+}
+.pd-docs a:hover { text-decoration-color: currentColor; }
+.pd-docs a svg { flex: none; color: var(--pd); }
 
 /* ---------- capabilities: notes, dotted in the product colour ---------- */
 .pd .pd-caps li::before { background: var(--pd); box-shadow: 0 0 0 5px var(--pd-soft); }
@@ -36,7 +54,10 @@
 /* ---------- screenshots: ProductShots (screens.jsx) restyled into the band ---------- */
 .rl .product-shots { padding: 0; }
 .rl .product-shots > .container { max-width: none; padding: 0; }
-.rl .product-shots .section-head { display: none; } /* the band's own heading carries the title */
+/* ProductShots' own heading is the band's only H2: styled like the relief band heads */
+.rl .product-shots .section-head { max-width: none; margin: 0 0 40px; text-align: left; }
+.rl .product-shots .section-head .eyebrow { display: none; }
+.rl .product-shots .section-head h2 { margin: 0; font: 700 clamp(36px, 4.2vw, 60px)/1.02 var(--font-sans); letter-spacing: -.03em; color: var(--lake); text-wrap: balance; }
 .rl .ps-layout { grid-template-columns: 320px minmax(0, 1fr); gap: 32px; }
 .rl .ps-layout.single { grid-template-columns: minmax(0, 1fr); max-width: none; }
 .rl .ps-list { gap: 8px; }
@@ -57,6 +78,18 @@
 .rl .compare-hint, .rl .shot-open { border: 0; background: rgba(13, 27, 38, .82); backdrop-filter: none; }
 .rl .compare-hint:hover, .rl .shot-open:hover { background: var(--lake); }
 .rl .lightbox-x:hover, .rl .lightbox-nav:hover { background: var(--flow); }
+
+/* ---------- evaluation: question headings with short answers ---------- */
+.pd-eval { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 72px; }
+.pd-eval-h { margin-bottom: 16px; font: 700 clamp(24px, 2.2vw, 30px)/1.15 var(--font-sans); letter-spacing: -.02em; color: var(--lake); text-wrap: balance; }
+.rl .pd-eval-item p { font-size: 16.5px; line-height: 1.65; max-width: 62ch; color: var(--lake-2); }
+.rl .pd-eval-item p + p { margin-top: 12px; }
+
+/* ---------- product Q&A ---------- */
+.pd-qa { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pd-qa-item { padding: 28px; border-radius: 26px; background: rgba(255, 255, 255, .7); }
+.pd-qa-item h3 { margin-bottom: 10px; font: 700 19px/1.3 var(--font-sans); letter-spacing: -.01em; color: var(--lake); }
+.rl .pd-qa-item p { font-size: 16px; line-height: 1.6; color: var(--lake-2); }
 
 /* ---------- how it works: four stations on one path ---------- */
 .pd-flow { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 40px; }
@@ -87,6 +120,22 @@
 .pd-rel-row .pf-more { margin: 0; padding: 0; white-space: nowrap; }
 .pd-rel-row:hover .pf-more svg { transform: translateX(3px); }
 
+/* ---------- plans: free tier first, then licensed Core, then Core + add-ons ---------- */
+.pl-tiers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: tier; }
+.pl-tier { display: flex; flex-direction: column; gap: 12px; padding: 32px 30px 26px; border-radius: 30px; background: rgba(255, 255, 255, .7); color: var(--lake); }
+.pl-free { background: #fff; box-shadow: var(--shade-1); }
+.pl-tier h3 { font: 700 28px/1.1 var(--font-sans); letter-spacing: -.02em; color: var(--lake); }
+.pl-kind { font: italic 500 18px/1.2 var(--font-map); color: var(--lake-3); }
+.rl .pl-tier > p { font-size: 16px; line-height: 1.6; color: var(--lake-2); }
+.pl-tier ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 10px; }
+.pl-tier ul li { display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; line-height: 1.45; color: var(--lake-2); }
+.pl-tier .rl-tick { flex: none; margin-top: 1px; color: var(--lake); }
+.pl-tier .pl-cta { margin-top: auto; padding-top: 12px; min-height: 44px; align-self: flex-start; }
+.pl-faq { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pl-faq-doc { margin-top: 28px; }
+.pl-faq-doc .rl-link { min-height: 44px; }
+.rl .pl-next { margin-top: 16px; max-width: 54ch; font-size: 16.5px; line-height: 1.6; color: var(--lake-2); }
+
 /* ---------- closing band (product pages and plans) ---------- */
 .pd-cta { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px 64px; align-items: end; }
 .pd-cta .rl-lede { margin-top: 24px; max-width: 54ch; color: var(--lake-2); }
@@ -94,6 +143,8 @@
 
 /* ---------- responsive ---------- */
 @media (max-width: 980px) {
+  .pd-what, .pd-eval, .pd-qa, .pl-tiers { grid-template-columns: minmax(0, 1fr); }
+  .pd-eval { gap: 44px; }
   .rl .ps-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .rl .ps-list { flex-direction: row; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
   .rl .ps-item { flex: none; min-width: 240px; max-width: 300px; }
@@ -110,6 +161,9 @@
 }
 @media (max-width: 720px) {
   .pd-facts { padding: 24px 22px; border-radius: 24px; }
+  .rl .pd-what-p { font-size: 17px; }
+  .pd-docs { padding: 18px 18px 12px; border-radius: 22px; }
+  .pd-qa-item { padding: 22px 20px; }
   .pd-also .rl-h3 { margin-top: 56px; }
   .pd-rel { border-radius: 22px; }
   .pd-rel-row { grid-template-columns: minmax(0, 1fr); padding: 22px 20px; }

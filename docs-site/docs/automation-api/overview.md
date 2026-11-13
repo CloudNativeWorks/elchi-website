@@ -1,6 +1,7 @@
 ---
-title: Overview
-description: The elchi automation API — a versioned REST API for scripts and pipelines, with project API tokens, problem+json errors, idempotent writes, long-running operations and rate limits.
+title: "Automation API Overview"
+description: "Elchi's public REST automation API: versioned base URL, project API tokens, problem+json errors, idempotent writes, long-running operations and rate limits."
+sidebar_label: "Overview"
 sidebar_position: 1
 tags: [automation, api]
 ---
@@ -25,6 +26,8 @@ The API is described by an **OpenAPI 3.0** document, served without a token:
 | --- | --- |
 | `GET /api/public/v1/openapi.json` | The document as JSON |
 | `GET /api/public/v1/openapi.yaml` | The document as YAML |
+
+**[Download the OpenAPI spec](https://www.elchi.io/docs/openapi/elchi-public-v1.yaml)** (YAML, the same document a current elchi controller serves) to read it or generate a client before you have an installation; your own instance's copy always matches its version.
 
 Point a generator (for example openapi-generator) or a tool such as Postman at it. The elchi UI also renders the same document as an interactive reference under **Administration → API Reference** (`/api-docs`). It includes ready-to-copy `curl` commands with your project filled in.
 

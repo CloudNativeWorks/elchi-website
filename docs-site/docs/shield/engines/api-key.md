@@ -1,6 +1,7 @@
 ---
-title: API Key
-description: SHA-256-hashed API keys from a header or query parameter, with per-key scopes and scope-to-path bindings.
+title: "Shield API Key Authentication"
+sidebar_label: "API Key"
+description: "Shield's API key engine: SHA-256-hashed keys from a header or query parameter, per-key scopes and scope-to-path bindings, enforced at the Envoy edge."
 sidebar_position: 4
 tags: [shield, engine]
 ---

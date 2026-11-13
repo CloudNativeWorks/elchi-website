@@ -1,28 +1,35 @@
 /**
- * Elchi docs theming — bounded to matching the marketing site's light aesthetic
- * (white surfaces, blue-600 primary, Geist / Geist Mono). Dark mode keeps stock
- * Infima values apart from the primary scale. One swizzle: the doc card icon
+ * Elchi docs theming — bounded to matching the marketing site (white surfaces,
+ * the "lake" navy #17324a as primary, the "flow" teal #1f7a99 for links,
+ * Geist / Geist Mono). Dark mode keeps stock Infima values apart from the
+ * primary scale. One swizzle: the doc card icon
  * (src/theme/DocCard/Heading/Icon), line icons instead of emoji.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700;800&display=swap');
+/* Self-hosted Geist: the @font-face rules are inlined in <head> by
+   docusaurus.config.ts (headTags) so they point at stable /docs/fonts/ URLs that
+   the bundler does not rewrite, next to the <link rel=preload>. */
 
 :root {
-  /* blue-600 primary scale (from marketing styles.css brand tokens) */
-  --ifm-color-primary: #2563eb;
-  --ifm-color-primary-dark: #1d4ed8;
-  --ifm-color-primary-darker: #1e40af;
-  --ifm-color-primary-darkest: #1e3a8a;
-  --ifm-color-primary-light: #3b82f6;
-  --ifm-color-primary-lighter: #60a5fa;
-  --ifm-color-primary-lightest: #93c5fd;
+  /* "lake" navy primary scale (marketing styles.css --lake) */
+  --ifm-color-primary: #17324a;
+  --ifm-color-primary-dark: #152d43;
+  --ifm-color-primary-darker: #142b3f;
+  --ifm-color-primary-darkest: #102334;
+  --ifm-color-primary-light: #2e475c;
+  --ifm-color-primary-lighter: #3a5165;
+  --ifm-color-primary-lightest: #5d7080;
+  /* links in "flow" teal (marketing --flow, text-safe on white) so they stay
+     distinguishable from navy-black body text */
+  --ifm-link-color: #1f7a99;
+  --ifm-link-hover-color: #17324a;
 
   --ifm-font-family-base: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --ifm-font-family-monospace: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --ifm-code-font-size: 90%;
   --ifm-heading-font-weight: 700;
-  --docusaurus-highlighted-code-line-bg: rgba(37, 99, 235, 0.08);
+  --docusaurus-highlighted-code-line-bg: rgba(31, 122, 153, 0.10);
 }
 
 /* Light-only surfaces. IMPORTANT: scoped to [data-theme='light'] — putting these
@@ -36,14 +43,17 @@
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #60a5fa;
-  --ifm-color-primary-dark: #3b82f6;
-  --ifm-color-primary-darker: #2563eb;
-  --ifm-color-primary-darkest: #1d4ed8;
-  --ifm-color-primary-light: #93c5fd;
-  --ifm-color-primary-lighter: #bfdbfe;
-  --ifm-color-primary-lightest: #dbeafe;
-  --docusaurus-highlighted-code-line-bg: rgba(96, 165, 250, 0.12);
+  /* "flow-l" teal (marketing --flow-l, the request path on deep panels) */
+  --ifm-color-primary: #7cc4dc;
+  --ifm-color-primary-dark: #70b0c6;
+  --ifm-color-primary-darker: #69a7bb;
+  --ifm-color-primary-darkest: #57899a;
+  --ifm-color-primary-light: #89cae0;
+  --ifm-color-primary-lighter: #8fcde1;
+  --ifm-color-primary-lightest: #a3d6e7;
+  --ifm-link-color: #7cc4dc;
+  --ifm-link-hover-color: #a3d6e7;
+  --docusaurus-highlighted-code-line-bg: rgba(124, 196, 220, 0.12);
 }
 
 .navbar {
@@ -77,7 +87,7 @@
 [data-theme='dark'] .nav-version-tag { color: #f1f5f9; }
 @media (max-width: 996px) { .nav-versions { display: none; } }
 
-/* ----- "Try Demo" navbar button ----- */
+/* ----- Navbar CTAs: "Get Started" (filled) and "Book a demo" (outline) ----- */
 .navbar-demo-btn {
   background: var(--ifm-color-primary);
   color: #fff !important;
@@ -85,7 +95,38 @@
   padding: 6px 14px;
   font-weight: 600;
 }
-.navbar-demo-btn:hover { background: var(--ifm-color-primary-dark); }
+.navbar-demo-btn:hover { background: var(--ifm-color-primary-dark); text-decoration: none; }
+.navbar-contact-btn {
+  border: 1px solid var(--ifm-color-primary);
+  color: var(--ifm-color-primary) !important;
+  border-radius: 8px;
+  padding: 5px 13px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+.navbar-contact-btn:hover { background: rgba(23, 50, 74, 0.06); text-decoration: none; }
+[data-theme='dark'] .navbar-demo-btn { color: #0d1b26 !important; }
+[data-theme='dark'] .navbar-contact-btn:hover { background: rgba(124, 196, 220, 0.1); }
+/* In the mobile drawer the CTAs are menu rows: keep them full-width and spaced. */
+.menu__link.navbar-demo-btn,
+.menu__link.navbar-contact-btn { margin: 6px 0; justify-content: center; }
+.menu__link.navbar-demo-btn:hover { background: var(--ifm-color-primary-dark); }
+
+/* ----- Touch targets (WCAG 2.5.5): >= 44px on touch layouts ----- */
+.navbar__toggle {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 996px) {
+  .menu__link,
+  .menu__caret { min-height: 44px; }
+  .menu__link { display: flex; align-items: center; }
+  .breadcrumbs__link { min-height: 44px; display: inline-flex; align-items: center; }
+  .footer__link-item { display: inline-block; padding: 10px 0; }
+}
 
 /* Themed screenshots: each comes as a -light and a -dark pair in the markdown
    (GitHub's fragments), the one for the other theme is hidden. */

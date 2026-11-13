@@ -1,6 +1,7 @@
 ---
-title: Exploring Endpoints
-description: The per-listener endpoints view — confirmed vs attack surface, flat vs path-grouped, GraphQL operations, the full filter set, active two-axis scores, CSV export, and the endpoint detail page.
+title: "Exploring Discovered API Endpoints"
+sidebar_label: "Exploring Endpoints"
+description: "The per-listener endpoints view in API Discovery: confirmed vs attack surface, path grouping, GraphQL operations, filters, two-axis risk scores and CSV export."
 sidebar_position: 3
 tags: [api-discovery]
 ---

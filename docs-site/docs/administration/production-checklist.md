@@ -1,6 +1,6 @@
 ---
 title: Production Checklist & DR
-description: A go-live checklist tying together TLS, HA, persistent datastores, hardening, monitoring, backups, and shield source-IP trust — plus a disaster-recovery runbook grounded in Elchi's restart-safe, last-good config behavior.
+description: "Elchi go-live checklist: TLS, HA, persistent datastores, hardening, monitoring, backups and Shield source-IP trust, plus a disaster-recovery runbook."
 sidebar_position: 12
 tags: [operations]
 ---

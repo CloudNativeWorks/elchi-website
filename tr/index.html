@@ -2,16 +2,10 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5G5WC537');</script>
-  <!-- End Google Tag Manager -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elchi — Kurumsal Trafik Yönetimi ve API Güvenliği</title>
-  <meta name="description" content="Elchi, Envoy filonuz için görsel bir control plane ve edge ajanları sunan kurumsal bir platformdur — GSLB, ACME sertifikaları, API keşfi ve Shield API güvenliği dahili olarak gelir.">
+  <title>Elchi — Envoy için Görsel Control Plane ve API Güvenliği</title>
+  <meta name="description" content="Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.">
+  <link rel="preload" as="image" href="/hero3d/poster.webp" fetchpriority="high">
   <link rel="canonical" href="https://www.elchi.io/tr/">
   <link rel="alternate" hreflang="en" href="https://www.elchi.io/">
   <link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/">
@@ -23,13 +17,13 @@
   <meta property="og:locale" content="tr_TR">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:url" content="https://www.elchi.io/tr/">
-  <meta property="og:title" content="Elchi — Kurumsal Trafik Yönetimi ve API Güvenliği">
-  <meta property="og:description" content="Envoy filonuz için görsel bir control plane ve edge ajanları — GSLB, ACME, API keşfi ve Shield API güvenliği dahili.">
+  <meta property="og:title" content="Elchi — Envoy için Görsel Control Plane ve API Güvenliği">
+  <meta property="og:description" content="Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.">
   <meta property="og:image" content="https://www.elchi.io/og-image.png">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Elchi — Kurumsal Trafik Yönetimi ve API Güvenliği">
-  <meta name="twitter:description" content="Envoy filonuz için görsel bir control plane ve edge ajanları — GSLB, ACME, API keşfi ve Shield.">
+  <meta name="twitter:title" content="Elchi — Envoy için Görsel Control Plane ve API Güvenliği">
+  <meta name="twitter:description" content="Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.">
   <meta name="twitter:image" content="https://www.elchi.io/og-image.png">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -39,7 +33,7 @@
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="../relief.css">
   <script type="application/ld+json">
-{
+  {
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -59,36 +53,91 @@
       {
         "@type": "Organization",
         "@id": "https://www.elchi.io/#organization",
-        "name": "Elchi",
-        "url": "https://www.elchi.io/",
-        "sameAs": [
-          "https://github.com/CloudNativeWorks",
-          "https://www.youtube.com/@CloudNativeWorks",
-          "https://artifacthub.io/packages/search?repo=elchi"
-        ],
+        "name": "CloudNativeWorks",
+        "legalName": "Cloud Native Teknoloji Bilişim ve Danışmanlık Ticaret ve Sanayi A.Ş.",
+        "url": "https://www.cloudnativeworks.com",
+        "description": "CloudNativeWorks builds Elchi, a visual control plane for Envoy proxy fleets on VMs and Kubernetes.",
         "logo": {
           "@type": "ImageObject",
           "url": "https://www.elchi.io/icon-512.png",
           "width": 512,
           "height": 512
         },
-        "parentOrganization": {
-          "@type": "Organization",
-          "name": "CloudNativeWorks",
-            "url": "https://www.cloudnativeworks.com",
-            "sameAs": ["https://github.com/CloudNativeWorks"]
+        "brand": {
+          "@type": "Brand",
+          "name": "Elchi",
+          "url": "https://www.elchi.io/",
+          "logo": "https://www.elchi.io/icon-512.png"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Aziziye Mah. Vali Doktor Reşit Sk. No: 6 İç Kapı No: 1",
+          "addressLocality": "Çankaya",
+          "addressRegion": "Ankara",
+          "postalCode": "06690",
+          "addressCountry": "TR"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "info@profelis.com.tr",
+          "telephone": "+90 312 482 8021",
+          "url": "https://www.elchi.io/contact.html",
+          "availableLanguage": [
+            "en",
+            "tr"
+          ]
+        },
+        "sameAs": [
+          "https://github.com/CloudNativeWorks",
+          "https://www.youtube.com/@CloudNativeWorks",
+          "https://artifacthub.io/packages/helm/elchi/elchi-stack"
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://www.elchi.io/tr/#webpage",
+        "url": "https://www.elchi.io/tr/",
+        "name": "Elchi — Envoy için Görsel Control Plane ve API Güvenliği",
+        "description": "Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.",
+        "inLanguage": "tr",
+        "isPartOf": {
+          "@id": "https://www.elchi.io/#website"
+        },
+        "publisher": {
+          "@id": "https://www.elchi.io/#organization"
+        },
+        "about": {
+          "@id": "https://www.elchi.io/#software"
+        },
+        "mainEntity": {
+          "@id": "https://www.elchi.io/#software"
         }
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://www.elchi.io/#software",
         "name": "Elchi",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Linux, Kubernetes",
         "url": "https://www.elchi.io/tr/",
-        "description": "Elchi, Envoy filonuz için görsel bir control plane ve edge ajanları sunan kurumsal bir platformdur — GSLB, ACME sertifikaları, API keşfi ve Shield API güvenliği dahili olarak gelir.",
+        "description": "Elchi, Envoy proxy filoları için görsel bir control plane'dir: her Envoy kaynağı Envoy API'sinden üretilen tipli formlarla düzenlenir ve xDS ile Envoy'larınıza iletilir. Edge agent'lar Envoy'u sunucularınızda çalıştırır; ek ürünler ext_proc ile WAF içeren API güvenliği (Shield), Envoy trafiğinden API keşfi ve GSLB getirir.",
         "inLanguage": "tr",
+        "about": {
+          "@type": "Thing",
+          "name": "Envoy proxy",
+          "sameAs": "https://www.envoyproxy.io"
+        },
         "publisher": {
           "@id": "https://www.elchi.io/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Ücretsiz seviye: lisanssız Elchi, tek yönetilen client ile çalışır.",
+          "url": "https://www.elchi.io/tr/plans.html",
+          "availability": "https://schema.org/InStock"
         }
       }
     ]
@@ -96,10 +145,6 @@
   </script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5G5WC537"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
   <div id="root"></div>
   <script type="module" src="../home.jsx"></script>
 </body>

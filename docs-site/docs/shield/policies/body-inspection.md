@@ -1,6 +1,7 @@
 ---
-title: Body Inspection & Limits
-description: Enabling request/response body buffering, size and time limits, and the always-on structural protections — truncation guard, content decoding, and the process-wide body budget.
+title: "Shield Body Inspection & Limits"
+sidebar_label: "Body Inspection & Limits"
+description: "Enable request and response body buffering in Shield, set size and time limits, and rely on the always-on truncation guard, decoding and body budget."
 sidebar_position: 3
 tags: [shield, policy]
 ---

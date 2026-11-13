@@ -3,7 +3,7 @@
 // screenshot with a draggable light|dark compare, and a lightbox.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getLocale } from './i18n.js';
-import { SHOT_CATS, SHOTS, shotSrc, shotById } from './screens-data.js';
+import { SHOT_CATS, SHOTS, SHOT_W, SHOT_H, shotSrc, shotSrcSet, shotById } from './screens-data.js';
 import './screens.css';
 
 const UI = {
@@ -48,13 +48,14 @@ export function ThemeSwitch({ theme, onChange }) {
 }
 
 // Both themes stacked, crossfading — the switch shows the same screen change theme.
-export function ThemedImg({ id, theme, alt, eager }) {
-  return (
-    <span className="themed-img">
-      <img src={shotSrc(id, 'light')} alt={theme === 'light' ? alt : ''} loading={eager ? 'eager' : 'lazy'} decoding="async" className={theme === 'light' ? 'on' : ''}/>
-      <img src={shotSrc(id, 'dark')} alt={theme === 'dark' ? alt : ''} loading={eager ? 'eager' : 'lazy'} decoding="async" className={theme === 'dark' ? 'on' : ''}/>
-    </span>
+// `sizes`: the rendered width, so cards and phones load the 1000px copy (the lightbox passes none: full size).
+const CARD_SIZES = '(max-width: 720px) 84vw, (max-width: 980px) 46vw, 430px';
+export function ThemedImg({ id, theme, alt, eager, sizes }) {
+  const img = (t) => (
+    <img src={shotSrc(id, t)} srcSet={sizes ? shotSrcSet(id, t) : undefined} sizes={sizes} width={SHOT_W} height={SHOT_H}
+         alt={theme === t ? alt : ''} loading={eager ? 'eager' : 'lazy'} decoding="async" className={theme === t ? 'on' : ''}/>
   );
+  return <span className="themed-img">{img('light')}{img('dark')}</span>;
 }
 
 function Chrome({ children, title, dark }) {
@@ -70,7 +71,8 @@ function Chrome({ children, title, dark }) {
 }
 
 // Light on the left, dark on the right, split where the handle is.
-export function CompareShot({ id, theme, onOpen }) {
+// `lazy`: below the fold (the home gallery); product pages show it first, so it loads eagerly there.
+export function CompareShot({ id, theme, onOpen, lazy = false }) {
   const u = UI[getLocale()];
   const s = shotById[id];
   const [split, setSplit] = useState(null); // null = show `theme` whole
@@ -93,8 +95,10 @@ export function CompareShot({ id, theme, onOpen }) {
   return (
     <Chrome title={s[getLocale()][0]} dark={pos < 50}>
       <div className="compare" ref={box}>
-        <img src={shotSrc(id, 'dark')} alt={`${s[getLocale()][0]} — ${u.dark}`} className="compare-base"/>
-        <img src={shotSrc(id, 'light')} alt={`${s[getLocale()][0]} — ${u.light}`} className="compare-top"
+        <img src={shotSrc(id, 'dark')} srcSet={shotSrcSet(id, 'dark')} sizes="(max-width: 980px) 100vw, 1300px" width={SHOT_W} height={SHOT_H}
+             loading={lazy ? 'lazy' : undefined} decoding="async" alt={`${s[getLocale()][0]} — ${u.dark}`} className="compare-base"/>
+        <img src={shotSrc(id, 'light')} srcSet={shotSrcSet(id, 'light')} sizes="(max-width: 980px) 100vw, 1300px" width={SHOT_W} height={SHOT_H}
+             loading={lazy ? 'lazy' : undefined} decoding="async" alt={`${s[getLocale()][0]} — ${u.light}`} className="compare-top"
              style={{ clipPath: `inset(0 ${100 - pos}% 0 0)`, transition: split === null ? 'clip-path .5s ease' : 'none' }}/>
         <div className="compare-handle" style={{ left: `${pos}%`, transition: split === null ? 'left .5s ease' : 'none' }}
              onPointerDown={drag} role="slider" aria-label={u.drag} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pos)} tabIndex={0}
@@ -148,7 +152,7 @@ export function ShotCard({ id, theme, onClick, active }) {
   return (
     <button className={`ss-card ${active ? 'active' : ''}`} onClick={onClick}>
       <div className="ss-img">
-        <ThemedImg id={id} theme={theme} alt={`Elchi — ${s[loc][0]}: ${s[loc][1]}`}/>
+        <ThemedImg id={id} theme={theme} alt={`Elchi — ${s[loc][0]}: ${s[loc][1]}`} sizes={CARD_SIZES}/>
         <span className="ss-cat mono">{SHOT_CATS[loc][s.cat]}</span>
       </div>
       <div className="ss-meta">
@@ -202,7 +206,7 @@ export function ScreenGallery({ eyebrow, title1, title2, intro, bare = false }) 
         </div>
 
         <div className="ss-spot" ref={spotRef}>
-          <CompareShot id={spot} theme={theme} onOpen={() => setBox(ids.indexOf(spot))}/>
+          <CompareShot id={spot} theme={theme} onOpen={() => setBox(ids.indexOf(spot))} lazy/>
           <div className="ss-spot-meta">
             <span className="mono ss-spot-cat">{SHOT_CATS[loc][ss.cat]}</span>
             <h3>{ss[loc][0]}</h3>

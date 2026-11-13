@@ -1,6 +1,7 @@
 ---
-title: IP Addresses
-description: Track a project's public and private IP blocks, ranges and single addresses, see which addresses its services hold and which are free, and pick a free one when deploying a service.
+title: "IP Address Management (IPAM)"
+sidebar_label: "IP Addresses"
+description: "Track a project's public and private IP blocks and addresses in Elchi, see which ones services hold and which are free, and pick one when deploying."
 sidebar_position: 2.7
 tags: [operations]
 ---

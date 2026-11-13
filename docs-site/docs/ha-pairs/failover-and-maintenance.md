@@ -1,6 +1,7 @@
 ---
-title: Failover & Maintenance
-description: How pair members elect and take over, planned and forced failover, maintenance mode, flap suspension, replacing a failed member, rotating the heartbeat key, and upgrading a serving pair.
+title: "HA Pair Failover & Maintenance"
+sidebar_label: "Failover & Maintenance"
+description: "How HA pair members elect and take over, planned and forced failover, maintenance mode, flap suspension, replacing a member and upgrading a serving pair."
 sidebar_position: 4
 tags: [operations, high-availability]
 ---

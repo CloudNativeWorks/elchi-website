@@ -1,6 +1,7 @@
 ---
-title: Security Events
-description: The per-event forensic feed of what Shield is blocking and detecting across a project's edges, backed by central ClickHouse — filters, facets, and the redaction model.
+title: "Shield Security Events Feed"
+sidebar_label: "Security Events"
+description: "The per-event feed of what Shield blocks and detects across a project's Envoy edges, stored in ClickHouse: filters, facets and the redaction model."
 sidebar_position: 3
 ---
 

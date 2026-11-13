@@ -1,6 +1,6 @@
 ---
 title: Authentication & Access
-description: The Owner/Admin/Editor/Viewer role model, project scoping, API/discovery/OpenRouter tokens, LDAP/AD integration with connection and auth tests, and TOTP two-factor authentication.
+description: "Elchi access control: Owner, Admin, Editor and Viewer roles, project scoping, API and discovery tokens, LDAP/AD login, and TOTP two-factor authentication."
 sidebar_position: 2
 tags: [administration, auth, rbac, ldap, 2fa]
 ---

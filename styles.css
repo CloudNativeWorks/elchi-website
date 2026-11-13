@@ -257,7 +257,7 @@ p { margin: 0; color: var(--slate-600); }
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   padding: 4px 10px;
   border-radius: 999px;
@@ -367,7 +367,7 @@ p { margin: 0; color: var(--slate-600); }
 .nav-versions { display: flex; gap: 4px; }
 .nav-version, .lang-switch-link {
   display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 11px; border-radius: 999px;
-  font: 500 11.5px/1 var(--font-mono); color: var(--lake-2); background: var(--mist-2); text-decoration: none;
+  font: 500 12px/1 var(--font-mono); color: var(--lake-2); background: var(--mist-2); text-decoration: none;
   transition: background .15s ease;
 }
 .nav-version:hover, .lang-switch-link:hover { background: var(--sage); color: var(--lake); }
@@ -405,6 +405,11 @@ p { margin: 0; color: var(--slate-600); }
   .nav .nav-inner.container { padding-left: 16px; }
   .nav-cta .btn-primary { display: none; }
 }
+/* touch: 44px targets for the logo, the language switch and the header pills */
+@media (max-width: 1040px) {
+  .brand { min-height: 44px; }
+  .lang-switch-link, .nav-version { height: 44px; min-width: 44px; justify-content: center; }
+}
 
 /* Footer: the deepest band */
 .footer {
@@ -420,7 +425,7 @@ p { margin: 0; color: var(--slate-600); }
 .footer ul a { font-size: 15px; color: #c7d5df; }
 .footer ul a:hover { color: #fff; }
 .footer-rev { display: flex; gap: 6px; margin-top: 20px; }
-.footer-rev a { padding: 7px 12px; border-radius: 999px; background: rgba(223, 233, 239, .1); font: 500 11.5px/1 var(--font-mono); color: #dfe9ef; }
+.footer-rev a { padding: 7px 12px; border-radius: 999px; background: rgba(223, 233, 239, .1); font: 500 12px/1 var(--font-mono); color: #dfe9ef; }
 .footer-rev a:hover { background: rgba(223, 233, 239, .18); }
 .footer-rev b { font-weight: 500; color: #8fa6b6; margin-right: 6px; }
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 14px; color: #8fa6b6; }
@@ -435,4 +440,8 @@ p { margin: 0; color: var(--slate-600); }
   .footer .container { padding: 0 22px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
   .footer-grid > div:first-child { grid-column: 1 / -1; }
+  /* touch: link lists as 44px rows */
+  .footer ul { gap: 0; }
+  .footer ul a, .footer-bottom a { display: inline-flex; align-items: center; min-height: 44px; }
+  .footer-rev a { display: inline-flex; align-items: center; min-height: 44px; }
 }

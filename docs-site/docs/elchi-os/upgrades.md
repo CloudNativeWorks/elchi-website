@@ -1,6 +1,7 @@
 ---
-title: Upgrades
-description: In-place Elchi OS upgrades with A/B root slots, a health-gated trial boot and automatic rollback; security updates; moving elchi-client or elchi-shield on its own with system component; and the upgrade order for HA pairs.
+title: "Elchi OS Upgrades and Rollback"
+sidebar_label: "Upgrades"
+description: "Upgrade Elchi OS in place with A/B root slots, a health-gated trial boot and automatic rollback; update elchi-client or Shield alone; HA pair upgrade order."
 sidebar_position: 4
 tags: [elchi-os, operations, upgrade]
 ---

@@ -1,6 +1,6 @@
 ---
 title: Elchi OS Overview
-description: What the Elchi OS edge appliance is, what it bundles, the image formats and platforms it runs on, sizing, and when to use it instead of installing the Elchi Client on a Linux host.
+description: "Elchi OS is an edge appliance image bundling the Elchi agent and Shield WAF: what it includes, image formats, platforms, sizing, and when to use it."
 sidebar_position: 1
 tags: [elchi-os, installation, operations]
 ---

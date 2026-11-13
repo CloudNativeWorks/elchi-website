@@ -1,6 +1,6 @@
 ---
 title: GSLB Statistics
-description: The GSLB Statistics dashboard — probe success rate, IP health distribution, error breakdown, latency and success-rate timelines, and the worker/timewheel/write-buffer internals, filtered per controller and time range.
+description: "The GSLB Statistics dashboard: probe success rate, IP health distribution, errors, latency and success timelines, and worker internals per controller."
 sidebar_position: 5
 tags: [gslb, traffic]
 ---

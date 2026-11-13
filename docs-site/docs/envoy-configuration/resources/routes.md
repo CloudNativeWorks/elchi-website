@@ -1,6 +1,7 @@
 ---
-title: Routes
-description: How Elchi models Envoy route configurations (RDS) — virtual hosts, match/route/redirect rules, and header manipulation.
+title: "Envoy Routes (RDS) in Elchi"
+sidebar_label: "Routes"
+description: "How Elchi models Envoy route configurations (RDS): virtual hosts, match, route and redirect rules, and header manipulation, served to Envoy over xDS."
 sidebar_position: 2
 tags: [envoy, resources]
 ---

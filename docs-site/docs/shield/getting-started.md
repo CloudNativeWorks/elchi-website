@@ -1,6 +1,6 @@
 ---
 title: Get Started with Shield
-description: Write, deploy, and verify your first Shield policy in about 10 minutes — starting safely in detect mode.
+description: "Write, deploy and verify your first Elchi Shield policy in about ten minutes, starting safely in detect mode before you switch the policy to block."
 sidebar_position: 3
 tags: [shield, security]
 ---

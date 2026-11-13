@@ -51,6 +51,7 @@ http_filters:
     typed_config:
       "@type": type.googleapis.com/envoy.extensions.filters.http.ext_proc.v3.ExternalProcessor
       failure_mode_allow: true        # if elchi-shield is unreachable, fail open
+      allow_mode_override: true       # REQUIRED: lets shield switch body mode per route
       # The FIRST request_attribute becomes shield's `listener` metric label and
       # its project attribution — put your identifier first (the Envoy node id).
       request_attributes: ["xds.node.id"]
@@ -71,6 +72,7 @@ What each setting does:
 
 - **`failure_mode_allow: true`** — Envoy-level fail-open: if the Shield process is down or the gRPC call fails, traffic continues uninspected instead of erroring. This is the availability backstop *outside* Shield; Shield's own per-policy `fail_open`/`fail_close` posture governs errors *inside* inspection. Set it to `false` only if you accept an outage when the sidecar is down.
 - **`request_attributes: ["xds.node.id"]`** — Envoy sends the node id with the request-headers message. Shield uses the **first** attribute as the `listener` label on all per-request metrics, and parses node ids of the form `listener::project::ip` to attribute audit events to a listener and project (this is how the UI scopes the [Overview dashboard](/shield/ui/overview-dashboard) and [Security Events](/shield/ui/security-events) to a project). If no attribute arrives, Shield falls back to its `--listener-id` value.
+- **`allow_mode_override: true`** — required. Envoy ignores a `mode_override` from the external processor unless this is set, so without it Shield can never switch a route to buffered bodies and body inspection (WAF body rules, DLP, schema checks) never sees a body.
 - **`timeout: 0.2s`** — the per-message gRPC deadline Envoy grants Shield. Keep it aligned with (slightly above) the policies' processing timeouts.
 - **`processing_mode`** — send request headers only. Shield **dynamically upgrades** the body mode to `BUFFERED` (via `mode_override`) for exactly the routes whose policy inspects bodies, so there is no body streaming cost on routes that don't need it. Leave `response_header_mode: SKIP` unless some policy inspects responses.
 

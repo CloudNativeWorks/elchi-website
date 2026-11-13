@@ -1,6 +1,7 @@
 ---
-title: Extensions
-description: How Elchi surfaces Envoy typed_config extensions — reusable, separately-managed configs referenced by other resources.
+title: "Envoy Extensions (typed_config) in Elchi"
+sidebar_label: "Extensions"
+description: "How Elchi manages Envoy typed_config extensions as reusable, separately versioned configs that listeners, filters and clusters reference instead of inlining."
 sidebar_position: 9
 tags: [envoy, resources]
 ---

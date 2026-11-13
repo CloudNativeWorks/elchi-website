@@ -1,14 +1,7 @@
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
-
-# Disallow certain paths (if any)
-Disallow: /private/
-Disallow: /.env
-Disallow: /node_modules/
 
 # Sitemaps: marketing pages (root) + documentation (Docusaurus)
 Sitemap: https://www.elchi.io/sitemap.xml
 Sitemap: https://www.elchi.io/docs/sitemap.xml
-
-# Crawl delay (optional)
-Crawl-delay: 1

@@ -44,6 +44,9 @@ export const Tick = () => (
 export const Dash = () => (
   <svg className="rl-dash" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M6.5 10h7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
 );
+export const Half = () => (
+  <svg className="rl-half" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" strokeWidth="1.6"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+);
 export const Arrow = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
 );

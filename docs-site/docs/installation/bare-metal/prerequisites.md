@@ -1,6 +1,7 @@
 ---
-title: Prerequisites
-description: OS, hardware, network, and SSH requirements for the bare-metal Elchi stack installer.
+title: "Bare-Metal Install Prerequisites"
+sidebar_label: "Prerequisites"
+description: "OS, hardware, network and SSH requirements for the bare-metal Elchi installer, checked before it brings the stack up as systemd services on your VMs."
 sidebar_position: 2
 ---
 

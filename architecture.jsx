@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { getLocale } from './i18n.js';
+import { getLocale, locHref } from './i18n.js';
 import { Nav, Footer } from './shared.jsx';
 import { Band, BandHead, PageHero, Arrow } from './relief.jsx';
 
@@ -13,41 +13,41 @@ const STR = {
   en: {
     hero: {
       eyebrow: 'ARCHITECTURE',
-      titleLine1: 'Three processes,',
-      titleGrad: 'built to scale.',
-      subtitle: 'A distributed platform with intelligent routing and enterprise-grade components — designed from day one for high availability.',
+      titleLine1: 'Elchi architecture:',
+      titleGrad: 'three processes and an edge agent.',
+      subtitle: 'A Registry, a Controller and one Control-Plane per Envoy version run centrally; on each edge host an agent runs Envoy next to Shield. Every backend process scales out and can run as several instances.',
     },
     threeProcess: {
       eyebrow: '3-PROCESS DISTRIBUTED ARCHITECTURE',
-      headingLine1: 'Specialized microservices,',
-      headingLine2: 'working in harmony.',
-      intro: 'Enterprise-grade scalability through three specialized processes — each with a clear role and lifecycle.',
+      headingLine1: 'What do the Registry, Controller',
+      headingLine2: 'and Control-Plane each do?',
+      intro: 'Three backend processes, each with one job. They are built from one binary, scale out independently, and run as several instances behind the Registry.',
       procs: [
         { name: 'Registry', port: 'routing', accent: '#06b6d4', desc: 'Service discovery and routing hub',
           items: ['Controller registration', 'Client location tracking', 'Version-based control-plane routing', 'Automatic cleanup of stale instances'] },
         { name: 'Controller', port: 'API', accent: '#8b5cf6', desc: 'REST API and management layer',
-          items: ['Client management & command dispatch', 'xDS resource management (CDS, LDS, RDS, EDS)', 'User & authorization (RBAC)', 'Persistent configuration store', 'AI-powered config analysis', 'K8s Discovery system'] },
+          items: ['Client management & command dispatch', 'xDS resource management (CDS, LDS, RDS, EDS)', 'User & authorization (RBAC)', 'Persistent configuration store', 'AI-assisted config analysis (OpenRouter)', 'K8s Discovery system'] },
         { name: 'Control-Plane', port: 'xDS', accent: '#3b82f6', desc: 'xDS control plane',
           items: ['Envoy ADS (Aggregated Discovery Service)', 'VHDS (Virtual Host Discovery Service)', 'Snapshot management per Envoy', 'Live updates on every change', 'Auto-registration with registry', 'Health monitoring & keepalive'] },
       ],
       ha: [
-        ['High Availability', 'Multiple control-plane instances with automatic failover and health monitoring — and at the edge, active/passive Elchi OS pairs that share VIPs and fail over in about two seconds.'],
-        ['Scalability', 'Load balancing across controllers and control-planes for enterprise workloads.'],
-        ['Version Routing', 'Intelligent routing to appropriate control-plane versions based on client requirements.'],
+        ['High availability', 'Several controllers and control planes share one MongoDB and elect a leader for scheduled work, so the management plane keeps running when an instance fails. At the edge, active/passive Elchi OS pairs share VIPs and fail over in about two seconds.'],
+        ['Scaling out', 'The processes are horizontally scalable behind the Registry. The sizing guide recommends adding replicas before raising limits; the Control-Plane\'s memory is the first to watch as the xDS snapshot grows.'],
+        ['Version routing', 'Each Envoy reports its version, and its xDS stream goes to the control plane built for that version, so several Envoy versions run side by side in one project.'],
       ],
     },
     edge: {
       eyebrow: 'EDGE & DATA PLANE',
-      headingLine1: 'The control plane is half the story.',
-      headingLine2: 'The edge is where traffic lives.',
-      intro: 'Each edge host runs Envoy plus the agents that deploy it, secure it, and observe it — driven by the central control plane.',
+      headingLine1: 'What runs on each',
+      headingLine2: 'Envoy edge host?',
+      intro: 'Each edge host runs Envoy plus the agent that deploys it and the sidecar that secures it; the collector that observes it runs centrally. All of it is driven by the control plane.',
       nodes: [
         { name: 'Envoy', port: 'data plane', accent: '#3b82f6', desc: 'The L7 proxy that carries your traffic',
           items: ['Receives config over xDS from the control-plane', 'Calls Shield over ext_proc for security decisions', 'Ships access logs (ALS) to the collector', 'No restarts — config applied live'] },
         { name: 'elchi-client', port: 'edge agent', accent: '#8b5cf6', desc: 'The agent that operates each edge host',
           items: ['Registers the node & runs controller commands', 'Deploys / upgrades Envoy and bootstrap', 'Bundles & manages the Shield sidecar', 'Ships logs, manages BGP/FRR & networking', 'Runs elchi-ha on Elchi OS: active/passive VIP pairs'] },
         { name: 'Shield', port: 'ext_proc', accent: '#f43f5e', desc: 'API security enforced in the request path',
-          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 engines + built-in DLP', 'Runs locally next to Envoy on each edge host', 'Policies pushed as files, hot-reloaded', 'block / detect / shadow decisions, fail-open safe'] },
+          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 engines + built-in DLP', 'Runs locally next to Envoy on each edge host', 'Policies pushed as files, hot-reloaded', 'block / detect / shadow decisions, fail-open by default'] },
         { name: 'Collector', port: 'analytics', accent: '#10b981', desc: 'Turns traffic into an API inventory',
           items: ['Ingests Envoy access logs', 'Normalizes paths, scores risk & PII', 'Builds the endpoint catalog and the event history', 'Powers API Discovery — metadata only, no bodies'] },
       ],
@@ -57,9 +57,9 @@ const STR = {
     },
     layered: {
       eyebrow: 'LAYERED ARCHITECTURE',
-      headingLine1: 'From console to proxy.',
-      headingLine2: 'Each layer, intentional.',
-      intro: 'A layered platform with distributed processing and enterprise-grade components.',
+      headingLine1: 'Which layers make up',
+      headingLine2: 'the platform?',
+      intro: 'The UI, the three backend processes, the stores they write to, and the proxies on the edge hosts.',
       layers: [
         { title: 'Management Console', color: '#3b82f6', items: [
           { name: 'Visual editors', desc: 'Every Envoy resource' },
@@ -72,22 +72,22 @@ const STR = {
           { name: 'Registry', desc: 'Discovery · service routing, versioning' },
         ] },
         { title: 'Data Layer', color: '#06b6d4', items: [
-          { name: 'Configuration store', desc: 'Resources, projects & audit' },
-          { name: 'Metrics store', desc: 'Long-term time series' },
-          { name: 'Event store', desc: 'API events & security audit' },
+          { name: 'MongoDB', desc: 'Resources, projects & audit' },
+          { name: 'VictoriaMetrics', desc: 'Long-term metrics' },
+          { name: 'ClickHouse', desc: 'API events & security audit' },
         ] },
         { title: 'Proxy Layer', color: '#10b981', items: [
           { name: 'Envoy Proxy', desc: 'Multi-Version Support' },
           { name: 'Shield', desc: 'ext_proc · OWASP CRS WAF' },
-          { name: 'Health Check', desc: 'Auto-Recovery' },
+          { name: 'elchi-client', desc: 'Deploys, upgrades & restarts Envoy' },
         ] },
       ],
     },
     requestFlow: {
       eyebrow: 'REQUEST FLOW',
-      headingLine1: 'From client connection',
-      headingLine2: 'to live config.',
-      intro: 'How a request travels through the platform — from initial registration to applied configuration.',
+      headingLine1: 'How does a change reach',
+      headingLine2: 'a running Envoy?',
+      intro: 'From the agent\'s registration to configuration applied in Envoy, step by step.',
       steps: [
         { label: 'Client', sub: 'Agent on host', accent: '#64748b' },
         { label: 'Registry', sub: 'Locate the controller', accent: '#06b6d4', arrow: 'connect' },
@@ -99,62 +99,72 @@ const STR = {
         ['Connection', 'Agents and Envoys connect through the front-door Envoy; the Registry, an ext_proc service, tells it which controller holds each client.'],
         ['Routing', 'Each Envoy\'s xDS stream is sent to the control plane of its own Envoy version.'],
         ['xDS Protocol', 'When a resource changes, the controller rebuilds the snapshot and the control plane streams it to Envoy.'],
-        ['Configuration', 'Envoy receives and applies dynamic configurations live.'],
+        ['Configuration', 'Envoy applies the new listeners, routes and clusters without a restart.'],
       ],
     },
     integrations: {
       eyebrow: 'NATIVE INTEGRATIONS',
-      heading: 'Plays well with your stack.',
-      intro: 'First-class integrations with the cloud-native ecosystem.',
+      heading: 'Which systems does Elchi integrate with?',
+      intro: 'Platforms, directories, metrics and logging backends, AI providers and certificate authorities Elchi connects to.',
       nativeLabel: 'Native integration',
     },
     cta: {
       eyebrow: 'READY TO DEPLOY',
-      headingLine1: 'Bring this architecture',
-      headingLine2: 'to your cluster.',
-      subtitle: 'Deploy to your Kubernetes cluster with our Helm chart, or install on bare metal.',
+      headingLine1: 'Run this architecture',
+      headingLine2: 'on Kubernetes or plain VMs.',
+      subtitle: 'Install with the Helm chart on Kubernetes, or as systemd services on one, two, or three or more Linux VMs with the bare-metal installer. For a demo on your own setup, talk to us.',
       tryDemo: 'Get Started',
       helmCharts: 'Helm Charts',
+      contact: 'Contact us',
+    },
+    docs: {
+      label: 'Architecture in the docs',
+      links: [
+        ['/docs/getting-started/architecture', 'Architecture reference: every port, protocol and data flow'],
+        ['/docs/administration/registry-and-ha', 'Registry and high availability'],
+        ['/docs/administration/sizing-and-capacity', 'Sizing and capacity'],
+        ['/docs/installation/bare-metal/topology', 'Bare-metal topologies: 1, 2 or 3+ VMs'],
+      ],
     },
   },
   tr: {
     hero: {
       eyebrow: 'MİMARİ',
-      titleLine1: 'Üç süreç,',
-      titleGrad: 'ölçeklenmek üzere kuruldu.',
-      subtitle: 'Akıllı yönlendirme ve kurumsal seviye bileşenlerle dağıtık bir platform — yüksek erişilebilirlik için ilk günden tasarlandı.',
+      titleLine1: 'Elchi mimarisi:',
+      titleGrad: 'üç süreç ve bir edge agent.',
+      subtitle: "Merkezde bir Registry, bir Controller ve her Envoy sürümü için bir Control-Plane çalışır; her edge sunucuda bir agent Envoy'u Shield'ın yanında çalıştırır. Her backend süreci yatay ölçeklenir ve birden çok instance olarak çalışabilir.",
     },
     threeProcess: {
       eyebrow: '3 SÜREÇLİ DAĞITIK MİMARİ',
-      headingLine1: 'Uzmanlaşmış mikroservisler,',
-      headingLine2: 'uyum içinde çalışıyor.',
-      intro: 'Üç uzmanlaşmış süreçle kurumsal seviye ölçeklenebilirlik — her biri net bir role ve yaşam döngüsüne sahip.',
+      headingLine1: "Registry, Controller ve Control-Plane",
+      headingLine2: 'ayrı ayrı ne yapar?',
+      intro: "Her biri tek bir işi olan üç backend süreci. Tek bir binary'den çıkarlar, bağımsız ölçeklenirler ve Registry'nin arkasında birden çok instance olarak çalışırlar.",
       procs: [
         { name: 'Registry', port: 'routing', accent: '#06b6d4', desc: 'Servis keşfi ve yönlendirme merkezi',
           items: ['Controller kaydı', 'İstemci konum takibi', 'Sürüm tabanlı control-plane yönlendirmesi', 'Eski instance’ların otomatik temizliği'] },
         { name: 'Controller', port: 'API', accent: '#8b5cf6', desc: 'REST API ve yönetim katmanı',
-          items: ['İstemci yönetimi ve komut dağıtımı', 'xDS kaynak yönetimi (CDS, LDS, RDS, EDS)', 'Kullanıcı ve yetkilendirme (RBAC)', 'Kalıcı yapılandırma deposu', 'AI destekli yapılandırma analizi', 'K8s Discovery sistemi'] },
+          items: ['İstemci yönetimi ve komut dağıtımı', 'xDS kaynak yönetimi (CDS, LDS, RDS, EDS)', 'Kullanıcı ve yetkilendirme (RBAC)', 'Kalıcı yapılandırma deposu', 'AI destekli yapılandırma analizi (OpenRouter)', 'K8s Discovery sistemi'] },
         { name: 'Control-Plane', port: 'xDS', accent: '#3b82f6', desc: 'xDS control plane',
           items: ['Envoy ADS (Aggregated Discovery Service)', 'VHDS (Virtual Host Discovery Service)', 'Envoy başına snapshot yönetimi', 'Her değişiklikte canlı güncelleme', 'Registry ile otomatik kayıt', 'Sağlık izleme ve keepalive'] },
       ],
       ha: [
-        ['Yüksek Erişilebilirlik', "Otomatik yük devretme ve sağlık izlemeyle birden fazla control-plane örneği — edge'de ise VIP paylaşan ve yaklaşık iki saniyede devreden aktif/pasif Elchi OS çiftleri."],
-        ['Ölçeklenebilirlik', "Kurumsal iş yükleri için Controller ve control-plane'ler arasında yük dengeleme."],
-        ['Sürüm Yönlendirme', 'İstemci gereksinimlerine göre uygun control-plane sürümlerine akıllı yönlendirme.'],
+        ['Yüksek erişilebilirlik', "Birden çok controller ve control plane tek bir MongoDB'yi paylaşır ve zamanlanmış işler için lider seçer; bir instance çöktüğünde yönetim katmanı çalışmaya devam eder. Edge'de VIP paylaşan aktif/pasif Elchi OS çiftleri yaklaşık iki saniyede devreder."],
+        ['Yatay ölçekleme', "Süreçler Registry'nin arkasında yatay ölçeklenir. Boyutlandırma rehberi limitleri artırmadan önce replika eklemeyi önerir; xDS snapshot'ı büyüdükçe ilk izlenecek şey Control-Plane'in belleğidir."],
+        ['Sürüm yönlendirme', "Her Envoy sürümünü bildirir ve xDS akışı o sürüm için üretilmiş control plane'e gider; böylece birden çok Envoy sürümü tek projede yan yana çalışır."],
       ],
     },
     edge: {
       eyebrow: 'EDGE VE DATA PLANE',
-      headingLine1: 'Control plane hikayenin yalnızca yarısı.',
-      headingLine2: 'Trafiğin yaşadığı yer ise edge.',
-      intro: "Her edge host, Envoy'un yanında onu dağıtan, güvenli hale getiren ve gözlemleyen ajanları çalıştırır — merkezi control plane tarafından yönetilir.",
+      headingLine1: 'Her Envoy edge sunucusunda',
+      headingLine2: 'ne çalışır?',
+      intro: "Her edge sunucu Envoy'u, onu dağıtan agent'ı ve onu koruyan sidecar'ı çalıştırır; onu gözlemleyen collector merkezde çalışır. Hepsini control plane yönetir.",
       nodes: [
         { name: 'Envoy', port: 'data plane', accent: '#3b82f6', desc: 'Trafiğinizi taşıyan L7 proxy',
           items: ["Yapılandırmayı control-plane'den xDS üzerinden alır", "Güvenlik kararları için Shield'ı ext_proc üzerinden çağırır", "Erişim loglarını (ALS) Collector'a gönderir", 'Yeniden başlatma yok — yapılandırma canlı uygulanır'] },
         { name: 'elchi-client', port: 'edge agent', accent: '#8b5cf6', desc: "Her edge host'u işleten ajan",
           items: ["Node'u kaydeder ve Controller komutlarını çalıştırır", "Envoy ve bootstrap'i dağıtır / yükseltir", "Shield sidecar'ını paketler ve yönetir", 'Logları gönderir, BGP/FRR ve ağ yönetimini üstlenir', "Elchi OS'ta elchi-ha'yı çalıştırır: aktif/pasif VIP çiftleri"] },
         { name: 'Shield', port: 'ext_proc', accent: '#f43f5e', desc: 'İstek yolunda uygulanan API güvenliği',
-          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 motor + yerleşik DLP', 'Her edge host’ta Envoy’un yanında yerel olarak çalışır', 'Politikalar dosya olarak iletilir, anlık yeniden yüklenir', 'block / detect / shadow kararları, fail-open güvenli'] },
+          items: ['WAF (OWASP CRS), JWT/mTLS, rate-limit, bot — 12 motor + yerleşik DLP', 'Her edge host’ta Envoy’un yanında yerel olarak çalışır', 'Politikalar dosya olarak iletilir, anlık yeniden yüklenir', 'block / detect / shadow kararları, varsayılan fail-open'] },
         { name: 'Collector', port: 'analytics', accent: '#10b981', desc: 'Trafiği bir API envanterine dönüştürür',
           items: ['Envoy erişim loglarını alır', 'Yolları normalleştirir, risk ve PII puanlar', 'Endpoint kataloğunu ve olay geçmişini oluşturur', "API Discovery'yi besler — yalnızca meta veri, gövde yok"] },
       ],
@@ -164,9 +174,9 @@ const STR = {
     },
     layered: {
       eyebrow: 'KATMANLI MİMARİ',
-      headingLine1: "Konsoldan proxy'ye.",
-      headingLine2: 'Her katman, özenle tasarlandı.',
-      intro: 'Dağıtık işleme ve kurumsal seviye bileşenlerle katmanlı bir platform.',
+      headingLine1: 'Platform hangi',
+      headingLine2: 'katmanlardan oluşur?',
+      intro: "Arayüz, üç backend süreci, yazdıkları depolar ve edge sunuculardaki proxy'ler.",
       layers: [
         { title: 'Yönetim Konsolu', color: '#3b82f6', items: [
           { name: 'Görsel editörler', desc: 'Her Envoy kaynağı' },
@@ -179,22 +189,22 @@ const STR = {
           { name: 'Registry', desc: 'Discovery · servis yönlendirme, sürümleme' },
         ] },
         { title: 'Veri Katmanı', color: '#06b6d4', items: [
-          { name: 'Yapılandırma deposu', desc: 'Kaynaklar, projeler ve denetim' },
-          { name: 'Metrik deposu', desc: 'Uzun vadeli zaman serileri' },
-          { name: 'Olay deposu', desc: 'API olayları ve güvenlik denetimi' },
+          { name: 'MongoDB', desc: 'Kaynaklar, projeler ve denetim' },
+          { name: 'VictoriaMetrics', desc: 'Uzun vadeli metrikler' },
+          { name: 'ClickHouse', desc: 'API olayları ve güvenlik denetimi' },
         ] },
         { title: 'Proxy Katmanı', color: '#10b981', items: [
           { name: 'Envoy Proxy', desc: 'Çoklu Sürüm Desteği' },
           { name: 'Shield', desc: 'ext_proc · OWASP CRS WAF' },
-          { name: 'Health Check', desc: 'Otomatik Kurtarma' },
+          { name: 'elchi-client', desc: "Envoy'u kurar, yükseltir, yeniden başlatır" },
         ] },
       ],
     },
     requestFlow: {
       eyebrow: 'İSTEK AKIŞI',
-      headingLine1: 'İstemci bağlantısından',
-      headingLine2: 'canlı yapılandırmaya.',
-      intro: 'Bir isteğin platform boyunca izlediği yol — ilk kayıttan uygulanan yapılandırmaya.',
+      headingLine1: 'Bir değişiklik çalışan',
+      headingLine2: "Envoy'a nasıl ulaşır?",
+      intro: "Agent'ın kaydından Envoy'da uygulanan yapılandırmaya, adım adım.",
       steps: [
         { label: 'Client', sub: 'Host üzerindeki ajan', accent: '#64748b' },
         { label: 'Registry', sub: "Controller'ı bul", accent: '#06b6d4', arrow: 'bağlan' },
@@ -206,22 +216,32 @@ const STR = {
         ['Bağlantı', "Ajanlar ve Envoy'lar ön kapı Envoy'u üzerinden bağlanır; bir ext_proc servisi olan Registry, her client'ı hangi controller'ın tuttuğunu bildirir."],
         ['Yönlendirme', "Her Envoy'un xDS akışı, kendi Envoy sürümünün control plane'ine gider."],
         ['xDS Protokolü', "Bir kaynak değişince controller snapshot'ı yeniden oluşturur, control plane onu Envoy'a akıtır."],
-        ['Yapılandırma', 'Envoy, dinamik yapılandırmaları canlı olarak alır ve uygular.'],
+        ['Yapılandırma', "Envoy yeni listener, route ve cluster'ları yeniden başlatma olmadan uygular."],
       ],
     },
     integrations: {
       eyebrow: 'YERLEŞİK ENTEGRASYONLAR',
-      heading: 'Yığınınızla uyumlu çalışır.',
-      intro: 'Cloud-native ekosistemiyle birinci sınıf entegrasyonlar.',
+      heading: 'Elchi hangi sistemlerle entegre olur?',
+      intro: "Elchi'nin bağlandığı platformlar, dizinler, metrik ve log altyapıları, AI sağlayıcıları ve sertifika otoriteleri.",
       nativeLabel: 'Yerleşik entegrasyon',
     },
     cta: {
       eyebrow: 'DAĞITMAYA HAZIR',
-      headingLine1: 'Bu mimariyi',
-      headingLine2: "cluster'ınıza taşıyın.",
-      subtitle: "Helm chart'ımızla Kubernetes cluster'ınıza dağıtın ya da bare-metal kurulumu kullanın.",
+      headingLine1: 'Bu mimariyi Kubernetes’te',
+      headingLine2: 'ya da düz VM’lerde çalıştırın.',
+      subtitle: "Kubernetes'te Helm chart ile, ya da bare-metal kurucuyla bir, iki veya üç ve daha fazla Linux VM üzerinde systemd servisleri olarak kurun. Kendi kurulumunuzda bir demo için bize ulaşın.",
       tryDemo: 'Başlayın',
       helmCharts: 'Helm Charts',
+      contact: 'Bize ulaşın',
+    },
+    docs: {
+      label: 'Dokümanlarda mimari',
+      links: [
+        ['/docs/getting-started/architecture', 'Mimari referansı: her port, protokol ve veri akışı'],
+        ['/docs/administration/registry-and-ha', 'Registry ve yüksek erişilebilirlik'],
+        ['/docs/administration/sizing-and-capacity', 'Boyutlandırma ve kapasite'],
+        ['/docs/installation/bare-metal/topology', 'Bare-metal topolojiler: 1, 2 ya da 3+ VM'],
+      ],
     },
   },
 };
@@ -262,7 +282,8 @@ function ArchHero() {
 
 /* the three backend processes: one tonal row each, name and role on the left, duties on the right */
 function ThreeProcess() {
-  const t = STR[getLocale()].threeProcess;
+  const all = STR[getLocale()];
+  const t = all.threeProcess;
   return (
     <Band tone="water" id="processes">
       <BandHead h2={<>{t.headingLine1} {t.headingLine2}</>} intro={t.intro}/>
@@ -285,6 +306,14 @@ function ThreeProcess() {
           <li key={h}><h3>{h}</h3><p>{d}</p></li>
         ))}
       </ul>
+      <nav className="ap-docs" aria-label={all.docs.label}>
+        <p className="ap-docs-label">{all.docs.label}</p>
+        <ul>
+          {all.docs.links.map(([href, label]) => (
+            <li key={href}><a href={href} className="rl-link">{label}<Arrow/></a></li>
+          ))}
+        </ul>
+      </nav>
     </Band>
   );
 }
@@ -425,6 +454,7 @@ function ArchCTA() {
         <div className="rl-actions">
           <a href="/docs/getting-started/quickstart" className="rl-go">{t.tryDemo}<Arrow/></a>
           <a href="https://charts.elchi.io" target="_blank" rel="noopener" className="rl-pill">{t.helmCharts}</a>
+          <a href={locHref('contact')} className="rl-link">{t.contact}<Arrow/></a>
         </div>
       </div>
     </Band>

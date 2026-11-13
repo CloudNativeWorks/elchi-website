@@ -1,6 +1,7 @@
 ---
-title: Live Traffic
-description: Watch a listener as it runs — sampled requests flow from the clients through connection managers, domains, routes and clusters to the endpoints, with rates, p99 and 5xx origin from metrics every 5 seconds.
+title: "Live Traffic View for Envoy Listeners"
+sidebar_label: "Live Traffic"
+description: "Watch an Envoy listener live: sampled requests flow through connection managers, domains, routes and clusters to endpoints, with rates, p99 and 5xx origin."
 sidebar_position: 2.5
 tags: [operations]
 ---

@@ -1,6 +1,6 @@
 ---
 title: Edge Network Topologies
-description: How an edge host routes with one, two or three NICs — where listener VIPs live, which NIC the downstream replies and the upstream connections leave through, how to move the default route to a data NIC without losing management, when a policy rule is needed, and the internet-facing case with BGP towards the provider.
+description: "How an Envoy edge host routes with one, two or three NICs: where listener VIPs live, reply and upstream paths, the default route, policy rules and BGP uplinks."
 sidebar_position: 4.5
 tags: [operations, elchi-os, networking]
 ---

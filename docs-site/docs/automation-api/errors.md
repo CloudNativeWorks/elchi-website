@@ -1,6 +1,7 @@
 ---
-title: Errors and codes
-description: Every error code of the elchi automation API — its HTTP status, what it means, whether to retry, and what to do; the conflict reasons; the problem body.
+title: "Automation API Errors and Codes"
+description: "Every Elchi automation API error code: HTTP status, meaning, whether to retry and what to do, plus the conflict reasons and the problem+json body."
+sidebar_label: "Errors and codes"
 sidebar_position: 3
 tags: [automation, api]
 ---
@@ -173,3 +174,7 @@ Retry with backoff. Quote `request_id` when you report it.
 Retry after `Retry-After`.
 
 When a change was saved but its push to the proxies could not be started, the answer is `503`. Send the same request again to push it: a repeat of a change whose push did not get through pushes it again.
+
+:::tip OpenAPI
+[Download the OpenAPI spec](https://www.elchi.io/docs/openapi/elchi-public-v1.yaml) for the full request and response schemas of the automation API.
+:::

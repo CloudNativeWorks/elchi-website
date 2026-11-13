@@ -1,6 +1,6 @@
 ---
 title: "Shield: API Security Overview"
-description: Elchi Shield is a local Envoy ext_proc API-security and WAF sidecar — 12 security engines enforced entirely on the edge host, configured by files, hot-reloaded atomically.
+description: "Elchi Shield is an Envoy ext_proc API-security and WAF sidecar: 12 security engines enforced on the edge host, configured by files and hot-reloaded."
 sidebar_position: 1
 tags: [shield, security]
 ---

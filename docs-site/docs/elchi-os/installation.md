@@ -1,6 +1,7 @@
 ---
-title: Installation
-description: Download and verify the Elchi OS image, deploy it from ISO, OVA or qcow2, run the first-login setup wizard to register with the controller, or configure it unattended with setup.yaml, cloud-init or OVF properties.
+title: "Install the Elchi OS Edge Appliance"
+sidebar_label: "Installation"
+description: "Download and verify the Elchi OS image, deploy it from ISO, OVA or qcow2, and register it with the setup wizard or unattended with setup.yaml or cloud-init."
 sidebar_position: 2
 tags: [elchi-os, installation]
 ---

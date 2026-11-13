@@ -1,6 +1,7 @@
 ---
-title: JWT
-description: Static-key bearer JWT validation with a hard algorithm allow-list, mandatory expiry, and required-claims enforcement.
+title: "Shield JWT Validation"
+sidebar_label: "JWT"
+description: "Shield's JWT engine validates bearer tokens with static keys at the Envoy edge: a strict algorithm allow-list, mandatory expiry and required claims."
 sidebar_position: 2
 tags: [shield, engine]
 ---

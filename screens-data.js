@@ -13,14 +13,14 @@ export const SHOTS = [
     en: ['Command Center', 'Live requests, errors, connections and Shield activity for the whole project at a glance.'],
     tr: ['Komuta Merkezi', 'Projenin tamamı için canlı istek, hata, bağlantı ve Shield aktivitesi tek bakışta.'] },
   { id: 'services', cat: 'fleet',
-    en: ['Services', 'Every managed Envoy service with its version, deployment state, addresses and admin port.'],
-    tr: ['Servisler', 'Yönetilen her Envoy servisi; sürüm, deploy durumu, adresler ve admin port ile.'] },
+    en: ['Services', 'Every managed proxy service with its version, deployment state, addresses and admin port.'],
+    tr: ['Servisler', 'Yönetilen her proxy servisi; sürüm, deploy durumu, adresler ve admin port ile.'] },
   { id: 'service-detail', cat: 'fleet',
     en: ['Service Operations', 'Deploy, restart, upgrade and inspect a service on each edge client — live status per host.'],
     tr: ['Servis Operasyonları', 'Bir servisi her edge client üzerinde deploy edin, yeniden başlatın, yükseltin ve inceleyin.'] },
   { id: 'listener', cat: 'config',
-    en: ['xDS Configuration', 'Editors generated from Envoy protobufs — here an HTTP connection manager with Shield and API discovery on.'],
-    tr: ['xDS Yapılandırması', 'Envoy protobuf’larından üretilen editörler — burada Shield ve API keşfi açık bir HTTP connection manager.'] },
+    en: ['xDS Configuration', 'Elchi’s editors, generated from protobufs — here an HTTP connection manager with Shield and API discovery on.'],
+    tr: ['xDS Yapılandırması', 'Protobuf’lardan üretilen Elchi editörleri — burada Shield ve API keşfi açık bir HTTP connection manager.'] },
   { id: 'filters', cat: 'config',
     en: ['HTTP Filters', 'Reusable filter configs delivered through ECDS, shared across listeners and versions.'],
     tr: ['HTTP Filtreleri', 'ECDS ile dağıtılan, listener ve sürümler arasında paylaşılan yeniden kullanılabilir filtreler.'] },
@@ -31,11 +31,11 @@ export const SHOTS = [
     en: ['Metrics', 'Per-service dashboards with change markers, compare, per-client split and a cluster table.'],
     tr: ['Metrikler', 'Değişiklik işaretleri, karşılaştırma, client kırılımı ve cluster tablosu ile servis dashboard’ları.'] },
   { id: 'metrics-explore', cat: 'observe',
-    en: ['Metrics Explore', 'Any stat Envoy reports, charted with the right math — several at once with a shared crosshair.'],
-    tr: ['Metrik Keşfi', 'Envoy’un raporladığı her stat doğru hesapla; birden fazlası ortak imleçle yan yana.'] },
+    en: ['Metrics Explore', 'Any proxy stat, charted with the right math — several at once with a shared crosshair.'],
+    tr: ['Metrik Keşfi', 'Proxy’lerin raporladığı her stat doğru hesapla; birden fazlası ortak imleçle yan yana.'] },
   { id: 'logs', cat: 'observe',
-    en: ['Service Logs', 'Envoy access and error logs from every client, searchable, with a request detail view.'],
-    tr: ['Servis Logları', 'Her client’tan Envoy access ve error logları; aranabilir, istek detay görünümüyle.'] },
+    en: ['Service Logs', 'Access and error logs from every client, searchable, with a request detail view.'],
+    tr: ['Servis Logları', 'Her client’tan access ve error logları; aranabilir, istek detay görünümüyle.'] },
   { id: 'live-traffic', cat: 'observe',
     en: ['Live Traffic', 'A listener as it runs: sampled requests flow from the clients through connection managers, routes and clusters to the endpoints, every 5 s.'],
     tr: ['Canlı Trafik', 'Bir listener çalışırken: örneklenen istekler client’lardan connection manager, route ve cluster’lar üzerinden endpoint’lere akar, 5 sn’de bir.'] },
@@ -99,4 +99,10 @@ export const SHOTS = [
 ];
 
 export const shotSrc = (id, theme) => `/shots/${id}-${theme}.webp`;
+// Every capture is 2400x1500; a 1000px copy (<id>-<theme>-1000.webp) serves the cards and phones.
+// After a screenshot refresh, regenerate the copies:
+//   cd public/shots && for f in *-light.webp *-dark.webp; do cwebp -q 82 -m 6 -resize 1000 0 "$f" -o "${f%.webp}-1000.webp"; done
+export const SHOT_W = 2400;
+export const SHOT_H = 1500;
+export const shotSrcSet = (id, theme) => `/shots/${id}-${theme}-1000.webp 1000w, /shots/${id}-${theme}.webp 2400w`;
 export const shotById = Object.fromEntries(SHOTS.map(s => [s.id, s]));

@@ -1,6 +1,6 @@
 ---
 title: GSLB Overview
-description: What Global Server Load Balancing is in Elchi — DNS-based traffic steering with active health probing, a quad-state health model, and a CoreDNS plugin that consumes a zone-authenticated DNS snapshot API.
+description: "Elchi GSLB is DNS-based global load balancing: active health probes, a four-state health model, and a CoreDNS plugin that serves only healthy edge IPs."
 sidebar_position: 1
 tags: [gslb, traffic]
 ---

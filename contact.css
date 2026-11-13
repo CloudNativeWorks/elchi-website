@@ -53,11 +53,35 @@
 .office-hq .office-mail { background: rgba(223, 233, 239, .12); color: #fff; }
 .office-hq .office-mail:hover { background: #dfe9ef; color: var(--lake); }
 
+
+/* privacy line under the hero actions */
+.rl .contact-privacy { flex: 1 1 100%; margin-top: 4px; font-size: 15px; line-height: 1.55; color: var(--lake-3); max-width: 60ch; }
+.contact-privacy a { color: var(--lake); text-decoration: underline; text-decoration-color: rgba(23, 50, 74, .35); text-underline-offset: 4px; }
+.contact-privacy a:hover { text-decoration-color: currentColor; }
+
+/* "What happens next": four numbered steps */
+.contact-steps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;
+}
+.contact-step { display: flex; flex-direction: column; gap: 12px; padding: 28px; border-radius: 28px; background: rgba(255, 255, 255, .7); }
+.contact-step-n { font: 500 14px/1 var(--font-mono); color: var(--moss); letter-spacing: .04em; }
+.contact-step h3 { font: 700 22px/1.2 var(--font-sans); letter-spacing: -.015em; color: var(--lake); }
+.rl .contact-step p { font-size: 16px; line-height: 1.6; color: var(--lake-2); }
+.rl .contact-meanwhile {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 32px;
+  font-size: 17px; line-height: 1.5; color: var(--lake-2);
+}
+.contact-meanwhile .rl-link { min-height: 44px; }
+
 @media (max-width: 1100px) {
+  .contact-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .offices-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .office-hq { grid-column: 1 / -1; }
 }
 @media (max-width: 720px) {
+  .contact-steps { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .contact-step { padding: 22px 20px; border-radius: 24px; }
   .offices-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .office { padding: 24px 20px; border-radius: 24px; }
   .office h3 { font-size: 30px; }

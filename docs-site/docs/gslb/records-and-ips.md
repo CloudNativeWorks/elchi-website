@@ -1,6 +1,7 @@
 ---
-title: Records & IPs
-description: Managing GSLB DNS records and the IPs behind them — create, update, bulk enable/disable, add/remove IPs, assign regions, override health state, and clear status history.
+title: "GSLB Records & IPs"
+sidebar_label: "Records & IPs"
+description: "Manage GSLB DNS records and their IPs: create and update records, bulk enable or disable, add and remove IPs, assign regions and override health state."
 sidebar_position: 2
 tags: [gslb, traffic]
 ---

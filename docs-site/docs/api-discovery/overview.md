@@ -1,6 +1,6 @@
 ---
 title: API Discovery Overview
-description: A traffic-derived API inventory built from Envoy access logs — confirmed endpoint catalog, active vs historical risk, PII/auth detection, consumers, spec coverage, drift, ownership, OpenAPI export, and a bridge to Shield policies.
+description: "Elchi API Discovery builds an API inventory from Envoy access logs: confirmed endpoints, risk, PII and auth detection, spec coverage, drift and OpenAPI export."
 sidebar_position: 1
 tags: [api-discovery]
 ---

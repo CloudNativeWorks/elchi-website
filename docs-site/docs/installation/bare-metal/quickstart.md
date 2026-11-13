@@ -1,6 +1,7 @@
 ---
-title: Quick Start
-description: One-command bare-metal installs — single VM all-in-one and 3-VM clusters with key-based or interactively bootstrapped SSH.
+title: "Bare-Metal Quick Start"
+sidebar_label: "Quick Start"
+description: "One-command bare-metal Elchi installs: a single all-in-one VM or a 3-VM cluster, with key-based or interactively bootstrapped SSH between the nodes."
 sidebar_position: 3
 ---
 

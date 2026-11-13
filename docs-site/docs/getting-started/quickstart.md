@@ -1,6 +1,7 @@
 ---
-title: Quick Start
-description: Spin up the full Elchi stack on any Kubernetes cluster with one Helm command, using the chart's bundled MongoDB, VictoriaMetrics, and ClickHouse, then connect your first edge host.
+title: "Elchi Quick Start on Kubernetes with Helm"
+sidebar_label: "Quick Start"
+description: "Run the full Elchi stack on any Kubernetes cluster with one Helm command, with bundled MongoDB, VictoriaMetrics and ClickHouse, then connect your first edge."
 sidebar_position: 2
 ---
 

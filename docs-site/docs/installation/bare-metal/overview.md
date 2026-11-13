@@ -1,6 +1,7 @@
 ---
-title: Bare-Metal Install (no Docker, no Kubernetes)
-description: How the standalone installer brings the entire Elchi stack up as systemd services on 1, 2, or 3+ Linux VMs.
+title: "Bare-Metal Install: Elchi on VMs with systemd"
+sidebar_label: "Bare-Metal Install"
+description: "How the standalone installer brings up the whole Elchi stack as systemd services on 1, 2 or 3+ Linux VMs, with no Docker and no Kubernetes required."
 sidebar_position: 1
 ---
 

@@ -1,6 +1,7 @@
 ---
-title: Appliance Commands
-description: Inspect and operate an HA pair on the Elchi OS appliance itself — show ha, system ha commands, elchi-client ha, the elchi-ha service, its files, and the support bundle.
+title: "HA Pair Appliance Commands"
+sidebar_label: "Appliance Commands"
+description: "Inspect and operate an Elchi OS HA pair on the appliance: show ha, system ha commands, elchi-client ha, the elchi-ha service, its files and the support bundle."
 sidebar_position: 6
 tags: [operations, high-availability, troubleshooting]
 ---

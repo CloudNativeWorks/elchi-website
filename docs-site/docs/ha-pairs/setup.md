@@ -1,6 +1,7 @@
 ---
-title: Setting Up a Pair
-description: Start an Elchi OS appliance in HA mode, create a pair from one or two clients, add or replace the second member, and tune heartbeat, fencing and next-hop settings.
+title: "Set Up an Elchi OS HA Pair"
+sidebar_label: "Setting Up a Pair"
+description: "Start an Elchi OS appliance in HA mode, create a pair from one or two clients, add or replace the second member, and tune heartbeat, fencing and next-hops."
 sidebar_position: 2
 tags: [operations, high-availability]
 ---

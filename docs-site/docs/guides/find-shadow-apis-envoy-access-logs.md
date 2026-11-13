@@ -1,9 +1,11 @@
 ---
-title: How to Find Shadow and Undocumented APIs from Envoy Access Logs
-description: Send Envoy's gRPC access logs (ALS v3) to the Elchi collector to build an inventory of every API operation that actually receives traffic, then import your OpenAPI specs to list the operations no spec documents, or export the observed inventory as an OpenAPI document.
+title: "Find Shadow APIs from Envoy Access Logs"
+description: "Find shadow and undocumented APIs: stream Envoy ALS access logs to the Elchi collector, build a live API inventory and compare it with your OpenAPI specs."
 sidebar_position: 5
 tags: [guide]
 ---
+
+# How to Find Shadow and Undocumented APIs from Envoy Access Logs
 
 You can find shadow APIs by building an inventory from the requests Envoy actually serves and comparing it with the specs your teams maintain. In Elchi, API Discovery reads Envoy's Access Log Service (ALS v3) records, normalizes paths into operations such as `GET /users/{id}`, and keeps one inventory entry per operation. Import your OpenAPI or Swagger specs and the coverage view marks every observed operation that falls inside a spec's scope but matches no operation in it as **undocumented**. The inventory can also be exported as an OpenAPI 3.0.3 document.
 
@@ -41,3 +43,9 @@ Coverage compares all current spec versions with confirmed HTTP operations seen 
 - [Risk Scoring](/api-discovery/risk-scoring) - threat and exposure scores.
 - [Suggest Policy](/api-discovery/suggest-policy) - turn discovered endpoints into a Shield policy.
 - [Shield OpenAPI validation](/shield/engines/openapi-validation) - enforce a spec at the edge.
+
+## Next steps
+
+- **Product:** [Elchi API Discovery](https://www.elchi.io/products/api-discovery.html) - the traffic-derived API inventory, risk scoring and spec coverage used in this guide.
+- **Plans:** [compare plans and licensing](https://www.elchi.io/plans.html), from the free tier to enterprise.
+- **Talk to us:** running this across many Envoy edges? [Book a demo](https://www.elchi.io/contact.html) with the Elchi team.

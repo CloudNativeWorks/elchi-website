@@ -1,6 +1,6 @@
 ---
 title: Changelog & Releases
-description: Where to find release notes for every Elchi component, and how the components are versioned together.
+description: "Where to find release notes for every Elchi component (UI, backend, client, Shield, collector) and how the components and Envoy versions are versioned together."
 sidebar_position: 13
 tags: [reference]
 ---

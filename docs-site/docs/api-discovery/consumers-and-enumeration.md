@@ -1,6 +1,6 @@
 ---
 title: Consumers & Enumeration
-description: Per-consumer behaviour from the hashed consumer identity — the Consumers dashboard, machine vs human callers, new consumers and trends, the enumeration / scraping / auth-failure indicators, per-endpoint enumerators, and the BOLA and BFLA detectors.
+description: "Per-consumer API behaviour in API Discovery: machine vs human callers, new consumers, enumeration, scraping and auth-failure signals, BOLA and BFLA detectors."
 sidebar_position: 7
 tags: [api-discovery]
 ---

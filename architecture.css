@@ -26,6 +26,11 @@
 .ap-proc-id p { margin-top: 10px; font-size: 17px; line-height: 1.5; }
 .ap-proc .ap-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 32px; padding-top: 6px; }
 .ap-ha { margin-top: 72px; }
+.ap-docs { margin-top: 64px; }
+.ap-docs-label { margin-bottom: 8px; font: 600 13px/1.3 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--lake-3); }
+.ap-docs ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 32px; }
+/* links in a list: 44px tall tap targets */
+.ap-docs .rl-link { min-height: 44px; line-height: 1.3; }
 
 /* ---------- the edge host: Envoy across the top, its agents beside it ---------- */
 .eh { display: grid; gap: 12px; padding: 12px; border-radius: 36px; background: rgba(255, 255, 255, .34); }
@@ -54,7 +59,7 @@
 .eh-agent.is-shield .ap-list li::before { background: var(--coral); }
 
 .ap-doc { margin-top: 40px; max-width: 72ch; font-size: 16.5px; line-height: 1.6; }
-.ap-doc .rl-link { display: inline; font-size: inherit; }
+.ap-doc .rl-link { display: inline; font-size: inherit; padding-block: 12px; } /* inline in a sentence; the padding widens the hit area without moving the text */
 
 /* ---------- layers as terraces ---------- */
 .terr { display: grid; gap: 10px; }
@@ -150,6 +155,8 @@
   .af-line { justify-self: center; transform: rotate(90deg); margin: 18px 0; }
 }
 @media (max-width: 720px) {
+  .ap-docs { margin-top: 48px; }
+  .ap-docs ul { flex-direction: column; }
   .ap-proc, .eh-envoy { padding: 24px 22px; border-radius: 24px; }
   .ap-proc .ap-list, .eh-envoy .ap-list { grid-template-columns: minmax(0, 1fr); }
   .ap-name h3 { font-size: 23px; }

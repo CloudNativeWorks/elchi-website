@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getLocale, locHref, otherLocaleHref } from './i18n.js';
 import { PRODUCTS } from './products-data.js';
+import './shared.css';
 
 const ELCHI_UI_VERSION = typeof __ELCHI_UI_VERSION__ !== 'undefined' ? __ELCHI_UI_VERSION__ : 'dev';
 const ELCHI_BACKEND_VERSION = typeof __ELCHI_BACKEND_VERSION__ !== 'undefined' ? __ELCHI_BACKEND_VERSION__ : 'dev';
@@ -36,28 +37,30 @@ function useArchiveVersions() {
 // are intentionally kept in English in both locales.
 const SHARED = {
   en: {
-    nav: { home: 'Home', products: 'Products', features: 'Features', architecture: 'Architecture', videos: 'Videos', plans: 'Plans', docs: 'Docs', contact: 'Contact', getStarted: 'Get Started →', allPlans: 'Plans & Licensing' },
+    nav: { home: 'Home', products: 'Products', features: 'Features', architecture: 'Architecture', videos: 'Videos', plans: 'Plans', docs: 'Docs', contact: 'Contact', getStarted: 'Get Started →', allPlans: 'Plans & Licensing', demo: 'Book a demo', homeLabel: 'Elchi home', menuOpen: 'Open menu', menuClose: 'Close menu', langLabel: 'Türkçe', versions: 'Current releases' },
     footer: {
       tagline: 'Elchi is the enterprise platform for traffic management and API security. One control plane for your whole fleet, with full xDS support and Shield at the edge.',
       products: 'Products', platform: 'Platform', resources: 'Resources', company: 'Company',
-      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', videos: 'Video tutorials', faq: 'FAQ', plans: 'Plans & Licensing',
+      features: 'Features', architecture: 'Architecture', screenshots: 'Screenshots', videos: 'Video tutorials', faq: 'FAQ', compare: 'Compare alternatives', plans: 'Plans & Licensing',
       documentation: 'Documentation', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Install', platformInstall: 'Platform Install',
-      about: 'About', contact: 'Contact',
+      about: 'About', contact: 'Contact', cnw: 'CloudNativeWorks',
       rights: 'All rights reserved.',
+      privacy: 'Privacy',
       cookies: 'Cookie preferences',
     },
   },
   tr: {
-    nav: { home: 'Ana Sayfa', products: 'Ürünler', features: 'Özellikler', architecture: 'Mimari', videos: 'Videolar', plans: 'Paketler', docs: 'Dokümanlar', contact: 'İletişim', getStarted: 'Başlayın →', allPlans: 'Paketler & Lisanslama' },
+    nav: { home: 'Ana Sayfa', products: 'Ürünler', features: 'Özellikler', architecture: 'Mimari', videos: 'Videolar', plans: 'Paketler', docs: 'Dokümanlar', contact: 'İletişim', getStarted: 'Başlayın →', allPlans: 'Paketler & Lisanslama', demo: 'Demo talep et', homeLabel: 'Elchi ana sayfa', menuOpen: 'Menüyü aç', menuClose: 'Menüyü kapat', langLabel: 'English', versions: 'Güncel sürümler' },
     footer: {
       tagline: 'Elchi, trafik yönetimi ve API güvenliği için kurumsal platformdur. Tam xDS desteği ve edge’de Shield ile tüm filonuz için tek control plane.',
       products: 'Ürünler', platform: 'Platform', resources: 'Kaynaklar', company: 'Şirket',
-      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', videos: 'Video eğitimleri', faq: 'SSS', plans: 'Paketler & Lisanslama',
+      features: 'Özellikler', architecture: 'Mimari', screenshots: 'Ekran Görüntüleri', videos: 'Video eğitimleri', faq: 'SSS', compare: 'Alternatiflerle karşılaştırma', plans: 'Paketler & Lisanslama',
       documentation: 'Dokümantasyon', helm: 'Helm Charts', github: 'GitHub',
       clientInstall: 'Client Kurulumu', platformInstall: 'Platform Kurulumu',
-      about: 'Hakkında', contact: 'İletişim',
+      about: 'Hakkında', contact: 'İletişim', cnw: 'CloudNativeWorks',
       rights: 'Tüm hakları saklıdır.',
+      privacy: 'Gizlilik ve KVKK',
       cookies: 'Çerez tercihleri',
     },
   },
@@ -105,6 +108,7 @@ function ProductIcon({ slug, size = 16 }) {
   return (
     <svg
       className="nav-dd-icon"
+      aria-hidden="true"
       width={size}
       height={size}
       viewBox="0 0 24 24"
@@ -146,11 +150,11 @@ function Nav({ active, overlay = false }) {
   return (
     <nav className={`nav${overlay ? ' nav-overlay' : ''}${overlay && mode !== 'page' ? ' is-onhero' : ''}${overlay && mode === 'top' && !menuOpen ? ' is-top' : ''}${menuOpen ? ' nav-open' : ''}`}>
       <div className="container nav-inner">
-        <a href={locHref('home')} className="brand">
-          <span className="brand-mark"></span>
+        <a href={locHref('home')} className="brand" aria-label={t.homeLabel}>
+          <span className="brand-mark" aria-hidden="true"></span>
         </a>
         <div className="nav-links">
-          <a href={locHref('home')} className={active === 'home' ? 'active' : ''}>{t.home}</a>
+          <a href={locHref('home')} className={`nav-home${active === 'home' ? ' active' : ''}`}>{t.home}</a>
           <div className={`nav-dd${ddOpen ? ' open' : ''}`}>
             <button
               type="button"
@@ -159,7 +163,7 @@ function Nav({ active, overlay = false }) {
               aria-expanded={ddOpen}
             >
               {t.products}
-              <svg className="nav-dd-caret" width="10" height="10" viewBox="0 0 24 24" fill="none">
+              <svg className="nav-dd-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
@@ -180,14 +184,26 @@ function Nav({ active, overlay = false }) {
           <a href={locHref('plans')} className={active === 'plans' ? 'active' : ''}>{t.plans}</a>
           <a href={docsHref} className={active === 'docs' ? 'active' : ''}>{t.docs}</a>
           <a href={locHref('contact')} className={active === 'contact' ? 'active' : ''}>{t.contact}</a>
+          {/* phones and tablets: the menu ends with the two actions, demo first */}
+          <div className="nav-drawer-cta">
+            <a href={locHref('contact')} className="btn btn-primary">{t.demo}</a>
+            <a href="/docs/getting-started/quickstart" className="btn btn-ghost">{t.getStarted.replace(/\s*→$/, '')}</a>
+          </div>
         </div>
         <div className="nav-cta">
           <div className="lang-switch">
-            <a href={otherLocaleHref(active)} className="lang-switch-link" title={locale === 'en' ? 'Türkçe' : 'English'}>
+            <a
+              href={otherLocaleHref(active)}
+              className="lang-switch-link"
+              hrefLang={locale === 'en' ? 'tr' : 'en'}
+              lang={locale === 'en' ? 'tr' : 'en'}
+              aria-label={t.langLabel}
+              title={t.langLabel}
+            >
               {locale === 'en' ? 'TR' : 'EN'}
             </a>
           </div>
-          <div className="nav-versions">
+          <div className="nav-versions" role="group" aria-label={t.versions}>
             <a
               href={`https://github.com/CloudNativeWorks/elchi-archive/releases/tag/elchi-ui-${uiVersion}`}
               target="_blank"
@@ -209,15 +225,16 @@ function Nav({ active, overlay = false }) {
               <span className="nav-version-tag">{backendVersion}</span>
             </a>
           </div>
+          <a href={locHref('contact')} className={`btn btn-ghost nav-demo${active === 'contact' ? ' is-active' : ''}`}>{t.demo}</a>
           <a href="/docs/getting-started/quickstart" className="btn btn-primary">{t.getStarted.replace(/\s*→$/, '')}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></a>
           <button
             type="button"
             className="nav-burger"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? t.menuClose : t.menuOpen}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <span /><span /><span />
+            <span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -236,7 +253,7 @@ function Footer() {
         <div className="footer-grid">
           <div>
             <div className="brand" style={{marginBottom: 14}}>
-              <span className="brand-mark"></span>
+              <span className="brand-mark" role="img" aria-label="Elchi"></span>
             </div>
             <p style={{maxWidth: 360, fontSize: 15, lineHeight: 1.6}}>
               {t.tagline}
@@ -263,6 +280,7 @@ function Footer() {
               <li><a href={locHref('home#screenshots')}>{t.screenshots}</a></li>
               <li><a href={locHref('videos')}>{t.videos}</a></li>
               <li><a href={locHref('faq')}>{t.faq}</a></li>
+              <li><a href={locHref('compare')}>{t.compare}</a></li>
             </ul>
           </div>
           <div>
@@ -278,18 +296,24 @@ function Footer() {
           <div>
             <h5>{t.company}</h5>
             <ul>
-              <li><a href="https://www.cloudnativeworks.com" target="_blank" rel="noopener">{t.about}</a></li>
+              <li><a href={locHref('about')}>{t.about}</a></li>
               <li><a href={locHref('contact')}>{t.contact}</a></li>
+              <li><a href={locHref('privacy')}>{t.privacy}</a></li>
+              <li><a href="https://www.cloudnativeworks.com" target="_blank" rel="noopener">{t.cnw}</a></li>
               <li><a href="https://github.com/orgs/CloudNativeWorks/repositories" target="_blank" rel="noopener">{t.github}</a></li>
             </ul>
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Elchi. {t.rights} · <a href="#cookie-preferences">{t.cookies}</a></span>
+          <span className="footer-legal">
+            <span>© {new Date().getFullYear()} CloudNativeWorks · Elchi. {t.rights}</span>
+            <a href={locHref('privacy')}>{t.privacy}</a>
+            <a href="#cookie-preferences">{t.cookies}</a>
+          </span>
           <a href="https://profelis.com.tr" target="_blank" rel="noopener" className="powered-by">
             <span>Powered by</span>
             <span className="powered-by-logo">
-              <img src="/profelis-logo.webp" alt="Profelis" height="16" loading="lazy" />
+              <img src="/profelis-logo.webp" alt="Profelis" width="82" height="16" loading="lazy" />
             </span>
           </a>
         </div>

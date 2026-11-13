@@ -1,6 +1,7 @@
 ---
-title: Health Model
-description: The GSLB probe and health model — HTTP/HTTPS/TCP probes, the quad-state PASSING/WARNING/CRITICAL/RECOVERY model, anti-flapping, circuit-breaker backoff, and how state drives which IPs are served in DNS.
+title: "GSLB Health Model and Probes"
+sidebar_label: "Health Model"
+description: "The Elchi GSLB health model: HTTP, HTTPS and TCP probes, the passing, warning, critical and recovery states, anti-flapping, backoff, and which IPs DNS serves."
 sidebar_position: 3
 tags: [gslb, traffic]
 ---

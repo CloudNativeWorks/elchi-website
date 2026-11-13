@@ -60,26 +60,57 @@ const STR = {
   },
 };
 
-// schema.org VideoObject list, so search engines can show the videos as video results.
+// schema.org graph: a CollectionPage wrapping the VideoObject list, plus a breadcrumb, so
+// search engines can show the videos as video results tied to this page and publisher.
 function JsonLd({ locale }) {
+  const base = `https://www.elchi.io${locale === 'tr' ? '/tr' : ''}`;
+  const page = `${base}/videos.html`;
+  const org = { '@id': 'https://www.elchi.io/#organization' };
   const data = {
     '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    itemListElement: ALL_VIDEOS.map((v, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'VideoObject',
-        name: v.title,
-        description: v[locale],
-        thumbnailUrl: `https://www.elchi.io${thumb(v)}`,
-        // Google wants a full ISO 8601 date-time with a time zone; the data holds a day
-        uploadDate: /T/.test(v.date) ? v.date : `${v.date}T12:00:00+03:00`,
-        duration: `PT${Math.floor(v.seconds / 60)}M${v.seconds % 60}S`,
-        ...(v.src ? { contentUrl: `https://www.elchi.io${v.src}` } : { embedUrl: `https://www.youtube.com/embed/${v.yt}` }),
-        url: `https://www.elchi.io${locale === 'tr' ? '/tr' : ''}/videos.html#${v.slug}`,
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${page}#page`,
+        url: page,
+        name: locale === 'tr' ? 'Elchi Envoy video eğitimleri' : 'Elchi Envoy video tutorials',
+        inLanguage: locale,
+        isPartOf: { '@id': 'https://www.elchi.io/#website' },
+        publisher: org,
+        mainEntity: { '@id': `${page}#videos` },
       },
-    })),
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: locale === 'tr' ? 'Ana Sayfa' : 'Home', item: `${base}/` },
+          { '@type': 'ListItem', position: 2, name: locale === 'tr' ? 'Videolar' : 'Videos', item: page },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${page}#videos`,
+        numberOfItems: ALL_VIDEOS.length,
+        itemListElement: ALL_VIDEOS.map((v, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          item: {
+            '@type': 'VideoObject',
+            '@id': `${page}#${v.slug}`,
+            name: v.title,
+            description: v[locale],
+            thumbnailUrl: `https://www.elchi.io${thumb(v)}`,
+            // Google wants a full ISO 8601 date-time with a time zone; the data holds a day
+            uploadDate: /T/.test(v.date) ? v.date : `${v.date}T12:00:00+03:00`,
+            duration: `PT${Math.floor(v.seconds / 60)}M${v.seconds % 60}S`,
+            ...(v.src ? { contentUrl: `https://www.elchi.io${v.src}` } : { embedUrl: `https://www.youtube.com/embed/${v.yt}` }),
+            // every video has English audio (EN and TR subtitles), whatever the page locale
+            inLanguage: 'en',
+            publisher: org,
+            url: `${page}#${v.slug}`,
+          },
+        })),
+      },
+    ],
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}/>;
 }

@@ -1,0 +1,78 @@
+/* Comparison pages (compare.jsx): the hub and the three "Elchi vs …" pages.
+   Shared relief classes (bands, hero, actions) live in relief.css; tokens in styles.css. */
+
+/* breadcrumb above the page hero */
+.cmpx-crumbs { max-width: 1408px; margin: 0 auto; padding: 28px 72px 0; }
+.cmpx-crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 10px; font: 500 14.5px/1.4 var(--font-sans); color: var(--lake-3); }
+.cmpx-crumbs li + li::before { content: '/'; margin-right: 10px; color: var(--lake-3); opacity: .6; }
+.cmpx-crumbs a { color: var(--lake-2); text-decoration: underline; text-decoration-color: rgba(23, 50, 74, .25); text-underline-offset: 4px; }
+.cmpx-crumbs a:hover { text-decoration-color: currentColor; }
+.cmpx-crumbs [aria-current] { color: var(--lake); }
+
+/* the comparison table: real cells, readable without the page's styling */
+.cmpx-scroll { overflow-x: auto; border-radius: 28px; background: rgba(255, 255, 255, .62); scrollbar-width: thin; }
+.cmpx-scroll:focus-visible { outline: 2px solid var(--flow); outline-offset: 3px; }
+.cmpx-table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 15.5px; line-height: 1.55; color: var(--lake-2); }
+.cmpx-table caption { caption-side: top; text-align: left; padding: 22px 24px 6px; font-size: 15px; line-height: 1.5; color: var(--lake-3); }
+.cmpx-table th, .cmpx-table td { padding: 16px 22px; text-align: left; vertical-align: top; }
+.cmpx-table thead th { padding-top: 18px; padding-bottom: 16px; font: 600 14px/1.25 var(--font-sans); letter-spacing: .01em; color: var(--lake-3); white-space: nowrap; }
+.cmpx-table thead th.cmpx-elchi { color: #fff; background: var(--lake); border-radius: 18px 18px 0 0; }
+.cmpx-table tbody th { width: 17%; font: 600 15.5px/1.35 var(--font-sans); color: var(--lake); }
+.cmpx-table tbody tr:nth-child(odd) { background: rgba(255, 255, 255, .5); }
+.cmpx-table td.cmpx-elchi { background: rgba(23, 50, 74, .06); color: var(--lake); }
+.cmpx-table:not(.cmpx-hub) td { width: 41.5%; }
+.cmpx-hub { min-width: 900px; }
+.cmpx-hub td { width: 20.75%; }
+
+/* prose and two-column lists */
+.cmpx-prose { max-width: 74ch; }
+.rl .cmpx-prose p { font-size: 18px; line-height: 1.7; }
+.cmpx-prose p + p { margin-top: 20px; }
+.cmpx-h2s { margin-bottom: 24px; font: 700 clamp(28px, 3vw, 40px)/1.1 var(--font-sans); letter-spacing: -.025em; color: var(--lake); text-wrap: balance; }
+.cmpx-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 64px; }
+.cmpx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.cmpx-list li { position: relative; padding-left: 26px; font-size: 16.5px; line-height: 1.6; color: var(--lake-2); }
+.cmpx-list li::before { content: ''; position: absolute; left: 0; top: 9px; width: 10px; height: 10px; border-radius: 50%; background: var(--lake-3); opacity: .5; }
+.cmpx-list-elchi li::before { background: var(--moss); opacity: 1; box-shadow: 0 0 0 5px rgba(159, 185, 162, .28); }
+
+/* further reading */
+.cmpx-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 56px; }
+.cmpx-links h3 { margin-bottom: 18px; font: italic 500 22px/1.2 var(--font-map); color: var(--lake-2); }
+.cmpx-links ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.cmpx-links .rl-link { font-size: 16px; line-height: 1.35; }
+
+/* hub: one card per comparison */
+.cmpx-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cmpx-card { display: flex; flex-direction: column; gap: 12px; padding: 32px; border-radius: 28px; background: rgba(255, 255, 255, .7); color: var(--lake); text-decoration: none; transition: background .2s ease, box-shadow .2s ease; }
+.cmpx-card:hover { background: #fff; box-shadow: var(--shade-1); }
+.cmpx-card h3 { font: 700 24px/1.2 var(--font-sans); letter-spacing: -.015em; color: var(--lake); }
+.rl .cmpx-card p { font-size: 16px; line-height: 1.6; }
+.cmpx-more { margin-top: auto; padding-top: 8px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--lake); }
+.cmpx-more svg { transition: transform .2s ease; }
+.cmpx-card:hover .cmpx-more svg { transform: translateX(3px); }
+
+/* closing band and sources */
+.cmpx-cta { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px 64px; align-items: end; }
+.cmpx-cta .rl-lede { margin-top: 24px; max-width: 54ch; color: var(--lake-2); }
+.cmpx-cta .rl-actions { margin-top: 0; justify-content: flex-end; }
+.cmpx-sources { max-width: 80ch; }
+.cmpx-sources .cmpx-h2s { font-size: 28px; margin-bottom: 14px; }
+.rl .cmpx-sources p { font-size: 15.5px; line-height: 1.6; }
+.cmpx-sources ol { margin: 18px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 15.5px; color: var(--lake-2); }
+.cmpx-sources a { color: var(--lake); text-decoration: underline; text-decoration-color: rgba(23, 50, 74, .3); text-underline-offset: 4px; overflow-wrap: anywhere; }
+.cmpx-sources a:hover { text-decoration-color: currentColor; }
+.rl .cmpx-reviewed { margin-top: 20px; font-weight: 600; color: var(--lake); }
+
+@media (max-width: 980px) {
+  .cmpx-crumbs { padding: 20px 32px 0; }
+  .cmpx-split, .cmpx-links, .cmpx-cards { grid-template-columns: minmax(0, 1fr); }
+  .cmpx-cta { grid-template-columns: minmax(0, 1fr); }
+  .cmpx-cta .rl-actions { justify-content: flex-start; }
+}
+@media (max-width: 720px) {
+  .cmpx-crumbs { padding: 16px 16px 0; }
+  .cmpx-scroll { border-radius: 20px; }
+  .cmpx-table { font-size: 15px; }
+  .cmpx-table th, .cmpx-table td { padding: 14px 16px; }
+  .cmpx-card { padding: 24px; }
+}

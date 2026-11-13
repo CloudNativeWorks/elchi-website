@@ -1,6 +1,7 @@
 ---
-title: Ownership & Teams
-description: Assign teams, owners, criticality, data classes and tags to discovered endpoints with ordered rules and per-endpoint overrides, review PII-based suggestions, see per-team risk on the Teams tab, and export the catalog as CSV.
+title: "API Ownership & Teams"
+sidebar_label: "Ownership & Teams"
+description: "Assign teams, owners, criticality, data classes and tags to discovered API endpoints with ordered rules and overrides, and see per-team risk on the Teams tab."
 sidebar_position: 12
 tags: [api-discovery]
 ---

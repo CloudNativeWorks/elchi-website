@@ -1,6 +1,7 @@
 ---
-title: Security & Networking
-description: The Elchi OS host firewall model, which ports are open and to whom, outbound requirements, SSH and account permissions, kernel settings, the CIS compliance check, metrics, and the support bundle.
+title: "Elchi OS Security & Networking"
+sidebar_label: "Security & Networking"
+description: "The Elchi OS host firewall, open ports and who may reach them, outbound requirements, SSH and accounts, kernel settings, the CIS check and the support bundle."
 sidebar_position: 5
 tags: [elchi-os, security, operations]
 ---

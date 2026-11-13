@@ -1,6 +1,7 @@
 ---
-title: Storage Options
-description: Configure built-in or external MongoDB and VictoriaMetrics storage for the Elchi platform, with sizing guidance.
+title: "Helm Storage Options"
+sidebar_label: "Storage Options"
+description: "Configure built-in or external MongoDB, ClickHouse and VictoriaMetrics storage for the Elchi Helm platform, with persistent volume sizing guidance."
 sidebar_position: 5
 ---
 

@@ -1,9 +1,11 @@
 ---
-title: How to Do Blue/Green Deployments with Envoy EDS and Drain an Upstream Endpoint via API
-description: Keep the blue and green servers in two endpoints resources and switch an EDS cluster's service_name from one to the other with Elchi's cluster endpoints switch, and take a single upstream IP or hostname out of rotation with the endpoint disable API, which serves it to Envoy as DRAINING.
+title: "Envoy Blue/Green with EDS and Endpoint Draining"
+description: "Blue/green behind Envoy: switch an EDS cluster's service_name between two endpoint sets, or drain one upstream IP with the Elchi automation API."
 sidebar_position: 6
 tags: [guide]
 ---
+
+# How to Do Blue/Green Deployments with Envoy EDS and Drain an Upstream Endpoint via API
 
 For a blue/green release behind Envoy, put the blue servers and the green servers in two separate endpoints resources (EDS `ClusterLoadAssignment`s) and point the EDS cluster at one of them through `eds_cluster_config.service_name`. Elchi's cluster endpoints switch rewrites that one field and pushes every listener that uses the cluster; Envoy builds and warms the changed cluster while the old one keeps serving, then swaps them. To take one upstream server out of rotation instead, the endpoint disable marks that IP or hostname as `DRAINING` everywhere it is used in the project, so Envoy sends it no new requests. Both are available in the UI and through the public automation API with a project API token.
 
@@ -58,3 +60,9 @@ Both operations refuse to run with `409 pending_unpublished_changes` when the af
 - [Automation API overview](/automation-api/overview) - base URL, conventions and long-running operations.
 - [API tokens](/automation-api/tokens) - scopes and revocation.
 - [Errors](/automation-api/errors) - every problem+json code.
+
+## Next steps
+
+- **Product:** [Elchi Core](https://www.elchi.io/products/core.html) - the control plane, cluster endpoints switch and endpoint disable used in this guide.
+- **Plans:** [compare plans and licensing](https://www.elchi.io/plans.html), from the free tier to enterprise.
+- **Talk to us:** running this across many Envoy edges? [Book a demo](https://www.elchi.io/contact.html) with the Elchi team.

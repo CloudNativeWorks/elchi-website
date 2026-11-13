@@ -2,16 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5G5WC537');</script>
-  <!-- End Google Tag Manager -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elchi — Enterprise Traffic Management & API Security</title>
-  <meta name="description" content="Elchi is an enterprise Envoy management platform: a visual control plane for every Envoy resource, plus edge agents — with GSLB, ACME certificates, API discovery, and Shield API security built in.">
+  <title>Elchi — Visual Envoy Control Plane, xDS &amp; API Security</title>
+  <meta name="description" content="Elchi is a visual control plane for Envoy fleets on VMs and Kubernetes: full xDS from a UI, multi-version Envoy, Envoy WAF via ext_proc, GSLB and API discovery.">
+  <link rel="preload" as="image" href="/hero3d/poster.webp" fetchpriority="high">
   <link rel="canonical" href="https://www.elchi.io/">
   <link rel="alternate" hreflang="en" href="https://www.elchi.io/">
   <link rel="alternate" hreflang="tr" href="https://www.elchi.io/tr/">
@@ -21,13 +15,13 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Elchi">
   <meta property="og:url" content="https://www.elchi.io/">
-  <meta property="og:title" content="Elchi — Enterprise Traffic Management & API Security">
-  <meta property="og:description" content="A visual control plane for every Envoy resource, plus edge agents — with GSLB, ACME, API discovery, and Shield API security built in.">
+  <meta property="og:title" content="Elchi — Visual Envoy Control Plane, xDS &amp; API Security">
+  <meta property="og:description" content="Elchi is a visual control plane for Envoy fleets on VMs and Kubernetes: full xDS from a UI, multi-version Envoy, Envoy WAF via ext_proc, GSLB and API discovery.">
   <meta property="og:image" content="https://www.elchi.io/og-image.png">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Elchi — Enterprise Traffic Management & API Security">
-  <meta name="twitter:description" content="A visual control plane for every Envoy resource, plus edge agents — GSLB, ACME, API discovery, and Shield API security.">
+  <meta name="twitter:title" content="Elchi — Visual Envoy Control Plane, xDS &amp; API Security">
+  <meta name="twitter:description" content="Elchi is a visual control plane for Envoy fleets on VMs and Kubernetes: full xDS from a UI, multi-version Envoy, Envoy WAF via ext_proc, GSLB and API discovery.">
   <meta name="twitter:image" content="https://www.elchi.io/og-image.png">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -37,7 +31,7 @@
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./relief.css">
   <script type="application/ld+json">
-{
+  {
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -57,36 +51,91 @@
       {
         "@type": "Organization",
         "@id": "https://www.elchi.io/#organization",
-        "name": "Elchi",
-        "url": "https://www.elchi.io/",
-        "sameAs": [
-          "https://github.com/CloudNativeWorks",
-          "https://www.youtube.com/@CloudNativeWorks",
-          "https://artifacthub.io/packages/search?repo=elchi"
-        ],
+        "name": "CloudNativeWorks",
+        "legalName": "Cloud Native Teknoloji Bilişim ve Danışmanlık Ticaret ve Sanayi A.Ş.",
+        "url": "https://www.cloudnativeworks.com",
+        "description": "CloudNativeWorks builds Elchi, a visual control plane for Envoy proxy fleets on VMs and Kubernetes.",
         "logo": {
           "@type": "ImageObject",
           "url": "https://www.elchi.io/icon-512.png",
           "width": 512,
           "height": 512
         },
-        "parentOrganization": {
-          "@type": "Organization",
-          "name": "CloudNativeWorks",
-            "url": "https://www.cloudnativeworks.com",
-            "sameAs": ["https://github.com/CloudNativeWorks"]
+        "brand": {
+          "@type": "Brand",
+          "name": "Elchi",
+          "url": "https://www.elchi.io/",
+          "logo": "https://www.elchi.io/icon-512.png"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Aziziye Mah. Vali Doktor Reşit Sk. No: 6 İç Kapı No: 1",
+          "addressLocality": "Çankaya",
+          "addressRegion": "Ankara",
+          "postalCode": "06690",
+          "addressCountry": "TR"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "info@profelis.com.tr",
+          "telephone": "+90 312 482 8021",
+          "url": "https://www.elchi.io/contact.html",
+          "availableLanguage": [
+            "en",
+            "tr"
+          ]
+        },
+        "sameAs": [
+          "https://github.com/CloudNativeWorks",
+          "https://www.youtube.com/@CloudNativeWorks",
+          "https://artifacthub.io/packages/helm/elchi/elchi-stack"
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://www.elchi.io/#webpage",
+        "url": "https://www.elchi.io/",
+        "name": "Elchi — Visual Envoy Control Plane, xDS & API Security",
+        "description": "Elchi is a visual control plane for Envoy fleets on VMs and Kubernetes: full xDS from a UI, multi-version Envoy, Envoy WAF via ext_proc, GSLB and API discovery.",
+        "inLanguage": "en",
+        "isPartOf": {
+          "@id": "https://www.elchi.io/#website"
+        },
+        "publisher": {
+          "@id": "https://www.elchi.io/#organization"
+        },
+        "about": {
+          "@id": "https://www.elchi.io/#software"
+        },
+        "mainEntity": {
+          "@id": "https://www.elchi.io/#software"
         }
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://www.elchi.io/#software",
         "name": "Elchi",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Linux, Kubernetes",
         "url": "https://www.elchi.io/",
-        "description": "Elchi is an enterprise Envoy management platform: a visual control plane for every Envoy resource, plus edge agents — with GSLB, ACME certificates, API discovery, and Shield API security built in.",
+        "description": "Elchi is a visual control plane for Envoy proxy fleets: every Envoy resource is edited in typed forms generated from the Envoy API and pushed to your Envoys over xDS. Edge agents run Envoy on your hosts; add-ons bring API security with a WAF via ext_proc (Shield), API discovery from Envoy traffic, and GSLB.",
         "inLanguage": "en",
+        "about": {
+          "@type": "Thing",
+          "name": "Envoy proxy",
+          "sameAs": "https://www.envoyproxy.io"
+        },
         "publisher": {
           "@id": "https://www.elchi.io/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free tier: without a license, Elchi runs with a single managed client.",
+          "url": "https://www.elchi.io/plans.html",
+          "availability": "https://schema.org/InStock"
         }
       }
     ]
@@ -94,10 +143,6 @@
   </script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5G5WC537"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
   <div id="root"></div>
   <script type="module" src="./home.jsx"></script>
 </body>

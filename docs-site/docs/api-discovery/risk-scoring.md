@@ -1,6 +1,6 @@
 ---
 title: "Risk Scoring: Threat vs Exposure"
-description: The two-axis risk model — Threat (active attack/abuse) vs Exposure (standing config hygiene), severity weights, active vs lifetime scores, the 0–100 Security Score with its insufficient-data gate, and how to prioritize.
+description: "The API Discovery two-axis risk model: threat vs exposure, severity weights, active vs lifetime scores, the 0-100 Security Score and how to prioritize fixes."
 sidebar_position: 4
 tags: [api-discovery]
 ---

@@ -1,6 +1,7 @@
 ---
-title: Discovery Dashboards
-description: The tabbed dashboards at /api-discovery — listeners, new APIs, auth coverage, bots, PII, zombies, risk, security score, transport, errors, drift, consumers, specs and teams.
+title: "API Discovery Dashboards"
+sidebar_label: "Discovery Dashboards"
+description: "The API Discovery dashboards: listeners, new APIs, auth coverage, bots, PII, zombie APIs, risk, security score, errors, drift, consumers, specs and teams."
 sidebar_position: 2
 tags: [api-discovery]
 ---

@@ -1,6 +1,7 @@
 ---
-title: Architecture
-description: The conceptual map of the whole Elchi stack — the three backend processes, the datastores and observability tier, the edge node, and the wire-level map of every inter-component connection.
+title: "Elchi Architecture: Processes, Ports, Data Flows"
+sidebar_label: "Architecture"
+description: "The map of the Elchi stack: the three backend processes, datastores and observability tier, the edge node, and every connection with its port and auth."
 sidebar_position: 4
 tags: [getting-started, architecture, reference]
 ---

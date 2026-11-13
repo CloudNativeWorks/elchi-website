@@ -1,6 +1,7 @@
 ---
-title: Registry & High Availability
-description: Live topology visibility for controllers, control-planes, and clients, plus leader election and multi-controller HA.
+title: "Registry & Control Plane High Availability"
+sidebar_label: "Registry & High Availability"
+description: "The Elchi registry: live topology of controllers, control planes and clients, leader election, and running several controllers for high availability."
 sidebar_position: 1
 ---
 

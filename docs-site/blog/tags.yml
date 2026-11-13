@@ -1,0 +1,16 @@
+envoy:
+  label: Envoy
+  permalink: /envoy
+  description: Posts about operating the Envoy proxy.
+xds:
+  label: xDS
+  permalink: /xds
+  description: The Envoy discovery-service APIs and control planes.
+waf:
+  label: WAF
+  permalink: /waf
+  description: Web application firewalls and API security for Envoy.
+vms:
+  label: Virtual machines
+  permalink: /vms
+  description: Running Envoy on VMs and bare metal without Kubernetes.

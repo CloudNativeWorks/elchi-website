@@ -1,6 +1,6 @@
 ---
 title: Deploying Services to a Pair
-description: Deploy and remove services on an HA pair — one VIP for both members, on-link vs routed VIPs, floating next-hops, BGP and BFD, offline members, standby-first changes, GSLB and OpenStack.
+description: "Deploy services on an Elchi OS HA pair: one VIP for both members, on-link vs routed VIPs, floating next-hops, BGP and BFD, and standby-first changes."
 sidebar_position: 3
 tags: [operations, high-availability]
 ---

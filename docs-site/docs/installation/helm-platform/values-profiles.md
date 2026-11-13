@@ -1,6 +1,7 @@
 ---
-title: Values Profiles
-description: The -f values_<profile>.yaml pattern and a reference matrix of the dev, office, cloud, and cloud2 elchi-stack profiles.
+title: "Helm Values Profiles"
+sidebar_label: "Values Profiles"
+description: "The -f values_<profile>.yaml pattern for the elchi-stack Helm chart and a reference matrix of the dev, office, cloud and cloud2 profiles and what each changes."
 sidebar_position: 8
 tags: [installation]
 ---

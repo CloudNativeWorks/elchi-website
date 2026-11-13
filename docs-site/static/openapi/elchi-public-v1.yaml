@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: elchi automation API
+  version: 1.0.0
+  description: |
+    The public API for automating elchi from scripts and pipelines.
+
+    **Authentication.** Every operation but the OpenAPI document takes an API
+    token: `Authorization: Bearer elchi_pat_…`. A token belongs to one project
+    and has scopes (`<domain>:read`, `<domain>:write`); an owner or an admin
+    of the project creates it in Settings → Tokens. It works only on this API.
+
+    **Errors.** Every error is `application/problem+json` (RFC 9457) with a
+    stable `code` from a closed list (the `ErrorCode` schema), the
+    `request_id`, and for an invalid request the fields at fault (`errors`,
+    each with a JSON Pointer). Switch on `code`, never on the text.
+
+    **Request ids.** Send `X-Request-Id` (1-128 of `A-Za-z0-9._:-`) to tie a
+    call to your logs; it is echoed on every response and recorded in the
+    audit log. Without it, one is made.
+
+    **Retries.** GET is always safe to send again. Every POST takes an
+    `Idempotency-Key`: the same key with the same request returns the first
+    answer (`Idempotent-Replayed: true`) for 24 hours; with another request
+    it is `idempotency_key_reused`. Retry 429 and 503 after `Retry-After`,
+    500 with backoff; never retry another 4xx unchanged.
+
+    **Concurrency.** A resource that can change under you has an `ETag`;
+    send it as `If-Match` to change it only if it did not (else 412).
+
+    **Long-running operations.** An action that pushes configuration answers
+    `202 Accepted` with an Operation and `Location`. Follow it with
+    `GET …/operations/{id}` (`?wait=N` holds the request until it ends, up to
+    60 s), or ask the action to wait: `Prefer: wait=N`. An operation ends
+    `succeeded` (the new configuration is set on every control plane serving
+    the affected proxies) or `failed`.
+
+    **Formats.** Times are RFC 3339 in UTC with milliseconds. Fields are
+    snake_case; an enum marked `x-extensible-enum` may gain values: treat an
+    unknown one as opaque. Lists page with `limit` and the opaque
+    `next_cursor`. Unknown query parameters and body fields are refused.
+
+    **Rate limits.** Per token: 300 requests a minute, of which 30 writes,
+    counted by each controller replica (behind N replicas a token may make
+    up to N times as many). Every response to an authenticated request
+    carries `RateLimit-Limit`, `RateLimit-Remaining` and `RateLimit-Reset`;
+    failed authentication is limited per client address.
+
+    **Versioning.** The major version is in the path. Within v1 changes only
+    add (operations, optional fields, enum values marked extensible); a
+    change that breaks a client is v2, and v1 then stays at least 12 months.
+    A deprecated operation sends `Deprecation`, `Sunset` and a `Link` to its
+    replacement.
+servers:
+  - url: /api/public/v1
+security:
+  - apiToken: []
+tags:
+  - name: endpoints
+    description: Disable and enable an upstream endpoint (an IP or a hostname, all its ports or some) everywhere in the project.
+  - name: clusters
+    description: Switch an EDS cluster to another endpoints resource (blue/green), in one Envoy version.
+  - name: operations
+    description: Long-running operations started by actions.
+  - name: meta
+    description: The token, the project's Envoy versions and this document.
+paths:
+  /openapi.json:
+    $ref: 'paths/meta.yaml#/openapi_json'
+  /openapi.yaml:
+    $ref: 'paths/meta.yaml#/openapi_yaml'
+  /token:
+    $ref: 'paths/meta.yaml#/token'
+  /projects/{project}/versions:
+    $ref: 'paths/meta.yaml#/versions'
+  /projects/{project}/endpoints:
+    $ref: 'paths/endpoints.yaml#/list'
+  /projects/{project}/endpoints/{address}:
+    $ref: 'paths/endpoints.yaml#/endpoint'
+  /projects/{project}/endpoints/{address}/disable:
+    $ref: 'paths/endpoints.yaml#/disable'
+  /projects/{project}/endpoints/{address}/enable:
+    $ref: 'paths/endpoints.yaml#/enable'
+  /projects/{project}/clusters:
+    $ref: 'paths/clusters.yaml#/list'
+  /projects/{project}/clusters/{name}:
+    $ref: 'paths/clusters.yaml#/cluster'
+  /projects/{project}/clusters/{name}/switches:
+    $ref: 'paths/clusters.yaml#/switches'
+  /projects/{project}/clusters/{name}/switch-endpoints:
+    $ref: 'paths/clusters.yaml#/switch'
+  /projects/{project}/operations:
+    $ref: 'paths/operations.yaml#/list'
+  /projects/{project}/operations/{operation_id}:
+    $ref: 'paths/operations.yaml#/operation'
+components:
+  securitySchemes:
+    apiToken:
+      type: http
+      scheme: bearer
+      bearerFormat: elchi_pat
+      description: A project API token, created in Settings → Tokens.
