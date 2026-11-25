@@ -25,6 +25,7 @@ const PAGES = [
   'products/gslb.html',
   'privacy.html', 'about.html',
   'compare.html', 'compare/f5-big-ip.html', 'compare/netscaler.html', 'compare/a10-thunder.html',
+  'compare/vmware-avi.html', 'compare/haproxy-enterprise.html', 'compare/nginx-plus.html', 'compare/kemp-loadmaster.html',
   'compare/istio.html', 'compare/envoy-gateway.html',
   'compare/kong-gateway.html', 'compare/kgateway.html', 'compare/contour.html',
   'tr/index.html', 'tr/features.html', 'tr/architecture.html', 'tr/contact.html', 'tr/plans.html', 'tr/videos.html', 'tr/faq.html',
@@ -32,6 +33,7 @@ const PAGES = [
   'tr/products/gslb.html',
   'tr/privacy.html', 'tr/about.html',
   'tr/compare.html', 'tr/compare/f5-big-ip.html', 'tr/compare/netscaler.html', 'tr/compare/a10-thunder.html',
+  'tr/compare/vmware-avi.html', 'tr/compare/haproxy-enterprise.html', 'tr/compare/nginx-plus.html', 'tr/compare/kemp-loadmaster.html',
   'tr/compare/istio.html', 'tr/compare/envoy-gateway.html',
   'tr/compare/kong-gateway.html', 'tr/compare/kgateway.html', 'tr/compare/contour.html',
 ];

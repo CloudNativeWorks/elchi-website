@@ -26,7 +26,7 @@ The editor has helpers for these types: **Inspect certificate** on TLS Certifica
 Secret material is redacted in logs and handled as sensitive config throughout — it is delivered to proxies over SDS, not written into listener/cluster documents.
 
 :::tip[Let ACME issue and rotate certs for you]
-Instead of uploading a certificate and key by hand, use Elchi's ACME integration to issue and auto-renew certificates (Let's Encrypt / any ACME CA, with DNS-01 or HTTP-01). ACME-managed certs surface as SDS secrets your transport sockets can reference, and renewals flow to Envoy automatically. See [ACME Certificates](/traffic-and-certificates/acme).
+Instead of uploading a certificate and key by hand, use Elchi's ACME integration to issue and auto-renew certificates (Let's Encrypt / any ACME CA, over DNS-01). ACME-managed certs surface as SDS secrets your transport sockets can reference, and renewals flow to Envoy automatically. See [ACME Certificates](/traffic-and-certificates/acme).
 :::
 
 ## Key fields

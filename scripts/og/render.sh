@@ -54,8 +54,8 @@ render public/og/products-gslb.png "Elchi GSLB" \
   "HTTP, HTTPS and TCP health probes · CoreDNS plugin · Healthy targets only" \
   "www.elchi.io/products/gslb.html"
 render public/og/compare.png "Compare" \
-  "Elchi vs F5 BIG-IP, NetScaler," "A10 Thunder " "and gateways." \
-  "Enterprise ADCs · Cloud-native gateways and meshes · Criterion by criterion, with sources" \
+  "Elchi vs F5, NetScaler, A10," "Avi, HAProxy " "and more." \
+  "ADCs and software load balancers · Cloud-native gateways · Criterion by criterion, with sources" \
   "www.elchi.io/compare.html"
 render public/og/compare-f5-big-ip.png "Compare" \
   "Elchi vs F5 BIG-IP:" "Application delivery " "in software." \
@@ -69,6 +69,22 @@ render public/og/compare-a10-thunder.png "Compare" \
   "Elchi vs A10 Thunder:" "Application delivery " "in software." \
   "Load balancing · TLS · WAF · GSLB · HA and VIPs · Upgrades · Criterion by criterion, with A10 sources" \
   "www.elchi.io/compare/a10-thunder.html"
+render public/og/compare-vmware-avi.png "Compare" \
+  "Elchi vs VMware Avi:" "Application delivery " "in software." \
+  "Load balancing · TLS · WAF · GSLB · HA and VIPs · Criterion by criterion, with Broadcom sources" \
+  "www.elchi.io/compare/vmware-avi.html"
+render public/og/compare-haproxy-enterprise.png "Compare" \
+  "Elchi vs HAProxy Enterprise:" "Application delivery " "in software." \
+  "Load balancing · TLS · WAF · GSLB · HA and VIPs · Upgrades · Criterion by criterion, with HAProxy sources" \
+  "www.elchi.io/compare/haproxy-enterprise.html"
+render public/og/compare-nginx-plus.png "Compare" \
+  "Elchi vs F5 NGINX Plus:" "Application delivery " "in software." \
+  "Load balancing · TLS · WAF · GSLB · HA and VIPs · Upgrades · Criterion by criterion, with F5 sources" \
+  "www.elchi.io/compare/nginx-plus.html"
+render public/og/compare-kemp-loadmaster.png "Compare" \
+  "Elchi vs Kemp LoadMaster:" "Application delivery " "in software." \
+  "Load balancing · TLS · WAF · GSLB · HA and VIPs · Criterion by criterion, with Kemp sources" \
+  "www.elchi.io/compare/kemp-loadmaster.html"
 render public/og/compare-istio.png "Compare" \
   "Elchi vs Istio" "for " "Envoy on VMs." \
   "Edge and gateway fleets without a mesh · Criterion by criterion, with sources" \
@@ -107,8 +123,8 @@ render public/og/tr-products-gslb.png "Elchi GSLB" \
   "HTTP, HTTPS ve TCP sağlık yoklamaları · CoreDNS eklentisi · Yalnızca sağlıklı hedefler" \
   "www.elchi.io/tr/products/gslb.html"
 render public/og/tr-compare.png "Karşılaştırma" \
-  "Elchi vs F5 BIG-IP, NetScaler," "A10 Thunder " "ve gateway’ler." \
-  "Kurumsal ADC’ler · Cloud-native gateway ve mesh’ler · Kriter kriter, kaynaklarıyla" \
+  "Elchi vs F5, NetScaler, A10," "Avi, HAProxy " "ve diğerleri." \
+  "Kurumsal ADC’ler ve yazılım yük dengeleyiciler · Cloud-native gateway’ler · Kriter kriter, kaynaklarıyla" \
   "www.elchi.io/tr/compare.html"
 render public/og/tr-compare-f5-big-ip.png "Karşılaştırma" \
   "Elchi vs F5 BIG-IP:" "Yazılımla " "uygulama dağıtımı." \
@@ -122,6 +138,22 @@ render public/og/tr-compare-a10-thunder.png "Karşılaştırma" \
   "Elchi vs A10 Thunder:" "Yazılımla " "uygulama dağıtımı." \
   "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, A10 kaynaklarıyla" \
   "www.elchi.io/tr/compare/a10-thunder.html"
+render public/og/tr-compare-vmware-avi.png "Karşılaştırma" \
+  "Elchi vs VMware Avi:" "Yazılımla " "uygulama dağıtımı." \
+  "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, Broadcom kaynaklarıyla" \
+  "www.elchi.io/tr/compare/vmware-avi.html"
+render public/og/tr-compare-haproxy-enterprise.png "Karşılaştırma" \
+  "Elchi vs HAProxy Enterprise:" "Yazılımla " "uygulama dağıtımı." \
+  "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, HAProxy kaynaklarıyla" \
+  "www.elchi.io/tr/compare/haproxy-enterprise.html"
+render public/og/tr-compare-nginx-plus.png "Karşılaştırma" \
+  "Elchi vs F5 NGINX Plus:" "Yazılımla " "uygulama dağıtımı." \
+  "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, F5 kaynaklarıyla" \
+  "www.elchi.io/tr/compare/nginx-plus.html"
+render public/og/tr-compare-kemp-loadmaster.png "Karşılaştırma" \
+  "Elchi vs Kemp LoadMaster:" "Yazılımla " "uygulama dağıtımı." \
+  "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, Progress Kemp kaynaklarıyla" \
+  "www.elchi.io/tr/compare/kemp-loadmaster.html"
 render public/og/tr-compare-istio.png "Karşılaştırma" \
   "Elchi vs Istio:" "VM’lerde " "Envoy yönetimi." \
   "Mesh olmadan edge ve gateway filoları · Kriter kriter, kaynaklarıyla" \
@@ -162,4 +194,8 @@ render docs-site/static/img/og/blog-envoy-fleet-without-xds.png "Elchi Blog" \
 render docs-site/static/img/og/blog-software-adc-alternatives.png "Elchi Blog" \
   "Software ADC alternatives" "to " "F5, NetScaler, A10." \
   "VIP & HA · L4/L7 · TLS · WAF · GSLB · Central management · Evaluation checklist" \
+  "www.elchi.io/docs/blog"
+render docs-site/static/img/og/blog-migrate-f5-big-ip-to-elchi.png "Elchi Blog" \
+  "Migrating from F5 BIG-IP" "to " "Elchi." \
+  "Concept map · Phased plan · Cutover & rollback · What does not carry over" \
   "www.elchi.io/docs/blog"

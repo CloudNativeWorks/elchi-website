@@ -1,0 +1,175 @@
+---
+slug: migrate-f5-big-ip-to-elchi
+title: "Migrating from F5 BIG-IP to Elchi"
+description: "Move from F5 BIG-IP to Elchi: map virtual servers, pools, monitors, profiles, iRules, WAF, GSLB and HA, then migrate in phases with a rollback plan."
+authors: [safa]
+tags: [load-balancing, envoy, waf]
+date: 2026-11-25
+image: /img/og/blog-migrate-f5-big-ip-to-elchi.png
+---
+
+Migrating from F5 BIG-IP to Elchi means re-creating each BIG-IP application service (virtual server, pool, monitors, profiles, persistence, iRules, WAF policy and DNS name) as Elchi resources: listeners, clusters, endpoints, routes, TLS secrets, Shield policies and GSLB records, served by Envoy on your own servers or Elchi OS appliances. There is no automatic converter. You move one application at a time, run it in parallel, cut over by moving DNS or the VIP, and keep BIG-IP ready as the fallback until the last service has moved.
+
+This guide maps BIG-IP concepts to their Elchi equivalents, lays out a phased plan and lists what does not carry over. Elchi is a commercially licensed product, and we build it. Every statement about BIG-IP links to F5's own documentation, and every statement about Elchi links to the Elchi docs.
+
+<!-- truncate -->
+
+## Before you start: how the two models differ
+
+BIG-IP is an appliance platform built from modules. LTM's virtual servers receive traffic and direct it to pools of server nodes ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-21-0-0/big-ip-local-traffic-management-basics/introduction-to-local-traffic-management.html)). BIG-IP DNS does global server load balancing ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-15-0-0/big-ip-dns-load-balancing/global-server-load-balancing.html)), Advanced WAF protects applications ([F5](https://www.f5.com/products/big-ip-services/advanced-waf)), and BIG-IQ manages many devices from one place ([F5](https://www.f5.com/products/big-ip-services/big-iq)).
+
+Elchi splits the same work into a control plane and a fleet of edge nodes. The edge is Envoy, run by the Elchi agent on [Ubuntu hosts](/installation/client/overview) or on [Elchi OS](/elchi-os/overview) appliances. The control plane holds every resource, [validates each change twice](/envoy-configuration/config-model#two-step-validation) (in the editor, then on the server) and publishes it to the edges over xDS. Three things follow from that:
+
+- **Configuration is a graph of named resources.** A listener references a route configuration, which references clusters, which reference endpoints and secrets ([Resources and the config model](/envoy-configuration/config-model)). One cluster can serve many listeners, and a change to it reaches all of them.
+- **A deployment is a service.** A [service](/operations/services) is an Envoy bootstrap plus its xDS resources, deployed to a set of edge clients. On an HA pair, you deploy it once at the pair's VIP.
+- **Changes are drafts until published.** Edits are kept as drafts so related changes can be staged and published together ([Save and publish](/envoy-configuration/config-model#save--publish)). Every change is recorded in an [audit log with before/after detail](/observability/audit-and-syslog).
+
+## BIG-IP to Elchi concept map
+
+Use this table to translate your BIG-IP inventory. The right-hand column says where a feature has no direct equivalent.
+
+| BIG-IP concept | Elchi equivalent | Notes |
+|---|---|---|
+| **Virtual server** ([F5](https://techdocs.f5.com/en-us/bigip-21-0-0/big-ip-local-traffic-management-basics/introduction-to-local-traffic-management.html)) | [Listener](/envoy-configuration/resources/listeners) (address, port, filter chains), deployed as a [service](/operations/services) | A managed listener takes its address from the deploy target. On an [HA pair](/ha-pairs/deploying-services), that address is the pair's VIP. |
+| **Virtual address, floating self IP, traffic group** ([F5](https://techdocs.f5.com/en-us/bigip-14-1-0/big-ip-device-service-clustering-administration-14-1-0/introducing-big-ip-device-service-clustering.html)) | VIP on an [HA pair](/ha-pairs/overview); [floating next-hop](/ha-pairs/deploying-services#routed-vips-and-floating-next-hops) for routed VIPs | The Elchi docs call the floating next-hop "the same model as an F5 floating self-IP". VIPs move by gratuitous ARP or BGP. |
+| **Pool** ([F5](https://techdocs.f5.com/en-us/bigip-21-0-0/big-ip-local-traffic-management-basics/about-pools.html)) | [Cluster](/envoy-configuration/resources/clusters) | Balancing: round-robin, least-request, ring-hash, Maglev, original-dst. BIG-IP methods such as Ratio, Dynamic Ratio, Fastest, Observed and Predictive have no named equivalent. |
+| **Pool member, node** ([F5](https://techdocs.f5.com/en-us/bigip-21-0-0/big-ip-local-traffic-management-basics/about-pools.html)) | [Endpoints](/envoy-configuration/resources/endpoints) (EDS) or a cluster's inline endpoints | Per-endpoint weights and priority tiers. Disabling a member everywhere is [Endpoint Control](/operations/endpoint-control). |
+| **Health monitor** ([F5](https://techdocs.f5.com/en-us/bigip-15-1-0/big-ip-local-traffic-manager-monitors-reference/monitors-concepts.html)) | Cluster `health_checks` (HTTP, gRPC, TCP) plus `outlier_detection` ([Clusters](/envoy-configuration/resources/clusters)) | Outlier detection is the passive check, like BIG-IP's Inband monitor. ICMP and external (script) monitors have no listed equivalent. |
+| **HTTP profile** ([F5](https://techdocs.f5.com/en-us/bigip-21-0-0/big-ip-local-traffic-management-profiles-reference/introduction-to-local-traffic-profiles.html)) | HTTP Connection Manager on the listener ([Filters](/envoy-configuration/resources/filters)) | The HCM holds the route config, the HTTP filter chain and protocol options. |
+| **Client SSL, server SSL profiles** ([F5](https://techdocs.f5.com/en-us/bigip-17-5-1/big-ip-system-ssl-administration/ssl-traffic-management.html)) | Downstream and upstream [transport sockets](/envoy-configuration/resources/transport-sockets) referencing [secrets](/envoy-configuration/resources/secrets) over SDS | Import existing certificates as TLS Certificate secrets, or issue them with [ACME DNS-01](/traffic-and-certificates/acme/overview). |
+| **Persistence profile** ([F5](https://techdocs.f5.com/en-us/bigip-16-1-0/big-ip-local-traffic-management-profiles-reference/session-persistence-profiles.html)) | Ring-hash or Maglev on the cluster, keyed by Envoy's route [`hash_policy`](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto#envoy-v3-api-msg-config-route-v3-routeaction-hashpolicy) (header, cookie, source IP, query parameter) | This is consistent hashing, not a persistence table. SSL session ID and iRule-based universal persistence have no equivalent. |
+| **iRules** ([F5](https://clouddocs.f5.com/api/irules/WhatIsAnIRule.html)) | [Routes](/envoy-configuration/resources/routes), per-route filter config, Lua, WebAssembly, ext_authz and ext_proc [filters](/envoy-configuration/resources/filters), Shield rules | No conversion. Each iRule is re-expressed by hand (see below). |
+| **Local traffic policy** ([F5](https://techdocs.f5.com/en-us/bigip-15-1-0/big-ip-local-traffic-management-getting-started-with-policies/introducing-local-traffic-policies.html)) | [Route configuration](/envoy-configuration/resources/routes) and [virtual hosts](/envoy-configuration/resources/virtual-hosts) | Match on host, path, headers, query and method. Actions: route to a cluster, redirect, direct response, rewrite headers. The closest one-to-one mapping in this list. |
+| **SNAT, SNAT automap** ([F5](https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-12-1-0/7.html)) | No SNAT object | Upstream connections take the source address of the edge NIC that routes to the backend; set an upstream bind address on the cluster to pin one ([Edge network topologies](/operations/network-topologies)). |
+| **Advanced WAF (ASM)** ([F5](https://www.f5.com/products/big-ip-services/advanced-waf)) | [Shield](/shield/overview) with the [Coraza engine and OWASP CRS](/shield/engines/coraza-waf) | ASM policies and signature sets do not import. Shield adds JWT, mTLS, rate limiting, bot detection and OpenAPI validation. |
+| **BIG-IP DNS (GTM), wide IP** ([F5](https://techdocs.f5.com/en-us/bigip-15-0-0/big-ip-dns-load-balancing/global-server-load-balancing.html)) | [GSLB record](/gslb/records-and-ips) served by elchi-coredns | HTTP, HTTPS and TCP probes, region tags, a failover FQDN. No RTT-based dynamic methods or DNSSEC in the Elchi docs. |
+| **Device group, config sync, failover** ([F5](https://techdocs.f5.com/en-us/bigip-14-1-0/big-ip-device-service-clustering-administration-14-1-0/working-with-device-groups.html)) | [HA pair](/ha-pairs/overview): two Elchi OS appliances, active/passive | The control plane pushes the same config to both members; the members elect the active one themselves. |
+| **iControl REST, AS3** ([F5](https://clouddocs.f5.com/api/icontrol-rest/), [AS3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/)) | [Automation API](/automation-api/overview) | Today it covers endpoint disable/enable and the EDS cluster switch, not the full configuration. |
+| **BIG-IQ Centralized Management** ([F5](https://www.f5.com/products/big-ip-services/big-iq)) | The Elchi control plane ([Registry and HA](/administration/registry-and-ha)) | Roles, projects, LDAP/AD and TOTP ([Auth and access](/administration/auth-and-access)), audit forwarding to a SIEM. |
+
+### Notes on the rows that need care
+
+**Monitors.** BIG-IP monitors attach to nodes, pools and pool members, and its single passive monitor (Inband) watches client traffic ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-15-1-0/big-ip-local-traffic-manager-monitors-reference/monitors-concepts.html)). In Elchi, active checks and passive outlier detection both live on the cluster. An HTTP monitor becomes an HTTP health check on the cluster, with a path, an interval, a timeout and healthy and unhealthy thresholds. Monitors that run your own program have no counterpart, so move that logic into a health endpoint on the application.
+
+**Persistence.** BIG-IP's persistence profiles cover cookie, source and destination address, SSL session ID, hash and iRule-based universal persistence ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-16-1-0/big-ip-local-traffic-management-profiles-reference/session-persistence-profiles.html)). Elchi's editors are generated from Envoy's protobufs, so a route can carry Envoy's `hash_policy`. A cookie policy with a TTL makes Envoy generate the cookie when it is absent ([Envoy docs](https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/route/v3/route_components.proto#envoy-v3-api-msg-config-route-v3-routeaction-hashpolicy)), which covers most cookie-insert setups. Because it is a hash ring and not a stored table, adding or removing endpoints remaps a share of clients. Test this with the application team.
+
+**SNAT and client addresses.** On BIG-IP, a SNAT translates the source address of a connection to one you define, and automap picks from the system's self IPs ([F5 TechDocs](https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-routing-administration-12-1-0/7.html)). Elchi has no SNAT setting. Envoy is a proxy, and its upstream connections take the address of the NIC that routes to the backend ([Edge network topologies](/operations/network-topologies)), which is the behavior most automap setups rely on. If backends log the client address, read it from `X-Forwarded-For` and set `use_remote_address` and `xff_num_trusted_hops` on the HTTP Connection Manager ([Common issues](/troubleshooting/common-issues)).
+
+**Local traffic policies.** These are prioritized rules of conditions and actions, such as forwarding to a pool, redirecting or inserting a header ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-15-1-0/big-ip-local-traffic-management-getting-started-with-policies/introducing-local-traffic-policies.html)). Nearly all of them map one-to-one to Envoy routes. Check rule order: in Envoy, the first matching route in a virtual host wins.
+
+## Rewriting iRules
+
+An iRule is a Tcl script that can send traffic to pools, members, ports or URIs and parse and rewrite the entire header and payload ([F5 CloudDocs](https://clouddocs.f5.com/api/irules/WhatIsAnIRule.html)). Nothing converts Tcl to Envoy configuration. Sort your iRules by what they actually do:
+
+- **Routing and redirects** (pick a pool by host, path or header, send HTTP to HTTPS, rewrite a path): route matches, `redirect`, prefix and regex rewrites and `weighted_clusters` ([Routes](/envoy-configuration/resources/routes)). This is usually the largest group, and it needs no code.
+- **Header work** (insert, remove, rewrite): `request_headers_to_add` and `response_headers_to_add` and their remove lists at route-config, virtual-host or route level.
+- **Fixed responses** (maintenance pages, blocking a path): `direct_response`.
+- **Access decisions** (block by IP, require a token): the RBAC filter, or Shield engines such as [JWT](/shield/engines/jwt), [API keys](/shield/engines/api-key) and [rate limiting](/shield/engines/rate-limit).
+- **Security patterns** (match an attack string, virtual patching): custom SecLang directives in [Shield's Coraza engine](/shield/engines/coraza-waf).
+- **Everything else** (payload rewriting, custom protocols, stateful logic): a Lua or WebAssembly filter, or an external service behind ext_authz or ext_proc ([Filters](/envoy-configuration/resources/filters)). Each of these is new code that someone has to own.
+
+Count the iRules in each group before you commit to a schedule. If most of them land in the last group, the rewrite is a project of its own.
+
+## A phased migration plan
+
+### Phase 1: Inventory
+
+Export what BIG-IP runs today. A UCS archive (`save sys ucs <filename>` in tmsh) holds the system configuration files, licenses, user accounts and installed SSL keys and certificates ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-21-1-0/big-ip-system-essentials/archives.html)). iControl REST exposes the same configuration over a REST API ([F5 CloudDocs](https://clouddocs.f5.com/api/icontrol-rest/)), which is easier to turn into a spreadsheet. If you deploy with AS3, each declaration already describes one application ([F5 CloudDocs](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/)).
+
+For each application, list the virtual server and its address, pools and members, monitors, HTTP and SSL profiles, certificates and their expiry, persistence, iRules and local traffic policies, the WAF policy, the BIG-IP DNS wide IP, and whether SNAT is used. Mark what is unused. Then mark each item against the concept map: direct, re-expressed, or not carried over.
+
+### Phase 2: Pick a pilot application
+
+Choose one that is HTTP or plain TCP, has few or no iRules, uses cookie or no persistence, and has an owner willing to test. Avoid anything that depends on access policies or hardware-backed keys first.
+
+### Phase 3: Build the Elchi side
+
+1. **Install the control plane** with [Helm](/installation/helm-platform/overview), [Docker Swarm](/installation/docker-swarm/overview) or [on VMs](/installation/bare-metal/overview), and go through the [production checklist](/administration/production-checklist).
+2. **Install the edge.** For VIP failover, set up two [Elchi OS](/elchi-os/installation) appliances as an [HA pair](/ha-pairs/setup). HA pairs need Elchi OS; a client on a general-purpose Linux host serves without a shared VIP.
+3. **Create the resources:** endpoints and a cluster with health checks, the TLS secret, a route configuration, then a listener with an HTTP Connection Manager. The [Scenario wizard](/envoy-configuration/scenario-workflows/overview) builds a listener, routes, cluster and endpoints in one pass, and a scenario can be [exported and imported](/envoy-configuration/scenario-workflows/import-export) to repeat the pattern for the next application.
+4. **Publish and deploy** the service to the pair at a new VIP that does not collide with BIG-IP. Confirm what Envoy received in the [snapshot dump](/envoy-configuration/snapshot-dump).
+5. **Add the WAF in detect mode.** Shield's recommended rollout is detect, then shadow, then block ([Modes and fail postures](/shield/policies/modes-and-postures)).
+
+### Phase 4: Run in parallel
+
+Both platforms now serve the same backends. Test the Elchi VIP directly with the application's own test suite, synthetic checks and a group of internal users pointed at it. Compare status codes, headers, redirects, persistence and TLS. Use the [live traffic view](/observability/live-traffic) and [metrics](/observability/metrics-and-logs) to watch per-route behaviour, and read Shield's detections against the false positives you already know from ASM.
+
+### Phase 5: Cut over
+
+There are two ways to move traffic:
+
+- **By DNS.** Lower the record's TTL ahead of time, then point the name at the Elchi VIP. BIG-IP keeps serving clients with cached answers until they expire, so nothing has to be torn down at the same moment. If the name moves to [Elchi GSLB](/gslb/overview), the zone has to be delegated to the elchi-coredns nodes ([GSLB how-to](/guides/gslb-dns-failover-envoy)). After that, a pair's VIP is one IP in the record, and health probes remove it from answers if it fails.
+- **By moving the address.** Clients keep the same IP. Disable the virtual server on BIG-IP, then deploy the Elchi service at that address. Changing a VIP in Elchi means [undeploying and deploying again](/ha-pairs/deploying-services#rules), and the address must be on a data subnet both pair members share. Expect a short interruption, and check that the upstream router now resolves the address to the Elchi active member.
+
+Prefer DNS where clients honour TTLs. Use the address move where clients or firewall rules pin the IP.
+
+### Phase 6: Keep a rollback ready
+
+Leave the BIG-IP configuration in place until the application has run on Elchi through a normal business cycle. Rolling back is the cutover in reverse: point DNS back, or undeploy the Elchi service and re-enable the BIG-IP virtual server. Write the exact steps down, with an owner, before cutting over.
+
+On the Elchi side, smaller problems do not need a full rollback. [Endpoint Control](/operations/endpoint-control) takes a bad backend out of rotation everywhere, and the [cluster switch](/operations/cluster-endpoints) moves an EDS cluster back to the previous endpoints resource.
+
+### Phase 7: Repeat, then decommission
+
+Move the remaining applications in batches, simplest first. When the last one has moved, archive a final UCS file and the inventory, then retire the BIG-IP devices, their DNS module role and their licenses. Day-two operations now happen in Elchi. Listener upgrades to a new Envoy version are a hot restart with [no traffic interruption](/envoy-configuration/versions-and-upgrades). HA pairs [upgrade standby first](/ha-pairs/failover-and-maintenance#upgrading-a-serving-pair), and Elchi OS [rolls back automatically](/elchi-os/upgrades) if an upgrade fails its health gate.
+
+## What does not carry over
+
+Plan for these before you start. Each is a fact about Elchi today, not a roadmap item.
+
+- **iRules logic.** There is no iRules conversion tool. Every iRule is re-expressed as routes, filters or Shield rules, or rewritten as Lua, WebAssembly or an external service.
+- **FIPS validation and HSMs.** BIG-IP FIPS platforms include an integrated FIPS-validated HSM ([F5 certifications](https://www.f5.com/certifications), [F5 TechDocs](https://techdocs.f5.com/en-us/bigip-17-1-0/f5-platforms-fips-administration/hardware-hsm-setup-and-administration.html)). Elchi has no FIPS validation and no HSM integration. Private keys are stored as SDS secrets.
+- **Hardware SSL acceleration.** BIG-IP hardware accelerates eligible cipher suites ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-17-5-1/big-ip-system-ssl-administration/ssl-traffic-management.html)). Elchi terminates TLS in software on the edge CPU, so size edges for your TLS load ([Sizing and capacity](/administration/sizing-and-capacity)).
+- **Active/active HA and connection mirroring.** Two BIG-IP devices can run active-standby or active-active, and connections can be mirrored to the peer ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-14-1-0/big-ip-device-service-clustering-administration-14-1-0/introducing-big-ip-device-service-clustering.html)). Elchi HA pairs are active/passive, with two members and no connection mirroring. A planned failover takes about 50 ms and loses at most one request; an unplanned one takes about 2 seconds ([HA pairs](/ha-pairs/overview#measured-behaviour)). To use more boxes at once, run several edges behind GSLB or BGP.
+- **Terraform and Ansible.** F5 has a Terraform provider ([F5](https://clouddocs.f5.com/products/orchestration/terraform/latest/)) and an Ansible collection ([F5 CloudDocs](https://clouddocs.f5.com/products/orchestration/ansible/devel/f5_bigip/f5_bigip.html)). Elchi has neither. Its public automation API covers endpoint control and the cluster switch, and configuration is otherwise built in the UI.
+- **A full declarative API.** AS3 describes a whole application in one declaration. Elchi's closest tools are scenarios with export and import, and project-level [backup and restore](/administration/backup-restore).
+- **Access and identity.** Zero Trust Access for BIG-IP (formerly APM) provides SAML, OAuth and OIDC single sign-on, MFA and VPN ([F5](https://www.f5.com/products/big-ip-services/zero-trust-access)). This is out of scope for Elchi. Shield validates JWTs and API keys, but it is not an identity provider or a VPN.
+- **ASM policies.** Security policies built from F5 attack-signature sets ([F5 TechDocs](https://techdocs.f5.com/en-us/bigip-14-1-0/big-ip-asm-attack-and-bot-signatures-14-1-0/assigning-attack-signatures-to-security-policies.html)) do not import. Shield starts from the OWASP CRS, and you tune it again per application.
+- **Some LTM and DNS features:** load-balancing methods without an Envoy equivalent, ICMP and external monitors, SSL session ID and universal persistence, RTT-based GSLB methods and DNSSEC.
+
+## Migration checklist
+
+1. Export a UCS archive and the configuration through iControl REST, and build the per-application inventory.
+2. Classify every iRule: routing, headers, fixed responses, access, security or custom code.
+3. Flag every application that needs FIPS, an HSM, active/active, connection mirroring or access policies. Those stay on BIG-IP or move later.
+4. Install the control plane and run the production checklist.
+5. Build an HA pair of Elchi OS appliances and test failover under traffic.
+6. Re-create the pilot application, publish it to a new VIP and check the snapshot dump.
+7. Import or issue its certificates and confirm expiry dates and chains.
+8. Run Shield in detect mode, then shadow, before block.
+9. Test in parallel: status codes, headers, persistence, TLS, health-check behaviour.
+10. Lower DNS TTLs, or schedule the address move.
+11. Cut over, watch metrics and the audit log, and keep the rollback steps at hand.
+12. Repeat per application, then decommission BIG-IP.
+
+## FAQ
+
+### Can Elchi import a BIG-IP configuration?
+
+No. There is no importer for UCS archives, bigip.conf, AS3 declarations or iRules. You re-create each application as Elchi resources. Once one application is built, a scenario can be exported and imported to repeat the pattern.
+
+### What replaces a BIG-IP virtual server in Elchi?
+
+An Envoy listener, deployed as a service to edge nodes. On an HA pair of Elchi OS appliances, the service is deployed once at the pair's VIP, and both members run it.
+
+### Does Elchi support active/active like a BIG-IP device group?
+
+No. An Elchi HA pair is active/passive: one member holds the VIPs and the standby runs the same Envoys warm. For more capacity, spread services across several pairs or edges, using GSLB or BGP in front of them.
+
+### What happens to my iRules?
+
+They are rewritten. Routing, redirect and header iRules usually become declarative routes. Security logic becomes Shield rules. Custom logic becomes Lua, WebAssembly or an external service. There is no conversion tool.
+
+### Can I keep BIG-IP and Elchi running side by side?
+
+Yes, and you should during the migration. Both can serve the same backends on different VIPs, and DNS or a VIP move decides which one gets traffic, one application at a time.
+
+### Is Elchi open source?
+
+No. Elchi is an enterprise product under a commercial license, counted by managed edge nodes. A free tier with one managed node is available for evaluation ([Licensing](/administration/licensing)). Envoy, the proxy it runs, is an open-source CNCF project.
+
+## Next steps
+
+- Compare criterion by criterion in [Elchi vs F5 BIG-IP](https://www.elchi.io/compare/f5-big-ip.html), or browse the [comparison hub](https://www.elchi.io/compare.html).
+- Read [Software ADC alternatives to F5, NetScaler and A10](/blog/software-adc-alternatives) for the wider landscape and an evaluation checklist.
+- Start with the [HA pairs overview](/ha-pairs/overview) and the [quick start](/getting-started/quickstart), or [book a demo](https://www.elchi.io/contact.html).

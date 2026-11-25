@@ -16,17 +16,21 @@ Core is the base product; API Security (Shield, with the WAF), API Discovery and
 - [Plans & Licensing](https://www.elchi.io/plans.html): Core plus add-ons, licensed by managed client count; free tier with one client
 - [FAQ](https://www.elchi.io/faq.html): what Elchi is, supported Envoy versions, installation, Shield, API discovery and licensing
 - [Contact](https://www.elchi.io/contact.html): demos and enterprise licenses
-- [Compare alternatives](https://www.elchi.io/compare.html): Elchi vs enterprise ADCs (F5 BIG-IP, NetScaler, A10 Thunder) and vs cloud-native gateways and meshes (Istio, Envoy Gateway, Kong Gateway, kgateway, Contour), with sources
+- [Compare alternatives](https://www.elchi.io/compare.html): Elchi vs enterprise ADCs and software load balancers (F5 BIG-IP, NetScaler, A10 Thunder, VMware Avi, HAProxy Enterprise, F5 NGINX Plus, Kemp LoadMaster) and vs cloud-native gateways and meshes (Istio, Envoy Gateway, Kong Gateway, kgateway, Contour), with sources
 - [Elchi vs F5 BIG-IP](https://www.elchi.io/compare/f5-big-ip.html): software application delivery on VMs and Elchi OS appliances vs BIG-IP hardware and Virtual Edition, row by row with F5 sources
 - [Elchi vs NetScaler](https://www.elchi.io/compare/netscaler.html): Elchi vs NetScaler (formerly Citrix ADC) for load balancing, TLS, WAF, GSLB, HA and central management, with NetScaler sources
 - [Elchi vs A10 Thunder](https://www.elchi.io/compare/a10-thunder.html): Elchi vs A10 Thunder ADC and vThunder for load balancing, TLS, WAF, GSLB, HA and central management, with A10 sources
+- [Elchi vs VMware Avi Load Balancer](https://www.elchi.io/compare/vmware-avi.html): Elchi vs VMware Avi (Controller and Service Engines) for load balancing, TLS, WAF, GSLB, HA, upgrades and licensing, with Broadcom sources
+- [Elchi vs HAProxy Enterprise](https://www.elchi.io/compare/haproxy-enterprise.html): Elchi vs HAProxy Enterprise with the HAProxy Fusion control plane, row by row with HAProxy sources
+- [Elchi vs F5 NGINX Plus](https://www.elchi.io/compare/nginx-plus.html): Elchi vs F5 NGINX Plus with NGINX One Console for load balancing, TLS, WAF, GSLB, HA and licensing, with F5 and NGINX sources
+- [Elchi vs Progress Kemp LoadMaster](https://www.elchi.io/compare/kemp-loadmaster.html): Elchi vs Kemp LoadMaster hardware and Virtual LoadMaster for load balancing, TLS, WAF, GSLB, HA and Kemp 360, with Kemp sources
 - [Elchi vs Istio](https://www.elchi.io/compare/istio.html): managing Envoy on VMs and edge fleets vs a service mesh
 - [Elchi vs Envoy Gateway](https://www.elchi.io/compare/envoy-gateway.html): typed Envoy API UI vs Gateway API resources
 - [Elchi vs Kong Gateway](https://www.elchi.io/compare/kong-gateway.html): an Envoy fleet control plane vs an NGINX/OpenResty API gateway with plugins
 - [Elchi vs kgateway](https://www.elchi.io/compare/kgateway.html): typed Envoy API on VMs and appliances vs Gateway API resources in Kubernetes (kgateway, formerly Gloo)
 - [Elchi vs Contour](https://www.elchi.io/compare/contour.html): Envoy edge fleets on VMs vs a Kubernetes ingress controller for Envoy
 - [About](https://www.elchi.io/about.html): who builds Elchi (CloudNativeWorks), offices and distribution channels
-- [Blog](https://www.elchi.io/docs/blog): software ADC alternatives to F5, NetScaler and A10, plus engineering posts on xDS, Envoy on VMs and the OWASP CRS via ext_proc
+- [Blog](https://www.elchi.io/docs/blog): software ADC alternatives to F5, NetScaler and A10, a migration guide from F5 BIG-IP, plus engineering posts on xDS, Envoy on VMs and the OWASP CRS via ext_proc
 
 ## Docs
 
@@ -67,6 +71,7 @@ Core is the base product; API Security (Shield, with the WAF), API Discovery and
 
 ## Blog
 
+- [Migrating from F5 BIG-IP to Elchi](https://www.elchi.io/docs/blog/migrate-f5-big-ip-to-elchi): BIG-IP to Elchi concept map, phased migration with cutover and rollback, what does not carry over
 - [Software ADC Alternatives to F5, NetScaler and A10](https://www.elchi.io/docs/blog/software-adc-alternatives): capability map, software ADC landscape, where Elchi fits, evaluation checklist
 - [What Is an Envoy Control Plane? xDS Explained](https://www.elchi.io/docs/blog/what-is-an-envoy-control-plane): LDS, RDS, CDS, EDS, SDS, ADS ordering, delta xDS, ACK/NACK and snapshot caches
 - [Adding the OWASP Core Rule Set to Envoy with ext_proc](https://www.elchi.io/docs/blog/owasp-crs-waf-envoy-ext-proc): UDS wiring, per-route body buffering and a detect, shadow, block rollout
