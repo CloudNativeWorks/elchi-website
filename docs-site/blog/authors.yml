@@ -1,7 +1,8 @@
-cnw:
-  name: CloudNativeWorks Engineering
-  title: The team that builds Elchi
-  url: https://www.elchi.io/about.html
-  image_url: https://www.elchi.io/docs/img/favicon.svg
+safa:
+  name: Safa Pehlivan
+  title: Developer, CloudNativeWorks
+  url: https://www.linkedin.com/in/sefa-pehlivan-b023544a/
+  image_url: https://github.com/sphlvn3.png
   socials:
-    github: CloudNativeWorks
+    github: sphlvn3
+    linkedin: sefa-pehlivan-b023544a

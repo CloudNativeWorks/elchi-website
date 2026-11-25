@@ -2,7 +2,7 @@
 slug: owasp-crs-waf-envoy-ext-proc
 title: "Adding the OWASP Core Rule Set to Envoy with ext_proc"
 description: "Run the OWASP CRS as an Envoy ext_proc sidecar: UDS wiring, per-route body buffering, the HTTP-method trap, and a detect, shadow, block rollout."
-authors: [cnw]
+authors: [safa]
 tags: [envoy, waf]
 date: 2026-11-12
 image: /img/og/blog-owasp-crs-waf-envoy-ext-proc.png

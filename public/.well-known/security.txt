@@ -1,0 +1,4 @@
+Contact: mailto:support@cloudnativeworks.com
+Expires: 2027-11-25T00:00:00.000Z
+Preferred-Languages: en, tr
+Canonical: https://www.elchi.io/.well-known/security.txt

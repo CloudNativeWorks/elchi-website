@@ -2,7 +2,7 @@
 slug: what-is-an-envoy-control-plane
 title: "What Is an Envoy Control Plane? xDS Explained"
 description: An Envoy control plane serves configuration over the xDS APIs. Learn LDS, RDS, CDS, EDS, SDS, ADS ordering, delta xDS, ACK/NACK and snapshot caches.
-authors: [cnw]
+authors: [safa]
 tags: [envoy, xds]
 date: 2026-11-13
 image: /img/og/blog-what-is-an-envoy-control-plane.png

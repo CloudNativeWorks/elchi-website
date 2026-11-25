@@ -2,7 +2,7 @@
 slug: envoy-on-vms-without-kubernetes
 title: Running Envoy on VMs Without Kubernetes
 description: Envoy runs well on plain VMs if you cover bootstrap, xDS, process supervision, upgrades and telemetry. Here is what each needs and how Elchi automates it.
-authors: [cnw]
+authors: [safa]
 tags: [envoy, vms]
 date: 2026-11-10
 image: /img/og/blog-envoy-on-vms-without-kubernetes.png

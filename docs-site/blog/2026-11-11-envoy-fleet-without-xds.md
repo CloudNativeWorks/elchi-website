@@ -2,7 +2,7 @@
 slug: envoy-fleet-without-xds
 title: "Running an Envoy Fleet Without Hand-Writing xDS"
 description: "Hand-written xDS breaks on references, validation and versions, not syntax. What an Envoy control plane must do, and how Elchi handles each part."
-authors: [cnw]
+authors: [safa]
 tags: [envoy, xds]
 date: 2026-11-11
 image: /img/og/blog-envoy-fleet-without-xds.png
