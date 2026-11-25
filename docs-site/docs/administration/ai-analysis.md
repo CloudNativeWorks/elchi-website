@@ -1,5 +1,6 @@
 ---
-title: AI-Powered Analysis
+title: "AI Analysis of Envoy Config and Logs (BYOK)"
+sidebar_label: "AI-Powered Analysis"
 description: Bring your own OpenRouter key to analyze Envoy configurations and logs with the model of your choice — with full token, cost, and quota tracking.
 sidebar_position: 4
 tags: [administration, ai]

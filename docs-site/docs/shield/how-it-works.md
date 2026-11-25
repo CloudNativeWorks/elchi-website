@@ -1,5 +1,6 @@
 ---
-title: How Shield Works
+title: "How Shield Works with Envoy ext_proc"
+sidebar_label: "How Shield Works"
 description: The request pipeline, header vs body phases, the five engine rules, always-on body protections, the source-IP trust model, and atomic hot reload.
 sidebar_position: 2
 tags: [shield, security]

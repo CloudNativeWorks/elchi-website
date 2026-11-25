@@ -1,5 +1,6 @@
 ---
-title: OpenAPI Export
+title: "Export an OpenAPI Spec from Envoy Traffic"
+sidebar_label: "OpenAPI Export"
 description: Turn the traffic-derived API inventory into an OpenAPI 3.x document — and feed it into Shield's positive-security enforcement.
 sidebar_position: 9
 tags: [api-discovery]

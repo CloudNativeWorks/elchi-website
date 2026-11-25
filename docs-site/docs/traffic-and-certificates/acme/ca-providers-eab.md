@@ -1,5 +1,6 @@
 ---
-title: CA Providers & EAB
+title: "ACME CA Providers & EAB"
+sidebar_label: "CA Providers & EAB"
 description: Choosing a Certificate Authority, listing supported CA providers and environments, and supplying External Account Binding (EAB) credentials.
 sidebar_position: 2
 tags: [acme, tls, certificates]

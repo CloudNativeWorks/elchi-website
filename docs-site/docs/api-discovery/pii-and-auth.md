@@ -1,5 +1,6 @@
 ---
-title: PII, Auth & Consumers
+title: "API Discovery: PII, Auth & Consumers"
+sidebar_label: "PII, Auth & Consumers"
 description: "How API Discovery detects PII in paths and query strings, infers auth schemes and consumers, and keeps a metadata-only privacy model with per-detector switches."
 sidebar_position: 6
 tags: [api-discovery]

@@ -1,5 +1,6 @@
 ---
-title: The SecurityPolicy Model
+title: "The Shield SecurityPolicy Model"
+sidebar_label: "The SecurityPolicy Model"
 description: The Elchi Shield policy file format — envelope, domains, routes, match predicates, inheritance, and multi-file merge semantics.
 sidebar_position: 1
 tags: [shield, policy]

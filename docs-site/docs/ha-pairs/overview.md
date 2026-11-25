@@ -1,5 +1,6 @@
 ---
-title: HA Pairs Overview
+title: "HA Pairs: Active/Passive Envoy Edge Appliances"
+sidebar_label: "HA Pairs Overview"
 description: Active/passive pairs of Elchi OS edge appliances that share virtual IPs — how a pair elects its active member, fails over, and keeps services up without BGP.
 sidebar_position: 1
 tags: [operations, high-availability]

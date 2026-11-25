@@ -1,5 +1,6 @@
 ---
-title: Deploying Services to a Pair
+title: "Deploying Envoy Services to an HA Pair"
+sidebar_label: "Deploying Services to a Pair"
 description: "Deploy services on an Elchi OS HA pair: one VIP for both members, on-link vs routed VIPs, floating next-hops, BGP and BFD, and standby-first changes."
 sidebar_position: 3
 tags: [operations, high-availability]

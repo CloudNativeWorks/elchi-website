@@ -1,5 +1,5 @@
 ---
-title: "Helm Platform Installation"
+title: "Install the Elchi Control Plane with Helm"
 sidebar_label: "Installation"
 description: "Install the Elchi platform on Kubernetes with the elchi-stack Helm chart: add the repo, install with defaults or a custom values file, then sign in."
 sidebar_position: 3

@@ -1,5 +1,5 @@
 ---
-title: "Helm Platform Overview"
+title: "Elchi on Kubernetes: Helm Chart Overview"
 sidebar_label: "Platform Overview"
 description: "The components the elchi-stack Helm chart deploys on Kubernetes (controller, control plane, registry, UI and datastores) and the role each plays."
 sidebar_position: 1

@@ -1,5 +1,6 @@
 ---
-title: Cluster Endpoints
+title: "Blue/Green Envoy Cluster Endpoint Switch"
+sidebar_label: "Cluster Endpoints"
 description: Point an EDS cluster at another endpoints resource (backend-blue to backend-green, and back) for a blue/green release, from the elchi UI.
 sidebar_position: 2.6
 tags: [operations]

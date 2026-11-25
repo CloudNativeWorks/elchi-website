@@ -13,7 +13,7 @@ export const COMPANY = {
   address: 'Aziziye Mah. Vali Doktor Reşit Sk. No: 6 İç Kapı No: 1, Çankaya / Ankara, Türkiye',
   taxOffice: 'Hitit',
   vkn: '2111569107',
-  url: 'https://www.cloudnativeworks.com',
+  url: 'https://cloudnativeworks.com',
 };
 
 // t: { hq, tr, bg, istanbulOffice, tel, fax } from the page's strings.

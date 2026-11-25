@@ -1,5 +1,6 @@
 ---
-title: Snapshot Dump
+title: "xDS Snapshot Dump: What Envoy Is Served"
+sidebar_label: "Snapshot Dump"
 description: Inspect the exact xDS snapshot the control-plane is serving a live Envoy node — the ground truth of what shipped — and clear a stale snapshot to force a resync.
 sidebar_position: 8
 tags: [envoy]

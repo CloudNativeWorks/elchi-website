@@ -1,5 +1,5 @@
 ---
-title: "Scenario Wizard Overview"
+title: "Scenario Wizard: Generate Related Envoy Resources"
 sidebar_label: "Scenario Overview"
 description: "The Elchi Scenario wizard is a guided, catalog-driven generator that builds several related Envoy resources at once. What it does and when to use it."
 sidebar_position: 1

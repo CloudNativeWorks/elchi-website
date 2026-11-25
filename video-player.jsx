@@ -38,7 +38,7 @@ export function VideoCard({ v, onPlay, anchor = true }) {
   return (
     <article className="vid-card" id={anchor ? v.slug : undefined}>
       <button className="vid-thumb" onClick={() => onPlay(v)} aria-label={t.play(v.title)}>
-        <img src={thumb(v)} alt="" loading="lazy" decoding="async" width="960" height="540"/>
+        <img src={thumb(v)} alt={v.title} loading="lazy" decoding="async" width="960" height="540"/>
         <span className="vid-play"><PlayIcon/></span>
         <span className="vid-dur">{v.duration}</span>
       </button>

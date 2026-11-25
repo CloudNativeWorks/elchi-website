@@ -1,5 +1,6 @@
 ---
-title: Rate Limiting
+title: "Shield Rate Limiting for Envoy"
+sidebar_label: "Rate Limiting"
 description: The sharded token-bucket rate limiter — per-IP, per-host, or per-header keys, burst control, and 429 responses with Retry-After.
 sidebar_position: 9
 tags: [shield, engine]

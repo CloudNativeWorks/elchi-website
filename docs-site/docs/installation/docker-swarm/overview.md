@@ -1,5 +1,5 @@
 ---
-title: "Docker Swarm Install Overview"
+title: "Envoy Control Plane on Docker Swarm: Overview"
 sidebar_label: "Overview"
 description: "What the Elchi Docker Swarm installer deploys, its prebuilt-image model, single-node vs HA and air-gapped modes, and how it compares with bare-metal and Helm."
 sidebar_position: 1

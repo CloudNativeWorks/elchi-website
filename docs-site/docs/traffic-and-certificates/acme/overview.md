@@ -1,5 +1,6 @@
 ---
-title: ACME Overview
+title: "ACME Certificates for Envoy: Overview"
+sidebar_label: "ACME Overview"
 description: Automated TLS certificate issuance and renewal via ACME DNS-01 — CA providers, ACME accounts, DNS credentials, and version-scoped Envoy secrets.
 sidebar_position: 1
 tags: [acme, tls, certificates]

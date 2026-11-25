@@ -1,5 +1,6 @@
 ---
-title: mTLS Identity (XFCC)
+title: "Shield mTLS Identity from Envoy XFCC"
+sidebar_label: "mTLS Identity (XFCC)"
 description: Authenticate by the mTLS client-certificate identity Envoy forwards in x-forwarded-client-cert — SPIFFE/DNS SANs, subjects, or fingerprints.
 sidebar_position: 7
 tags: [shield, engine]

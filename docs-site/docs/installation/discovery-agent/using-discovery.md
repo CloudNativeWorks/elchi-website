@@ -1,5 +1,6 @@
 ---
-title: "Using K8s Discovery"
+title: "Using K8s Discovery for Envoy Endpoints"
+sidebar_label: "Using K8s Discovery"
 description: "The in-UI workflow after installing the discovery agent: browse imported clusters, link endpoints to them, check which endpoints use a cluster, remove one."
 sidebar_position: 5
 tags: [discovery]

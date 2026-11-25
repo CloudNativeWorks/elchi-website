@@ -1,5 +1,5 @@
 ---
-title: "Execute and Validate a Scenario"
+title: "Execute a Scenario into Live Envoy Resources"
 sidebar_label: "Execute and Validate"
 description: "Turn a saved Elchi scenario into live Envoy resources: validate components, pick a version, fill execution-time values and apply, with automatic rollback."
 sidebar_position: 3

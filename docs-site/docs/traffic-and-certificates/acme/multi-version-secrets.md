@@ -1,5 +1,6 @@
 ---
-title: Multi-Version Secrets
+title: "Multi-Version Envoy TLS Secrets (ACME)"
+sidebar_label: "Multi-Version Secrets"
 description: The version-scoped certificate model — how one ACME certificate is written to per-Envoy-version secrets, adding versions, and duplicating.
 sidebar_position: 4
 tags: [acme, tls, certificates]

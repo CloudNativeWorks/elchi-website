@@ -1,5 +1,6 @@
 ---
-title: HMAC Signing
+title: "Shield HMAC Request Signing"
+sidebar_label: "HMAC Signing"
 description: Native HMAC request signing with a timestamp window, nonce replay protection, key-id rotation, and optional body-digest binding.
 sidebar_position: 5
 tags: [shield, engine]

@@ -1,5 +1,6 @@
 ---
-title: Modes & Fail Postures
+title: "Shield Modes & Fail Postures"
+sidebar_label: "Modes & Fail Postures"
 description: What block, detect, shadow, and off actually do to a request; fail_open vs fail_close; and the recommended detect → shadow → block rollout.
 sidebar_position: 2
 tags: [shield, policy]

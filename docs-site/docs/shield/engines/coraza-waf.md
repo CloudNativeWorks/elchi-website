@@ -1,5 +1,6 @@
 ---
-title: Coraza WAF (OWASP CRS)
+title: "Coraza WAF for Envoy (OWASP CRS)"
+sidebar_label: "Coraza WAF (OWASP CRS)"
 description: The embedded ModSecurity-style WAF engine — OWASP Core Rule Set, paranoia levels, anomaly thresholds, and custom SecLang directives.
 sidebar_position: 1
 tags: [shield, engine]

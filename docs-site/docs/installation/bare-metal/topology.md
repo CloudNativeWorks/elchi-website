@@ -1,5 +1,6 @@
 ---
-title: Topology
+title: "Bare-Metal Cluster Topology (1, 2, 3+ VMs)"
+sidebar_label: "Topology"
 description: How components distribute across 1, 2, and 3+ VM clusters — Mongo RS, per-node OTel and collector, ClickHouse replication, and the M1 storage tier.
 sidebar_position: 10
 ---

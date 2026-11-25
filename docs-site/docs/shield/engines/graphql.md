@@ -1,5 +1,6 @@
 ---
-title: GraphQL Guard
+title: "GraphQL Guard: Query Limits at the Envoy Edge"
+sidebar_label: "GraphQL Guard"
 description: Query-shape DoS protection for GraphQL — depth, alias, field, and batch limits, introspection blocking, and always-on complexity backstops.
 sidebar_position: 11
 tags: [shield, engine]

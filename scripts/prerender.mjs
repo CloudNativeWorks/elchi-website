@@ -24,11 +24,13 @@ const PAGES = [
   'products/gslb.html',
   'privacy.html', 'about.html',
   'compare.html', 'compare/istio.html', 'compare/envoy-gateway.html', 'compare/go-control-plane.html',
+  'compare/kong-gateway.html', 'compare/kgateway.html', 'compare/contour.html',
   'tr/index.html', 'tr/features.html', 'tr/architecture.html', 'tr/contact.html', 'tr/plans.html', 'tr/videos.html', 'tr/faq.html',
   'tr/products/core.html', 'tr/products/api-security.html', 'tr/products/api-discovery.html',
   'tr/products/gslb.html',
   'tr/privacy.html', 'tr/about.html',
   'tr/compare.html', 'tr/compare/istio.html', 'tr/compare/envoy-gateway.html', 'tr/compare/go-control-plane.html',
+  'tr/compare/kong-gateway.html', 'tr/compare/kgateway.html', 'tr/compare/contour.html',
 ];
 
 const ROOT_RE = /<div id="root"([^>]*)><\/div>/;

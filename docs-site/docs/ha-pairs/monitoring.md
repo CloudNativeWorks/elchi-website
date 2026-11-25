@@ -1,5 +1,6 @@
 ---
-title: Monitoring a Pair
+title: "Monitoring an Elchi OS HA Pair"
+sidebar_label: "Monitoring a Pair"
 description: Pair statuses, member roles, alarms, heartbeat and data-plane indicators, and where HA state appears across the Elchi UI, audit log and metrics.
 sidebar_position: 5
 tags: [operations, high-availability, observability]

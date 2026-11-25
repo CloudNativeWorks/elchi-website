@@ -5,6 +5,7 @@ description: Envoy runs well on plain VMs if you cover bootstrap, xDS, process s
 authors: [cnw]
 tags: [envoy, vms]
 date: 2026-11-10
+image: /img/og/blog-envoy-on-vms-without-kubernetes.png
 ---
 
 Envoy does not need Kubernetes. It is a single static binary that reads a bootstrap file and, if you let it, fetches the rest of its configuration from a control plane over xDS. Many teams run it on virtual machines or bare metal as an edge proxy, an API gateway or a load balancer in front of services that will never move into a cluster.

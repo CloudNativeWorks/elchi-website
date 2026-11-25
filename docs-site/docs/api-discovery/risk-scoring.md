@@ -1,5 +1,6 @@
 ---
-title: "Risk Scoring: Threat vs Exposure"
+title: "API Risk Scoring: Threat vs Exposure"
+sidebar_label: "Risk Scoring: Threat vs Exposure"
 description: "The API Discovery two-axis risk model: threat vs exposure, severity weights, active vs lifetime scores, the 0-100 Security Score and how to prioritize fixes."
 sidebar_position: 4
 tags: [api-discovery]

@@ -1,5 +1,6 @@
 ---
-title: Collector Reference
+title: "API Discovery Collector Reference"
+sidebar_label: "Collector Reference"
 description: Complete reference for the elchi-collector — bootstrap environment variables, ports, Prometheus metrics, ClickHouse and MongoDB schema, and Envoy ALS wiring.
 sidebar_position: 16
 tags: [api-discovery, collector]

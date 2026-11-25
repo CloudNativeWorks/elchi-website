@@ -1,5 +1,6 @@
 ---
-title: Virtual Hosts
+title: "Envoy Virtual Hosts in Elchi"
+sidebar_label: "Virtual Hosts"
 description: How Elchi models Envoy virtual hosts inside a route configuration — domains, per-vhost routes, retries, and header rules.
 sidebar_position: 3
 tags: [envoy, resources]

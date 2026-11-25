@@ -1,5 +1,6 @@
 ---
-title: Endpoints
+title: "Envoy Endpoints (EDS) in Elchi"
+sidebar_label: "Endpoints"
 description: How Elchi models Envoy endpoints (EDS) — the ClusterLoadAssignment, localities, priorities, weights, and their link to clusters.
 sidebar_position: 5
 tags: [envoy, resources]

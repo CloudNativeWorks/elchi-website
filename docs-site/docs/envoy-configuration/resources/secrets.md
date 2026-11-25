@@ -1,5 +1,6 @@
 ---
-title: Secrets & TLS
+title: "Envoy Secrets & TLS (SDS) in Elchi"
+sidebar_label: "Secrets & TLS"
 description: How Elchi models Envoy secrets (SDS) — TLS certificates, validation contexts, and the link to ACME-managed certificates.
 sidebar_position: 6
 tags: [envoy, resources]

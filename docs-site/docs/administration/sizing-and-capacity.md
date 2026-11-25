@@ -1,5 +1,6 @@
 ---
-title: Sizing & Capacity
+title: "Elchi Control Plane Sizing & Capacity"
+sidebar_label: "Sizing & Capacity"
 description: "Size an Elchi platform: CPU, memory and storage for the control plane, MongoDB, ClickHouse, VictoriaMetrics, the collector and Shield, and what grows."
 sidebar_position: 11
 tags: [operations]

@@ -1,5 +1,6 @@
 ---
-title: Production hardening (kernel + systemd)
+title: "Bare-Metal Elchi Hardening (kernel + systemd)"
+sidebar_label: "Production hardening (kernel + systemd)"
 description: The kernel sysctl baseline, MongoDB systemd drop-in, per-service systemd hardening set, and preflight RAM/swap checks applied by every install.
 sidebar_position: 11
 ---

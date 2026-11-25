@@ -1,5 +1,6 @@
 ---
-title: HTTP Message Signatures
+title: "Shield HTTP Message Signatures (RFC 9421)"
+sidebar_label: "HTTP Message Signatures"
 description: RFC 9421 HTTP Message Signature verification (hmac-sha256) with covered-component control, content-digest body binding, and freshness enforcement.
 sidebar_position: 6
 tags: [shield, engine]

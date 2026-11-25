@@ -1,5 +1,6 @@
 ---
-title: "Docker Swarm: Quick Start"
+title: "Docker Swarm Quick Start for the Elchi Control Plane"
+sidebar_label: "Docker Swarm: Quick Start"
 description: Bring the Elchi control plane up on Docker Swarm with one command — the bootstrap one-liner, what it does, and how to inspect a dry run.
 sidebar_position: 2
 tags: [installation, docker]

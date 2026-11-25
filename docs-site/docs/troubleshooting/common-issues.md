@@ -1,5 +1,6 @@
 ---
-title: Troubleshooting
+title: "Troubleshooting Common Elchi and Envoy Issues"
+sidebar_label: "Troubleshooting"
 description: Fixes for common issues across the platform — control-plane config delivery, Shield ext_proc, API Discovery, certificates, GSLB, and edge resource pressure.
 sidebar_position: 1
 tags: [troubleshooting]

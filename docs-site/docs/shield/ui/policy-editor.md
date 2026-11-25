@@ -1,5 +1,6 @@
 ---
-title: Policy Editor
+title: "Shield Policy Editor"
+sidebar_label: "Policy Editor"
 description: Build, test, and deploy Shield policies from the Elchi UI — the Builder, YAML, Data Files, and Test tabs, templates, and Import from Discovery.
 sidebar_position: 1
 ---

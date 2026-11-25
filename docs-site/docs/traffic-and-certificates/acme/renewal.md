@@ -1,5 +1,6 @@
 ---
-title: Renewal & Troubleshooting
+title: "ACME Certificate Renewal & Troubleshooting"
+sidebar_label: "Renewal & Troubleshooting"
 description: DNS-01 verification, manual verify and retry, manual and automatic renewal, changing the DNS credential, and diagnosing stuck verifications.
 sidebar_position: 5
 tags: [acme, tls, certificates]

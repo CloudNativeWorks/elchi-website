@@ -1,5 +1,5 @@
 ---
-title: "Scenario Wizard Walkthrough"
+title: "Envoy Scenario Wizard Walkthrough"
 sidebar_label: "Wizard Walkthrough"
 description: "Step through the Scenario Quick Start hub and the three-step create wizard (basic info, components and fields, review) and see what the wizard generates."
 sidebar_position: 2

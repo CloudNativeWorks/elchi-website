@@ -1,5 +1,5 @@
 ---
-title: "Resource Editor Tools: Regex, Certs, Secrets"
+title: "Envoy Resource Editor Tools: Regex, Certs, Secrets"
 sidebar_label: "In-Form Tools"
 description: "Helpers in the Elchi resource editor: the RE2 regex tester, certificate inspector, secret and session ticket key generators, and the Basic Auth hash generator."
 sidebar_position: 9

@@ -1,5 +1,6 @@
 ---
-title: OpenAPI Specs & Coverage
+title: "OpenAPI Spec Coverage vs Observed Traffic"
+sidebar_label: "OpenAPI Specs & Coverage"
 description: "Import OpenAPI or Swagger specs, scope them to listeners and paths, and compare them with observed traffic: undocumented, unused, deprecated-in-use and drift."
 sidebar_position: 10
 tags: [api-discovery, openapi]

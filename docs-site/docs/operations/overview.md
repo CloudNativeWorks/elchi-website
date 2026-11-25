@@ -1,5 +1,6 @@
 ---
-title: Fleet Operations
+title: "Envoy Fleet Operations"
+sidebar_label: "Fleet Operations"
 description: The management console for a running Elchi fleet — deployed Envoy services, connected edge clients, and how the controller drives them.
 sidebar_position: 1
 tags: [operations]

@@ -1,5 +1,6 @@
 ---
-title: "Tutorial: From Install to First Listener"
+title: "Tutorial: From Install to Your First Envoy Listener"
+sidebar_label: "Tutorial: From Install to First Listener"
 description: The hello-world of Elchi — install the platform, connect an edge client, build a listener → route → cluster → endpoint, publish it, and verify traffic flows.
 sidebar_position: 2
 tags: [tutorial]

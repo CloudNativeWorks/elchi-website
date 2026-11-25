@@ -1,5 +1,6 @@
 ---
-title: Metrics & Logs
+title: "Envoy Metrics & Logs in Elchi"
+sidebar_label: "Metrics & Logs"
 description: The platform telemetry pipeline — where every signal goes — plus the built-in metric dashboards, Grafana, the log viewer, and Kubernetes endpoint discovery.
 sidebar_position: 1
 ---

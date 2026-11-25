@@ -299,7 +299,7 @@ function Footer() {
               <li><a href={locHref('about')}>{t.about}</a></li>
               <li><a href={locHref('contact')}>{t.contact}</a></li>
               <li><a href={locHref('privacy')}>{t.privacy}</a></li>
-              <li><a href="https://www.cloudnativeworks.com" target="_blank" rel="noopener">{t.cnw}</a></li>
+              <li><a href="https://cloudnativeworks.com" target="_blank" rel="noopener">{t.cnw}</a></li>
               <li><a href="https://github.com/orgs/CloudNativeWorks/repositories" target="_blank" rel="noopener">{t.github}</a></li>
             </ul>
           </div>

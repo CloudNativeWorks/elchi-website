@@ -1,5 +1,6 @@
 ---
-title: Services
+title: "Deployed Envoy Services"
+sidebar_label: "Services"
 description: The Services console — view deployed Envoy services, drill into a running Envoy, track configuration errors, and recover GSLB records.
 sidebar_position: 2
 tags: [operations]

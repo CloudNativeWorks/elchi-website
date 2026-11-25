@@ -1,5 +1,6 @@
 ---
-title: Built-in Checks & Pipeline Order
+title: "Shield Built-in Checks & Pipeline Order"
+sidebar_label: "Built-in Checks & Pipeline Order"
 description: The built-in header and body checks, skip_checks exemptions, custom pipeline stage ordering, audit sampling, and per-policy log level.
 sidebar_position: 4
 tags: [shield, policy]

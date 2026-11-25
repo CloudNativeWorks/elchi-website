@@ -1,5 +1,6 @@
 ---
-title: The Bundled Shield Sidecar
+title: "Bundled Shield ext_proc Sidecar for Envoy"
+sidebar_label: "The Bundled Shield Sidecar"
 description: How the elchi-client installer installs and configures elchi-shield by default, its sink config, and how to skip or pin it.
 sidebar_position: 6
 tags: [installation]

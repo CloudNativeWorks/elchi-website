@@ -1,5 +1,6 @@
 ---
-title: Data Loss Prevention (DLP)
+title: "Shield Data Loss Prevention (DLP)"
+sidebar_label: "Data Loss Prevention (DLP)"
 description: Block hard secrets and redact PII in request or response bodies — kinds, block vs redact precedence, and how in-place redaction works mechanically.
 sidebar_position: 5
 tags: [shield, policy]

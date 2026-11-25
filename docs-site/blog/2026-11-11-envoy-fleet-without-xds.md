@@ -5,6 +5,7 @@ description: "Hand-written xDS breaks on references, validation and versions, no
 authors: [cnw]
 tags: [envoy, xds]
 date: 2026-11-11
+image: /img/og/blog-envoy-fleet-without-xds.png
 ---
 
 Envoy is easy to start with and hard to operate at fleet scale. One proxy with a static YAML bootstrap is a weekend project. Twenty proxies on VMs, a few on Kubernetes, two Envoy versions in flight and a change window every week is a different job. At that point most teams reach the same conclusion: Envoy is meant to be driven by a control plane over **xDS**, and somebody has to own that control plane.

@@ -1,5 +1,6 @@
 ---
-title: uninstall.sh — remove the stack
+title: "Bare-Metal uninstall.sh: Remove the Elchi Stack"
+sidebar_label: "uninstall.sh — remove the stack"
 description: Non-destructive uninstall by default, cluster-wide fan-out from M1, and opt-in purge flags for data, packages, and secrets.
 sidebar_position: 6
 ---

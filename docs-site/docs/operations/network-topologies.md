@@ -1,5 +1,6 @@
 ---
-title: Edge Network Topologies
+title: "Envoy Edge Host Network Topologies"
+sidebar_label: "Edge Network Topologies"
 description: "How an Envoy edge host routes with one, two or three NICs: where listener VIPs live, reply and upstream paths, the default route, policy rules and BGP uplinks."
 sidebar_position: 4.5
 tags: [operations, elchi-os, networking]

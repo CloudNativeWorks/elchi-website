@@ -1,5 +1,6 @@
 ---
-title: Route Map
+title: "Envoy Route Map: Trace Request Routing"
+sidebar_label: "Route Map"
 description: Trace how an incoming request flows through a listener's virtual hosts, routes, and match conditions to the upstream cluster that ultimately serves it.
 sidebar_position: 7
 tags: [envoy]

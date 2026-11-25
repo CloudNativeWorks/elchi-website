@@ -1,5 +1,6 @@
 ---
-title: Consumers & Enumeration
+title: "API Consumers & Enumeration Detection"
+sidebar_label: "Consumers & Enumeration"
 description: "Per-consumer API behaviour in API Discovery: machine vs human callers, new consumers, enumeration, scraping and auth-failure signals, BOLA and BFLA detectors."
 sidebar_position: 7
 tags: [api-discovery]

@@ -1,5 +1,6 @@
 ---
-title: Metrics, Audit & Health
+title: "Shield Metrics, Audit & Health"
+sidebar_label: "Metrics, Audit & Health"
 description: Shield's full Prometheus metric set, the ClickHouse audit sink and its schema, metric delivery (scrape or OTLP push), and the loopback health endpoints.
 sidebar_position: 10
 ---

@@ -5,6 +5,7 @@ description: "Run the OWASP CRS as an Envoy ext_proc sidecar: UDS wiring, per-ro
 authors: [cnw]
 tags: [envoy, waf]
 date: 2026-11-12
+image: /img/og/blog-owasp-crs-waf-envoy-ext-proc.png
 ---
 
 Envoy does not ship a request-inspecting WAF. If you want the OWASP Core Rule Set (CRS) in front of your APIs, you have to bring an engine and connect it to Envoy. Envoy's **external processing** filter (`ext_proc`) is a clean way to do that: the WAF runs as a separate process with its own release cycle, and Envoy stays a standard build.

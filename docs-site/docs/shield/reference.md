@@ -1,5 +1,6 @@
 ---
-title: CLI & Configuration Reference
+title: "Shield CLI & Configuration Reference"
+sidebar_label: "CLI & Configuration Reference"
 description: Every elchi-shield command-line flag with its default and purpose, the ELCHI_SHIELD_* environment variables, the validate subcommand, and on-disk paths.
 sidebar_position: 11
 ---

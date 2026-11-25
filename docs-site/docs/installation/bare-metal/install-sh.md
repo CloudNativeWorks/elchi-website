@@ -1,5 +1,6 @@
 ---
-title: install.sh — full flag reference
+title: "Bare-Metal install.sh: Full Flag Reference"
+sidebar_label: "install.sh — full flag reference"
 description: Complete reference for every install.sh flag — topology, SSH, versioning, TLS, MongoDB, VictoriaMetrics, Grafana, GSLB, backend, and op-mode.
 sidebar_position: 4
 ---

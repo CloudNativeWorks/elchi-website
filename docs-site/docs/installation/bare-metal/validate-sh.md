@@ -1,5 +1,6 @@
 ---
-title: /etc/elchi/validate.sh — per-node post-install audit
+title: "Bare-Metal validate.sh: Per-Node Post-Install Audit"
+sidebar_label: "/etc/elchi/validate.sh — per-node post-install audit"
 description: Read-only per-node audit script that checks systemd, ports, service health, Envoy admin, config integrity, and system tuning.
 sidebar_position: 7
 ---

@@ -1,5 +1,6 @@
 ---
-title: Import and Export
+title: "Import and Export Envoy Config Scenarios"
+sidebar_label: "Import and Export"
 description: Share and reuse scenarios across projects and installations — the export bundle format, importing into another project, and how naming conflicts are resolved.
 sidebar_position: 4
 tags: [scenarios, import, export, portability]

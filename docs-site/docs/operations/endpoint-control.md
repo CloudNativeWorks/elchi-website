@@ -1,5 +1,6 @@
 ---
-title: Endpoint Control
+title: "Endpoint Control: Drain Upstreams Across Envoy"
+sidebar_label: "Endpoint Control"
 description: Take an upstream endpoint (an IP or a hostname) out of rotation everywhere it is used in a project, and put it back, from the elchi UI.
 sidebar_position: 2.5
 tags: [operations]

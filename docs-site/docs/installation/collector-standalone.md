@@ -1,5 +1,6 @@
 ---
-title: Standalone Collector
+title: "Standalone Collector for Envoy Access Logs"
+sidebar_label: "Standalone Collector"
 description: Deploy elchi-collector as a standalone Deployment against your existing MongoDB and ClickHouse, separate from the full platform.
 sidebar_position: 9
 tags: [installation]

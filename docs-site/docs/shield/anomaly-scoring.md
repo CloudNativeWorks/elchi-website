@@ -1,5 +1,6 @@
 ---
-title: Anomaly Scoring
+title: "Shield Anomaly Scoring"
+sidebar_label: "Anomaly Scoring"
 description: Combine weak signals from multiple engines into one collaborative per-request score and block only when the total crosses a policy threshold.
 sidebar_position: 6
 tags: [shield, security]

@@ -1,5 +1,6 @@
 ---
-title: Transport Sockets
+title: "Envoy Transport Sockets: TLS, mTLS, QUIC"
+sidebar_label: "Transport Sockets"
 description: How Elchi models Envoy transport sockets — downstream vs upstream TLS/mTLS on listeners and clusters, plus QUIC and Proxy Protocol.
 sidebar_position: 7
 tags: [envoy, resources]

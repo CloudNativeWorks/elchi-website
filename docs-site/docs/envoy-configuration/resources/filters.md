@@ -1,5 +1,6 @@
 ---
-title: Filters
+title: "Envoy Filters: Listener, Network, HTTP, UDP"
+sidebar_label: "Filters"
 description: How Elchi models Envoy filters — the listener, network, HTTP, and UDP filter categories the UI exposes, and where Shield's ext_proc filter fits.
 sidebar_position: 8
 tags: [envoy, resources]

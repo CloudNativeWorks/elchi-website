@@ -1,5 +1,6 @@
 ---
-title: JWKS
+title: "Shield JWKS: JWT Validation with Key Rotation"
+sidebar_label: "JWKS"
 description: Bearer JWT validation against a JWK Set (local file or remote URL) with key rotation, background refresh, and no request-path network I/O.
 sidebar_position: 3
 tags: [shield, engine]

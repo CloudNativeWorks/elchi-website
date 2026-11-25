@@ -1,5 +1,5 @@
 ---
-title: "Elchi Client Overview and Requirements"
+title: "Elchi Client: Envoy Edge Agent Overview & Requirements"
 sidebar_label: "Overview"
 description: "The Elchi Client is the edge agent that runs Envoy for your control plane. Supported OS (Ubuntu 24.04, amd64), downloads, and what it installs on a host."
 sidebar_position: 1

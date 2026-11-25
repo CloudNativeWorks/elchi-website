@@ -1,5 +1,6 @@
 ---
-title: Clusters
+title: "Envoy Clusters (CDS) in Elchi"
+sidebar_label: "Clusters"
 description: How Elchi models Envoy clusters (CDS) — discovery type, load balancing, health checks, circuit breakers, and outlier detection.
 sidebar_position: 4
 tags: [envoy, resources]

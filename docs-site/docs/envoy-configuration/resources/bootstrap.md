@@ -1,5 +1,6 @@
 ---
-title: Bootstrap
+title: "Envoy Bootstrap Config in Elchi"
+sidebar_label: "Bootstrap"
 description: The Envoy bootstrap config Elchi generates for each proxy — node identity, admin, static resources, and the ADS connection back to the control-plane.
 sidebar_position: 10
 tags: [envoy, resources]

@@ -1,5 +1,6 @@
 ---
-title: DNS Credentials
+title: "ACME DNS-01 Credentials"
+sidebar_label: "DNS Credentials"
 description: Storing DNS provider API tokens that authorize the ACME DNS-01 challenge — supported providers, creating, testing, and rotating credentials.
 sidebar_position: 3
 tags: [acme, tls, certificates]

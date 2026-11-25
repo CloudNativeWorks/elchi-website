@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Discovery Agent Overview"
+title: "Kubernetes Discovery Agent for Envoy Endpoints"
 sidebar_label: "Overview"
 description: "The Elchi Discovery agent reports a Kubernetes cluster's nodes to Elchi, which keeps Envoy endpoints in sync with node IPs. How it works and what you need."
 sidebar_position: 1

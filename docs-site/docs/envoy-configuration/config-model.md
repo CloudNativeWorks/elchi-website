@@ -1,5 +1,6 @@
 ---
-title: Resources & the Config Model
+title: "Envoy Resources & the Elchi Config Model"
+sidebar_label: "Resources & the Config Model"
 description: How Elchi models every Envoy configuration object as a typed, validated resource — from listeners to secrets — and publishes changes safely.
 sidebar_position: 1
 ---

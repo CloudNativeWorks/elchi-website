@@ -1,5 +1,6 @@
 ---
-title: Deploying Policies to Edges
+title: "Deploying Shield Policies to Envoy Edges"
+sidebar_label: "Deploying Policies to Edges"
 description: How a Shield policy travels from the UI to every edge — the merged bundle, the SHIELD_DEPLOY job, elchi-client's atomic file sync, and reload confirmation.
 sidebar_position: 8
 ---

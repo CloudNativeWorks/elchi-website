@@ -1,5 +1,6 @@
 ---
-title: "Dependency Graph, Route Map & Snapshot Dump"
+title: "Debug Envoy Config: Dependency Graph, Route Map, Snapshot"
+sidebar_label: "Dependency Graph, Route Map & Snapshot Dump"
 description: "Three tools to debug Envoy config in Elchi: see how resources reference each other, trace request routing, and dump the live xDS snapshot Envoy is served."
 sidebar_position: 5
 tags: [envoy]

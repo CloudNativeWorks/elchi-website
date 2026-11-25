@@ -1,5 +1,6 @@
 ---
-title: Clients
+title: "Edge Clients: Manage Envoy Edge Nodes"
+sidebar_label: "Clients"
 description: The Clients console — connected edge nodes, remote command dispatch, host statistics and logs, and OpenStack interface/IP lookups.
 sidebar_position: 3
 tags: [operations]

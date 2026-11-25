@@ -1,5 +1,6 @@
 ---
-title: Listeners
+title: "Envoy Listeners (LDS) in Elchi"
+sidebar_label: "Listeners"
 description: How Elchi models Envoy listeners (LDS) — bind addresses, filter chains, the HTTP Connection Manager, and TLS termination.
 sidebar_position: 1
 tags: [envoy, resources]

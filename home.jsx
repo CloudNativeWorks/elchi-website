@@ -24,8 +24,8 @@ const STR = {
   en: {
     // Hero
     heroH1a: 'Elchi:',
-    heroH1b: 'every proxy, every edge, one control plane.',
-    heroPara: 'With Elchi you configure, validate and publish listeners, routes, clusters and certificates for every proxy from one place, and protect your APIs at the edge with Elchi Shield and Elchi API Discovery.',
+    heroH1b: 'every Envoy, every edge, one control plane.',
+    heroPara: 'With Elchi you configure, validate and publish listeners, routes, clusters and certificates for every Envoy proxy from one place, and protect your APIs at the edge with Elchi Shield and Elchi API Discovery.',
     heroBtnStart: 'Get Started',
     heroBtnDemo: 'Book a demo',
     heroBtnArch: 'View architecture',
@@ -180,8 +180,8 @@ const STR = {
   tr: {
     // Hero
     heroH1a: 'Elchi:',
-    heroH1b: 'her proxy, her edge, tek control plane.',
-    heroPara: 'Elchi ile her proxy için listener, route, cluster ve sertifikaları tek yerden yapılandırın, doğrulayın ve yayınlayın; API’lerinizi Elchi Shield ve Elchi API Discovery ile edge’de koruyun.',
+    heroH1b: 'her Envoy, her edge, tek control plane.',
+    heroPara: 'Elchi ile her Envoy proxy için listener, route, cluster ve sertifikaları tek yerden yapılandırın, doğrulayın ve yayınlayın; API’lerinizi Elchi Shield ve Elchi API Discovery ile edge’de koruyun.',
     heroBtnStart: 'Başlayın',
     heroBtnDemo: 'Demo talep et',
     heroBtnArch: 'Mimariyi görün',

@@ -1,5 +1,6 @@
 ---
-title: Overview Dashboard
+title: "Shield Overview Dashboard"
+sidebar_label: "Overview Dashboard"
 description: The live Shield metrics dashboard — traffic, latency, findings, audit pipeline, sidecar health, and per-edge config rollout, fed by VictoriaMetrics.
 sidebar_position: 2
 ---

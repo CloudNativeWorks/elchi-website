@@ -170,7 +170,7 @@ function VideosApp() {
           <Band tone="water" className="vid-featured-band">
             <div className="vid-featured">
               <button className="vid-thumb vid-thumb-big" onClick={() => play(featured)} aria-label={t.play(featured.title)}>
-                <img src={thumb(featured)} alt="" decoding="async" width="960" height="540"/>
+                <img src={thumb(featured)} alt={featured.title} decoding="async" width="960" height="540"/>
                 <span className="vid-start">{t.featured}</span>
                 <span className="vid-play big"><PlayIcon size={30}/></span>
                 <span className="vid-dur">{featured.duration}</span>

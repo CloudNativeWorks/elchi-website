@@ -1,5 +1,6 @@
 ---
-title: Collector Configuration
+title: "API Discovery Collector Configuration"
+sidebar_label: "Collector Configuration"
 description: "The elchi-collector runtime config: header policy, ingest exclusions, path normalization, PII switches, TLS proxies, GraphQL and detector thresholds."
 sidebar_position: 14
 tags: [api-discovery, collector]

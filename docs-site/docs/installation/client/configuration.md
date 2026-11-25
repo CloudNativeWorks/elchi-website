@@ -1,5 +1,5 @@
 ---
-title: "Elchi Client Configuration"
+title: "Elchi Client Configuration: Envoy Edge Agent"
 sidebar_label: "Configuration"
 description: "Configure the Elchi Client edge agent: point it at your Elchi server in /etc/elchi/config.yaml, set its registration token, and restart the service."
 sidebar_position: 4

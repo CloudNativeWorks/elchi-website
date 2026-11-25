@@ -1,5 +1,6 @@
 ---
-title: upgrade.sh — version-diff upgrade
+title: "Bare-Metal upgrade.sh: Version-Diff Upgrade"
+sidebar_label: "upgrade.sh — version-diff upgrade"
 description: Version-diff upgrades with hash-based reconcile, additive or declarative variant changes, health gate, and per-binary rollback.
 sidebar_position: 5
 ---

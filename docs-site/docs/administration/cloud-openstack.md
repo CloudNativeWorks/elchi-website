@@ -1,5 +1,6 @@
 ---
-title: Cloud & OpenStack
+title: "OpenStack Integration for Edge Envoy Nodes"
+sidebar_label: "Cloud & OpenStack"
 description: Register an OpenStack cloud, discover a VM's network interfaces and subnets, and bind an edge Envoy node's downstream IP to an OpenStack port.
 sidebar_position: 7
 tags: [administration, openstack, cloud]

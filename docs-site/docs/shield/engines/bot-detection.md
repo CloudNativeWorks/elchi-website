@@ -1,5 +1,6 @@
 ---
-title: Bot Detection
+title: "Shield Bot Detection at the Envoy Edge"
+sidebar_label: "Bot Detection"
 description: The layered bot/scanner scorer — verified-crawler checks, User-Agent rules, JA3/JA4 TLS fingerprints, and header-anomaly heuristics.
 sidebar_position: 10
 tags: [shield, engine]

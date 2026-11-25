@@ -5,6 +5,7 @@ description: An Envoy control plane serves configuration over the xDS APIs. Lear
 authors: [cnw]
 tags: [envoy, xds]
 date: 2026-11-13
+image: /img/og/blog-what-is-an-envoy-control-plane.png
 ---
 
 An Envoy control plane is a gRPC server that tells Envoy proxies what to run: which listeners to open, how to route requests, which upstream clusters exist, which endpoints are behind them and which certificates to use. Envoy fetches all of this over a family of discovery APIs called **xDS** and applies each update without a restart. The proxy is the data plane; the server that answers its xDS requests is the control plane.

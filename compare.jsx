@@ -6,7 +6,7 @@ import { PRODUCTS } from './products-data.js';
 import { REVIEWED, COMPARE_SLUGS, CRITERIA, ELCHI, COMPARE, HUB } from './compare-data.js';
 
 // Comparison pages. One component serves the hub (compare.html, data-product="hub")
-// and the three comparisons (compare/<slug>.html, data-product="<slug>"). The prerender
+// and each comparison (compare/<slug>.html, data-product="<slug>"). The prerender
 // passes data-product as the `slug` prop; in the browser it is read from #root.
 // All copy and every cited fact live in compare-data.js. The JSON-LD (BreadcrumbList +
 // WebPage) is static in each HTML entry's <head>.
@@ -100,7 +100,7 @@ function CompareTable({ caption, head, rows, hub = false }) {
   );
 }
 
-function Sources({ t, locale, sources }) {
+function Sources({ t, locale, sources, reviewed = REVIEWED }) {
   return (
     <Band tone="mist">
       <div className="cmpx-sources">
@@ -111,7 +111,7 @@ function Sources({ t, locale, sources }) {
             <li key={s.url}><a href={s.url} rel="noopener" target="_blank">{s.label}</a></li>
           ))}
         </ol>
-        <p className="cmpx-reviewed">{t.reviewed} <time dateTime={REVIEWED.iso}>{REVIEWED[locale]}</time></p>
+        <p className="cmpx-reviewed">{t.reviewed} <time dateTime={reviewed.iso}>{reviewed[locale]}</time></p>
       </div>
     </Band>
   );
@@ -137,7 +137,8 @@ function ComparisonPage({ slug, locale, t }) {
   const c = COMPARE[slug];
   const s = c[locale];
   const head = [t.criterion, 'Elchi', s.col];
-  const rows = CRITERIA.map((k) => [k[locale], ELCHI[locale][k.key], s.them[k.key]]);
+  // A page may relabel a criterion (Kong is not Envoy-based: "Where the proxy runs").
+  const rows = CRITERIA.map((k) => [s.labels?.[k.key] || k[locale], ELCHI[locale][k.key], s.them[k.key]]);
   const others = COMPARE_SLUGS.filter((x) => x !== slug);
   return (
     <>
@@ -202,7 +203,7 @@ function ComparisonPage({ slug, locale, t }) {
       </Band>
 
       <Cta t={t} />
-      <Sources t={t} locale={locale} sources={c.sources} />
+      <Sources t={t} locale={locale} sources={c.sources} reviewed={c.reviewed} />
     </>
   );
 }
@@ -214,10 +215,12 @@ function HubPage({ locale, t }) {
       <Crumbs t={t} />
       <PageHero title={h.h1} lede={h.answer} actions={<HeroActions t={t} />} />
 
-      <Band tone="water">
-        <BandHead h2={h.tableTitle} />
-        <CompareTable caption={h.tableCaption} head={[t.criterion, ...h.cols]} rows={h.rows} hub />
-      </Band>
+      {h.tables.map((tb) => (
+        <Band key={tb.title} tone="water">
+          <BandHead h2={tb.title} />
+          <CompareTable caption={tb.caption} head={[t.criterion, ...tb.cols]} rows={tb.rows} hub />
+        </Band>
+      ))}
 
       <Band tone="mist">
         <BandHead h2={h.pagesTitle} />
@@ -243,7 +246,7 @@ function HubPage({ locale, t }) {
       </Band>
 
       <Cta t={t} />
-      <Sources t={t} locale={locale} sources={HUB.sources} />
+      <Sources t={t} locale={locale} sources={HUB.sources} reviewed={HUB.reviewed} />
     </>
   );
 }
