@@ -26,9 +26,9 @@ const STR = {
     otherTitle: 'Other comparisons',
     allComparisons: 'All comparisons',
     ctaTitle: 'See it on your own fleet.',
-    ctaText: 'Tell us where your Envoys run and what you need to change on them. We will show the product on a setup like yours, or help you start on the free tier with one managed client.',
+    ctaText: 'Tell us where your edges run and what they must do: load balancing, TLS, WAF, GSLB or HA. We will show the product on a setup like yours, or help you start on the free tier with one managed client.',
     sourcesTitle: 'Sources',
-    sourcesIntro: 'Facts about other projects come from their official documentation and repositories, checked on the date below. Elchi facts come from the Elchi documentation.',
+    sourcesIntro: 'Facts about other products come from their vendors’ official documentation, product pages and repositories, checked on the date below. Elchi facts come from the Elchi documentation.',
     reviewed: 'Last reviewed:',
     open: 'Read the comparison',
   },
@@ -46,9 +46,9 @@ const STR = {
     otherTitle: 'Diğer karşılaştırmalar',
     allComparisons: 'Tüm karşılaştırmalar',
     ctaTitle: 'Kendi filonuzda görün.',
-    ctaText: 'Envoy’larınızın nerede çalıştığını ve üzerlerinde neyi değiştirmeniz gerektiğini anlatın. Ürünü sizinkine benzer bir kurulumda gösterelim ya da bir yönetilen client ile ücretsiz seviyede başlamanıza yardım edelim.',
+    ctaText: 'Edge’lerinizin nerede çalıştığını ve ne yapması gerektiğini anlatın: yük dengeleme, TLS, WAF, GSLB veya HA. Ürünü sizinkine benzer bir kurulumda gösterelim ya da bir yönetilen client ile ücretsiz seviyede başlamanıza yardım edelim.',
     sourcesTitle: 'Kaynaklar',
-    sourcesIntro: 'Diğer projelerle ilgili bilgiler, aşağıdaki tarihte kontrol edilen resmi dokümanlarından ve depolarından alınmıştır. Elchi bilgileri Elchi dokümantasyonundan gelir.',
+    sourcesIntro: 'Diğer ürünlerle ilgili bilgiler, aşağıdaki tarihte kontrol edilen üreticilerinin resmi dokümanlarından, ürün sayfalarından ve depolarından alınmıştır. Elchi bilgileri Elchi dokümantasyonundan gelir.',
     reviewed: 'Son inceleme:',
     open: 'Karşılaştırmayı okuyun',
   },
@@ -137,8 +137,11 @@ function ComparisonPage({ slug, locale, t }) {
   const c = COMPARE[slug];
   const s = c[locale];
   const head = [t.criterion, 'Elchi', s.col];
-  // A page may relabel a criterion (Kong is not Envoy-based: "Where the proxy runs").
-  const rows = CRITERIA.map((k) => [s.labels?.[k.key] || k[locale], ELCHI[locale][k.key], s.them[k.key]]);
+  // A page may bring its own criteria and Elchi column (the ADC pages), or relabel a
+  // shared criterion (Kong is not Envoy-based: "Where the proxy runs").
+  const criteria = c.criteria || CRITERIA;
+  const elchi = (c.elchi || ELCHI)[locale];
+  const rows = criteria.map((k) => [s.labels?.[k.key] || k[locale], elchi[k.key], s.them[k.key]]);
   const others = COMPARE_SLUGS.filter((x) => x !== slug);
   return (
     <>
@@ -208,6 +211,25 @@ function ComparisonPage({ slug, locale, t }) {
   );
 }
 
+// The hub: one section per group of products (enterprise ADCs first, then cloud-native
+// gateways and meshes), each with its summary table(s) and a card per comparison page.
+function HubCards({ slugs, h, t }) {
+  return (
+    <div className="cmpx-cards">
+      {slugs.map((slug) => {
+        const [title, text] = h.pages[slug];
+        return (
+          <a key={slug} className="cmpx-card" href={locHref(`compare/${slug}`)}>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <span className="cmpx-more">{t.open}<Arrow /></span>
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
 function HubPage({ locale, t }) {
   const h = HUB[locale];
   return (
@@ -215,28 +237,20 @@ function HubPage({ locale, t }) {
       <Crumbs t={t} />
       <PageHero title={h.h1} lede={h.answer} actions={<HeroActions t={t} />} />
 
-      {h.tables.map((tb) => (
-        <Band key={tb.title} tone="water">
-          <BandHead h2={tb.title} />
-          <CompareTable caption={tb.caption} head={[t.criterion, ...tb.cols]} rows={tb.rows} hub />
+      {h.sections.map((sec, i) => (
+        <Band key={sec.title} tone={i % 2 ? 'mist' : 'water'} id={sec.id}>
+          <BandHead h2={sec.title} intro={sec.intro} />
+          <div className="cmpx-stack">
+            {sec.tables.map((tb) => (
+              <div key={tb.title}>
+                {sec.tables.length > 1 && <h3 className="cmpx-h3">{tb.title}</h3>}
+                <CompareTable caption={tb.caption} head={[t.criterion, ...tb.cols]} rows={tb.rows} hub />
+              </div>
+            ))}
+            <HubCards slugs={sec.slugs} h={h} t={t} />
+          </div>
         </Band>
       ))}
-
-      <Band tone="mist">
-        <BandHead h2={h.pagesTitle} />
-        <div className="cmpx-cards">
-          {COMPARE_SLUGS.map((slug) => {
-            const [title, text] = h.pages[slug];
-            return (
-              <a key={slug} className="cmpx-card" href={locHref(`compare/${slug}`)}>
-                <h3>{title}</h3>
-                <p>{text}</p>
-                <span className="cmpx-more">{t.open}<Arrow /></span>
-              </a>
-            );
-          })}
-        </div>
-      </Band>
 
       <Band tone="mist2">
         <div className="cmpx-prose">

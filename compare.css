@@ -76,3 +76,8 @@
   .cmpx-table th, .cmpx-table td { padding: 14px 16px; }
   .cmpx-card { padding: 24px; }
 }
+
+/* hub: a group's tables and cards, stacked */
+.cmpx-stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+.cmpx-stack > * { min-width: 0; }
+.cmpx-h3 { margin-bottom: 16px; font: 700 22px/1.25 var(--font-sans); letter-spacing: -.015em; color: var(--lake); }

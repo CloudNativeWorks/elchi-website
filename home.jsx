@@ -24,8 +24,8 @@ const STR = {
   en: {
     // Hero
     heroH1a: 'Elchi:',
-    heroH1b: 'every Envoy, every edge, one control plane.',
-    heroPara: 'With Elchi you configure, validate and publish listeners, routes, clusters and certificates for every Envoy proxy from one place, and protect your APIs at the edge with Elchi Shield and Elchi API Discovery.',
+    heroH1b: 'application delivery for every edge, from one control plane.',
+    heroPara: 'Load balancing, TLS, a WAF (Elchi Shield), GSLB and active/passive HA with shared VIPs on Linux VMs and bare-metal Elchi OS appliances, for apps on VMs and Kubernetes. Managed centrally with validation, audit and zero-downtime upgrades, with Envoy as the engine.',
     heroBtnStart: 'Get Started',
     heroBtnDemo: 'Book a demo',
     heroBtnArch: 'View architecture',
@@ -65,15 +65,15 @@ const STR = {
     // Comparison: buyer criteria, named alternatives, honest answers
     cmpH2: 'Elchi vs. hand-written xDS and a service mesh.',
     cmpIntro: 'Compared on what platform teams check before they choose. A service mesh is the better fit when you need mTLS and policy between pods inside Kubernetes; Elchi manages the proxy fleets at your edge.',
-    cmpCaption: 'Elchi compared with hand-written xDS (go-control-plane) and a service mesh such as Istio',
+    cmpCaption: 'Elchi compared with hand-written xDS and a service mesh such as Istio',
     cmpHeadFeature: 'What you need',
     cmpHeadElchi: 'Elchi',
-    cmpHeadManual: 'Hand-written xDS / go-control-plane',
+    cmpHeadManual: 'Hand-written xDS',
     cmpHeadMesh: 'Service mesh (e.g. Istio)',
     cmpRows: [
       { f: 'Edit proxy config without writing YAML or xDS code',
         e: ['yes', 'Typed forms generated from each version’s protobufs'],
-        m: ['no', 'You write the YAML, or Go code against go-control-plane'],
+        m: ['no', 'You write the YAML, or the code of your own xDS server'],
         s: ['part', 'Mesh resources; raw Envoy settings through EnvoyFilter patches'] },
       { f: 'Checked before it reaches a proxy',
         e: ['yes', 'Validated in the editor and again on the server'],
@@ -180,8 +180,8 @@ const STR = {
   tr: {
     // Hero
     heroH1a: 'Elchi:',
-    heroH1b: 'her Envoy, her edge, tek control plane.',
-    heroPara: 'Elchi ile her Envoy proxy için listener, route, cluster ve sertifikaları tek yerden yapılandırın, doğrulayın ve yayınlayın; API’lerinizi Elchi Shield ve Elchi API Discovery ile edge’de koruyun.',
+    heroH1b: 'her edge için tek control plane’den uygulama dağıtımı.',
+    heroPara: 'Yük dengeleme, TLS, WAF (Elchi Shield), GSLB ve paylaşılan VIP’lerle active/passive HA; Linux VM’lerde ve bare-metal Elchi OS appliance’larında, VM ve Kubernetes’teki uygulamalar için. Doğrulama, denetim ve kesintisiz yükseltmelerle merkezden yönetilir; motoru Envoy’dur.',
     heroBtnStart: 'Başlayın',
     heroBtnDemo: 'Demo talep et',
     heroBtnArch: 'Mimariyi görün',
@@ -221,15 +221,15 @@ const STR = {
     // Comparison
     cmpH2: 'Elchi, elle yazılan xDS ve service mesh karşısında.',
     cmpIntro: 'Platform ekiplerinin seçmeden önce baktığı ölçütlerle karşılaştırma. Kubernetes içinde pod’lar arasında mTLS ve politika gerekiyorsa service mesh daha uygundur; Elchi edge’inizdeki proxy filolarını yönetir.',
-    cmpCaption: 'Elchi; elle yazılan xDS (go-control-plane) ve Istio gibi bir service mesh ile karşılaştırma',
+    cmpCaption: 'Elchi; elle yazılan xDS ve Istio gibi bir service mesh ile karşılaştırma',
     cmpHeadFeature: 'İhtiyaç',
     cmpHeadElchi: 'Elchi',
-    cmpHeadManual: 'Elle yazılan xDS / go-control-plane',
+    cmpHeadManual: 'Elle yazılan xDS',
     cmpHeadMesh: 'Service mesh (ör. Istio)',
     cmpRows: [
       { f: 'YAML veya xDS kodu yazmadan proxy yapılandırması',
         e: ['yes', 'Her sürümün protobuf’larından üretilen tipli formlar'],
-        m: ['no', 'YAML’ı ya da go-control-plane ile Go kodunu siz yazarsınız'],
+        m: ['no', 'YAML’ı ya da kendi xDS sunucunuzun kodunu siz yazarsınız'],
         s: ['part', 'Mesh kaynakları; ham Envoy ayarları EnvoyFilter yamalarıyla'] },
       { f: 'Proxy’ye ulaşmadan önce denetim',
         e: ['yes', 'Editörde ve ardından sunucuda doğrulanır'],

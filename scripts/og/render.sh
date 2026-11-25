@@ -23,9 +23,9 @@ render() { # out eyebrow l1 l2a l2b sub url
 }
 
 render public/og-image.png \
-  "Traffic management & API security" \
-  "The visual control plane" "for " "Envoy at scale." \
-  "xDS config · GSLB · ACME · WAF · API Discovery · Shield edge security · Edge HA pairs" \
+  "Enterprise application delivery" \
+  "Application delivery" "for " "every edge." \
+  "Load balancing · TLS & ACME · WAF (Shield) · GSLB · HA pairs with VIPs · One control plane" \
   "www.elchi.io"
 
 render docs-site/static/img/og-docs.png \
@@ -54,9 +54,21 @@ render public/og/products-gslb.png "Elchi GSLB" \
   "HTTP, HTTPS and TCP health probes · CoreDNS plugin · Healthy targets only" \
   "www.elchi.io/products/gslb.html"
 render public/og/compare.png "Compare" \
-  "Elchi vs Istio, Envoy Gateway," "Kong, kgateway, " "Contour, DIY." \
-  "Where Envoy runs · Config model · Envoy versions · WAF · GSLB · Licensing" \
+  "Elchi vs F5 BIG-IP, NetScaler," "A10 Thunder " "and gateways." \
+  "Enterprise ADCs · Cloud-native gateways and meshes · Criterion by criterion, with sources" \
   "www.elchi.io/compare.html"
+render public/og/compare-f5-big-ip.png "Compare" \
+  "Elchi vs F5 BIG-IP:" "Application delivery " "in software." \
+  "Load balancing · TLS · WAF · GSLB · HA and VIPs · Upgrades · Criterion by criterion, with F5 sources" \
+  "www.elchi.io/compare/f5-big-ip.html"
+render public/og/compare-netscaler.png "Compare" \
+  "Elchi vs NetScaler:" "Application delivery " "in software." \
+  "Load balancing · TLS · WAF · GSLB · HA and VIPs · Criterion by criterion, with NetScaler sources" \
+  "www.elchi.io/compare/netscaler.html"
+render public/og/compare-a10-thunder.png "Compare" \
+  "Elchi vs A10 Thunder:" "Application delivery " "in software." \
+  "Load balancing · TLS · WAF · GSLB · HA and VIPs · Upgrades · Criterion by criterion, with A10 sources" \
+  "www.elchi.io/compare/a10-thunder.html"
 render public/og/compare-istio.png "Compare" \
   "Elchi vs Istio" "for " "Envoy on VMs." \
   "Edge and gateway fleets without a mesh · Criterion by criterion, with sources" \
@@ -65,10 +77,6 @@ render public/og/compare-envoy-gateway.png "Compare" \
   "Elchi vs Envoy Gateway:" "Typed Envoy API " "vs Gateway API." \
   "VMs · Standalone mode · Envoy versions · WAF · GSLB · Criterion by criterion, with sources" \
   "www.elchi.io/compare/envoy-gateway.html"
-render public/og/compare-go-control-plane.png "Compare" \
-  "Elchi vs go-control-plane:" "Build vs buy " "for Envoy xDS." \
-  "What a control plane you build yourself must cover · Criterion by criterion, with sources" \
-  "www.elchi.io/compare/go-control-plane.html"
 render public/og/compare-kong-gateway.png "Compare" \
   "Elchi vs Kong Gateway:" "Envoy fleet " "vs NGINX gateway." \
   "Proxy · Config model · Versions · Publish and audit · WAF · Criterion by criterion, with sources" \
@@ -99,9 +107,21 @@ render public/og/tr-products-gslb.png "Elchi GSLB" \
   "HTTP, HTTPS ve TCP sağlık yoklamaları · CoreDNS eklentisi · Yalnızca sağlıklı hedefler" \
   "www.elchi.io/tr/products/gslb.html"
 render public/og/tr-compare.png "Karşılaştırma" \
-  "Elchi ve alternatifleri:" "Istio, Kong, kgateway, " "Contour." \
-  "Envoy nerede çalışır · Yapılandırma modeli · Envoy sürümleri · WAF · GSLB · Lisans" \
+  "Elchi vs F5 BIG-IP, NetScaler," "A10 Thunder " "ve gateway’ler." \
+  "Kurumsal ADC’ler · Cloud-native gateway ve mesh’ler · Kriter kriter, kaynaklarıyla" \
   "www.elchi.io/tr/compare.html"
+render public/og/tr-compare-f5-big-ip.png "Karşılaştırma" \
+  "Elchi vs F5 BIG-IP:" "Yazılımla " "uygulama dağıtımı." \
+  "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, F5 kaynaklarıyla" \
+  "www.elchi.io/tr/compare/f5-big-ip.html"
+render public/og/tr-compare-netscaler.png "Karşılaştırma" \
+  "Elchi vs NetScaler:" "Yazılımla " "uygulama dağıtımı." \
+  "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, NetScaler kaynaklarıyla" \
+  "www.elchi.io/tr/compare/netscaler.html"
+render public/og/tr-compare-a10-thunder.png "Karşılaştırma" \
+  "Elchi vs A10 Thunder:" "Yazılımla " "uygulama dağıtımı." \
+  "Yük dengeleme · TLS · WAF · GSLB · HA ve VIP · Yükseltme · Kriter kriter, A10 kaynaklarıyla" \
+  "www.elchi.io/tr/compare/a10-thunder.html"
 render public/og/tr-compare-istio.png "Karşılaştırma" \
   "Elchi vs Istio:" "VM’lerde " "Envoy yönetimi." \
   "Mesh olmadan edge ve gateway filoları · Kriter kriter, kaynaklarıyla" \
@@ -110,10 +130,6 @@ render public/og/tr-compare-envoy-gateway.png "Karşılaştırma" \
   "Elchi vs Envoy Gateway:" "Tipli Envoy API " "vs Gateway API." \
   "VM · Standalone mod · Envoy sürümleri · WAF · GSLB · Kriter kriter, kaynaklarıyla" \
   "www.elchi.io/tr/compare/envoy-gateway.html"
-render public/og/tr-compare-go-control-plane.png "Karşılaştırma" \
-  "Elchi vs go-control-plane:" "Kendin yap " "mı, hazır mı?" \
-  "Kendi kuracağınız bir control plane’in karşılaması gerekenler · Kriter kriter, kaynaklarıyla" \
-  "www.elchi.io/tr/compare/go-control-plane.html"
 render public/og/tr-compare-kong-gateway.png "Karşılaştırma" \
   "Elchi vs Kong Gateway:" "Envoy filosu " "vs NGINX gateway." \
   "Proxy · Config modeli · Sürümler · Yayınlama ve audit · WAF · Kriter kriter, kaynaklarıyla" \
@@ -142,4 +158,8 @@ render docs-site/static/img/og/blog-envoy-on-vms-without-kubernetes.png "Elchi B
 render docs-site/static/img/og/blog-envoy-fleet-without-xds.png "Elchi Blog" \
   "Running an Envoy fleet" "without " "hand-written xDS." \
   "References · Validation · Versions · What an Envoy control plane must do" \
+  "www.elchi.io/docs/blog"
+render docs-site/static/img/og/blog-software-adc-alternatives.png "Elchi Blog" \
+  "Software ADC alternatives" "to " "F5, NetScaler, A10." \
+  "VIP & HA · L4/L7 · TLS · WAF · GSLB · Central management · Evaluation checklist" \
   "www.elchi.io/docs/blog"

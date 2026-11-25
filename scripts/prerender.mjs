@@ -17,19 +17,22 @@ import { renderToString } from 'react-dom/server';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
-// Every HTML entry except docs.html (a redirect to /docs/).
+// Every HTML entry except docs.html (a redirect to /docs/). The retired
+// compare/go-control-plane.html is a redirect stub in public/, not an entry.
 const PAGES = [
   'index.html', 'features.html', 'architecture.html', 'contact.html', 'plans.html', 'videos.html', 'faq.html',
   'products/core.html', 'products/api-security.html', 'products/api-discovery.html',
   'products/gslb.html',
   'privacy.html', 'about.html',
-  'compare.html', 'compare/istio.html', 'compare/envoy-gateway.html', 'compare/go-control-plane.html',
+  'compare.html', 'compare/f5-big-ip.html', 'compare/netscaler.html', 'compare/a10-thunder.html',
+  'compare/istio.html', 'compare/envoy-gateway.html',
   'compare/kong-gateway.html', 'compare/kgateway.html', 'compare/contour.html',
   'tr/index.html', 'tr/features.html', 'tr/architecture.html', 'tr/contact.html', 'tr/plans.html', 'tr/videos.html', 'tr/faq.html',
   'tr/products/core.html', 'tr/products/api-security.html', 'tr/products/api-discovery.html',
   'tr/products/gslb.html',
   'tr/privacy.html', 'tr/about.html',
-  'tr/compare.html', 'tr/compare/istio.html', 'tr/compare/envoy-gateway.html', 'tr/compare/go-control-plane.html',
+  'tr/compare.html', 'tr/compare/f5-big-ip.html', 'tr/compare/netscaler.html', 'tr/compare/a10-thunder.html',
+  'tr/compare/istio.html', 'tr/compare/envoy-gateway.html',
   'tr/compare/kong-gateway.html', 'tr/compare/kgateway.html', 'tr/compare/contour.html',
 ];
 

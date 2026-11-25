@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elchi — Envoy için Görsel Control Plane ve API Güvenliği</title>
-  <meta name="description" content="Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.">
+  <title>Elchi — Kurumsal ADC: Yük Dengeleme, WAF, GSLB ve HA</title>
+  <meta name="description" content="Elchi, tek control plane’den kurumsal uygulama dağıtımıdır: VM ve appliance’larda yük dengeleme, TLS, WAF, GSLB ve VIP paylaşan HA çiftleri.">
   <link rel="preload" as="image" href="/hero3d/poster.webp" fetchpriority="high">
   <link rel="canonical" href="https://www.elchi.io/tr/">
   <link rel="alternate" hreflang="en" href="https://www.elchi.io/">
@@ -17,13 +17,13 @@
   <meta property="og:locale" content="tr_TR">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:url" content="https://www.elchi.io/tr/">
-  <meta property="og:title" content="Elchi — Envoy için Görsel Control Plane ve API Güvenliği">
-  <meta property="og:description" content="Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.">
+  <meta property="og:title" content="Elchi — Kurumsal ADC: Yük Dengeleme, WAF, GSLB ve HA">
+  <meta property="og:description" content="Elchi, tek control plane’den kurumsal uygulama dağıtımıdır: VM ve appliance’larda yük dengeleme, TLS, WAF, GSLB ve VIP paylaşan HA çiftleri.">
   <meta property="og:image" content="https://www.elchi.io/og-image.png">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Elchi — Envoy için Görsel Control Plane ve API Güvenliği">
-  <meta name="twitter:description" content="Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.">
+  <meta name="twitter:title" content="Elchi — Kurumsal ADC: Yük Dengeleme, WAF, GSLB ve HA">
+  <meta name="twitter:description" content="Elchi, tek control plane’den kurumsal uygulama dağıtımıdır: VM ve appliance’larda yük dengeleme, TLS, WAF, GSLB ve VIP paylaşan HA çiftleri.">
   <meta name="twitter:image" content="https://www.elchi.io/og-image.png">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -56,7 +56,7 @@
         "name": "CloudNativeWorks",
         "legalName": "Cloud Native Teknoloji Bilişim ve Danışmanlık Ticaret ve Sanayi A.Ş.",
         "url": "https://cloudnativeworks.com",
-        "description": "CloudNativeWorks builds Elchi, a visual control plane for Envoy proxy fleets on VMs and Kubernetes.",
+        "description": "CloudNativeWorks builds Elchi, an enterprise application delivery platform: load balancing, TLS, WAF, GSLB and active/passive HA on Linux VMs and Elchi OS appliances, managed from one control plane.",
         "logo": {
           "@type": "ImageObject",
           "url": "https://www.elchi.io/icon-512.png",
@@ -109,8 +109,8 @@
         "@type": "WebPage",
         "@id": "https://www.elchi.io/tr/#webpage",
         "url": "https://www.elchi.io/tr/",
-        "name": "Elchi — Envoy için Görsel Control Plane ve API Güvenliği",
-        "description": "Elchi, VM ve Kubernetes'teki Envoy filoları için görsel control plane'dir: arayüzden tam xDS, çoklu Envoy sürümü, ext_proc ile Envoy WAF, GSLB ve API keşfi.",
+        "name": "Elchi — Kurumsal ADC: Yük Dengeleme, WAF, GSLB ve HA",
+        "description": "Elchi, tek control plane’den kurumsal uygulama dağıtımıdır: VM ve appliance’larda yük dengeleme, TLS, WAF, GSLB ve VIP paylaşan HA çiftleri.",
         "inLanguage": "tr",
         "isPartOf": {
           "@id": "https://www.elchi.io/#website"
@@ -132,7 +132,7 @@
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Linux, Kubernetes",
         "url": "https://www.elchi.io/tr/",
-        "description": "Elchi, Envoy proxy filoları için görsel bir control plane'dir: her Envoy kaynağı Envoy API'sinden üretilen tipli formlarla düzenlenir ve xDS ile Envoy'larınıza iletilir. Edge agent'lar Envoy'u sunucularınızda çalıştırır; ek ürünler ext_proc ile WAF içeren API güvenliği (Shield), Envoy trafiğinden API keşfi ve GSLB getirir.",
+        "description": "Elchi, tek control plane’den yönetilen kurumsal bir uygulama dağıtım platformudur: L4/L7 yük dengeleme, ACME sertifikalarıyla TLS, WAF (OWASP Core Rule Set ile Shield), DNS tabanlı GSLB ve VIP paylaşan active/passive HA çiftleri; Linux VM’lerde ve bare metal ya da hypervisor üzerindeki Elchi OS appliance’larında. Data plane motoru Envoy’dur: her değişiklik doğrulanır, xDS ile yayınlanır ve audit trail’e yazılır; listener yükseltmeleri trafik kaybettirmez. Ticari lisanslıdır; bir yönetilen client ile ücretsiz seviyesi vardır.",
         "inLanguage": "tr",
         "about": {
           "@type": "Thing",

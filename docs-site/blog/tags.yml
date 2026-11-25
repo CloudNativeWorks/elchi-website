@@ -14,3 +14,7 @@ vms:
   label: Virtual machines
   permalink: /vms
   description: Running Envoy on VMs and bare metal without Kubernetes.
+load-balancing:
+  label: Load balancing
+  permalink: /load-balancing
+  description: Load balancers, ADC replacement and traffic management with Envoy.
