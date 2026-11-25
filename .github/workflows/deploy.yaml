@@ -15,10 +15,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # Build and deploy are separate jobs (GitHub's recommended layout): with both in one job,
+  # deploy-pages ran right after the upload and twice failed with "No artifacts named
+  # github-pages were found" (2026-11-25) because the new artifact was not listed yet.
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,13 +64,21 @@ jobs:
         with:
           path: './dist'
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
       # Tell IndexNow engines (Bing, Yandex, Seznam, Naver…) which URLs changed: those whose
-      # sitemap <lastmod> (from git) is today. Bing's index also feeds Copilot and ChatGPT
-      # search. Key file: public/2495e897fc8278a147b89e6d790e8689.txt. Best-effort: never fails the deploy.
+      # sitemap <lastmod> (from git) is today, read from the site just deployed. Bing's index
+      # also feeds Copilot and ChatGPT search. Key file: public/2495e897fc8278a147b89e6d790e8689.txt.
+      # Best-effort: never fails the deploy.
       - name: Ping IndexNow
         continue-on-error: true
         run: |
@@ -78,8 +86,9 @@ jobs:
           import json, re, datetime, urllib.request
           today = datetime.date.today().isoformat()
           urls = []
-          for f in ('dist/sitemap.xml', 'dist/docs/sitemap.xml'):
-              for block in re.findall(r'<url>(.*?)</url>', open(f).read(), re.S):
+          for sm in ('https://www.elchi.io/sitemap.xml', 'https://www.elchi.io/docs/sitemap.xml'):
+              xml = urllib.request.urlopen(sm, timeout=30).read().decode()
+              for block in re.findall(r'<url>(.*?)</url>', xml, re.S):
                   loc = re.search(r'<loc>([^<]+)', block).group(1)
                   mod = re.search(r'<lastmod>([^<]+)', block)
                   if mod and mod.group(1)[:10] >= today:
